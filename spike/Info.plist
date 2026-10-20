@@ -6,6 +6,14 @@
     <string>com.mattmsumner.tapspike</string>
     <key>CFBundleName</key>
     <string>tapspike</string>
+    <key>CFBundleExecutable</key>
+    <string>tapspike</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleVersion</key>
+    <string>1</string>
+    <key>LSUIElement</key>
+    <true/>
     <key>NSMicrophoneUsageDescription</key>
     <string>Records your side of the meeting.</string>
     <key>NSAudioCaptureUsageDescription</key>
