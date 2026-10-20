@@ -59,20 +59,25 @@ def _record(
         stop.set()
 
     previous = {sig: signal.signal(sig, on_stop_signal) for sig in STOP_SIGNALS}
+    # Flushed explicitly: notes-capture writes to the same terminal, and Python buffers
+    # stdout when it isn't a TTY (e.g. under Claude Code), which put our lines after its.
     timer = threading.Timer(duration, stop.set) if duration else None
     try:
         if timer:
             timer.start()
-            print(f"Recording {meeting_dir.id} for {duration:g}s. Press Ctrl-C to stop early.")
+            print(
+                f"Recording {meeting_dir.id} for {duration:g}s. Press Ctrl-C to stop early.",
+                flush=True,
+            )
         else:
-            print(f"Recording {meeting_dir.id}. Press Ctrl-C to stop.")
+            print(f"Recording {meeting_dir.id}. Press Ctrl-C to stop.", flush=True)
         recorder.record(meeting_dir.path, stop)
     finally:
         if timer:
             timer.cancel()
         for sig, handler in previous.items():
             signal.signal(sig, handler)
-    print("Stopped.")
+    print("Stopped.", flush=True)
     return meeting_dir
 
 
@@ -102,7 +107,7 @@ def main(
         return 1
 
     if args.command in ("record", "transcribe"):
-        print("Transcribing...")
+        print("Transcribing...", flush=True)
         pipeline.transcribe(meeting_dir, make_transcriber(config))
 
     path = pipeline.render(meeting_dir, config)

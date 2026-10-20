@@ -11,16 +11,32 @@ func record(to directory: URL) throws -> Int32 {
         return 1
     }
 
-    let tap = try SystemAudioTap()
-    let mic = Microphone()
-    let them = try ChannelWriter(url: directory.appendingPathComponent("them.wav"), inputFormat: tap.format)
-    let me = try ChannelWriter(url: directory.appendingPathComponent("me.wav"), inputFormat: mic.format)
-
     let startedAt = Date()
     let start = mach_absolute_time()
-    // System audio first: in the spike it was the one that could start late.
-    try tap.start { buffer, hostTime in them.append(buffer, hostTime: hostTime) }
+
+    // Output device changes (like an idle AirPods mic switching them into call mode)
+    // break the tap, so it's rebuilt once they settle. See TapRebuildScheduler.
+    var rebuilds = TapRebuildScheduler()
+    let monitor = DeviceMonitor { change in
+        // Device-list changes are mostly our own rebuilds: not worth logging.
+        guard change.affectsOutput else { return }
+        let elapsed = Date().timeIntervalSince(startedAt)
+        warn(String(format: "[%.2fs] %@", elapsed, change.description))
+        DispatchQueue.main.async { rebuilds.deviceChanged(at: elapsed) }
+    }
+    defer { withExtendedLifetime(monitor) {} }
+
+    // Mic first, so a Bluetooth headset switches into call mode as early as possible.
+    // Channel offsets in capture.json absorb the difference in start times.
+
+    let mic = Microphone()
+    let me = try ChannelWriter(url: directory.appendingPathComponent("me.wav"), inputFormat: mic.format)
     try mic.start { buffer, hostTime in me.append(buffer, hostTime: hostTime) }
+
+    var tap = try SystemAudioTap()
+    let them = try ChannelWriter(url: directory.appendingPathComponent("them.wav"), inputFormat: tap.format)
+    let feedThem: (AVAudioPCMBuffer, UInt64) -> Void = { buffer, hostTime in them.append(buffer, hostTime: hostTime) }
+    try tap.start(onBuffer: feedThem)
     warn("recording to \(directory.path) (mic: \(describe(mic.format)), system: \(describe(tap.format)))")
 
     var stopRequested = false
@@ -33,17 +49,38 @@ func record(to directory: URL) throws -> Int32 {
     }
     defer { stopSources.forEach { $0.cancel() } }
 
-    var warned = false
+    // Warn once each time system audio goes quiet (exact zeros) for long enough, and say
+    // so when it comes back.
+    var warning = false
     while !stopRequested {
         RunLoop.main.run(until: Date().addingTimeInterval(0.25))
         let elapsed = Date().timeIntervalSince(startedAt)
-        if !warned && shouldWarnAboutSystemAudio(elapsed: elapsed, detector: them.silenceSoFar) {
-            warned = true
-            warn("""
-                WARNING: no system audio after \(Int(elapsed))s (all zeros). If a call is playing, \
-                macOS is blocking system audio capture. Stop, run `notes-capture check`, and try again.
-                """)
+        let silence = them.silenceSoFar
+        let zeroSeconds = Double(silence.trailingZeroCount) / outputSampleRate
+        if let reason = rebuilds.rebuildReason(at: elapsed, trailingZeroSeconds: zeroSeconds) {
+            tap.stop()
+            do {
+                tap = try SystemAudioTap()
+                try tap.start(onBuffer: feedThem)
+                if reason == .deviceChange {
+                    warn(String(format: "[%.2fs] rebuilt system audio capture after device changes", elapsed))
+                }
+            } catch {
+                warn("ERROR: couldn't rebuild system audio capture: \(error)")
+            }
         }
+        let blocked = shouldWarnAboutSystemAudio(
+            elapsed: elapsed, detector: silence, sampleRate: outputSampleRate)
+        if blocked && !warning {
+            warn("""
+                WARNING: system audio has been digital silence for \(Int(systemAudioWarningDelay))s \
+                (at \(Int(elapsed))s). Fine if nothing is playing, but if a call is, macOS is \
+                blocking capture: check for a NotesCapture permission prompt.
+                """)
+        } else if !blocked && warning {
+            warn("system audio is back (at \(Int(elapsed))s)")
+        }
+        warning = blocked
     }
 
     tap.stop()

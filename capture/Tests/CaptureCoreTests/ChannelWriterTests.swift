@@ -96,3 +96,76 @@ func writes16kMonoWithSameLengthAndPitch(format: AVAudioFormat) throws {
     #expect(stats.framesWritten == 0)
     #expect(!stats.silence.isAllZero)
 }
+
+// MARK: - Placing audio by timestamp
+
+/// Nanosecond host ticks, to make timestamps easy to write.
+private let nanoseconds = HostClock(numerator: 1, denominator: 1)
+
+private func tone(_ seconds: Double, format: AVAudioFormat) -> AVAudioPCMBuffer {
+    let frames = AVAudioFrameCount(seconds * format.sampleRate)
+    let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: frames)!
+    buffer.frameLength = frames
+    let channels = Int(format.channelCount)
+    for i in 0..<Int(frames) {
+        let value = 0.5 * Float(sin(2 * .pi * 440 * Double(i) / format.sampleRate))
+        for c in 0..<channels {
+            if format.isInterleaved {
+                buffer.floatChannelData![0][i * channels + c] = value
+            } else {
+                buffer.floatChannelData![c][i] = value
+            }
+        }
+    }
+    return buffer
+}
+
+private func readSamples(_ url: URL) throws -> [Float] {
+    let file = try AVAudioFile(forReading: url, commonFormat: .pcmFormatFloat32, interleaved: false)
+    let buffer = AVAudioPCMBuffer(pcmFormat: file.processingFormat, frameCapacity: AVAudioFrameCount(file.length))!
+    try file.read(into: buffer)
+    return Array(UnsafeBufferPointer(start: buffer.floatChannelData![0], count: Int(buffer.frameLength)))
+}
+
+private func seconds(_ s: Double) -> UInt64 { UInt64(s * 1_000_000_000) }
+
+@Test func fillsGapsWithSilenceSoLaterAudioStaysOnTime() throws {
+    // 0.5 s of audio, nothing for 1 s (say, while the tap is rebuilt), then 0.5 s more.
+    let url = FileManager.default.temporaryDirectory.appendingPathComponent("\(UUID()).wav")
+    defer { try? FileManager.default.removeItem(at: url) }
+    let writer = try ChannelWriter(url: url, inputFormat: tapFormat, clock: nanoseconds)
+    writer.append(tone(0.5, format: tapFormat), hostTime: seconds(100))
+    writer.append(tone(0.5, format: tapFormat), hostTime: seconds(101.5))
+    _ = writer.finish()
+
+    let samples = try readSamples(url)
+    #expect(abs(samples.count - 32_000) < 160)  // 2 s, not 1 s
+    let gap = samples[9_000..<23_000]  // well inside 0.5 s ... 1.5 s
+    #expect(gap.allSatisfy { $0 == 0 })
+    #expect(samples[24_500..<25_500].contains { $0 != 0 })  // the second tone starts ~1.5 s
+}
+
+@Test func ignoresTimingJitter() throws {
+    let url = FileManager.default.temporaryDirectory.appendingPathComponent("\(UUID()).wav")
+    defer { try? FileManager.default.removeItem(at: url) }
+    let writer = try ChannelWriter(url: url, inputFormat: tapFormat, clock: nanoseconds)
+    writer.append(tone(0.5, format: tapFormat), hostTime: seconds(100))
+    writer.append(tone(0.5, format: tapFormat), hostTime: seconds(100.55))  // 50 ms late
+    let stats = writer.finish()
+
+    #expect(abs(stats.framesWritten - 16_000) < 160)
+}
+
+@Test func handlesAChangeOfInputFormat() throws {
+    // A rebuilt device can come back in a different format.
+    let url = FileManager.default.temporaryDirectory.appendingPathComponent("\(UUID()).wav")
+    defer { try? FileManager.default.removeItem(at: url) }
+    let writer = try ChannelWriter(url: url, inputFormat: tapFormat, clock: nanoseconds)
+    writer.append(tone(1, format: tapFormat), hostTime: seconds(100))
+    writer.append(tone(1, format: bluetoothMicFormat), hostTime: seconds(101))
+    _ = writer.finish()
+
+    let samples = try readSamples(url)
+    #expect(abs(samples.count - 32_000) < 320)
+    #expect(abs(zeroCrossings(samples) - 1_760) < 40)
+}

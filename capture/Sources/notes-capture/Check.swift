@@ -31,18 +31,28 @@ func checkCapture() throws -> Int32 {
     return 1
 }
 
+/// How long the tap runs before the test sound plays. A tap that macOS hasn't (yet)
+/// allowed can deliver real audio for its first second or two before switching to zeros,
+/// so a sound played straight away can pass the check when recording would fail.
+private let permissionSettleSeconds: TimeInterval = 3
+
 private func tapHearsTestSound() throws -> Bool {
     let tap = try SystemAudioTap()
     let lock = NSLock()
+    var listening = false
     var detector = SilenceDetector()
     try tap.start { buffer, _ in
         guard let data = buffer.floatChannelData else { return }
         // Interleaved: all channels are in the first buffer.
         let count = Int(buffer.frameLength) * (buffer.format.isInterleaved ? Int(buffer.format.channelCount) : 1)
-        lock.withLock { detector.add(UnsafeBufferPointer(start: data[0], count: count)) }
+        lock.withLock {
+            if listening { detector.add(UnsafeBufferPointer(start: data[0], count: count)) }
+        }
     }
     defer { tap.stop() }
 
+    RunLoop.main.run(until: Date().addingTimeInterval(permissionSettleSeconds))
+    lock.withLock { listening = true }
     let player = Process()
     player.executableURL = URL(fileURLWithPath: "/usr/bin/afplay")
     player.arguments = ["-v", "0.15", "/System/Library/Sounds/Tink.aiff"]

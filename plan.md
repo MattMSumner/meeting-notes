@@ -4,7 +4,7 @@ A personal, local-first meeting notetaker for macOS. It's a CLI that records my 
 other side of a call, transcribes locally after the meeting, summarizes with a local model,
 and writes an Obsidian-friendly markdown note.
 
-Status: **M1 done** (mic-only record → transcribe → transcript in the vault). Spike done.
+Status: **M2 in progress** (both sides recorded and interleaved). M1 and the spike done.
 Phase 0 (Handy) set up.
 
 ---
@@ -291,6 +291,34 @@ the spike learned), plus the glue code's subprocess wrapper and the time-merge i
 
   Integration tests and the manual checklist run only on my Mac, never in CI: CI runners
   have neither the permissions nor the audio hardware. Mark them so CI skips them.
+- **Built (2026-10-20).** `capture/` Swift package (`CaptureCore` + `notes-capture record|check`),
+  `capture/install.sh` (signed `NotesCapture.app` + check), Python `CaptureRecorder`, `merge`,
+  `notes check`. What I learned:
+  - **Idle AirPods break the tap.** Opening an idle Bluetooth headset's mic switches it into
+    call mode (output 48 → 24 kHz, a few seconds of garbled playback). A tap that exists
+    during the switch goes to **exact zeros** while playback carries on: in tests, after
+    1–4 s and for the rest of the recording. Not every step is visible as a device event,
+    and starting the mic before the tap did *not* fix it (I wrongly thought it had,
+    because the bug only shows after the headset has been idle for a few minutes;
+    back-to-back runs pass). **Fix:** rebuild the tap (a) 1.5 s after output-device changes
+    settle and (b) whenever it has delivered exact zeros for 1 s (at most every 3 s;
+    harmless when nothing is playing). `TapRebuildScheduler`, unit-tested. Result: one gap
+    of about 1.25 s near the start, then continuous audio.
+  - **Gaps are filled by timestamp.** `ChannelWriter` places audio by host time and writes
+    silence for gaps of 0.1 s or more, after draining the converter (which holds about
+    75 ms back). It also accepts a format change mid-recording.
+  - **Permission is checked asynchronously.** On a new build, the tap delivered real audio
+    for about 2 s, then zeros until the (late-appearing) permission prompt was answered.
+    `check` now lets the tap run 3 s before playing its test sound; before that it could
+    pass inside the first window.
+  - **The live warning covers zeros at any point**, not just from the start: 10 s of
+    continuous exact zeros warns, and it says when audio comes back.
+  - **The tap delivers nothing until something plays** (confirmed): a video started 7 s in
+    gave `them` an offset of 7.17 s, and the transcript placed it correctly.
+  - **Swift Testing works with only the Command Line Tools,** but the macro plugin isn't on
+    the default search path: `capture/test.sh` passes `-plugin-path`.
+  - **Manual checklist** (not automatable): first recording after the headset has been idle
+    for 3 or more minutes; a real Zoom/Meet call; a rebuild followed by `notes check`.
 
 **M3 — Summary.** Ollama call with an explicit `num_ctx` (32k; the default silently
 truncates), prompt loaded from a file, JSON output validated against a struct, rendered to
