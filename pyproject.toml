@@ -1,0 +1,45 @@
+[project]
+name = "meeting-notes"
+version = "0.1.0"
+description = "Local-first meeting notetaker for macOS"
+readme = "README.md"
+authors = [
+    { name = "Matthew Sumner", email = "matt.m.sumner@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "parakeet-mlx>=0.5.3",
+    "sounddevice>=0.5.6",
+    "soundfile>=0.14.0",
+]
+
+[project.scripts]
+notes = "meeting_notes.cli:main"
+
+[build-system]
+requires = ["uv_build>=0.13.3,<0.14.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pyright[nodejs]>=1.1.414",
+    "pytest>=9.1.1",
+    "ruff>=0.17.1",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# Integration tests need real models and macOS audio, so they only run on demand:
+#   uv run pytest -m integration
+addopts = "-m 'not integration'"
+markers = ["integration: needs real models or audio hardware; never runs in CI"]
+
+[tool.pyright]
+include = ["src", "tests"]
+typeCheckingMode = "strict"
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
