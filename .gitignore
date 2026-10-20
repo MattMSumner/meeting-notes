@@ -1,0 +1,22 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+dist/
+build/
+*.egg-info/
+
+# Swift
+.build/
+*.xcodeproj/xcuserdata/
+
+# Recordings and local data (never commit audio or transcripts)
+*.wav
+*.flac
+*.m4a
+recordings/
