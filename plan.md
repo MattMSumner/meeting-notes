@@ -185,12 +185,16 @@ What I learned:
 4. **Formats differ per channel:** mic = 1 ch, 24 kHz (Bluetooth call mode); tap = 2 ch,
    48 kHz interleaved float. `notes-capture` should resample both to 16 kHz mono for
    transcription.
-5. **The tap starts about 2.5 seconds after the mic, every time.** Measured: 2.4 s on a run
-   with no permission prompt, 3.1 s on a run that showed one. So it isn't caused by the
-   prompt; possibly the built-in output waking up (not verified). `notes-capture` should
-   start the tap *before* the mic, and record each channel's first-sample host time
-   (`AudioTimeStamp.mHostTime` / `AVAudioTime.hostTime`) so the merge aligns on real time,
-   not on position in the file.
+5. **Timing:** no startup delay when audio is already playing. The tap delivers from the
+   first second, and **keeps delivering zero-filled buffers through silence** (paused the
+   video for 6 s: `SILENT`, not `no data`), so `them.wav` stays on real time (19.95 s for a
+   20 s run). Unverified: in runs where nothing was playing at start, the tap sent *no
+   buffers* until audio began, so it may only start once something plays. `notes-capture`
+   should still record each channel's first-sample host time (`AudioTimeStamp.mHostTime` /
+   `AVAudioTime.hostTime`) and align the merge on it, padding the later channel's start
+   with silence.
+6. **The Bluetooth mic delivers silence for about 1 s at the start** (likely while it
+   switches into call mode). Harmless, but start the mic before the meeting begins.
 
 Still to check: a Zoom test call; whether rebuilding the ad-hoc-signed binary re-prompts
 for permission (likely, since the grant is tied to the binary's hash), which suggests
