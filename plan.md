@@ -257,6 +257,19 @@ then transcribes and writes `transcript.md` to the notes folder.
 the spike learned), plus the glue code's subprocess wrapper and the time-merge into Me/Them.
 - Tests: the merge is a pure function with lots of unit tests (overlapping, interleaved,
   and empty channels). Integration test: run capture while `afplay`ing a fixture, then assert `them.wav` isn't silent.
+- Spike findings → tests. Build `notes-capture` test-first against these:
+
+  | Finding | How it's tested |
+  |---|---|
+  | Clock from the built-in output, not the default (Bluetooth) device | **Unit:** device selection as a pure function over a fake device list (Bluetooth default + built-in speakers) |
+  | Channels start ~25 ms apart; align on first-sample host time | **Unit:** alignment and silence padding with exact timestamps |
+  | Mic is 24 kHz mono, tap is 48 kHz stereo; both go to 16 kHz mono | **Unit:** resample a known tone and check its length and pitch |
+  | The tap can be silently all zeros | **Unit:** zero detector. **Integration:** `notes-capture check` (play a sound from a separate process, assert it's captured) |
+  | The first run after a rebuild records zeros | **Build script:** runs `notes-capture check` after every rebuild, retrying once |
+  | Responsibility disclaim, signed `.app`, real Zoom call | **Manual release checklist** (depends on macOS permissions, real devices and a real call) |
+
+  Integration tests and the manual checklist run only on my Mac, never in CI: CI runners
+  have neither the permissions nor the audio hardware. Mark them so CI skips them.
 
 **M3 — Summary.** Ollama call with an explicit `num_ctx` (32k; the default silently
 truncates), prompt loaded from a file, JSON output validated against a struct, rendered to
