@@ -6,13 +6,16 @@
 /// of the switch is visible as a device change, so there are two triggers:
 ///
 /// - Output device changes: rebuild once changes stop for `settleSeconds`.
-/// - Exact zeros for `silentSeconds`: rebuild, at most every `minimumInterval`. A tap
-///   created after the switch works. If nothing is playing (a paused video), the extra
-///   rebuild is harmless: its short gap is filled with silence.
+/// - Exact zeros for `silentSeconds`: rebuild. A tap created after the switch works. If
+///   nothing is playing (a paused video, an in-person meeting), the rebuild is harmless,
+///   but repeating it every few seconds for an hour is churn, so the wait between silence
+///   rebuilds doubles from `minimumInterval` up to `maximumInterval`. It resets when audio
+///   flows again or a device changes.
 public struct TapRebuildScheduler: Sendable {
     public static let settleSeconds: Double = 1.5
     public static let silentSeconds: Double = 1
     public static let minimumInterval: Double = 3
+    public static let maximumInterval: Double = 60
 
     public enum Reason: Equatable, Sendable {
         case deviceChange
@@ -21,6 +24,7 @@ public struct TapRebuildScheduler: Sendable {
 
     private var lastChange: Double?
     private var lastRebuild: Double
+    private var silenceInterval = minimumInterval
 
     /// `startedAt` is when the current tap was created, in seconds into the recording.
     public init(startedAt: Double = 0) {
@@ -38,12 +42,16 @@ public struct TapRebuildScheduler: Sendable {
         if let lastChange, time - lastChange >= Self.settleSeconds {
             self.lastChange = nil
             lastRebuild = time
+            silenceInterval = Self.minimumInterval
             return .deviceChange
         }
-        if trailingZeroSeconds >= Self.silentSeconds && time - lastRebuild >= Self.minimumInterval {
-            lastRebuild = time
-            return .silence
+        guard trailingZeroSeconds >= Self.silentSeconds else {
+            silenceInterval = Self.minimumInterval  // audio is flowing
+            return nil
         }
-        return nil
+        guard time - lastRebuild >= silenceInterval else { return nil }
+        lastRebuild = time
+        silenceInterval = min(silenceInterval * 2, Self.maximumInterval)
+        return .silence
     }
 }

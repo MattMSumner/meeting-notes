@@ -7,12 +7,18 @@ from meeting_notes.merge import SpeakerTrack, merge
 from meeting_notes.render import render_transcript
 from meeting_notes.store import MeetingDir
 from meeting_notes.transcript import Transcriber
+from meeting_notes.wavfile import repair_wav_header
 
 # Channel name (file stem) -> speaker label, in the order ties are broken.
 SPEAKERS = {"me": "Me", "them": "Them"}
 
 
 def transcribe(meeting_dir: MeetingDir, transcriber: Transcriber) -> None:
+    if not meeting_dir.has_manifest:
+        # The recording didn't finish cleanly, so its WAV headers may be unfinished.
+        for channel in SPEAKERS:
+            if meeting_dir.audio(channel).is_file():
+                repair_wav_header(meeting_dir.audio(channel))
     for channel, capture in meeting_dir.captures().items():
         if channel in SPEAKERS and capture.has_audio:
             meeting_dir.save_segments(channel, transcriber.transcribe(meeting_dir.audio(channel)))

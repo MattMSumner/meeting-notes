@@ -48,11 +48,28 @@ private func reasons(_ result: [(Double, Reason)]) -> [Reason] { result.map(\.1)
     #expect(reasons(result) == [.silence])
 }
 
-@Test func silenceRebuildsAreRateLimited() {
-    // Nothing playing: zeros forever. Rebuild every few seconds, not every check.
+@Test func silenceRebuildsBackOffWhenNothingPlays() {
+    // An in-person meeting: zeros for an hour. Waits of 3, 6, 12, 24, 48, then 60 s.
     var scheduler = TapRebuildScheduler()
-    let checks = stride(from: 3.0, through: 12.0, by: 0.25).map { ($0, $0) }
-    #expect(times(rebuilds(&scheduler, asking: checks)) == [3, 6, 9, 12])
+    let checks = stride(from: 0.0, through: 3600.0, by: 0.25).map { ($0, $0) }
+    let result = times(rebuilds(&scheduler, asking: checks))
+    #expect(Array(result.prefix(7)) == [3, 9, 21, 45, 93, 153, 213])
+    #expect(result.count < 70)  // not ~1,200
+}
+
+@Test func backoffResetsWhenAudioFlows() {
+    var scheduler = TapRebuildScheduler()
+    #expect(times(rebuilds(&scheduler, asking: [(3, 3), (9, 9)])) == [3, 9])  // next wait: 12 s
+    _ = rebuilds(&scheduler, asking: [(10, 0)])  // audio again
+    #expect(times(rebuilds(&scheduler, asking: [(12, 1), (13, 2)])) == [12])  // back to 3 s
+}
+
+@Test func backoffResetsAfterADeviceChange() {
+    var scheduler = TapRebuildScheduler()
+    _ = rebuilds(&scheduler, asking: [(3, 3), (9, 9)])  // next silence wait: 12 s
+    scheduler.deviceChanged(at: 10)
+    #expect(reasons(rebuilds(&scheduler, asking: [(11.5, 11.5)])) == [.deviceChange])
+    #expect(times(rebuilds(&scheduler, asking: [(14, 14), (14.5, 14.5)])) == [14.5])
 }
 
 @Test func noSilenceRebuildTooSoonAfterCreatingTheTap() {

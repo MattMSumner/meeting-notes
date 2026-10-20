@@ -42,7 +42,25 @@ func record(to directory: URL) throws -> Int32 {
     // Channel offsets in capture.json absorb the difference in start times.
     let mic = Microphone()
     let me = try ChannelWriter(url: directory.appendingPathComponent("me.wav"), inputFormat: mic.format)
-    try mic.start { buffer, hostTime in me.append(buffer, hostTime: hostTime) }
+    // Restart the mic if its input changes or it stops delivering, at most every few seconds.
+    var lastMicRestart = Date()
+    func restartMic(_ why: String) {
+        guard Date().timeIntervalSince(lastMicRestart) >= micRestartInterval else { return }
+        lastMicRestart = Date()
+        do {
+            try mic.restart()
+            warn(String(format: "[%.2fs] %@; restarted the mic (now %@)",
+                         Date().timeIntervalSince(startedAt), why, describe(mic.format)))
+        } catch {
+            warn("ERROR: \(why) and the mic couldn't be restarted: \(error)")
+        }
+    }
+    lastMicRestart = .distantPast
+    try mic.start(
+        onBuffer: { buffer, hostTime in me.append(buffer, hostTime: hostTime) },
+        onConfigurationChange: { restartMic("mic input changed") }
+    )
+    lastMicRestart = Date()
 
     var tap = try SystemAudioTap()
     let them = try ChannelWriter(url: directory.appendingPathComponent("them.wav"), inputFormat: tap.format)
@@ -56,6 +74,9 @@ func record(to directory: URL) throws -> Int32 {
     while !stopRequested {
         RunLoop.main.run(until: Date().addingTimeInterval(0.25))
         let elapsed = Date().timeIntervalSince(startedAt)
+        if mic.secondsSinceLastBuffer >= micStallSeconds {
+            restartMic(String(format: "no mic audio for %.0fs", mic.secondsSinceLastBuffer))
+        }
         let silence = them.silenceSoFar
         let zeroSeconds = Double(silence.trailingZeroCount) / outputSampleRate
         if let reason = rebuilds.rebuildReason(at: elapsed, trailingZeroSeconds: zeroSeconds) {
@@ -107,3 +128,7 @@ func record(to directory: URL) throws -> Int32 {
 private func describe(_ format: AVAudioFormat) -> String {
     "\(Int(format.sampleRate / 1000)) kHz \(format.channelCount == 1 ? "mono" : "\(format.channelCount) ch")"
 }
+
+/// How long without mic buffers counts as stalled, and the least time between restarts.
+private let micStallSeconds: TimeInterval = 3
+private let micRestartInterval: TimeInterval = 3
