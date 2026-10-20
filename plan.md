@@ -4,7 +4,7 @@ A personal, local-first meeting notetaker for macOS. It's a CLI that records my 
 other side of a call, transcribes locally after the meeting, summarizes with a local model,
 and writes an Obsidian-friendly markdown note.
 
-Status: **M2 in progress** (both sides recorded and interleaved). M1 and the spike done.
+Status: **M2 done** (both sides recorded and interleaved; first real meeting recorded). M1 and the spike done.
 Phase 0 (Handy) set up.
 
 ---
@@ -319,6 +319,13 @@ the spike learned), plus the glue code's subprocess wrapper and the time-merge i
     the default search path: `capture/test.sh` passes `-plugin-path`.
   - **Manual checklist** (not automatable): first recording after the headset has been idle
     for 3 or more minutes; a real Zoom/Meet call; a rebuild followed by `notes check`.
+  - **First real meeting (2026-10-20, 27 min Zoom): worked.** Both sides captured; the
+    conversation interleaves correctly start to end (no drift). `them.wav` ended 7.8 s
+    before `me.wav` only because nothing played after the call ended (the tap delivers
+    nothing then); no audio was lost. Recognition errors were mostly company and product
+    names, plus jargon like "eng" heard as "Edge", which supports the vocabulary prompt.
+    **Real meetings are confidential: never commit them, excerpts, or details from them
+    (including names in examples) to this public repo.** Committed fixtures stay synthetic.
 
 **M3 — Summary.** Ollama call with an explicit `num_ctx` (32k; the default silently
 truncates), prompt loaded from a file, JSON output validated against a struct, rendered to
@@ -339,6 +346,12 @@ the current or nearest event's title and attendees as JSON. Add frontmatter, and
 transcript as a separate linked note.
 - Tests: picking an event from a fixture list (overlapping events, no event, all-day
   events ignored).
+- **Transcript readability** (found in the first real meeting):
+  - Split long turns into paragraphs (every 30–60 s, at sentence boundaries). One turn
+    was 2½ minutes in a single block.
+  - Fold short backchannels ("Yeah.", "Okay.") inline instead of giving each its own
+    turn. 155 turns in 27 minutes, many of them one word.
+  - Optionally pad the channel that ends early, so both files cover the whole recording.
 
 **M6 — Stretch.** Diarization of the "them" channel; a vocabulary prompt built from my
 jargon list; FLAC; auto-start when Zoom joins a call.
