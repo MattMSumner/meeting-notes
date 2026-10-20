@@ -1,5 +1,7 @@
 """End-to-end through the CLI, with a fake recorder and transcriber."""
 
+import os
+import signal
 import threading
 from pathlib import Path
 
@@ -13,6 +15,20 @@ from meeting_notes.transcript import Segment
 
 class FakeRecorder:
     def record(self, path: Path, stop: threading.Event) -> None:
+        path.write_bytes(b"fake audio")
+
+
+class WaitingRecorder:
+    """Waits for the stop event like the real recorder, optionally signalling itself first."""
+
+    def __init__(self, send_signal: signal.Signals | None = None) -> None:
+        self.send_signal = send_signal
+        self.stopped = False
+
+    def record(self, path: Path, stop: threading.Event) -> None:
+        if self.send_signal:
+            os.kill(os.getpid(), self.send_signal)
+        self.stopped = stop.wait(timeout=5)
         path.write_bytes(b"fake audio")
 
 
@@ -96,3 +112,37 @@ def test_unknown_meeting_id_fails_cleanly(config: Config, capsys: pytest.Capture
     assert run(config, FakeTranscriber([]), "transcribe", "nope") == 1
 
     assert "No meeting with id nope" in capsys.readouterr().err
+
+
+def test_duration_stops_recording_and_still_transcribes(config: Config):
+    recorder = WaitingRecorder()
+    transcriber = FakeTranscriber([Segment(0.0, 1.0, "Hi.")])
+
+    code = main(
+        ["record", "--duration", "0.05"],
+        config=config,
+        make_transcriber=lambda _: transcriber,
+        make_recorder=lambda: recorder,
+    )
+
+    assert code == 0
+    assert recorder.stopped
+    assert len(transcriber.calls) == 1
+
+
+@pytest.mark.parametrize("sig", [signal.SIGINT, signal.SIGTERM, signal.SIGHUP])
+def test_stop_signals_end_recording_cleanly(config: Config, sig: signal.Signals):
+    recorder = WaitingRecorder(send_signal=sig)
+    handler_before = signal.getsignal(sig)
+
+    code = main(
+        ["record"],
+        config=config,
+        make_transcriber=lambda _: FakeTranscriber([]),
+        make_recorder=lambda: recorder,
+    )
+
+    assert code == 0
+    assert recorder.stopped
+    assert list(config.transcripts_dir.iterdir())
+    assert signal.getsignal(sig) == handler_before

@@ -34,6 +34,9 @@ def _parser() -> argparse.ArgumentParser:
 
     record = commands.add_parser("record", help="record the mic until Ctrl-C, then transcribe")
     record.add_argument("--title", help="meeting title (default: Untitled)")
+    record.add_argument(
+        "--duration", type=float, metavar="SECONDS", help="stop automatically after SECONDS"
+    )
 
     transcribe = commands.add_parser("transcribe", help="re-run transcription for a meeting")
     transcribe.add_argument("meeting_id")
@@ -43,19 +46,34 @@ def _parser() -> argparse.ArgumentParser:
     return parser
 
 
-def _record(store: MeetingStore, title: str | None, recorder: Recorder) -> MeetingDir:
+# Any of these stops the recording cleanly, then transcription runs. Ctrl-C sends SIGINT,
+# but some launchers (like Claude Code's ! mode) stop commands with SIGTERM or SIGHUP.
+STOP_SIGNALS = (signal.SIGINT, signal.SIGTERM, signal.SIGHUP)
+
+
+def _record(
+    store: MeetingStore, title: str | None, duration: float | None, recorder: Recorder
+) -> MeetingDir:
     meeting_dir = store.create(Meeting.new(title, datetime.now().astimezone()))
     stop = threading.Event()
 
-    def on_interrupt(signum: int, frame: FrameType | None) -> None:
+    def on_stop_signal(signum: int, frame: FrameType | None) -> None:
         stop.set()
 
-    previous = signal.signal(signal.SIGINT, on_interrupt)
+    previous = {sig: signal.signal(sig, on_stop_signal) for sig in STOP_SIGNALS}
+    timer = threading.Timer(duration, stop.set) if duration else None
     try:
-        print(f"Recording {meeting_dir.id}. Press Ctrl-C to stop.")
+        if timer:
+            timer.start()
+            print(f"Recording {meeting_dir.id} for {duration:g}s. Press Ctrl-C to stop early.")
+        else:
+            print(f"Recording {meeting_dir.id}. Press Ctrl-C to stop.")
         recorder.record(meeting_dir.audio(pipeline.CHANNEL), stop)
     finally:
-        signal.signal(signal.SIGINT, previous)
+        if timer:
+            timer.cancel()
+        for sig, handler in previous.items():
+            signal.signal(sig, handler)
     print("Stopped.")
     return meeting_dir
 
@@ -73,7 +91,7 @@ def main(
 
     try:
         if args.command == "record":
-            meeting_dir = _record(store, args.title, make_recorder())
+            meeting_dir = _record(store, args.title, args.duration, make_recorder())
         else:
             meeting_dir = store.get(args.meeting_id)
     except MeetingNotFound as error:

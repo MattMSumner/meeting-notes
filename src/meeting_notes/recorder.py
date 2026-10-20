@@ -20,19 +20,29 @@ class Recorder(Protocol):
         ...
 
 
+# How often the WAV header is rewritten, so a killed process still leaves a valid file
+# missing at most this many seconds.
+FLUSH_SECONDS = 5.0
+
+
 class MicRecorder:
     def record(self, path: Path, stop: threading.Event) -> None:
         # Record at the device's own rate; transcription resamples to 16 kHz.
         device = sd.query_devices(kind="input")
         sample_rate = int(device["default_samplerate"])
+        # The audio callback runs on its own thread; libsndfile isn't thread-safe.
+        lock = threading.Lock()
         with sf.SoundFile(
             path, mode="w", samplerate=sample_rate, channels=1, subtype="PCM_16"
         ) as wav:
 
             def write(indata, frames, time, status) -> None:
-                wav.write(indata.copy())
+                with lock:
+                    wav.write(indata.copy())
 
             with sd.InputStream(
                 samplerate=sample_rate, channels=1, dtype="float32", callback=write
             ):
-                stop.wait()
+                while not stop.wait(FLUSH_SECONDS):
+                    with lock:
+                        wav.flush()
