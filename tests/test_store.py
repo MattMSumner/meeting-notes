@@ -1,10 +1,11 @@
+import json
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import pytest
 
 from meeting_notes.meeting import Meeting
-from meeting_notes.store import MeetingNotFound, MeetingStore
+from meeting_notes.store import ChannelCapture, MeetingNotFound, MeetingStore
 from meeting_notes.transcript import Segment
 
 STARTED = datetime(2026, 10, 20, 14, 5, tzinfo=timezone(timedelta(hours=-4)))
@@ -47,3 +48,54 @@ def test_refuses_to_overwrite_an_existing_meeting(tmp_path: Path):
 def test_unknown_meeting_id(tmp_path: Path):
     with pytest.raises(MeetingNotFound):
         MeetingStore(tmp_path).get("2026-10-20-1405-nope")
+
+
+def test_reads_channel_captures_from_capture_json(tmp_path: Path):
+    meeting_dir = MeetingStore(tmp_path).create(Meeting.new("Sync", STARTED))
+    manifest = {
+        "started_at": "2026-10-20T18:05:00Z",
+        "sample_rate": 16000,
+        "channels": {
+            "me": {
+                "file": "me.wav",
+                "offset_seconds": 0.002,
+                "duration_seconds": 30,
+                "all_zero": False,
+            },
+            "them": {
+                "file": "them.wav",
+                "offset_seconds": 0.027,
+                "duration_seconds": 30,
+                "all_zero": True,
+            },
+        },
+    }
+    (meeting_dir.path / "capture.json").write_text(json.dumps(manifest))
+
+    captures = meeting_dir.captures()
+
+    assert captures == {
+        "me": ChannelCapture(offset=0.002, all_zero=False),
+        "them": ChannelCapture(offset=0.027, all_zero=True),
+    }
+    assert captures["me"].has_audio
+    assert not captures["them"].has_audio
+
+
+def test_channel_without_audio_has_no_offset(tmp_path: Path):
+    meeting_dir = MeetingStore(tmp_path).create(Meeting.new("Sync", STARTED))
+    (meeting_dir.path / "capture.json").write_text(
+        '{"channels": {"them": {"file": "them.wav", "duration_seconds": 0, "all_zero": false}}}'
+    )
+
+    assert meeting_dir.captures() == {"them": ChannelCapture(offset=None, all_zero=False)}
+    assert not meeting_dir.captures()["them"].has_audio
+
+
+def test_meetings_recorded_before_notes_capture_are_mic_only(tmp_path: Path):
+    meeting_dir = MeetingStore(tmp_path).create(Meeting.new("Sync", STARTED))
+    assert meeting_dir.captures() == {}
+
+    meeting_dir.audio("me").write_bytes(b"audio")
+
+    assert meeting_dir.captures() == {"me": ChannelCapture(offset=0.0, all_zero=False)}

@@ -4,8 +4,10 @@ Each stage reads the previous stage's files and writes its own, so any stage can
 re-run on its own (for example after changing the transcription model)."""
 
 import json
+from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
+from typing import Any
 
 from meeting_notes.meeting import Meeting
 from meeting_notes.transcript import Segment
@@ -13,6 +15,21 @@ from meeting_notes.transcript import Segment
 
 class MeetingNotFound(Exception):
     pass
+
+
+@dataclass(frozen=True)
+class ChannelCapture:
+    """One channel's entry in capture.json, written by notes-capture."""
+
+    offset: float | None
+    """Seconds from the start of the recording to the channel's first sample, or None if
+    the channel received no audio."""
+    all_zero: bool
+    """Every sample was zero: for system audio, almost certainly blocked by macOS."""
+
+    @property
+    def has_audio(self) -> bool:
+        return self.offset is not None and not self.all_zero
 
 
 class MeetingDir:
@@ -32,6 +49,26 @@ class MeetingDir:
     def load_meeting(self) -> Meeting:
         data = json.loads((self.path / "meeting.json").read_text())
         return Meeting(title=data["title"], started_at=datetime.fromisoformat(data["started_at"]))
+
+    def captures(self) -> dict[str, ChannelCapture]:
+        """What each channel captured, from capture.json.
+
+        Meetings recorded before notes-capture (M1) have no capture.json, just me.wav."""
+        manifest = self.path / "capture.json"
+        if not manifest.is_file():
+            if self.audio("me").is_file():
+                return {"me": ChannelCapture(offset=0.0, all_zero=False)}
+            return {}
+        channels: dict[str, dict[str, Any]] = json.loads(manifest.read_text())["channels"]
+        return {
+            name: ChannelCapture(
+                offset=None
+                if data.get("offset_seconds") is None
+                else float(data["offset_seconds"]),
+                all_zero=bool(data.get("all_zero", False)),
+            )
+            for name, data in channels.items()
+        }
 
     def save_segments(self, channel: str, segments: list[Segment]) -> None:
         payload = [s.to_dict() for s in segments]

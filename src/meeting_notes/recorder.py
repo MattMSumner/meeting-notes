@@ -1,48 +1,60 @@
-"""Records the default microphone to a WAV file until stopped.
+"""Recording, via the Swift notes-capture binary (see capture/).
 
-M1 only: M2 replaces this with the Swift notes-capture binary, which records the mic and
-the system audio tap together."""
+notes-capture records the mic to me.wav and system audio to them.wav, and writes
+capture.json with each channel's start offset. It stops cleanly on SIGINT."""
 
-# sounddevice and soundfile ship without complete type information.
-# pyright: reportMissingTypeStubs=false, reportUnknownMemberType=false, reportUnknownVariableType=false, reportUnknownArgumentType=false, reportUnknownParameterType=false, reportMissingParameterType=false
-
+import signal
+import subprocess
 import threading
 from pathlib import Path
 from typing import Protocol
 
-import sounddevice as sd
-import soundfile as sf
+# How long notes-capture gets to finish writing after being asked to stop.
+STOP_TIMEOUT_SECONDS = 30
+
+
+class CaptureError(Exception):
+    pass
+
+
+class CaptureNotInstalled(CaptureError):
+    def __init__(self, binary: Path) -> None:
+        super().__init__(f"notes-capture not found at {binary}. Build it with capture/install.sh.")
 
 
 class Recorder(Protocol):
-    def record(self, path: Path, stop: threading.Event) -> None:
-        """Records to path until stop is set."""
+    def record(self, directory: Path, stop: threading.Event) -> None:
+        """Records into directory until stop is set."""
         ...
 
 
-# How often the WAV header is rewritten, so a killed process still leaves a valid file
-# missing at most this many seconds.
-FLUSH_SECONDS = 5.0
+class CaptureRecorder:
+    def __init__(self, binary: Path) -> None:
+        self.binary = binary
 
+    def record(self, directory: Path, stop: threading.Event) -> None:
+        if not self.binary.is_file():
+            raise CaptureNotInstalled(self.binary)
+        # stderr is inherited, so notes-capture's status and warnings reach the terminal.
+        process = subprocess.Popen([str(self.binary), "record", "--out", str(directory)])
+        try:
+            # Ctrl-C in a terminal reaches notes-capture directly too, so it may exit on
+            # its own before we ask it to.
+            while not stop.wait(0.25) and process.poll() is None:
+                pass
+        finally:
+            if process.poll() is None:
+                process.send_signal(signal.SIGINT)
+                try:
+                    process.wait(timeout=STOP_TIMEOUT_SECONDS)
+                except subprocess.TimeoutExpired:
+                    process.kill()
+                    process.wait()
+        if process.returncode != 0:
+            raise CaptureError(f"notes-capture exited with status {process.returncode}")
 
-class MicRecorder:
-    def record(self, path: Path, stop: threading.Event) -> None:
-        # Record at the device's own rate; transcription resamples to 16 kHz.
-        device = sd.query_devices(kind="input")
-        sample_rate = int(device["default_samplerate"])
-        # The audio callback runs on its own thread; libsndfile isn't thread-safe.
-        lock = threading.Lock()
-        with sf.SoundFile(
-            path, mode="w", samplerate=sample_rate, channels=1, subtype="PCM_16"
-        ) as wav:
-
-            def write(indata, frames, time, status) -> None:
-                with lock:
-                    wav.write(indata.copy())
-
-            with sd.InputStream(
-                samplerate=sample_rate, channels=1, dtype="float32", callback=write
-            ):
-                while not stop.wait(FLUSH_SECONDS):
-                    with lock:
-                        wav.flush()
+    def check(self) -> int:
+        """Runs `notes-capture check`, which prints its own results. Returns its status."""
+        if not self.binary.is_file():
+            raise CaptureNotInstalled(self.binary)
+        return subprocess.run([str(self.binary), "check"]).returncode

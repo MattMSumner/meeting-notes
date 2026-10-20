@@ -11,7 +11,7 @@ from types import FrameType
 from meeting_notes import pipeline
 from meeting_notes.config import Config
 from meeting_notes.meeting import Meeting
-from meeting_notes.recorder import Recorder
+from meeting_notes.recorder import CaptureError, CaptureRecorder, Recorder
 from meeting_notes.store import MeetingDir, MeetingNotFound, MeetingStore
 from meeting_notes.transcript import Transcriber
 
@@ -22,17 +22,13 @@ def _default_transcriber(config: Config) -> Transcriber:
     return ParakeetTranscriber(config.model)
 
 
-def _default_recorder() -> Recorder:
-    from meeting_notes.recorder import MicRecorder
-
-    return MicRecorder()
-
-
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="notes", description="Local-first meeting notetaker.")
     commands = parser.add_subparsers(dest="command", required=True)
 
-    record = commands.add_parser("record", help="record the mic until Ctrl-C, then transcribe")
+    record = commands.add_parser(
+        "record", help="record the mic and system audio until Ctrl-C, then transcribe"
+    )
     record.add_argument("--title", help="meeting title (default: Untitled)")
     record.add_argument(
         "--duration", type=float, metavar="SECONDS", help="stop automatically after SECONDS"
@@ -43,6 +39,8 @@ def _parser() -> argparse.ArgumentParser:
 
     render = commands.add_parser("render", help="re-write a meeting's transcript into the vault")
     render.add_argument("meeting_id")
+
+    commands.add_parser("check", help="check that the mic and system audio can be recorded")
     return parser
 
 
@@ -68,7 +66,7 @@ def _record(
             print(f"Recording {meeting_dir.id} for {duration:g}s. Press Ctrl-C to stop early.")
         else:
             print(f"Recording {meeting_dir.id}. Press Ctrl-C to stop.")
-        recorder.record(meeting_dir.audio(pipeline.CHANNEL), stop)
+        recorder.record(meeting_dir.path, stop)
     finally:
         if timer:
             timer.cancel()
@@ -83,19 +81,24 @@ def main(
     *,
     config: Config | None = None,
     make_transcriber: Callable[[Config], Transcriber] = _default_transcriber,
-    make_recorder: Callable[[], Recorder] = _default_recorder,
+    make_recorder: Callable[[Config], Recorder] = lambda config: CaptureRecorder(config.capture),
 ) -> int:
     args = _parser().parse_args(argv)
     config = config or Config.from_env()
     store = MeetingStore(config.data_dir)
 
     try:
+        if args.command == "check":
+            return CaptureRecorder(config.capture).check()
         if args.command == "record":
-            meeting_dir = _record(store, args.title, args.duration, make_recorder())
+            meeting_dir = _record(store, args.title, args.duration, make_recorder(config))
         else:
             meeting_dir = store.get(args.meeting_id)
     except MeetingNotFound as error:
         print(f"No meeting with id {error}", file=sys.stderr)
+        return 1
+    except CaptureError as error:
+        print(f"Recording failed: {error}", file=sys.stderr)
         return 1
 
     if args.command in ("record", "transcribe"):

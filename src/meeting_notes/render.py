@@ -1,9 +1,10 @@
 """Markdown output for the Obsidian vault."""
 
 import json
+from collections.abc import Sequence
 
 from meeting_notes.meeting import Meeting
-from meeting_notes.transcript import Segment
+from meeting_notes.merge import Line
 
 
 def timestamp(seconds: float) -> str:
@@ -16,8 +17,8 @@ def _yaml_string(value: str) -> str:
     return json.dumps(value, ensure_ascii=False)
 
 
-def render_transcript(meeting: Meeting, speaker: str, segments: list[Segment]) -> str:
-    lines = [
+def render_transcript(meeting: Meeting, lines: Sequence[Line], warnings: Sequence[str] = ()) -> str:
+    out = [
         "---",
         f"date: {meeting.started_at:%Y-%m-%d}",
         f'time: "{meeting.started_at:%H:%M}"',
@@ -29,9 +30,10 @@ def render_transcript(meeting: Meeting, speaker: str, segments: list[Segment]) -
         f"# {meeting.title}: transcript",
         "",
     ]
-    if not segments:
-        lines.append("_No speech was detected._")
-    for segment in segments:
-        lines.append(f"**[{timestamp(segment.start)}] {speaker}:** {segment.text}")
-        lines.append("")
-    return "\n".join(lines).rstrip() + "\n"
+    for warning in warnings:
+        out += [f"> [!warning] {warning}", ""]
+    if not lines:
+        out.append("_No speech was detected._")
+    for line in lines:
+        out += [f"**[{timestamp(line.start)}] {line.speaker}:** {line.text}", ""]
+    return "\n".join(out).rstrip() + "\n"
