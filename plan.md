@@ -161,6 +161,39 @@ which app the grant attached to (Ghostty or the binary).
 References to read before writing it: Apple's "Capturing system audio with Core Audio taps"
 sample, and open-source tap tools on GitHub (e.g. AudioCap, audiotee).
 
+### Spike results (2026-10-20, `spike/` on branch `spike/system-audio-tap`)
+
+**Passed:** recorded mic + global tap from Ghostty with real signal on both channels
+(98.5% non-zero samples on the tap), at the correct rate (47,805 frames per second measured
+against 48,000 expected).
+
+What I learned:
+1. **When launched from a terminal, macOS attributes permission checks to the terminal
+   app.** The mic prompt named Ghostty and worked. The system-audio request was denied
+   silently, with **no prompt and no error, only zeros**, because Ghostty doesn't declare
+   `NSAudioCaptureUsageDescription`. The `Info.plist` embedded in the binary was ignored.
+2. **Fix: relaunch with responsibility disclaimed.** The binary re-runs itself via
+   `posix_spawn` + `responsibility_spawnattrs_setdisclaim` (private API, also used by
+   Chromium, Qt and LLDB). macOS then treats `tapspike` as the requesting app, uses its
+   embedded `Info.plist`, and shows prompts that name it. CLI behavior (stdout, Ctrl-C)
+   is unchanged. Fallback if this API ever breaks: a minimal `.app` bundle launched with
+   `open`.
+3. **The audio must be timed from the built-in output, not the default device.** With
+   Bluetooth headphones whose mic is in use, they switch to call mode (24 kHz) while the
+   tap still reports 48 kHz. The first run, timed from the headphones, delivered about
+   22.5k frames per second instead of 48k. Timing from `BuiltInSpeakerDevice` fixed it.
+4. **Formats differ per channel:** mic = 1 ch, 24 kHz (Bluetooth call mode); tap = 2 ch,
+   48 kHz interleaved float. `notes-capture` should resample both to 16 kHz mono for
+   transcription.
+5. **The tap delivers data about 3 seconds after starting**, so record a little extra
+   at the start and don't assume both files begin at the same moment: store each
+   channel's start time for the merge.
+
+Still to check: a Zoom test call; whether rebuilding the ad-hoc-signed binary re-prompts
+for permission (likely, since the grant is tied to the binary's hash), which suggests
+signing `notes-capture` with a stable identity, or installing it once and rarely
+rebuilding it.
+
 ---
 
 ## Milestones
@@ -212,14 +245,14 @@ jargon list; FLAC; auto-start when Zoom joins a call.
 
 | Permission | Who gets it | Needed for |
 |---|---|---|
-| Microphone | Handy; Ghostty (or `notes-capture`) | Dictation; "me" channel |
-| System Audio Recording Only (Privacy & Security → Screen & System Audio Recording) | Ghostty (or `notes-capture`), confirmed in the spike | "Them" channel |
+| Microphone | Handy; `notes-capture` (itself, via disclaim) | Dictation; "me" channel |
+| System Audio Recording Only (Privacy & Security → Screen & System Audio Recording) | `notes-capture` (itself, via disclaim). Ghostty can't get it: it has no usage description, so the request is silently denied | "Them" channel |
 | Accessibility | Handy | Pasting dictated text |
-| Calendars (Full Access) | Ghostty (or `notes-capture`) | Meeting titles/attendees (M5) |
+| Calendars (Full Access) | `notes-capture` (itself, via disclaim) | Meeting titles/attendees (M5) |
 | Input Monitoring | Hotkey tool, if needed | M4 |
 
-Caveat: grants that land on Ghostty apply to *everything* run in Ghostty. If that bothers
-me later, wrap `notes-capture` in a minimal `.app` bundle so it gets its own grant.
+Because of the disclaim relaunch, grants go to `notes-capture` itself, not Ghostty, so
+other programs run in Ghostty don't inherit them.
 
 ---
 
