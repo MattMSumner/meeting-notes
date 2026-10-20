@@ -4,7 +4,7 @@ A personal, local-first meeting notetaker for macOS. It's a CLI that records my 
 other side of a call, transcribes locally after the meeting, summarizes with a local model,
 and writes an Obsidian-friendly markdown note.
 
-Status: **M2 done** (both sides recorded and interleaved; first real meeting recorded). M1 and the spike done.
+Status: **M3 done** (local summaries into Obsidian notes). M1, M2 and the spike done.
 Phase 0 (Handy) set up.
 
 ---
@@ -333,6 +333,35 @@ markdown.
 - Tests: a fake `Summarizer` for the pipeline tests; a test that parses the JSON (including
   malformed output → one retry → a readable error); one ignored-by-default test against a
   real model on a golden transcript.
+- **Built (2026-10-20).** `notes summarize`, `OllamaSummarizer` (stdlib HTTP, Ollama's
+  JSON-schema `format`, Pydantic validation, one retry), the note rendered beside its
+  transcript with links both ways. What I learned:
+  - **Model: `qwen3:30b`** (MoE, ~3B active, 18 GB) via Homebrew Ollama, on a 48 GB Mac.
+    A 30-minute meeting summarizes in ~35–40 s; 32k context is plenty.
+  - **Thinking mode is worth it.** Without it (4 s) the model invented decisions and left a
+    named person's action item as "Them"; with it (16 s on the golden transcript) both were
+    right. On by default, `MEETING_NOTES_SUMMARY_THINK=0` for models that can't think.
+  - **Ollama truncates silently, and its counts don't show it:** with a 4k context, a 7.4k
+    token transcript was cut to 2k and reported as 2k. So the size is estimated before
+    sending (3 characters per token; measured ~3.5) plus 4k for the reply, and the summary
+    fails with the `num_ctx` needed rather than summarizing part of the meeting.
+  - **Edits in the vault are kept.** Each meeting folder records a hash of the files it
+    wrote (`written.json`); re-running a stage leaves a file alone if it changed since.
+    Files written before M3 have no hash, so they count as edited (move them away once).
+  - **A failed summary still writes the note,** with a callout giving the retry command.
+  - **Tell the model who "Me" is.** Labelled only "Me", the model guessed who that was:
+    it sometimes credited what I said or agreed to do to another participant, or described
+    me by a role instead of by name. My lines are now labelled with my name
+    (`MEETING_NOTES_MY_NAME`, default the macOS account's first name) and the prompt says
+    to always use it, which fixed both. Owners are named when the transcript says who the
+    other person is ("Hey Alex"); "Them" otherwise.
+  - **Quality on real meetings:** facts and numbers accurate and specific; misheard names
+    pass straight through (vocabulary prompt, M6). But it **over-reads stance**: tentative
+    remarks can come out as firm positions, even with a prompt rule against it. Asking for
+    first person ("I") made things worse (it mixed "I" with third person), so it was
+    dropped. Follow-up: build a few synthetic transcripts with known-correct notes and
+    compare prompts and models against them (e.g. a larger dense model), rather than tuning
+    on real meetings by eye.
 
 **M4 — Start/stop + hotkey.** `notes start` / `stop` / `status` using a PID file in the
 meeting directory. Hotkey via Raycast or Shortcuts calling the CLI. Crash safety: write the

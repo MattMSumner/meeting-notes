@@ -4,7 +4,8 @@ import pytest
 
 from meeting_notes.meeting import Meeting
 from meeting_notes.merge import Line
-from meeting_notes.render import render_transcript, timestamp
+from meeting_notes.render import render_note, render_transcript, timestamp
+from meeting_notes.summary import ActionItem, Summary
 
 MEETING = Meeting.new("Weekly Sync", datetime(2026, 10, 20, 14, 5))
 
@@ -31,6 +32,8 @@ def test_renders_frontmatter_and_timestamped_lines():
         "\n"
         "# Weekly Sync: transcript\n"
         "\n"
+        "Note: [[2026-10-20_Weekly Sync_1405]]\n"
+        "\n"
         "**[00:00:00] Me:** Morning.\n"
         "\n"
         "**[00:01:05] Them:** Let's ship it.\n"
@@ -51,3 +54,68 @@ def test_renders_warnings_as_obsidian_callouts_before_the_transcript():
     markdown = render_transcript(MEETING, [Line(0.0, "Me", "Hello?")], ["Them was silent."])
 
     assert markdown.index("> [!warning] Them was silent.") < markdown.index("**[00:00:00] Me:**")
+
+
+SUMMARY = Summary(
+    overview="Planned the release.",
+    key_points=["Tests pass.", "Docs need a pass."],
+    decisions=["Ship on Friday."],
+    action_items=[
+        ActionItem(owner="Me", task="Tag the release", due="Friday"),
+        ActionItem(owner=None, task="Update the docs", due=None),
+    ],
+)
+
+
+def test_renders_the_note_with_summary_decisions_and_action_items():
+    assert render_note(MEETING, SUMMARY, "id") == (
+        "---\n"
+        "date: 2026-10-20\n"
+        'time: "14:05"\n'
+        'title: "Weekly Sync"\n'
+        "tags: [meeting]\n"
+        "source: meeting-notes\n"
+        "---\n"
+        "\n"
+        "# Weekly Sync\n"
+        "\n"
+        "## Summary\n"
+        "\n"
+        "Planned the release.\n"
+        "\n"
+        "- Tests pass.\n"
+        "- Docs need a pass.\n"
+        "\n"
+        "## Decisions\n"
+        "\n"
+        "- Ship on Friday.\n"
+        "\n"
+        "## Action items\n"
+        "\n"
+        "- [ ] **Me**: Tag the release (due Friday)\n"
+        "- [ ] Update the docs\n"
+        "\n"
+        "Transcript: [[2026-10-20_Weekly Sync_1405_transcript]]\n"
+    )
+
+
+def test_note_says_none_for_empty_sections():
+    empty = Summary(overview="Catch-up.", key_points=[], decisions=[], action_items=[])
+
+    note = render_note(MEETING, empty, "id")
+
+    assert "## Decisions\n\n_None._\n" in note
+    assert "## Action items\n\n_None._\n" in note
+
+
+def test_note_without_a_summary_says_how_to_write_one():
+    note = render_note(MEETING, None, "2026-10-20-1405-weekly-sync")
+
+    assert "`notes summarize 2026-10-20-1405-weekly-sync`" in note
+    assert "Transcript: [[" in note
+
+
+def test_note_carries_the_recording_warnings():
+    assert "> [!warning] Them was silent." in render_note(
+        MEETING, SUMMARY, "id", True, ["Them was silent."]
+    )

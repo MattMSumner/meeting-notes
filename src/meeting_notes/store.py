@@ -3,6 +3,7 @@
 Each stage reads the previous stage's files and writes its own, so any stage can be
 re-run on its own (for example after changing the transcription model)."""
 
+import hashlib
 import json
 from dataclasses import dataclass
 from datetime import datetime
@@ -10,6 +11,7 @@ from pathlib import Path
 from typing import Any
 
 from meeting_notes.meeting import Meeting
+from meeting_notes.summary import Summary, SummaryError
 from meeting_notes.transcript import Segment
 
 
@@ -85,6 +87,52 @@ class MeetingDir:
 
     def load_segments(self, channel: str) -> list[Segment]:
         return [Segment.from_dict(d) for d in json.loads(self.segments_file(channel).read_text())]
+
+    @property
+    def summary_file(self) -> Path:
+        return self.path / "summary.json"
+
+    def save_summary(self, summary: Summary) -> None:
+        self.summary_file.write_text(summary.model_dump_json(indent=2) + "\n")
+
+    def load_summary(self) -> Summary | None:
+        """The saved summary, or None if there isn't one. Raises SummaryError if it's unreadable."""
+        if not self.summary_file.is_file():
+            return None
+        try:
+            return Summary.model_validate_json(self.summary_file.read_text())
+        except ValueError as error:  # pydantic's ValidationError is a ValueError
+            raise SummaryError(f"summary.json couldn't be read ({error})") from None
+
+    def clear_summary(self) -> None:
+        """Removes the summary, e.g. because the transcript it summarized has changed."""
+        self.summary_file.unlink(missing_ok=True)
+
+    def write_unless_edited(self, files: dict[Path, str]) -> list[Path]:
+        """Writes generated files into the vault, except any edited since we last wrote them.
+
+        Notes get edited in Obsidian (ticked action items, corrected names), and re-running a
+        stage shouldn't silently throw that away. Returns the files left alone."""
+        written_file = self.path / "written.json"
+        written: dict[str, str] = (
+            json.loads(written_file.read_text()) if written_file.is_file() else {}
+        )
+        skipped: list[Path] = []
+        for path, content in files.items():
+            if path.is_file():
+                current = _sha256(path.read_text())
+                if current != _sha256(content) and current != written.get(str(path)):
+                    skipped.append(path)
+                    continue
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(content)
+            written[str(path)] = _sha256(content)
+        written_file.write_text(json.dumps(written, indent=2) + "\n")
+        return skipped
+
+
+def _sha256(text: str) -> str:
+    return hashlib.sha256(text.encode()).hexdigest()
 
 
 class MeetingStore:

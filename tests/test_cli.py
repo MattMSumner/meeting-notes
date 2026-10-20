@@ -4,14 +4,17 @@ import json
 import os
 import signal
 import threading
+from datetime import datetime
 from pathlib import Path
 
 import pytest
 
 from meeting_notes.cli import main
 from meeting_notes.config import Config
+from meeting_notes.meeting import Meeting
 from meeting_notes.recorder import CaptureError, Recorder
-from meeting_notes.store import MeetingDir
+from meeting_notes.store import MeetingDir, MeetingStore
+from meeting_notes.summary import ActionItem, Summary, SummaryError
 from meeting_notes.transcript import Segment
 
 
@@ -74,6 +77,28 @@ class FakeTranscriber:
         return self.segments.get(audio.stem, [])
 
 
+SUMMARY = Summary(
+    overview="Agreed to ship on Friday.",
+    key_points=["The release is ready."],
+    decisions=["Ship on Friday."],
+    action_items=[ActionItem(owner="Me", task="Tag the release", due="Friday")],
+)
+
+
+class FakeSummarizer:
+    """Returns a canned summary, or fails like Ollama being down."""
+
+    def __init__(self, error: str | None = None) -> None:
+        self.error = error
+        self.transcripts: list[str] = []
+
+    def summarize(self, meeting: Meeting, transcript: str) -> Summary:
+        self.transcripts.append(transcript)
+        if self.error:
+            raise SummaryError(self.error)
+        return SUMMARY
+
+
 @pytest.fixture
 def config(tmp_path: Path) -> Config:
     return Config(
@@ -81,17 +106,23 @@ def config(tmp_path: Path) -> Config:
         notes_dir=tmp_path / "vault" / "meetings",
         model="x",
         capture=tmp_path / "no-such-binary",
+        my_name="Sam",
     )
 
 
 def run(
-    config: Config, transcriber: FakeTranscriber, *argv: str, recorder: Recorder | None = None
+    config: Config,
+    transcriber: FakeTranscriber,
+    *argv: str,
+    recorder: Recorder | None = None,
+    summarizer: FakeSummarizer | None = None,
 ) -> int:
     return main(
         list(argv),
         config=config,
         make_transcriber=lambda _: transcriber,
         make_recorder=lambda _: recorder or FakeRecorder(),
+        make_summarizer=lambda _: summarizer or FakeSummarizer(),
     )
 
 
@@ -103,6 +134,11 @@ def only_meeting_dir(config: Config) -> MeetingDir:
 def only_transcript(config: Config) -> str:
     [transcript] = list(config.transcripts_dir.iterdir())
     return transcript.read_text()
+
+
+def only_note(config: Config) -> str:
+    [note] = [p for p in config.notes_dir.iterdir() if p.is_file()]
+    return note.read_text()
 
 
 def test_record_transcribes_both_sides_into_one_conversation(config: Config):
@@ -279,3 +315,130 @@ def test_check_without_the_binary_says_so(config: Config, capsys: pytest.Capture
     err = capsys.readouterr().err
     assert "capture/install.sh" in err
     assert "Recording" not in err
+
+
+def test_record_summarizes_the_conversation_into_a_note(config: Config):
+    transcriber = FakeTranscriber(
+        {"me": [Segment(0.0, 2.0, "Ready to ship?")], "them": [Segment(3.0, 4.0, "Friday.")]}
+    )
+    summarizer = FakeSummarizer()
+
+    assert run(config, transcriber, "record", "--title", "Release", summarizer=summarizer) == 0
+
+    assert summarizer.transcripts == ["[00:00:00] Sam: Ready to ship?\n[00:00:03] Them: Friday."]
+    meeting = only_meeting_dir(config).load_meeting()
+    note = config.notes_dir / f"{meeting.note_stem}.md"
+    body = note.read_text()
+    assert "Agreed to ship on Friday." in body
+    assert "- [ ] **Me**: Tag the release (due Friday)" in body
+    assert f"Transcript: [[{meeting.transcript_stem}]]" in body
+    assert f"Note: [[{meeting.note_stem}]]" in only_transcript(config)
+
+
+def test_a_failed_summary_still_writes_the_transcript_and_says_how_to_retry(
+    config: Config, capsys: pytest.CaptureFixture[str]
+):
+    transcriber = FakeTranscriber({"me": [Segment(0.0, 1.0, "Hello.")]})
+
+    status = run(config, transcriber, "record", summarizer=FakeSummarizer("Ollama is down"))
+
+    meeting_id = only_meeting_dir(config).id
+    assert status == 1
+    assert "Hello." in only_transcript(config)
+    assert f"`notes summarize {meeting_id}`" in only_note(config)
+    err = capsys.readouterr().err
+    assert "Ollama is down" in err
+    assert f"notes summarize {meeting_id}" in err
+
+
+def test_summarize_reruns_only_the_summary(config: Config):
+    run(
+        config,
+        FakeTranscriber({"me": [Segment(0.0, 1.0, "Hello.")]}),
+        "record",
+        summarizer=FakeSummarizer("down"),
+    )
+    transcriber = FakeTranscriber()
+
+    assert run(config, transcriber, "summarize", only_meeting_dir(config).id) == 0
+
+    assert transcriber.calls == []
+    assert "Agreed to ship on Friday." in only_note(config)
+
+
+def test_a_meeting_with_no_speech_is_not_summarized(config: Config):
+    summarizer = FakeSummarizer()
+
+    assert run(config, FakeTranscriber(), "record", summarizer=summarizer) == 0
+
+    assert summarizer.transcripts == []
+    assert "_No speech was detected._" in only_note(config)
+
+
+def test_render_leaves_a_note_edited_in_the_vault_alone(
+    config: Config, capsys: pytest.CaptureFixture[str]
+):
+    run(config, FakeTranscriber({"me": [Segment(0.0, 1.0, "Hello.")]}), "record")
+    [note] = [p for p in config.notes_dir.iterdir() if p.is_file()]
+    edited = note.read_text().replace("- [ ]", "- [x]")
+    note.write_text(edited)
+
+    assert run(config, FakeTranscriber(), "render", only_meeting_dir(config).id) == 0
+
+    assert note.read_text() == edited
+    assert f"Left {note.name} alone" in capsys.readouterr().err
+
+
+def test_retranscribing_with_no_speech_drops_the_old_summary(config: Config):
+    run(config, FakeTranscriber({"me": [Segment(0.0, 1.0, "Hello.")]}), "record")
+    meeting_dir = only_meeting_dir(config)
+    assert "Agreed to ship on Friday." in only_note(config)
+
+    run(config, FakeTranscriber(), "transcribe", meeting_dir.id)
+
+    assert not meeting_dir.summary_file.exists()
+    assert "Agreed to ship on Friday." not in only_note(config)
+    assert "_No speech was detected._" in only_note(config)
+
+
+def test_a_failed_summary_after_retranscribing_does_not_show_the_old_one(config: Config):
+    run(config, FakeTranscriber({"me": [Segment(0.0, 1.0, "Hello.")]}), "record")
+    meeting_dir = only_meeting_dir(config)
+
+    run(
+        config,
+        FakeTranscriber({"me": [Segment(0.0, 1.0, "Goodbye.")]}),
+        "transcribe",
+        meeting_dir.id,
+        summarizer=FakeSummarizer("Ollama is down"),
+    )
+
+    assert "Agreed to ship on Friday." not in only_note(config)
+    assert f"`notes summarize {meeting_dir.id}`" in only_note(config)
+
+
+def test_summarize_before_transcribing_says_to_transcribe(
+    config: Config, capsys: pytest.CaptureFixture[str]
+):
+    meeting_dir = MeetingStore(config.data_dir).create(
+        Meeting.new("Crashed", datetime(2026, 10, 20, 9, 0))
+    )
+    write_capture(meeting_dir.path)
+    summarizer = FakeSummarizer()
+
+    assert run(config, FakeTranscriber(), "summarize", meeting_dir.id, summarizer=summarizer) == 1
+
+    assert summarizer.transcripts == []
+    assert f"notes transcribe {meeting_dir.id}" in capsys.readouterr().err
+
+
+def test_an_unreadable_summary_still_renders_with_a_warning(config: Config):
+    run(config, FakeTranscriber({"me": [Segment(0.0, 1.0, "Hello.")]}), "record")
+    meeting_dir = only_meeting_dir(config)
+    meeting_dir.summary_file.write_text("{not json")
+
+    assert run(config, FakeTranscriber(), "render", meeting_dir.id) == 0
+
+    note = only_note(config)
+    assert "> [!warning] summary.json couldn't be read" in note
+    assert f"`notes summarize {meeting_dir.id}`" in note

@@ -5,7 +5,8 @@ from pathlib import Path
 import pytest
 
 from meeting_notes.meeting import Meeting
-from meeting_notes.store import ChannelCapture, MeetingNotFound, MeetingStore
+from meeting_notes.store import ChannelCapture, MeetingDir, MeetingNotFound, MeetingStore
+from meeting_notes.summary import SummaryError
 from meeting_notes.transcript import Segment
 
 STARTED = datetime(2026, 10, 20, 14, 5, tzinfo=timezone(timedelta(hours=-4)))
@@ -111,3 +112,39 @@ def test_recording_that_crashed_before_capture_json_keeps_both_channels(tmp_path
         "me": ChannelCapture(offset=0.0, all_zero=False),
         "them": ChannelCapture(offset=0.0, all_zero=False),
     }
+
+
+def test_write_unless_edited_overwrites_its_own_output(tmp_path: Path):
+    meeting_dir = MeetingDir(tmp_path / "meeting")
+    meeting_dir.path.mkdir()
+    note = tmp_path / "vault" / "note.md"
+
+    assert meeting_dir.write_unless_edited({note: "first"}) == []
+    assert meeting_dir.write_unless_edited({note: "second"}) == []
+    assert note.read_text() == "second"
+
+
+def test_write_unless_edited_keeps_edits_made_in_the_vault(tmp_path: Path):
+    meeting_dir = MeetingDir(tmp_path / "meeting")
+    meeting_dir.path.mkdir()
+    note = tmp_path / "vault" / "note.md"
+    transcript = tmp_path / "vault" / "transcripts" / "note.md"  # same name, other folder
+    meeting_dir.write_unless_edited({note: "generated", transcript: "generated"})
+    note.write_text("generated, then edited")
+
+    skipped = meeting_dir.write_unless_edited({note: "regenerated", transcript: "regenerated"})
+
+    assert skipped == [note]
+    assert note.read_text() == "generated, then edited"
+    assert transcript.read_text() == "regenerated"
+    # Once moved away, it's written again.
+    note.unlink()
+    assert meeting_dir.write_unless_edited({note: "regenerated"}) == []
+
+
+def test_an_unreadable_summary_is_a_summary_error(tmp_path: Path):
+    meeting_dir = MeetingDir(tmp_path)
+    meeting_dir.summary_file.write_text('{"overview": "cut off mid-wri')
+
+    with pytest.raises(SummaryError, match="summary.json couldn't be read"):
+        meeting_dir.load_summary()

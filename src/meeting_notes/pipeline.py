@@ -1,11 +1,14 @@
 """The stages that turn a recorded meeting into files in the vault."""
 
+from collections.abc import Sequence
+from dataclasses import dataclass
 from pathlib import Path
 
 from meeting_notes.config import Config
-from meeting_notes.merge import SpeakerTrack, merge
-from meeting_notes.render import render_transcript
+from meeting_notes.merge import Line, SpeakerTrack, merge
+from meeting_notes.render import render_note, render_transcript, timestamp
 from meeting_notes.store import MeetingDir
+from meeting_notes.summary import Summarizer, SummaryError
 from meeting_notes.transcript import Transcriber
 from meeting_notes.wavfile import repair_wav_header
 
@@ -22,14 +25,25 @@ def transcribe(meeting_dir: MeetingDir, transcriber: Transcriber) -> None:
     for channel, capture in meeting_dir.captures().items():
         if channel in SPEAKERS and capture.has_audio:
             meeting_dir.save_segments(channel, transcriber.transcribe(meeting_dir.audio(channel)))
+    # Summarized a transcript that no longer exists.
+    meeting_dir.clear_summary()
 
 
-def render(meeting_dir: MeetingDir, config: Config) -> Path:
-    """Writes the transcript into the vault and returns its path."""
-    meeting = meeting_dir.load_meeting()
+@dataclass(frozen=True)
+class Conversation:
+    lines: list[Line]
+    transcribed: bool
+    """Every channel with audio has been transcribed."""
+    warnings: list[str]
+    """Problems with the recording that the reader should know about."""
+
+
+def conversation(meeting_dir: MeetingDir) -> Conversation:
+    """Both sides' transcribed segments, interleaved in time."""
     captures = meeting_dir.captures()
     tracks: list[SpeakerTrack] = []
     warnings: list[str] = []
+    transcribed = True
     if not meeting_dir.has_manifest and "them" in captures:
         warnings.append(
             "The recording didn't finish cleanly (no capture.json), so both sides are assumed "
@@ -51,9 +65,66 @@ def render(meeting_dir: MeetingDir, config: Config) -> Path:
             )
         elif meeting_dir.segments_file(channel).is_file():
             tracks.append(SpeakerTrack(speaker, capture.offset, meeting_dir.load_segments(channel)))
+        else:
+            transcribed = False
+    return Conversation(merge(tracks), transcribed, warnings)
 
-    markdown = render_transcript(meeting, merge(tracks), warnings)
-    config.transcripts_dir.mkdir(parents=True, exist_ok=True)
-    path = config.transcripts_dir / f"{meeting.transcript_stem}.md"
-    path.write_text(markdown)
-    return path
+
+def transcript_text(lines: Sequence[Line], my_name: str) -> str:
+    """The conversation as plain text for the summary model.
+
+    My lines are labelled with my name, not "Me": told only "Me", the model guesses who
+    that is, sometimes crediting me to someone else or calling me by a role."""
+    names = {"Me": my_name}
+    return "\n".join(
+        f"[{timestamp(line.start)}] {names.get(line.speaker, line.speaker)}: {line.text}"
+        for line in lines
+    )
+
+
+class NotTranscribed(SummaryError):
+    pass
+
+
+def summarize(
+    meeting_dir: MeetingDir, talk: Conversation, summarizer: Summarizer, my_name: str
+) -> None:
+    """Writes summary.json. Raises SummaryError if the model fails."""
+    if not talk.transcribed:
+        raise NotTranscribed(
+            f"It hasn't been transcribed yet: run `notes transcribe {meeting_dir.id}`"
+        )
+    if not talk.lines:
+        meeting_dir.clear_summary()  # the note says no speech was detected
+        return
+    meeting_dir.save_summary(
+        summarizer.summarize(meeting_dir.load_meeting(), transcript_text(talk.lines, my_name))
+    )
+
+
+@dataclass(frozen=True)
+class Rendered:
+    note: Path
+    transcript: Path
+    skipped: list[Path]
+    """Files left alone because they were edited in the vault since they were written."""
+
+
+def render(meeting_dir: MeetingDir, talk: Conversation, config: Config) -> Rendered:
+    """Writes the note and the transcript into the vault."""
+    meeting = meeting_dir.load_meeting()
+    note = config.notes_dir / f"{meeting.note_stem}.md"
+    transcript = config.transcripts_dir / f"{meeting.transcript_stem}.md"
+    note_warnings = list(talk.warnings)
+    try:
+        summary = meeting_dir.load_summary()
+    except SummaryError as error:
+        summary = None
+        note_warnings.append(f"{error}. To write a new one: `notes summarize {meeting_dir.id}`")
+    skipped = meeting_dir.write_unless_edited(
+        {
+            transcript: render_transcript(meeting, talk.lines, talk.warnings),
+            note: render_note(meeting, summary, meeting_dir.id, bool(talk.lines), note_warnings),
+        }
+    )
+    return Rendered(note, transcript, skipped)

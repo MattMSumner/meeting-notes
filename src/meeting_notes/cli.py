@@ -13,6 +13,7 @@ from meeting_notes.config import Config
 from meeting_notes.meeting import Meeting
 from meeting_notes.recorder import CaptureError, CaptureNotInstalled, CaptureRecorder, Recorder
 from meeting_notes.store import MeetingDir, MeetingNotFound, MeetingStore
+from meeting_notes.summary import Summarizer, SummaryError
 from meeting_notes.transcript import Transcriber
 
 
@@ -22,22 +23,41 @@ def _default_transcriber(config: Config) -> Transcriber:
     return ParakeetTranscriber(config.model)
 
 
+def _default_summarizer(config: Config) -> Summarizer:
+    from meeting_notes.ollama import OllamaSummarizer, http_post
+
+    return OllamaSummarizer(
+        config.summary_model,
+        config.num_ctx,
+        http_post(config.ollama_url),
+        config.my_name,
+        think=config.summary_think,
+    )
+
+
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="notes", description="Local-first meeting notetaker.")
     commands = parser.add_subparsers(dest="command", required=True)
 
     record = commands.add_parser(
-        "record", help="record the mic and system audio until Ctrl-C, then transcribe"
+        "record", help="record the mic and system audio until Ctrl-C, then transcribe and summarize"
     )
     record.add_argument("--title", help="meeting title (default: Untitled)")
     record.add_argument(
         "--duration", type=float, metavar="SECONDS", help="stop automatically after SECONDS"
     )
 
-    transcribe = commands.add_parser("transcribe", help="re-run transcription for a meeting")
+    transcribe = commands.add_parser(
+        "transcribe", help="re-run transcription (and the summary) for a meeting"
+    )
     transcribe.add_argument("meeting_id")
 
-    render = commands.add_parser("render", help="re-write a meeting's transcript into the vault")
+    summarize = commands.add_parser("summarize", help="re-run the summary for a meeting")
+    summarize.add_argument("meeting_id")
+
+    render = commands.add_parser(
+        "render", help="re-write a meeting's note and transcript into the vault"
+    )
     render.add_argument("meeting_id")
 
     commands.add_parser("check", help="check that the mic and system audio can be recorded")
@@ -82,6 +102,7 @@ def main(
     *,
     config: Config | None = None,
     make_transcriber: Callable[[Config], Transcriber] = _default_transcriber,
+    make_summarizer: Callable[[Config], Summarizer] = _default_summarizer,
     make_recorder: Callable[[Config], Recorder] = lambda config: CaptureRecorder(config.capture),
 ) -> int:
     args = _parser().parse_args(argv)
@@ -123,6 +144,28 @@ def main(
         print("Transcribing...", flush=True)
         pipeline.transcribe(meeting_dir, make_transcriber(config))
 
-    path = pipeline.render(meeting_dir, config)
-    print(f"Transcript: {path}")
-    return 0
+    talk = pipeline.conversation(meeting_dir)
+    status = 0
+    if args.command in ("record", "transcribe", "summarize"):
+        print(f"Summarizing with {config.summary_model}...", flush=True)
+        try:
+            pipeline.summarize(meeting_dir, talk, make_summarizer(config), config.my_name)
+        except pipeline.NotTranscribed as error:
+            print(f"Couldn't summarize: {error}", file=sys.stderr)
+            return 1
+        except SummaryError as error:
+            # The transcript is still worth writing; the note says how to retry.
+            print(f"Couldn't summarize: {error}", file=sys.stderr)
+            print(f"To retry: notes summarize {meeting_dir.id}", file=sys.stderr)
+            status = 1
+
+    rendered = pipeline.render(meeting_dir, talk, config)
+    print(f"Note: {rendered.note}")
+    print(f"Transcript: {rendered.transcript}")
+    for path in rendered.skipped:
+        print(
+            f"Left {path.name} alone: it was edited after it was written. "
+            "Move it away and run `notes render` to replace it.",
+            file=sys.stderr,
+        )
+    return status
