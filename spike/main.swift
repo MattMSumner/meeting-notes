@@ -8,6 +8,50 @@ import AVFoundation
 import CoreAudio
 import Foundation
 
+// MARK: - Become our own "responsible process" for privacy (TCC) checks
+//
+// Launched from a terminal, macOS attributes our permission requests to the terminal
+// app (Ghostty). Ghostty has no NSAudioCaptureUsageDescription, so the system audio
+// request is denied silently with no prompt. Re-spawning ourselves with
+// responsibility disclaimed makes TCC use *our* embedded Info.plist instead.
+// responsibility_spawnattrs_setdisclaim is private API (used by Chromium, Qt, LLDB).
+// Set TAPSPIKE_NO_DISCLAIM=1 to skip this, for comparison.
+
+func respawnDisclaimingResponsibility() -> Never? {
+    let env = ProcessInfo.processInfo.environment
+    guard env["TAPSPIKE_DISCLAIMED"] == nil, env["TAPSPIKE_NO_DISCLAIM"] == nil else { return nil }
+    typealias SetDisclaim = @convention(c) (UnsafeMutablePointer<posix_spawnattr_t?>, Int32) -> Int32
+    guard let symbol = dlsym(UnsafeMutableRawPointer(bitPattern: -2), "responsibility_spawnattrs_setdisclaim"),
+          let path = Bundle.main.executablePath else {
+        print("warning: cannot disclaim responsibility; continuing as the terminal's child")
+        return nil
+    }
+    let setDisclaim = unsafeBitCast(symbol, to: SetDisclaim.self)
+
+    var attrs: posix_spawnattr_t?
+    posix_spawnattr_init(&attrs)
+    defer { posix_spawnattr_destroy(&attrs) }
+    _ = setDisclaim(&attrs, 1)
+
+    setenv("TAPSPIKE_DISCLAIMED", "1", 1)
+    var argv: [UnsafeMutablePointer<CChar>?] = CommandLine.arguments.map { strdup($0) } + [nil]
+    defer { argv.forEach { free($0) } }
+
+    var pid: pid_t = 0
+    let status = posix_spawn(&pid, path, nil, &attrs, &argv, environ)
+    guard status == 0 else {
+        print("warning: posix_spawn failed (\(status)); continuing as the terminal's child")
+        return nil
+    }
+    signal(SIGINT, SIG_IGN)  // the child gets Ctrl-C from the terminal and shuts down itself
+    var childStatus: Int32 = 0
+    waitpid(pid, &childStatus, 0)
+    exit((childStatus >> 8) & 0xff)
+}
+
+respawnDisclaimingResponsibility()
+print("responsibility disclaimed: \(ProcessInfo.processInfo.environment["TAPSPIKE_DISCLAIMED"] != nil)")
+
 // MARK: - Level meter shared between audio threads and the main loop
 
 final class Meter {
