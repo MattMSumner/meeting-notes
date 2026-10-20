@@ -196,10 +196,31 @@ What I learned:
 6. **The Bluetooth mic delivers silence for about 1 s at the start** (likely while it
    switches into call mode). Harmless, but start the mic before the meeting begins.
 
-Still to check: a Zoom test call; whether rebuilding the ad-hoc-signed binary re-prompts
-for permission (likely, since the grant is tied to the binary's hash), which suggests
-signing `notes-capture` with a stable identity, or installing it once and rarely
-rebuilding it.
+7. **A bare binary with an ad-hoc signature is too fragile an identity for macOS's
+   system-audio permission.** After a code change (new build hash) it was silently
+   refused again: a fresh prompt and grant still gave zeros, it never appeared in System
+   Settings, and `tccutil` couldn't reset it (not registered with Launch Services).
+8. **Fix: a minimal signed `.app`.** `spike/build.sh` builds `TapSpike.app` (with
+   `CFBundleExecutable`, `LSUIElement`), signs it with a self-signed certificate
+   (`scripts/create-signing-cert.sh`, no Apple developer account or Xcode needed), and
+   registers it with `lsregister`. Its signing requirement is then "this identifier + this
+   certificate" rather than one build's hash. A `spike/tapspike` wrapper `exec`s the
+   binary inside the bundle, so CLI use is unchanged. Result: after a real code change
+   and rebuild, system audio worked; the grant took effect in the same run; `tccutil
+   reset AudioCapture com.mattmsumner.tapspike` works.
+9. **Channel start offset:** the first samples were 26.7 ms apart on the host clock
+   (tap after mic), measured with `AVAudioTime.hostTime` and `AudioTimeStamp.mHostTime`.
+
+Still to check:
+- A Zoom test call.
+- Whether the prompt that still appeared after a signed rebuild was the mic prompt (a
+  one-off for the new `.app` identity) or system audio (every rebuild). It doesn't change
+  the design either way.
+
+**Design consequences for `notes-capture`:** ship it as a signed `.app` (stable identity)
+with the relaunch-with-responsibility-disclaimed trick (or `open`); have a `notes-capture
+check` command so any prompt happens before a meeting, not during one; and warn loudly if
+the tap channel is all zeros while audio is playing.
 
 ---
 
