@@ -211,8 +211,13 @@ What I learned:
 9. **Channel start offset:** the first samples were 26.7 ms apart on the host clock
    (tap after mic), measured with `AVAudioTime.hostTime` and `AudioTimeStamp.mHostTime`.
 
+10. **Zoom (real call, 30 s, taking turns): passed.** While I talked, "them" sat at about
+    -88 dB (Zoom's noise floor; no echo of my voice). While she talked, "me" dropped to
+    about -60 dB. Zoom sends a faint background noise through silence (99.9% non-zero),
+    so the tap timeline stays continuous. Start offset was 22.2 ms. Zoom and the spike
+    shared the mic without problems.
+
 Still to check:
-- A Zoom test call.
 - Whether the prompt that still appeared after a signed rebuild was the mic prompt (a
   one-off for the new `.app` identity) or system audio (every rebuild). It doesn't change
   the design either way.
