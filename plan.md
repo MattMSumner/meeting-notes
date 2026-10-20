@@ -185,9 +185,12 @@ What I learned:
 4. **Formats differ per channel:** mic = 1 ch, 24 kHz (Bluetooth call mode); tap = 2 ch,
    48 kHz interleaved float. `notes-capture` should resample both to 16 kHz mono for
    transcription.
-5. **The tap delivers data about 3 seconds after starting**, so record a little extra
-   at the start and don't assume both files begin at the same moment: store each
-   channel's start time for the merge.
+5. **The tap starts about 2.5 seconds after the mic, every time.** Measured: 2.4 s on a run
+   with no permission prompt, 3.1 s on a run that showed one. So it isn't caused by the
+   prompt; possibly the built-in output waking up (not verified). `notes-capture` should
+   start the tap *before* the mic, and record each channel's first-sample host time
+   (`AudioTimeStamp.mHostTime` / `AVAudioTime.hostTime`) so the merge aligns on real time,
+   not on position in the file.
 
 Still to check: a Zoom test call; whether rebuilding the ad-hoc-signed binary re-prompts
 for permission (likely, since the grant is tied to the binary's hash), which suggests
