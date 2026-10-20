@@ -4,8 +4,8 @@ A personal, local-first meeting notetaker for macOS. It's a CLI that records my 
 other side of a call, transcribes locally after the meeting, summarizes with a local model,
 and writes an Obsidian-friendly markdown note.
 
-Status: **planning**. No code yet. Phase 0 (Handy) has started: it's installed and its
-permissions are granted.
+Status: **M1 done** (mic-only record → transcribe → transcript in the vault). Spike done.
+Phase 0 (Handy) set up.
 
 ---
 
@@ -252,6 +252,27 @@ then transcribes and writes `transcript.md` to the notes folder.
   `Transcriber` protocol so other models can be swapped in for comparison.
 - Tests: fixture WAVs generated with `say -o fixture.wav --data-format=LEI16@16000 "..."`.
   Assert the transcript contains the key words. Unit-test the filename/slug logic.
+- **Done (2026-10-20).** What I learned:
+  - **Parakeet Unified has no MLX conversion** (Hugging Face only has NeMo, GGUF for
+    transcribe.cpp, ONNX/sherpa-onnx and Core ML versions). Using **TDT 0.6B v2** via
+    `parakeet-mlx`. Unified via sherpa-onnx is a possible later experiment behind
+    `Transcriber`.
+  - **Speed:** 72 s of audio transcribed in 1.3 s, model load 0.4 s once cached.
+  - **Accuracy on my voice:** very good. Errors are mostly product/proper names
+    ("Claude" → "Word", "Antique" for a product name), an occasional dropped or misheard
+    word ("rate" → "race"), British spellings, and numbers written as words. Names point
+    to the vocabulary prompt on the M6 list.
+  - **Fully offline:** loading by repo id contacted Hugging Face on every run. It now
+    loads from the local cache and only downloads if the model is missing (verified with
+    network access blocked).
+  - **Stopping:** Claude Code's `!` mode kills the command rather than sending Ctrl-C,
+    which left a WAV with a zero-length header and no transcript. Now SIGINT, SIGTERM
+    and SIGHUP all stop cleanly; `--duration` stops on its own; the WAV header is
+    flushed every 5 s, so a killed recording is still valid.
+  - **`say` fixtures need a named voice** (`-v Samantha`): the default voice can be a Siri
+    voice, which renders an empty file.
+  - **The Bluetooth mic records at 24 kHz** here too. Fine: ffmpeg resamples to 16 kHz for
+    the model.
 
 **M2 — Two channels.** Build `notes-capture` in Swift, properly this time (it reuses what
 the spike learned), plus the glue code's subprocess wrapper and the time-merge into Me/Them.

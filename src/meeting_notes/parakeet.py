@@ -13,6 +13,21 @@ CHUNK_SECONDS = 120.0
 OVERLAP_SECONDS = 15.0
 
 
+def _local_model_dir(model: str) -> Path:
+    """The model's folder in the Hugging Face cache, downloading it only if it's missing.
+
+    Loading by repo id would contact Hugging Face on every run to check for updates.
+    Loading from the cached folder keeps transcription fully offline."""
+    from huggingface_hub import snapshot_download
+    from huggingface_hub.errors import LocalEntryNotFoundError
+
+    try:
+        return Path(snapshot_download(model, local_files_only=True))
+    except LocalEntryNotFoundError:
+        print(f"Downloading {model} (one time only)...")
+        return Path(snapshot_download(model))
+
+
 class ParakeetTranscriber:
     def __init__(self, model: str) -> None:
         self._model_name = model
@@ -23,7 +38,7 @@ class ParakeetTranscriber:
             # Imported lazily: loading MLX is slow and tests don't need it.
             from parakeet_mlx import from_pretrained
 
-            self._model = from_pretrained(self._model_name)
+            self._model = from_pretrained(str(_local_model_dir(self._model_name)))
         result = self._model.transcribe(
             audio, chunk_duration=CHUNK_SECONDS, overlap_duration=OVERLAP_SECONDS
         )
