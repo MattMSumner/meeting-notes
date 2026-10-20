@@ -352,6 +352,15 @@ transcript as a separate linked note.
   - Fold short backchannels ("Yeah.", "Okay.") inline instead of giving each its own
     turn. 155 turns in 27 minutes, many of them one word.
   - Optionally pad the channel that ends early, so both files cover the whole recording.
+  - Fix turn order (found in the second real meeting). Parakeet's sentence segments can
+    run across long pauses (one 9 s segment held two words) and sometimes come back as a
+    single unpunctuated, lowercase block of 1½–2 minutes. A segment that starts before the
+    other speaker's question and continues after it sorts ahead of the question, so
+    answers appeared before the questions they answered, and merging same-speaker
+    segments folded interjections into one early-stamped block. Fix: split segments
+    wherever the gap between token timestamps is ≥ ~1 s (each sentence carries per-token
+    timings), before merging. Also try a shorter `CHUNK_SECONDS` to see whether it brings
+    back punctuation in the long blocks.
 
 **M6 — Stretch.** Diarization of the "them" channel; a vocabulary prompt built from my
 jargon list; FLAC; auto-start when Zoom joins a call.
