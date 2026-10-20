@@ -50,15 +50,24 @@ class MeetingDir:
         data = json.loads((self.path / "meeting.json").read_text())
         return Meeting(title=data["title"], started_at=datetime.fromisoformat(data["started_at"]))
 
+    @property
+    def has_manifest(self) -> bool:
+        """Whether notes-capture finished cleanly and wrote capture.json."""
+        return (self.path / "capture.json").is_file()
+
     def captures(self) -> dict[str, ChannelCapture]:
         """What each channel captured, from capture.json.
 
-        Meetings recorded before notes-capture (M1) have no capture.json, just me.wav."""
+        Without capture.json (a meeting from M1, which recorded only me.wav, or a recording
+        that crashed before finishing), every channel file present is used, assumed to
+        start with the recording."""
+        if not self.has_manifest:
+            return {
+                channel: ChannelCapture(offset=0.0, all_zero=False)
+                for channel in ("me", "them")
+                if self.audio(channel).is_file()
+            }
         manifest = self.path / "capture.json"
-        if not manifest.is_file():
-            if self.audio("me").is_file():
-                return {"me": ChannelCapture(offset=0.0, all_zero=False)}
-            return {}
         channels: dict[str, dict[str, Any]] = json.loads(manifest.read_text())["channels"]
         return {
             name: ChannelCapture(

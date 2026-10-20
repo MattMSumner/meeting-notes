@@ -27,27 +27,47 @@ func relaunchDisclaimingResponsibility() {
     defer { posix_spawnattr_destroy(&attributes) }
     _ = setDisclaim(&attributes, 1)
 
+    // Forward stop signals to the child, so stopping the parent stops the recording
+    // cleanly. Set up before spawning, so a signal that arrives in between isn't lost (or
+    // fatal to the parent, orphaning the child). The child gets default handling back.
+    let stopSignals = [SIGINT, SIGTERM, SIGHUP]
+    var defaults = sigset_t()
+    sigemptyset(&defaults)
+    stopSignals.forEach { sigaddset(&defaults, $0) }
+    posix_spawnattr_setsigdefault(&attributes, &defaults)
+    posix_spawnattr_setflags(&attributes, Int16(POSIX_SPAWN_SETSIGDEF))
+
+    let forwarding = DispatchQueue(label: "forward-signals")
+    var child: pid_t = 0
+    var pending: Int32?
+    for sig in stopSignals {
+        signal(sig, SIG_IGN)
+        let source = DispatchSource.makeSignalSource(signal: sig, queue: forwarding)
+        source.setEventHandler {
+            if child > 0 { kill(child, sig) } else { pending = sig }
+        }
+        source.resume()
+        forwardedSignals.append(source)
+    }
+
     setenv(marker, "1", 1)
     var argv: [UnsafeMutablePointer<CChar>?] = CommandLine.arguments.map { strdup($0) } + [nil]
     defer { argv.forEach { free($0) } }
 
-    var child: pid_t = 0
-    let status = posix_spawn(&child, path, nil, &attributes, &argv, environ)
+    var spawned: pid_t = 0
+    let status = posix_spawn(&spawned, path, nil, &attributes, &argv, environ)
     guard status == 0 else {
+        forwardedSignals.forEach { $0.cancel() }
+        stopSignals.forEach { signal($0, SIG_DFL) }
         warn("posix_spawn failed (\(status)); system audio may be silently blocked")
         return
     }
-    // Forward stop signals so `kill <parent>` still stops the recording cleanly. Ctrl-C
-    // reaches the child directly, since it shares the terminal's process group.
-    for sig in [SIGINT, SIGTERM, SIGHUP] {
-        signal(sig, SIG_IGN)
-        let source = DispatchSource.makeSignalSource(signal: sig, queue: .global())
-        source.setEventHandler { kill(child, sig) }
-        source.resume()
-        forwardedSignals.append(source)
+    forwarding.sync {
+        child = spawned
+        if let pending { kill(child, pending) }
     }
     var childStatus: Int32 = 0
-    while waitpid(child, &childStatus, 0) == -1 && errno == EINTR {}
+    while waitpid(spawned, &childStatus, 0) == -1 && errno == EINTR {}
     exit((childStatus & 0x7f) == 0 ? (childStatus >> 8) & 0xff : 1)
 }
 

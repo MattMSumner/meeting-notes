@@ -99,3 +99,15 @@ def test_meetings_recorded_before_notes_capture_are_mic_only(tmp_path: Path):
     meeting_dir.audio("me").write_bytes(b"audio")
 
     assert meeting_dir.captures() == {"me": ChannelCapture(offset=0.0, all_zero=False)}
+
+
+def test_recording_that_crashed_before_capture_json_keeps_both_channels(tmp_path: Path):
+    meeting_dir = MeetingStore(tmp_path).create(Meeting.new("Sync", STARTED))
+    meeting_dir.audio("me").write_bytes(b"audio")
+    meeting_dir.audio("them").write_bytes(b"audio")
+
+    assert not meeting_dir.has_manifest
+    assert meeting_dir.captures() == {
+        "me": ChannelCapture(offset=0.0, all_zero=False),
+        "them": ChannelCapture(offset=0.0, all_zero=False),
+    }

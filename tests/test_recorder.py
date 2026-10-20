@@ -1,7 +1,10 @@
 """CaptureRecorder against a stand-in for notes-capture: a shell script that records
 until SIGINT like the real one, without needing audio hardware or permissions."""
 
+import os
+import signal
 import threading
+import time
 from pathlib import Path
 
 import pytest
@@ -16,8 +19,25 @@ esac
 out="$3"
 echo "audio" > "$out/me.wav"
 trap 'echo "{}" > "$out/capture.json"; exit 0' INT
+touch "$out/ready"
 while :; do sleep 0.02; done
 """
+
+
+def stop_when_ready(marker: Path) -> threading.Event:
+    """A stop event set once the stand-in has created `marker`, i.e. is set up.
+
+    Stopping at a fixed delay raced the stand-in's own setup on a busy machine."""
+    stop = threading.Event()
+
+    def wait_then_stop() -> None:
+        deadline = time.monotonic() + 10
+        while not marker.exists() and time.monotonic() < deadline:
+            time.sleep(0.01)
+        stop.set()
+
+    threading.Thread(target=wait_then_stop, daemon=True).start()
+    return stop
 
 
 @pytest.fixture
@@ -31,10 +51,8 @@ def fake_capture(tmp_path: Path) -> Path:
 def test_records_until_stopped_then_lets_capture_finish_writing(fake_capture: Path, tmp_path: Path):
     out = tmp_path / "meeting"
     out.mkdir()
-    stop = threading.Event()
-    threading.Timer(0.3, stop.set).start()
 
-    CaptureRecorder(fake_capture).record(out, stop)
+    CaptureRecorder(fake_capture).record(out, stop_when_ready(out / "ready"))
 
     assert (out / "me.wav").is_file()
     # Written by the SIGINT handler, so the recorder waited for a clean shutdown.
@@ -74,3 +92,42 @@ def test_check_runs_capture_check_and_returns_its_status(
 
     assert CaptureRecorder(fake_capture).check() == status
     assert marker.is_file()
+
+
+HUNG_CAPTURE = """#!/bin/sh
+# Like notes-capture's relaunch: a parent waiting on a child. Both ignore SIGINT, so
+# asking them to stop times out and the recorder has to force-kill.
+trap '' INT
+sh -c 'trap "" INT; echo $$ > "$CHILD_PID"; while :; do sleep 0.05; done' &
+wait
+"""
+
+
+def test_force_kill_after_timeout_reaches_the_relaunched_child(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    binary = tmp_path / "notes-capture"
+    binary.write_text(HUNG_CAPTURE)
+    binary.chmod(0o755)
+    child_pid_file = tmp_path / "child.pid"
+    monkeypatch.setenv("CHILD_PID", str(child_pid_file))
+    monkeypatch.setattr("meeting_notes.recorder.STOP_TIMEOUT_SECONDS", 0.5)
+
+    with pytest.raises(CaptureError):
+        CaptureRecorder(binary).record(tmp_path, stop_when_ready(child_pid_file))
+
+    child = int(child_pid_file.read_text())
+    for _ in range(50):  # the kernel reaps it shortly after SIGKILL
+        try:
+            os.kill(child, 0)
+        except ProcessLookupError:
+            break
+        time.sleep(0.02)
+    else:
+        os.kill(child, signal.SIGKILL)
+        pytest.fail("the child kept running after the recorder gave up")
+
+
+def test_check_without_the_binary_explains_how_to_build_it(tmp_path: Path):
+    with pytest.raises(CaptureNotInstalled, match="capture/install.sh"):
+        CaptureRecorder(tmp_path / "nope").check()

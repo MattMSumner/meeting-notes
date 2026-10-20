@@ -24,6 +24,11 @@ def render(meeting_dir: MeetingDir, config: Config) -> Path:
     captures = meeting_dir.captures()
     tracks: list[SpeakerTrack] = []
     warnings: list[str] = []
+    if not meeting_dir.has_manifest and "them" in captures:
+        warnings.append(
+            "The recording didn't finish cleanly (no capture.json), so both sides are assumed "
+            "to start together. Lines may be slightly out of order."
+        )
     for channel, speaker in SPEAKERS.items():
         capture = captures.get(channel)
         if capture is None:
@@ -33,7 +38,12 @@ def render(meeting_dir: MeetingDir, config: Config) -> Path:
                 f'The "{speaker}" audio was silent (all zeros), so it wasn\'t transcribed. '
                 "If this was a call, macOS probably blocked capture: run `notes check`."
             )
-        elif capture.offset is not None and meeting_dir.segments_file(channel).is_file():
+        elif capture.offset is None:
+            warnings.append(
+                f'No "{speaker}" audio was recorded at all. If this was a call, check the '
+                "notes-capture output for errors and run `notes check`."
+            )
+        elif meeting_dir.segments_file(channel).is_file():
             tracks.append(SpeakerTrack(speaker, capture.offset, meeting_dir.load_segments(channel)))
 
     markdown = render_transcript(meeting, merge(tracks), warnings)

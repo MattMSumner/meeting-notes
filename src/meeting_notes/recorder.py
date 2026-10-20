@@ -3,6 +3,7 @@
 notes-capture records the mic to me.wav and system audio to them.wav, and writes
 capture.json with each channel's start offset. It stops cleanly on SIGINT."""
 
+import os
 import signal
 import subprocess
 import threading
@@ -32,29 +33,40 @@ class CaptureRecorder:
     def __init__(self, binary: Path) -> None:
         self.binary = binary
 
-    def record(self, directory: Path, stop: threading.Event) -> None:
+    def _command(self, *args: str) -> list[str]:
         if not self.binary.is_file():
             raise CaptureNotInstalled(self.binary)
-        # stderr is inherited, so notes-capture's status and warnings reach the terminal.
-        process = subprocess.Popen([str(self.binary), "record", "--out", str(directory)])
+        return [str(self.binary), *args]
+
+    def record(self, directory: Path, stop: threading.Event) -> None:
+        # Its own process group: notes-capture relaunches itself (see Responsibility.swift),
+        # so stopping it, or killing it if it hangs, has to reach the child that holds the
+        # mic too, not just the parent. It also means a terminal's Ctrl-C reaches only us;
+        # we pass it on. stderr is inherited, so its status and warnings reach the terminal.
+        process = subprocess.Popen(
+            self._command("record", "--out", str(directory)), start_new_session=True
+        )
         try:
-            # Ctrl-C in a terminal reaches notes-capture directly too, so it may exit on
-            # its own before we ask it to.
             while not stop.wait(0.25) and process.poll() is None:
                 pass
         finally:
             if process.poll() is None:
-                process.send_signal(signal.SIGINT)
+                _signal_group(process, signal.SIGINT)
                 try:
                     process.wait(timeout=STOP_TIMEOUT_SECONDS)
                 except subprocess.TimeoutExpired:
-                    process.kill()
+                    _signal_group(process, signal.SIGKILL)
                     process.wait()
         if process.returncode != 0:
             raise CaptureError(f"notes-capture exited with status {process.returncode}")
 
     def check(self) -> int:
         """Runs `notes-capture check`, which prints its own results. Returns its status."""
-        if not self.binary.is_file():
-            raise CaptureNotInstalled(self.binary)
-        return subprocess.run([str(self.binary), "check"]).returncode
+        return subprocess.run(self._command("check")).returncode
+
+
+def _signal_group(process: subprocess.Popen[bytes], sig: signal.Signals) -> None:
+    try:
+        os.killpg(process.pid, sig)
+    except ProcessLookupError:
+        pass  # already gone

@@ -5,6 +5,18 @@ import Foundation
 /// Records the mic to me.wav and system audio to them.wav in `directory`, until SIGINT,
 /// SIGTERM or SIGHUP, then writes capture.json.
 func record(to directory: URL) throws -> Int32 {
+    // Handle stop signals before anything else, so a Ctrl-C during a permission prompt or
+    // setup still ends cleanly (it's acted on once recording starts, which finishes at once).
+    var stopRequested = false
+    let stopSources = [SIGINT, SIGTERM, SIGHUP].map { sig in
+        signal(sig, SIG_IGN)
+        let source = DispatchSource.makeSignalSource(signal: sig, queue: .main)
+        source.setEventHandler { stopRequested = true }
+        source.resume()
+        return source
+    }
+    defer { stopSources.forEach { $0.cancel() } }
+
     try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
     guard Microphone.requestAccess() else {
         warn("microphone access denied. Allow NotesCapture in System Settings > Privacy & Security > Microphone.")
@@ -28,7 +40,6 @@ func record(to directory: URL) throws -> Int32 {
 
     // Mic first, so a Bluetooth headset switches into call mode as early as possible.
     // Channel offsets in capture.json absorb the difference in start times.
-
     let mic = Microphone()
     let me = try ChannelWriter(url: directory.appendingPathComponent("me.wav"), inputFormat: mic.format)
     try mic.start { buffer, hostTime in me.append(buffer, hostTime: hostTime) }
@@ -38,16 +49,6 @@ func record(to directory: URL) throws -> Int32 {
     let feedThem: (AVAudioPCMBuffer, UInt64) -> Void = { buffer, hostTime in them.append(buffer, hostTime: hostTime) }
     try tap.start(onBuffer: feedThem)
     warn("recording to \(directory.path) (mic: \(describe(mic.format)), system: \(describe(tap.format)))")
-
-    var stopRequested = false
-    let stopSources = [SIGINT, SIGTERM, SIGHUP].map { sig in
-        signal(sig, SIG_IGN)
-        let source = DispatchSource.makeSignalSource(signal: sig, queue: .main)
-        source.setEventHandler { stopRequested = true }
-        source.resume()
-        return source
-    }
-    defer { stopSources.forEach { $0.cancel() } }
 
     // Warn once each time system audio goes quiet (exact zeros) for long enough, and say
     // so when it comes back.

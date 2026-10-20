@@ -11,7 +11,7 @@ from types import FrameType
 from meeting_notes import pipeline
 from meeting_notes.config import Config
 from meeting_notes.meeting import Meeting
-from meeting_notes.recorder import CaptureError, CaptureRecorder, Recorder
+from meeting_notes.recorder import CaptureError, CaptureNotInstalled, CaptureRecorder, Recorder
 from meeting_notes.store import MeetingDir, MeetingNotFound, MeetingStore
 from meeting_notes.transcript import Transcriber
 
@@ -49,10 +49,7 @@ def _parser() -> argparse.ArgumentParser:
 STOP_SIGNALS = (signal.SIGINT, signal.SIGTERM, signal.SIGHUP)
 
 
-def _record(
-    store: MeetingStore, title: str | None, duration: float | None, recorder: Recorder
-) -> MeetingDir:
-    meeting_dir = store.create(Meeting.new(title, datetime.now().astimezone()))
+def _record(meeting_dir: MeetingDir, duration: float | None, recorder: Recorder) -> None:
     stop = threading.Event()
 
     def on_stop_signal(signum: int, frame: FrameType | None) -> None:
@@ -78,7 +75,6 @@ def _record(
         for sig, handler in previous.items():
             signal.signal(sig, handler)
     print("Stopped.", flush=True)
-    return meeting_dir
 
 
 def main(
@@ -92,19 +88,36 @@ def main(
     config = config or Config.from_env()
     store = MeetingStore(config.data_dir)
 
-    try:
-        if args.command == "check":
+    if args.command == "check":
+        try:
             return CaptureRecorder(config.capture).check()
-        if args.command == "record":
-            meeting_dir = _record(store, args.title, args.duration, make_recorder(config))
-        else:
+        except CaptureNotInstalled as error:
+            print(error, file=sys.stderr)
+            return 1
+
+    if args.command == "record":
+        meeting_dir = store.create(Meeting.new(args.title, datetime.now().astimezone()))
+        try:
+            _record(meeting_dir, args.duration, make_recorder(config))
+        except CaptureNotInstalled as error:
+            print(error, file=sys.stderr)
+            return 1
+        except CaptureError as error:
+            # Whatever was recorded is still worth transcribing.
+            print(f"Recording ended with an error: {error}", file=sys.stderr)
+            if not meeting_dir.captures():
+                print("No audio was saved.", file=sys.stderr)
+                return 1
+            print(
+                f"Transcribing what was saved. To retry later: notes transcribe {meeting_dir.id}",
+                file=sys.stderr,
+            )
+    else:
+        try:
             meeting_dir = store.get(args.meeting_id)
-    except MeetingNotFound as error:
-        print(f"No meeting with id {error}", file=sys.stderr)
-        return 1
-    except CaptureError as error:
-        print(f"Recording failed: {error}", file=sys.stderr)
-        return 1
+        except MeetingNotFound as error:
+            print(f"No meeting with id {error}", file=sys.stderr)
+            return 1
 
     if args.command in ("record", "transcribe"):
         print("Transcribing...", flush=True)

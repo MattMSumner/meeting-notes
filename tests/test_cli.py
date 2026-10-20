@@ -10,7 +10,7 @@ import pytest
 
 from meeting_notes.cli import main
 from meeting_notes.config import Config
-from meeting_notes.recorder import Recorder
+from meeting_notes.recorder import CaptureError, Recorder
 from meeting_notes.store import MeetingDir
 from meeting_notes.transcript import Segment
 
@@ -215,3 +215,67 @@ def test_stop_signals_end_recording_cleanly(config: Config, sig: signal.Signals)
     assert recorder.stopped
     assert list(config.transcripts_dir.iterdir())
     assert signal.getsignal(sig) == handler_before
+
+
+class CrashingRecorder:
+    """Saves audio, then fails like notes-capture dying before it writes capture.json."""
+
+    def __init__(self, save_audio: bool = True) -> None:
+        self.save_audio = save_audio
+
+    def record(self, directory: Path, stop: threading.Event) -> None:
+        if self.save_audio:
+            (directory / "me.wav").write_bytes(b"fake audio")
+            (directory / "them.wav").write_bytes(b"fake audio")
+        raise CaptureError("notes-capture exited with status -9")
+
+
+def test_a_crashed_recording_still_transcribes_both_sides(
+    config: Config, capsys: pytest.CaptureFixture[str]
+):
+    transcriber = FakeTranscriber(
+        {"me": [Segment(0.0, 1.0, "Can you hear me?")], "them": [Segment(2.0, 3.0, "Yes.")]}
+    )
+
+    assert run(config, transcriber, "record", recorder=CrashingRecorder()) == 0
+
+    err = capsys.readouterr().err
+    assert "Recording ended with an error" in err
+    assert f"notes transcribe {only_meeting_dir(config).id}" in err
+    body = only_transcript(config)
+    assert "**[00:00:00] Me:** Can you hear me?" in body
+    assert "**[00:00:02] Them:** Yes." in body
+    assert "didn't finish cleanly" in body
+
+
+def test_a_failed_recording_with_no_audio_fails(config: Config, capsys: pytest.CaptureFixture[str]):
+    code = run(config, FakeTranscriber(), "record", recorder=CrashingRecorder(save_audio=False))
+
+    assert code == 1
+    assert "No audio was saved." in capsys.readouterr().err
+
+
+def test_a_side_that_never_received_audio_is_flagged(config: Config):
+    meeting_dir = config.data_dir / "2026-10-20-1100-sync"
+    meeting_dir.mkdir(parents=True)
+    (meeting_dir / "meeting.json").write_text(
+        '{"title": "Sync", "started_at": "2026-10-20T11:00:00-04:00"}'
+    )
+    write_capture(meeting_dir)
+    manifest = json.loads((meeting_dir / "capture.json").read_text())
+    manifest["channels"]["them"]["offset_seconds"] = None
+    (meeting_dir / "capture.json").write_text(json.dumps(manifest))
+    transcriber = FakeTranscriber({"me": [Segment(0.0, 1.0, "Hello?")]})
+
+    assert run(config, transcriber, "transcribe", meeting_dir.name) == 0
+
+    assert [p.name for p in transcriber.calls] == ["me.wav"]
+    assert '> [!warning] No "Them" audio was recorded at all.' in only_transcript(config)
+
+
+def test_check_without_the_binary_says_so(config: Config, capsys: pytest.CaptureFixture[str]):
+    assert main(["check"], config=config) == 1
+
+    err = capsys.readouterr().err
+    assert "capture/install.sh" in err
+    assert "Recording" not in err
