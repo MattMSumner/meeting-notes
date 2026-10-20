@@ -217,15 +217,24 @@ What I learned:
     so the tap timeline stays continuous. Start offset was 22.2 ms. Zoom and the spike
     shared the mic without problems.
 
-Still to check:
-- Whether the prompt that still appeared after a signed rebuild was the mic prompt (a
-  one-off for the new `.app` identity) or system audio (every rebuild). It doesn't change
-  the design either way.
+11. **With the signed `.app`, the first run after any rebuild records zeros, then every
+    run works.** Tested by rebuilding with unchanged source and a new build hash: no
+    prompt, the permission still shown as on in System Settings, first run 0.0% non-zero,
+    second run 99.2% non-zero. The earlier "prompt after rebuild" run fits the same
+    pattern (its output wasn't checked; the next run worked). Without the signed `.app`,
+    rebuilds were silently denied every time (finding 7).
 
-**Design consequences for `notes-capture`:** ship it as a signed `.app` (stable identity)
-with the relaunch-with-responsibility-disclaimed trick (or `open`); have a `notes-capture
-check` command so any prompt happens before a meeting, not during one; and warn loudly if
-the tap channel is all zeros while audio is playing.
+**Design consequences for `notes-capture`:**
+- Ship it as a signed `.app` (stable identity) with the relaunch-with-responsibility-
+  disclaimed trick.
+- Add a `notes-capture check` command: start the tap, play a short quiet sound from a
+  *separate* process (the tap excludes its own process), and confirm the samples aren't
+  zero. Retry once, since the first run after a rebuild records zeros. Any prompt also
+  happens here, not in a meeting.
+- The install/build script runs `notes-capture check` straight after every rebuild, so
+  that throwaway first run never happens during a meeting.
+- While recording, warn loudly if the tap channel is all zeros for more than a few
+  seconds.
 
 ---
 
