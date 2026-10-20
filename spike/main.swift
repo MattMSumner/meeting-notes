@@ -32,6 +32,7 @@ final class Meter {
                 if s != 0 { nonZero += 1 }
             }
         }
+        markData()
         lock.lock()
         sumSquares += sum
         count += frames * channels
@@ -48,6 +49,19 @@ final class Meter {
         let rms = (sumSquares / Double(count)).squareRoot()
         if rms == 0 { return "  SILENT " }
         return String(format: "%6.1f dB", 20 * log10(rms))
+    }
+
+    private var firstData: Date?
+
+    func markData() {
+        lock.lock(); if firstData == nil { firstData = Date() }; lock.unlock()
+    }
+
+    /// Frames actually delivered per wall-clock second since the first buffer.
+    func framesPerSecond(channels: Int) -> Double {
+        lock.lock(); defer { lock.unlock() }
+        guard let firstData, channels > 0 else { return 0 }
+        return Double(totalFrames / channels) / Date().timeIntervalSince(firstData)
     }
 
     var summary: String {
@@ -136,9 +150,32 @@ guard let tapFormat = AVAudioFormat(streamDescription: &tapASBD) else {
 }
 print("tap: \(tapFormat)")
 
-let outputDevice = getProperty(
+// Clock the aggregate from the built-in output, not the default device: Bluetooth
+// headphones in call (HFP) mode run at 24 kHz while the tap still reports 48 kHz.
+func builtInOutputDevice() -> AudioDeviceID? {
+    var address = AudioObjectPropertyAddress(
+        mSelector: kAudioHardwarePropertyDevices,
+        mScope: kAudioObjectPropertyScopeGlobal, mElement: kAudioObjectPropertyElementMain)
+    var size: UInt32 = 0
+    check(AudioObjectGetPropertyDataSize(AudioObjectID(kAudioObjectSystemObject), &address, 0, nil, &size), "device list size")
+    var devices = [AudioDeviceID](repeating: 0, count: Int(size) / MemoryLayout<AudioDeviceID>.size)
+    check(AudioObjectGetPropertyData(AudioObjectID(kAudioObjectSystemObject), &address, 0, nil, &size, &devices), "device list")
+    return devices.first { device in
+        var streams = AudioObjectPropertyAddress(
+            mSelector: kAudioDevicePropertyStreams,
+            mScope: kAudioObjectPropertyScopeOutput, mElement: kAudioObjectPropertyElementMain)
+        var streamsSize: UInt32 = 0
+        AudioObjectGetPropertyDataSize(device, &streams, 0, nil, &streamsSize)
+        return streamsSize > 0
+            && getProperty(device, kAudioDevicePropertyTransportType, UInt32(0)) == kAudioDeviceTransportTypeBuiltIn
+    }
+}
+
+let defaultOutput = getProperty(
     AudioObjectID(kAudioObjectSystemObject), kAudioHardwarePropertyDefaultOutputDevice, AudioDeviceID(0))
-let outputUID = getProperty(outputDevice, kAudioDevicePropertyDeviceUID, "" as CFString) as String
+let clockDevice = builtInOutputDevice() ?? defaultOutput
+let outputUID = getProperty(clockDevice, kAudioDevicePropertyDeviceUID, "" as CFString) as String
+print("default output: \(getProperty(defaultOutput, kAudioDevicePropertyDeviceUID, "" as CFString) as String)")
 print("clock device: \(outputUID)")
 
 let aggregateDescription: [String: Any] = [
@@ -157,6 +194,7 @@ let aggregateDescription: [String: Any] = [
 var aggregateID = AudioObjectID(kAudioObjectUnknown)
 check(AudioHardwareCreateAggregateDevice(aggregateDescription as CFDictionary, &aggregateID),
       "AudioHardwareCreateAggregateDevice")
+print("aggregate sample rate: \(getProperty(aggregateID, kAudioDevicePropertyNominalSampleRate, Float64(0))) Hz")
 
 let themFile = try AVAudioFile(
     forWriting: outDir.appendingPathComponent("them.wav"), settings: tapFormat.settings,
@@ -202,3 +240,5 @@ themFile.close()
 
 print("me:   \(meMeter.summary)")
 print("them: \(themMeter.summary)")
+print(String(format: "them frames/sec: %.0f (tap format says %.0f)",
+             themMeter.framesPerSecond(channels: Int(tapFormat.channelCount)), tapFormat.sampleRate))
