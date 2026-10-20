@@ -61,7 +61,7 @@ final class Meter {
     private var totalNonZero: Int = 0
     private var totalFrames: Int = 0
 
-    func add(_ buffer: AVAudioPCMBuffer) {
+    func add(_ buffer: AVAudioPCMBuffer, hostTime: UInt64) {
         guard let data = buffer.floatChannelData else { return }
         let frames = Int(buffer.frameLength)
         let channels = Int(buffer.format.channelCount)
@@ -76,7 +76,7 @@ final class Meter {
                 if s != 0 { nonZero += 1 }
             }
         }
-        markData()
+        markData(hostTime: hostTime)
         lock.lock()
         sumSquares += sum
         count += frames * channels
@@ -96,9 +96,12 @@ final class Meter {
     }
 
     private var firstData: Date?
+    private(set) var firstHostTime: UInt64?
 
-    func markData() {
-        lock.lock(); if firstData == nil { firstData = Date() }; lock.unlock()
+    func markData(hostTime: UInt64) {
+        lock.lock()
+        if firstData == nil { firstData = Date(); firstHostTime = hostTime }
+        lock.unlock()
     }
 
     /// Frames actually delivered per wall-clock second since the first buffer.
@@ -170,9 +173,9 @@ print("microphone permission: \(granted ? "granted" : "DENIED")")
 let engine = AVAudioEngine()
 let micFormat = engine.inputNode.outputFormat(forBus: 0)
 let meFile = try AVAudioFile(forWriting: outDir.appendingPathComponent("me.wav"), settings: micFormat.settings)
-engine.inputNode.installTap(onBus: 0, bufferSize: 4096, format: micFormat) { buffer, _ in
+engine.inputNode.installTap(onBus: 0, bufferSize: 4096, format: micFormat) { buffer, when in
     try? meFile.write(from: buffer)
-    meMeter.add(buffer)
+    meMeter.add(buffer, hostTime: when.hostTime)
 }
 try engine.start()
 print("mic: \(micFormat)")
@@ -245,11 +248,11 @@ let themFile = try AVAudioFile(
     commonFormat: .pcmFormatFloat32, interleaved: tapFormat.isInterleaved)
 var ioProcID: AudioDeviceIOProcID?
 check(AudioDeviceCreateIOProcIDWithBlock(&ioProcID, aggregateID, DispatchQueue(label: "tap.io")) {
-    _, inInputData, _, _, _ in
+    _, inInputData, inInputTime, _, _ in
     guard let buffer = AVAudioPCMBuffer(pcmFormat: tapFormat, bufferListNoCopy: inInputData, deallocator: nil)
     else { return }
     try? themFile.write(from: buffer)
-    themMeter.add(buffer)
+    themMeter.add(buffer, hostTime: inInputTime.pointee.mHostTime)
 }, "AudioDeviceCreateIOProcIDWithBlock")
 
 // The "System Audio Recording" permission prompt is triggered here, not at tap creation.
@@ -286,3 +289,12 @@ print("me:   \(meMeter.summary)")
 print("them: \(themMeter.summary)")
 print(String(format: "them frames/sec: %.0f (tap format says %.0f)",
              themMeter.framesPerSecond(channels: Int(tapFormat.channelCount)), tapFormat.sampleRate))
+
+// When each channel's first sample was captured, on the shared host clock. The real
+// tool needs this to line the two transcripts up.
+if let me = meMeter.firstHostTime, let them = themMeter.firstHostTime {
+    var timebase = mach_timebase_info_data_t()
+    mach_timebase_info(&timebase)
+    let ms = (Double(Int64(bitPattern: them &- me)) * Double(timebase.numer) / Double(timebase.denom)) / 1_000_000
+    print(String(format: "them's first sample is %.1f ms after me's", ms))
+}
