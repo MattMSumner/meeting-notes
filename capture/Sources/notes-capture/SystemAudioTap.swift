@@ -32,7 +32,10 @@ final class SystemAudioTap {
             kAudioAggregateDeviceMainSubDeviceKey: clock.uid,
             kAudioAggregateDeviceIsPrivateKey: true,
             kAudioAggregateDeviceIsStackedKey: false,
-            kAudioAggregateDeviceTapAutoStartKey: true,
+            // Off: an auto-started global tap stops other apps starting a Bluetooth headset's
+            // mic. Zoom, joining a call after the recording began, retried its AirPods mic
+            // for minutes and hung. AudioDeviceStart in start() runs the tap either way.
+            kAudioAggregateDeviceTapAutoStartKey: false,
             kAudioAggregateDeviceSubDeviceListKey: [[kAudioSubDeviceUIDKey: clock.uid]],
             kAudioAggregateDeviceTapListKey: [[
                 kAudioSubTapDriftCompensationKey: true,

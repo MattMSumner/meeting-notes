@@ -304,6 +304,17 @@ the spike learned), plus the glue code's subprocess wrapper and the time-merge i
     settle and (b) whenever it has delivered exact zeros for 1 s (at most every 3 s;
     harmless when nothing is playing). `TapRebuildScheduler`, unit-tested. Result: one gap
     of about 1.25 s near the start, then continuous audio.
+  - **An auto-started tap blocks other apps' Bluetooth mic (found 2026-10-21).** Joining
+    Zoom after starting a recording hung Zoom: Core Audio timed out (`0x3C`, 14 s a try)
+    starting its AirPods mic, over and over, until the recording stopped. Joining first
+    worked. Tested with a stand-in for Zoom (a program opening the default input directly)
+    against notes-capture variants: the tap alone, without our mic, blocks it; so do taps
+    without drift compensation or without a clock device; a tap of no processes, or with
+    `kAudioAggregateDeviceTapAutoStartKey` off, doesn't. **Fix:** auto-start off (our
+    `AudioDeviceStart` runs the tap anyway). Checked both join orders with AirPods: the
+    stand-in gets the mic at once and a test sound is recorded. AVAudioEngine's mic was a
+    red herring: it does wrap the AirPods in an aggregate device, but two direct opens of
+    the mic share it fine and the tap alone reproduces the hang.
   - **Gaps are filled by timestamp.** `ChannelWriter` places audio by host time and writes
     silence for gaps of 0.1 s or more, after draining the converter (which holds about
     75 ms back). It also accepts a format change mid-recording.
