@@ -406,11 +406,29 @@ markdown.
   - **The title dialog is the CLI's own** (`osascript display dialog`), not a Shortcuts
     step, so M5 can pre-fill it from the calendar.
 
-**M5 — Calendar titles + Obsidian polish.** `notes-capture calendar-now` (EventKit) returns
-the current or nearest event's title and attendees as JSON. Add frontmatter, and write the
-transcript as a separate linked note.
-- Tests: picking an event from a fixture list (overlapping events, no event, all-day
-  events ignored).
+**M5 — Calendar titles + transcript readability.**
+- **Calendar source: Google Calendar, synced by macOS.** I use Google Calendar (personal
+  Gmail) in the browser, not Apple's Calendar app. macOS can still keep a local copy:
+  System Settings → Internet Accounts → Google, with only Calendars on. EventKit then reads
+  it with no Google sign-in in our code, and works offline once synced. (Considered: the
+  calendar's private iCal address, which needs recurring-event expansion and a secret URL
+  kept safe; the Google Calendar API, which needs a Cloud project and OAuth. Fallbacks if
+  sync doesn't work.)
+- **Check first:** after adding the account, `notes-capture calendar` (EventKit, with
+  Calendars permission going to NotesCapture.app via the disclaim relaunch) lists today's
+  Google events with titles, times and attendees.
+- `notes-capture calendar --from T --to T` prints events in a window as JSON (title,
+  start, end, all-day, attendees, my response). Swift stays a thin reader; choosing the
+  event is Python, so it's unit-tested.
+- **Picking the meeting:** events happening now or starting within the next ~5 minutes;
+  ignore all-day events and ones I've declined; prefer the one whose start is closest to
+  now. Nothing found → no suggestion.
+- **Using it:** the Start dialog is pre-filled with the event's title (still editable; an
+  empty answer is Untitled). Attendees go into the note's frontmatter, and their names go
+  to the summary prompt, which should help it name owners and spell names correctly.
+- Tests: picking an event from fixture lists (overlapping events, back-to-back meetings,
+  early start, no event, all-day and declined events ignored); the dialog default; the
+  frontmatter.
 - **Transcript readability** (found in the first real meeting):
   - Split long turns into paragraphs (every 30–60 s, at sentence boundaries). One turn
     was 2½ minutes in a single block.
