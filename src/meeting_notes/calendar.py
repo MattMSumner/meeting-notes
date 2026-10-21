@@ -17,6 +17,9 @@ from typing import Any, Protocol
 EARLY_START = timedelta(minutes=5)
 # How far back to look for meetings still going on.
 LOOK_BACK = timedelta(hours=6)
+# Reading the calendar takes well under a second. Longer means it's stuck (say, on a
+# permission prompt hidden behind other windows): start without a suggestion instead.
+TIMEOUT_SECONDS = 5
 
 
 @dataclass(frozen=True)
@@ -96,11 +99,19 @@ class CaptureCalendar:
     def events(self, start: datetime, end: datetime) -> list[Event]:
         if not self.binary.is_file():
             return []
-        result = subprocess.run(
-            [str(self.binary), "calendar", "--from", _iso(start), "--to", _iso(end)],
-            capture_output=True,
-            text=True,
-        )
+        try:
+            result = subprocess.run(
+                [str(self.binary), "calendar", "--from", _iso(start), "--to", _iso(end)],
+                capture_output=True,
+                text=True,
+                timeout=TIMEOUT_SECONDS,
+            )
+        except subprocess.TimeoutExpired:
+            print("Couldn't read the calendar: it took too long.", file=sys.stderr)
+            return []
+        except OSError as error:
+            print(f"Couldn't read the calendar: {error}", file=sys.stderr)
+            return []
         if result.returncode != 0:
             print(f"Couldn't read the calendar: {result.stderr.strip()}", file=sys.stderr)
             return []

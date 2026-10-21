@@ -254,14 +254,14 @@ class _Commands:
         return orphans
 
     def _new_meeting(self, title: str | None, event: Event | None) -> Meeting:
-        """A meeting starting now. With no title given it takes the calendar event's title;
-        either way it gets the event's attendees."""
-        if event is None:
-            return Meeting.new(title, datetime.now().astimezone())
+        """A meeting starting now. With no title given it takes the calendar event's title,
+        and it gets the event's attendees, also when retitled. A cleared title means "not
+        that meeting" (an unplanned call), so then it gets neither."""
+        now = datetime.now().astimezone()
+        if event is None or (title is not None and not title.strip()):
+            return Meeting.new(title, now)
         return Meeting.new(
-            event.title if title is None else title,
-            datetime.now().astimezone(),
-            tuple(event.other_attendees),
+            event.title if title is None else title, now, tuple(event.other_attendees)
         )
 
     def _calendar_event(self) -> Event | None:
@@ -368,6 +368,8 @@ class _Commands:
         # First, so a stop that arrives while we're getting ready isn't lost.
         with _StopSignals() as signals:
             if args.meeting_id is None:
+                # Outside the lock: reading the calendar can wait on a permission prompt.
+                event = self._calendar_event()
                 with session.lock(self.store):
                     if recording := self._recording():
                         print(
@@ -376,9 +378,7 @@ class _Commands:
                             file=sys.stderr,
                         )
                         return 1
-                    meeting_dir = self.store.create(
-                        self._new_meeting(args.title, self._calendar_event())
-                    )
+                    meeting_dir = self.store.create(self._new_meeting(args.title, event))
                     session.write(meeting_dir, self._session(meeting_dir, Phase.RECORDING))
             else:
                 try:

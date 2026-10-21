@@ -778,3 +778,40 @@ def test_record_without_a_title_uses_the_calendar(
     assert meeting_dir.load_meeting().title == "Standup"
     [note] = [p for p in config.notes_dir.iterdir() if p.is_file()]
     assert 'attendees: ["Alex Doe"]\n' in note.read_text()
+
+
+def test_clearing_the_suggested_title_drops_the_calendar_attendees(
+    config: Config, processes: FakeProcesses
+):
+    # A cleared title means it's not the calendar's meeting (an unplanned call).
+    desktop = RecordingDesktop(answer="")
+
+    run_with_calendar(
+        config, processes, desktop, FakeCalendar(standup_now()), "start", "--ask-title"
+    )
+
+    [meeting_dir] = MeetingStore(config.data_dir).all()
+    assert meeting_dir.load_meeting().title == "Untitled"
+    assert meeting_dir.load_meeting().attendees == ()
+
+
+def test_record_reads_the_calendar_before_taking_the_lock(
+    config: Config, processes: FakeProcesses, desktop: FakeDesktop
+):
+    lock_was_free: list[bool] = []
+
+    class LockCheckingCalendar(FakeCalendar):
+        def events(self, start: datetime, end: datetime) -> list[Event]:
+            done = threading.Event()
+
+            def take_lock() -> None:
+                with session.lock(MeetingStore(config.data_dir)):
+                    done.set()
+
+            threading.Thread(target=take_lock, daemon=True).start()
+            lock_was_free.append(done.wait(1))
+            return []
+
+    run_with_calendar(config, processes, desktop, LockCheckingCalendar(), "record")
+
+    assert lock_was_free == [True]

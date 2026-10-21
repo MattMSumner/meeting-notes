@@ -63,7 +63,11 @@ private struct CalendarEvent: Encodable {
         allDay = event.isAllDay
         calendar = event.calendar?.title ?? ""
         cancelled = event.status == .canceled
-        attendees = (event.attendees ?? []).map { participant in
+        // People only: Google lists booked rooms and equipment as attendees too.
+        let people = (event.attendees ?? []).filter {
+            $0.participantType == .person || $0.participantType == .unknown
+        }
+        attendees = people.map { participant in
             Attendee(
                 name: participant.name,
                 email: participant.url.absoluteString.hasPrefix("mailto:")

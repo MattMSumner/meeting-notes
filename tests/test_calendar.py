@@ -1,8 +1,12 @@
 import json
 from datetime import UTC, datetime, timedelta
+from pathlib import Path
 from typing import Any
 
-from meeting_notes.calendar import Event, current_meeting, parse_events
+import pytest
+
+from meeting_notes import calendar
+from meeting_notes.calendar import CaptureCalendar, Event, current_meeting, parse_events
 
 NOW = datetime(2026, 10, 21, 15, 0, tzinfo=UTC)
 
@@ -98,3 +102,25 @@ def test_parses_notes_capture_output():
     assert parsed.start == datetime(2026, 10, 21, 15, 0, tzinfo=UTC)
     assert parsed.declined
     assert parsed.other_attendees == ["Alex Doe", "jo", "Kim"]
+
+
+def test_a_stuck_calendar_read_gives_no_suggestion(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+):
+    monkeypatch.setattr(calendar, "TIMEOUT_SECONDS", 0.2)
+    stuck = tmp_path / "notes-capture"
+    stuck.write_text("#!/bin/sh\nsleep 5\n")
+    stuck.chmod(0o755)
+
+    assert CaptureCalendar(stuck).events(NOW, NOW) == []
+    assert "took too long" in capsys.readouterr().err
+
+
+def test_a_notes_capture_that_cannot_run_gives_no_suggestion(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+):
+    not_executable = tmp_path / "notes-capture"
+    not_executable.write_text("")
+
+    assert CaptureCalendar(not_executable).events(NOW, NOW) == []
+    assert "Couldn't read the calendar" in capsys.readouterr().err
