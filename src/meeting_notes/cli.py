@@ -12,6 +12,7 @@ from datetime import datetime
 from types import FrameType
 
 from meeting_notes import pipeline, session
+from meeting_notes.calendar import Calendar, CaptureCalendar, Event, meeting_now
 from meeting_notes.config import Config
 from meeting_notes.macos import Desktop, DesktopError, MacDesktop
 from meeting_notes.meeting import Meeting
@@ -165,8 +166,10 @@ class _Commands:
         make_recorder: Callable[[Config], Recorder],
         processes: Processes,
         desktop: Desktop,
+        calendar: Calendar,
     ) -> None:
         self.config = config
+        self.calendar = calendar
         self.store = MeetingStore(config.data_dir)
         self.make_transcriber = make_transcriber
         self.make_summarizer = make_summarizer
@@ -250,15 +253,33 @@ class _Commands:
             self._recover(orphan)
         return orphans
 
+    def _new_meeting(self, title: str | None, event: Event | None) -> Meeting:
+        """A meeting starting now. With no title given it takes the calendar event's title;
+        either way it gets the event's attendees."""
+        if event is None:
+            return Meeting.new(title, datetime.now().astimezone())
+        return Meeting.new(
+            event.title if title is None else title,
+            datetime.now().astimezone(),
+            tuple(event.other_attendees),
+        )
+
+    def _calendar_event(self) -> Event | None:
+        return meeting_now(self.calendar, datetime.now().astimezone())
+
     def start(self, args: argparse.Namespace) -> int:
         if self._already_recording():
             return 1
         title: str | None = args.title
+        event = self._calendar_event()
         if args.ask_title:
             # Before taking the lock: the dialog can stay open indefinitely, and a Stop
             # shouldn't wait on it.
             try:
-                title = self.desktop.ask_text("Meeting title (leave empty for Untitled):")
+                title = self.desktop.ask_text(
+                    "Meeting title (leave empty for Untitled):",
+                    default=event.title if event else "",
+                )
             except DesktopError as error:
                 self._say(f"Couldn't ask for the title ({error}).", notify=True, error=True)
                 return 1
@@ -268,7 +289,7 @@ class _Commands:
             self._recover_orphans()
             if self._already_recording():  # started while the dialog was open
                 return 1
-            meeting_dir = self.store.create(Meeting.new(title, datetime.now().astimezone()))
+            meeting_dir = self.store.create(self._new_meeting(title, event))
             self._spawn_job(
                 meeting_dir,
                 ["record", "--meeting-id", meeting_dir.id, "--background"],
@@ -355,8 +376,9 @@ class _Commands:
                             file=sys.stderr,
                         )
                         return 1
-                    meeting = Meeting.new(args.title, datetime.now().astimezone())
-                    meeting_dir = self.store.create(meeting)
+                    meeting_dir = self.store.create(
+                        self._new_meeting(args.title, self._calendar_event())
+                    )
                     session.write(meeting_dir, self._session(meeting_dir, Phase.RECORDING))
             else:
                 try:
@@ -506,6 +528,7 @@ def main(
     make_recorder: Callable[[Config], Recorder] = lambda config: CaptureRecorder(config.capture),
     processes: Processes | None = None,
     desktop: Desktop | None = None,
+    calendar: Calendar | None = None,
 ) -> int:
     args = _parser().parse_args(argv)
     config = config or Config.from_env()
@@ -524,6 +547,7 @@ def main(
         make_recorder,
         processes or SystemProcesses(),
         desktop or MacDesktop(),
+        calendar or CaptureCalendar(config.capture),
     )
     match args.command:
         case "start":

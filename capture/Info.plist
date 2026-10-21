@@ -20,5 +20,7 @@
     <string>Records your side of the meeting.</string>
     <key>NSAudioCaptureUsageDescription</key>
     <string>Records the other side of the meeting.</string>
+    <key>NSCalendarsFullAccessUsageDescription</key>
+    <string>Suggests the title of the meeting you're recording.</string>
 </dict>
 </plist>

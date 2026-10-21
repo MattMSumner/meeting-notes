@@ -25,10 +25,14 @@ def slugify(text: str) -> str:
 class Meeting:
     title: str
     started_at: datetime
+    attendees: tuple[str, ...] = ()
+    """Everyone else invited, from the calendar."""
 
     @classmethod
-    def new(cls, title: str | None, started_at: datetime) -> "Meeting":
-        return cls(title=clean_title(title), started_at=started_at)
+    def new(
+        cls, title: str | None, started_at: datetime, attendees: tuple[str, ...] = ()
+    ) -> "Meeting":
+        return cls(title=clean_title(title), started_at=started_at, attendees=attendees)
 
     @property
     def id(self) -> str:

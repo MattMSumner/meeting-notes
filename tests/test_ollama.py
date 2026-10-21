@@ -103,3 +103,12 @@ def test_a_reply_without_a_message_is_a_readable_error():
 def test_the_default_prompt_ships_with_the_package():
     assert '"action_items"' in default_prompt()
     assert "{name}" in default_prompt()
+
+
+def test_tells_the_model_who_else_was_invited():
+    ollama = FakeOllama(GOOD)
+    meeting = Meeting.new("Weekly Sync", datetime(2026, 10, 20, 14, 5), ("Alex Doe", "Kim"))
+
+    summarizer(ollama).summarize(meeting, "transcript")
+
+    assert "Others invited: Alex Doe, Kim\n" in ollama.requests[0]["messages"][1]["content"]

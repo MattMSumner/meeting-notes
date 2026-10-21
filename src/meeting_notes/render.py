@@ -19,11 +19,17 @@ def _yaml_string(value: str) -> str:
 
 
 def _frontmatter(meeting: Meeting, tags: str) -> list[str]:
+    attendees = (
+        [f"attendees: [{', '.join(_yaml_string(name) for name in meeting.attendees)}]"]
+        if meeting.attendees
+        else []
+    )
     return [
         "---",
         f"date: {meeting.started_at:%Y-%m-%d}",
         f'time: "{meeting.started_at:%H:%M}"',
         f"title: {_yaml_string(meeting.title)}",
+        *attendees,
         f"tags: [{tags}]",
         "source: meeting-notes",
         "---",

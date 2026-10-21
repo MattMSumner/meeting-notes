@@ -154,3 +154,16 @@ def test_an_unreadable_summary_is_a_summary_error(tmp_path: Path):
 
     with pytest.raises(SummaryError, match="summary.json couldn't be read"):
         meeting_dir.load_summary()
+
+
+def test_attendees_round_trip_and_older_meetings_have_none(tmp_path: Path):
+    store = MeetingStore(tmp_path)
+    meeting_dir = store.create(Meeting.new("Sync", STARTED, ("Alex Doe",)))
+    assert meeting_dir.load_meeting().attendees == ("Alex Doe",)
+
+    older = tmp_path / "2026-10-20-0900-old"
+    older.mkdir()
+    (older / "meeting.json").write_text(
+        '{"title": "Old", "started_at": "2026-10-20T09:00:00-04:00"}'
+    )
+    assert MeetingDir(older).load_meeting().attendees == ()

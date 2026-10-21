@@ -92,8 +92,10 @@ class OllamaSummarizer:
             {
                 "role": "user",
                 "content": f"Meeting: {meeting.title}\n"
-                f"Date: {meeting.started_at:%A %Y-%m-%d %H:%M}\n\n"
-                f"Transcript:\n\n{transcript}",
+                f"Date: {meeting.started_at:%A %Y-%m-%d %H:%M}\n"
+                # From the calendar: lets the model name people and spell names right.
+                + (f"Others invited: {', '.join(meeting.attendees)}\n" if meeting.attendees else "")
+                + f"\nTranscript:\n\n{transcript}",
             },
         ]
         # Ollama doesn't refuse a prompt that's too long: it quietly drops part of it (in a

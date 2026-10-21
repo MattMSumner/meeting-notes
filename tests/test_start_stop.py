@@ -11,6 +11,7 @@ import pytest
 from test_cli import FakeRecorder, FakeSummarizer, FakeTranscriber, write_capture
 
 from meeting_notes import cli, session
+from meeting_notes.calendar import Attendee, Event
 from meeting_notes.cli import main
 from meeting_notes.config import Config
 from meeting_notes.macos import DesktopError
@@ -681,3 +682,99 @@ def test_a_background_job_keeps_the_start_time_it_was_launched_with(
     )
 
     assert seen and set(seen) == {began}
+
+
+# Calendar titles
+
+
+class FakeCalendar:
+    def __init__(self, *events: Event) -> None:
+        self._events = list(events)
+
+    def events(self, start: datetime, end: datetime) -> list[Event]:
+        return self._events
+
+
+def standup_now() -> Event:
+    now = datetime.now().astimezone()
+    attendees = (Attendee("Sam", is_me=True), Attendee("Alex Doe", is_me=False))
+    return Event(
+        "Standup", now - timedelta(minutes=3), now + timedelta(minutes=27), attendees=attendees
+    )
+
+
+def run_with_calendar(
+    config: Config,
+    processes: FakeProcesses,
+    desktop: FakeDesktop,
+    calendar: FakeCalendar,
+    *argv: str,
+) -> int:
+    return main(
+        list(argv),
+        config=config,
+        make_transcriber=lambda _: FakeTranscriber(),
+        make_summarizer=lambda _: FakeSummarizer(),
+        make_recorder=lambda _: FakeRecorder(),
+        processes=processes,
+        desktop=desktop,
+        calendar=calendar,
+    )
+
+
+class RecordingDesktop(FakeDesktop):
+    def __init__(self, answer: str | None) -> None:
+        super().__init__(answer)
+        self.defaults: list[str] = []
+
+    def ask_text(self, prompt: str, default: str = "") -> str | None:
+        self.defaults.append(default)
+        return self.answer
+
+
+def test_the_title_dialog_is_prefilled_from_the_calendar(config: Config, processes: FakeProcesses):
+    desktop = RecordingDesktop(answer="Standup")
+
+    run_with_calendar(
+        config, processes, desktop, FakeCalendar(standup_now()), "start", "--ask-title"
+    )
+
+    assert desktop.defaults == ["Standup"]
+    [meeting_dir] = MeetingStore(config.data_dir).all()
+    assert meeting_dir.load_meeting().title == "Standup"
+    assert meeting_dir.load_meeting().attendees == ("Alex Doe",)
+
+
+def test_an_edited_title_keeps_the_calendar_attendees(config: Config, processes: FakeProcesses):
+    desktop = RecordingDesktop(answer="Standup (ran long)")
+
+    run_with_calendar(
+        config, processes, desktop, FakeCalendar(standup_now()), "start", "--ask-title"
+    )
+
+    [meeting_dir] = MeetingStore(config.data_dir).all()
+    assert meeting_dir.load_meeting().title == "Standup (ran long)"
+    assert meeting_dir.load_meeting().attendees == ("Alex Doe",)
+
+
+def test_with_nothing_on_the_calendar_the_dialog_starts_empty(
+    config: Config, processes: FakeProcesses
+):
+    desktop = RecordingDesktop(answer="")
+
+    run_with_calendar(config, processes, desktop, FakeCalendar(), "start", "--ask-title")
+
+    assert desktop.defaults == [""]
+    [meeting_dir] = MeetingStore(config.data_dir).all()
+    assert meeting_dir.load_meeting().title == "Untitled"
+
+
+def test_record_without_a_title_uses_the_calendar(
+    config: Config, processes: FakeProcesses, desktop: FakeDesktop
+):
+    run_with_calendar(config, processes, desktop, FakeCalendar(standup_now()), "record")
+
+    [meeting_dir] = MeetingStore(config.data_dir).all()
+    assert meeting_dir.load_meeting().title == "Standup"
+    [note] = [p for p in config.notes_dir.iterdir() if p.is_file()]
+    assert 'attendees: ["Alex Doe"]\n' in note.read_text()

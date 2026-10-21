@@ -50,7 +50,11 @@ class MeetingDir:
 
     def load_meeting(self) -> Meeting:
         data = json.loads((self.path / "meeting.json").read_text())
-        return Meeting(title=data["title"], started_at=datetime.fromisoformat(data["started_at"]))
+        return Meeting(
+            title=data["title"],
+            started_at=datetime.fromisoformat(data["started_at"]),
+            attendees=tuple(data.get("attendees", [])),
+        )
 
     @property
     def has_manifest(self) -> bool:
@@ -152,7 +156,11 @@ class MeetingStore:
             except FileExistsError:
                 number += 1
                 meeting = replace(meeting, title=f"{title} {number}")
-        payload = {"title": meeting.title, "started_at": meeting.started_at.isoformat()}
+        payload = {
+            "title": meeting.title,
+            "started_at": meeting.started_at.isoformat(),
+            "attendees": list(meeting.attendees),
+        }
         (path / "meeting.json").write_text(json.dumps(payload, indent=2) + "\n")
         return MeetingDir(path)
 
