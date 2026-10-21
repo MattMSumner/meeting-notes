@@ -4,13 +4,19 @@ import subprocess
 from typing import Protocol
 
 APP_TITLE = "Meeting notes"
+# AppleScript's "User canceled." error.
+USER_CANCELED = "(-128)"
+
+
+class DesktopError(Exception):
+    pass
 
 
 class Desktop(Protocol):
     def notify(self, message: str) -> None: ...
 
     def ask_text(self, prompt: str, default: str = "") -> str | None:
-        """Asks for a line of text. None if cancelled."""
+        """Asks for a line of text. None if cancelled; DesktopError if it can't ask."""
         ...
 
 
@@ -35,5 +41,7 @@ class MacDesktop:
         )
         result = subprocess.run(["osascript", "-e", script], capture_output=True, text=True)
         if result.returncode != 0:
-            return None  # cancelled
+            if USER_CANCELED in result.stderr:
+                return None
+            raise DesktopError(result.stderr.strip() or f"osascript exited {result.returncode}")
         return result.stdout.rstrip("\n")

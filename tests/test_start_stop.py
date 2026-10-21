@@ -1,6 +1,7 @@
 """notes start / stop / status, and the background jobs they run, with fake processes."""
 
 import os
+import signal
 import threading
 from collections.abc import Callable
 from datetime import datetime, timedelta
@@ -12,6 +13,7 @@ from test_cli import FakeRecorder, FakeSummarizer, FakeTranscriber, write_captur
 from meeting_notes import cli, session
 from meeting_notes.cli import main
 from meeting_notes.config import Config
+from meeting_notes.macos import DesktopError
 from meeting_notes.meeting import Meeting
 from meeting_notes.session import Phase, Session
 from meeting_notes.store import MeetingDir, MeetingStore
@@ -497,3 +499,118 @@ def test_start_waits_for_another_start_or_stop_to_finish(
         assert not done.wait(0.3)
     assert done.wait(5)
     thread.join()
+
+
+# Second review
+
+
+def test_ctrl_c_interrupts_transcribing_again_after_recording(
+    config: Config, processes: FakeProcesses, desktop: FakeDesktop
+):
+    default = signal.getsignal(signal.SIGINT)
+    during: list[object] = []
+
+    class CheckingTranscriber(FakeTranscriber):
+        def transcribe(self, audio: Path) -> list[Segment]:
+            during.append(signal.getsignal(signal.SIGINT))
+            return []
+
+    run(config, processes, desktop, "record", transcriber=CheckingTranscriber())
+
+    assert during and all(handler is default for handler in during)
+    assert signal.getsignal(signal.SIGINT) is default
+
+
+def test_a_session_removed_while_reading_is_no_session(
+    config: Config, monkeypatch: pytest.MonkeyPatch
+):
+    meeting_dir = meeting(config)
+    orphaned(meeting_dir)
+
+    def vanished(self: Path) -> str:
+        raise FileNotFoundError(self)
+
+    monkeypatch.setattr(Path, "read_text", vanished)
+
+    assert session.read(meeting_dir) is None
+
+
+def test_process_start_times_compare_across_locales_and_time_zones(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    processes = session.SystemProcesses()
+    in_terminal = processes.started(os.getpid())
+    monkeypatch.setenv("LC_ALL", "de_DE.UTF-8")
+    monkeypatch.setenv("TZ", "Asia/Tokyo")
+
+    assert in_terminal is not None
+    assert processes.started(os.getpid()) == in_terminal
+
+
+def test_the_title_dialog_does_not_hold_up_a_stop(config: Config, processes: FakeProcesses):
+    store = MeetingStore(config.data_dir)
+    asked = threading.Event()
+
+    class SlowDesktop(FakeDesktop):
+        def ask_text(self, prompt: str, default: str = "") -> str | None:
+            asked.set()
+            return "Standup"
+
+    with session.lock(store):  # as if a stop were running
+        thread = threading.Thread(
+            target=run, args=(config, processes, SlowDesktop(), "start", "--ask-title")
+        )
+        thread.start()
+        # The dialog shows straight away; only creating the recording waits for the lock.
+        assert asked.wait(2)
+        assert store.all() == []
+    thread.join(5)
+    assert [m.load_meeting().title for m in store.all()] == ["Standup"]
+
+
+def test_a_failing_title_dialog_is_reported_not_treated_as_cancel(
+    config: Config, processes: FakeProcesses
+):
+    class BrokenDesktop(FakeDesktop):
+        def ask_text(self, prompt: str, default: str = "") -> str | None:
+            raise DesktopError("Not authorized to send Apple events")
+
+    desktop = BrokenDesktop()
+
+    assert run(config, processes, desktop, "start", "--ask-title") == 1
+    assert desktop.notifications == [
+        "Couldn't ask for the title (Not authorized to send Apple events)."
+    ]
+
+
+def test_a_crashed_note_writing_job_is_reported_once_not_rerun(
+    config: Config, processes: FakeProcesses, desktop: FakeDesktop
+):
+    meeting_dir = meeting(config, "Standup")
+    write_capture(meeting_dir.path)
+    orphaned(meeting_dir, Phase.PROCESSING)
+
+    run(config, processes, desktop, "stop")
+    run(config, processes, desktop, "stop")
+
+    assert processes.spawned == []
+    assert session.read(meeting_dir) is None
+    assert desktop.notifications[0] == (
+        f"Writing the note for “Standup” stopped unexpectedly. "
+        f"To retry: notes transcribe {meeting_dir.id}"
+    )
+    assert desktop.notifications[1:] == ["Nothing is recording."]
+
+
+def test_start_twice_in_a_minute_without_titles(
+    config: Config, processes: FakeProcesses, desktop: FakeDesktop
+):
+    assert run(config, processes, desktop, "start") == 0
+    processes.running.clear()  # the first recording finished
+    processes.running[os.getpid()] = "us"
+    for active in session.find(MeetingStore(config.data_dir), processes):
+        session.session_file(active.meeting_dir).unlink()
+
+    assert run(config, processes, desktop, "start") == 0
+    titles = [m.load_meeting().title for m in MeetingStore(config.data_dir).all()]
+    assert sorted(titles) == ["Untitled", "Untitled 2"]

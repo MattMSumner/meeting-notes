@@ -62,11 +62,12 @@ def session_file(meeting_dir: MeetingDir) -> Path:
 
 
 def read(meeting_dir: MeetingDir) -> Session | None:
-    path = session_file(meeting_dir)
-    if not path.is_file():
+    try:
+        text = session_file(meeting_dir).read_text()
+    except FileNotFoundError:  # including removed by its process just now
         return None
     try:
-        data = json.loads(path.read_text())
+        data = json.loads(text)
         return Session(
             pid=int(data["pid"]),
             process_started=str(data["process_started"]),
@@ -142,8 +143,13 @@ def find(store: MeetingStore, processes: Processes) -> list[Active]:
 
 class SystemProcesses:
     def started(self, pid: int) -> str | None:
+        # ps formats the time in the caller's locale and time zone, which differ between a
+        # shortcut and a terminal (and change when travelling). Fixed, so they compare.
         result = subprocess.run(
-            ["ps", "-o", "lstart=", "-p", str(pid)], capture_output=True, text=True
+            ["ps", "-o", "lstart=", "-p", str(pid)],
+            capture_output=True,
+            text=True,
+            env={**os.environ, "LC_ALL": "C", "TZ": "UTC"},
         )
         return result.stdout.strip() or None
 

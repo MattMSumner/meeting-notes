@@ -5,7 +5,7 @@ re-run on its own (for example after changing the transcription model)."""
 
 import hashlib
 import json
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -140,8 +140,18 @@ class MeetingStore:
         self.root = root
 
     def create(self, meeting: Meeting) -> MeetingDir:
-        path = self.root / meeting.id
-        path.mkdir(parents=True, exist_ok=False)
+        """Creates the meeting's folder. A second meeting with the same title in the same
+        minute (two Untitled ones, say) gets a number: "Untitled 2"."""
+        self.root.mkdir(parents=True, exist_ok=True)
+        title, number = meeting.title, 1
+        while True:
+            path = self.root / meeting.id
+            try:
+                path.mkdir()
+                break
+            except FileExistsError:
+                number += 1
+                meeting = replace(meeting, title=f"{title} {number}")
         payload = {"title": meeting.title, "started_at": meeting.started_at.isoformat()}
         (path / "meeting.json").write_text(json.dumps(payload, indent=2) + "\n")
         return MeetingDir(path)

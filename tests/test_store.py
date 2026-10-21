@@ -38,12 +38,18 @@ def test_audio_path_per_channel(tmp_path: Path):
     assert meeting_dir.audio("me") == meeting_dir.path / "me.wav"
 
 
-def test_refuses_to_overwrite_an_existing_meeting(tmp_path: Path):
+def test_a_second_meeting_with_the_same_title_in_the_same_minute_gets_a_number(tmp_path: Path):
     store = MeetingStore(tmp_path)
-    store.create(Meeting.new("Sync", STARTED))
+    first = store.create(Meeting.new("Untitled", STARTED))
 
-    with pytest.raises(FileExistsError):
-        store.create(Meeting.new("Sync", STARTED))
+    second = store.create(Meeting.new("Untitled", STARTED))
+    third = store.create(Meeting.new("Untitled", STARTED))
+
+    assert first.load_meeting().title == "Untitled"
+    assert second.load_meeting().title == "Untitled 2"
+    assert third.load_meeting().title == "Untitled 3"
+    # So their notes don't overwrite each other in the vault either.
+    assert len({m.load_meeting().note_stem for m in (first, second, third)}) == 3
 
 
 def test_unknown_meeting_id(tmp_path: Path):
