@@ -382,7 +382,7 @@ markdown.
 - **Check first (riskiest):** that a recording started from a shortcut survives the
   shortcut finishing, and that mic and system audio permission still go to
   NotesCapture.app (via the disclaim relaunch), not to Shortcuts.
-- Crash safety: `notes stop` (and `status`) recover a recording orphaned by a crash or
+- Crash safety: `notes status` reports, and `notes stop` recovers, a recording orphaned by a crash or
   reboot, using the WAV repair from M2.
 - Not doing: a native Spotlight action (App Intents) in NotesCapture.app. Neater, but
   App Intents metadata needs a full Xcode build.

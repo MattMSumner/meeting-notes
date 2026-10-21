@@ -68,11 +68,14 @@ def main() -> int:
         unsigned = out / f"{name}.wflow"
         signed = out / f"{name}.shortcut"
         unsigned.write_bytes(plistlib.dumps(workflow(notes_args), fmt=plistlib.FMT_BINARY))
-        subprocess.run(
+        signing = subprocess.run(
             ["shortcuts", "sign", "--mode", "anyone", "--input", unsigned, "--output", signed],
-            check=True,
             capture_output=True,
+            text=True,
         )
+        if signing.returncode != 0:
+            print(f"Couldn't sign {name}: {signing.stderr.strip()}", file=sys.stderr)
+            return 1
         subprocess.run(["open", signed], check=True)
         print(f"Opened {name}: confirm the import in Shortcuts.")
     return 0

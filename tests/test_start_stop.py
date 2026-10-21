@@ -614,3 +614,70 @@ def test_start_twice_in_a_minute_without_titles(
     assert run(config, processes, desktop, "start") == 0
     titles = [m.load_meeting().title for m in MeetingStore(config.data_dir).all()]
     assert sorted(titles) == ["Untitled", "Untitled 2"]
+
+
+# Third review
+
+
+def test_a_recording_that_reported_its_own_failure_is_not_recovered(
+    config: Config,
+    processes: FakeProcesses,
+    desktop: FakeDesktop,
+    monkeypatch: pytest.MonkeyPatch,
+):
+    meeting_dir = meeting(config, "Standup")
+    write_capture(meeting_dir.path)
+    recording_by(processes, meeting_dir, pid=4000)
+    stale = session.read(meeting_dir)
+
+    stale_reads: list[Session | None] = []
+
+    def fail_on_its_own(pid: int) -> None:
+        # The job reports the failure itself, clears its session and exits, just after
+        # stop's next look at the session.
+        session.clear(meeting_dir, pid)
+        del processes.running[pid]
+        stale_reads.append(stale)
+
+    processes.on_interrupt = fail_on_its_own
+    real_read = session.read
+
+    def read(meeting_dir: MeetingDir) -> Session | None:
+        return stale_reads.pop() if stale_reads else real_read(meeting_dir)
+
+    monkeypatch.setattr(session, "read", read)
+
+    assert run(config, processes, desktop, "stop") == 0
+
+    assert processes.spawned == []
+    assert desktop.notifications == []
+
+
+def test_a_background_job_keeps_the_start_time_it_was_launched_with(
+    config: Config, processes: FakeProcesses, desktop: FakeDesktop
+):
+    meeting_dir = meeting(config, "Crashed", minutes_ago=40)
+    write_capture(meeting_dir.path)
+    began = meeting_dir.load_meeting().started_at
+    # As the parent writes it when launching this process.
+    session.write(meeting_dir, Session(os.getpid(), "us", Phase.PROCESSING, began))
+    seen: list[datetime] = []
+
+    class CheckingTranscriber(FakeTranscriber):
+        def transcribe(self, audio: Path) -> list[Segment]:
+            current = session.read(meeting_dir)
+            assert current is not None
+            seen.append(current.started_at)
+            return []
+
+    run(
+        config,
+        processes,
+        desktop,
+        "transcribe",
+        meeting_dir.id,
+        "--background",
+        transcriber=CheckingTranscriber(),
+    )
+
+    assert seen and set(seen) == {began}

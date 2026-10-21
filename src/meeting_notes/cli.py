@@ -95,20 +95,25 @@ STOP_SIGNALS = (signal.SIGINT, signal.SIGTERM, signal.SIGHUP)
 
 class _StopSignals:
     """While recording, Ctrl-C (and SIGTERM/SIGHUP) stop the recording rather than the
-    program. Restored once recording ends, so they interrupt transcribing as usual."""
+    program. `end()` puts the usual handling back as soon as recording stops, so they
+    interrupt transcribing as normal; leaving the `with` block ends it in any case."""
 
-    def __init__(self) -> None:
+    def __enter__(self) -> "_StopSignals":
         self.stop = threading.Event()
 
         def on_stop_signal(signum: int, frame: FrameType | None) -> None:
             self.stop.set()
 
         self._previous = {sig: signal.signal(sig, on_stop_signal) for sig in STOP_SIGNALS}
+        return self
 
-    def restore(self) -> None:
+    def end(self) -> None:
         for sig, handler in self._previous.items():
             signal.signal(sig, handler)
         self._previous = {}
+
+    def __exit__(self, *exc_info: object) -> None:
+        self.end()
 
 
 def _record(
@@ -176,10 +181,17 @@ class _Commands:
         if notify:
             self.desktop.notify(message)
 
-    def _session(self, phase: Phase) -> Session:
+    def _session(self, meeting_dir: MeetingDir, phase: Phase) -> Session:
+        """This process's session for meeting_dir. Keeps the start time of the session the
+        parent wrote when it launched us (for a recovered meeting, when it began)."""
         pid = os.getpid()
-        started = self.processes.started(pid) or ""
-        return Session(pid, started, phase, datetime.now().astimezone())
+        existing = session.read(meeting_dir)
+        started_at = (
+            existing.started_at
+            if existing is not None and existing.pid == pid
+            else datetime.now().astimezone()
+        )
+        return Session(pid, self.processes.started(pid) or "", phase, started_at)
 
     def _spawn_job(
         self, meeting_dir: MeetingDir, args: list[str], phase: Phase, started_at: datetime
@@ -304,6 +316,11 @@ class _Commands:
             print(f"Stopped {meeting_dir.id}.")
             return 0
         if not session.is_running(current, self.processes):
+            if session.read(meeting_dir) != current:
+                # It finished on its own after all (a failure it reported itself), clearing
+                # its session as it exited.
+                print(f"Stopped {meeting_dir.id}.")
+                return 0
             # It died while saving its audio.
             self._recover(Active(meeting_dir, current, running=False))
             return 0
@@ -328,8 +345,7 @@ class _Commands:
 
     def record(self, args: argparse.Namespace) -> int:
         # First, so a stop that arrives while we're getting ready isn't lost.
-        signals = _StopSignals()
-        try:
+        with _StopSignals() as signals:
             if args.meeting_id is None:
                 with session.lock(self.store):
                     if recording := self._recording():
@@ -341,7 +357,7 @@ class _Commands:
                         return 1
                     meeting = Meeting.new(args.title, datetime.now().astimezone())
                     meeting_dir = self.store.create(meeting)
-                    session.write(meeting_dir, self._session(Phase.RECORDING))
+                    session.write(meeting_dir, self._session(meeting_dir, Phase.RECORDING))
             else:
                 try:
                     meeting_dir = self.store.get(args.meeting_id)
@@ -352,7 +368,7 @@ class _Commands:
                         error=True,
                     )
                     return 1
-                session.write(meeting_dir, self._session(Phase.RECORDING))
+                session.write(meeting_dir, self._session(meeting_dir, Phase.RECORDING))
             try:
                 return self._record_then_write_note(meeting_dir, args, signals)
             except Exception as error:
@@ -363,8 +379,6 @@ class _Commands:
             finally:
                 session.clear(meeting_dir, os.getpid())
                 session.stop_request_file(meeting_dir).unlink(missing_ok=True)
-        finally:
-            signals.restore()
 
     def _record_then_write_note(
         self, meeting_dir: MeetingDir, args: argparse.Namespace, signals: _StopSignals
@@ -377,7 +391,7 @@ class _Commands:
             try:
                 _record(meeting_dir, args.duration, self.make_recorder(self.config), signals.stop)
             finally:
-                signals.restore()
+                signals.end()
         except CaptureNotInstalled as error:
             self._say(str(error), notify=background, error=True)
             return 1
@@ -399,7 +413,7 @@ class _Commands:
         else:
             if background:
                 self.desktop.notify(f"Stopped recording “{title}”. Writing the note…")
-        session.write(meeting_dir, self._session(Phase.PROCESSING))
+        session.write(meeting_dir, self._session(meeting_dir, Phase.PROCESSING))
         return self._write_note(meeting_dir, transcribe=True, background=background)
 
     def _background_failed(self, meeting_dir: MeetingDir, error: Exception) -> None:
@@ -468,7 +482,7 @@ class _Commands:
             return 0
         background: bool = getattr(args, "background", False)
         if background:
-            session.write(meeting_dir, self._session(Phase.PROCESSING))
+            session.write(meeting_dir, self._session(meeting_dir, Phase.PROCESSING))
         try:
             return self._write_note(
                 meeting_dir, transcribe=args.command == "transcribe", background=background
