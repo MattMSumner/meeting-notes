@@ -439,7 +439,11 @@ markdown.
   - **Back-to-back meetings:** "nearest start wins" means at 10:58 the 11:00 meeting is
     suggested over the 10:00 one that hasn't ended yet.
   - **An edited title keeps the attendees:** retitling in the dialog is still that
-    meeting.
+    meeting. Clearing it drops them: it's an unplanned call, not the calendar's meeting.
+  - **Only people are attendees:** Google lists booked rooms and equipment as attendees.
+  - **Reading the calendar is never allowed to block recording:** it times out after
+    5 s (a permission prompt can hide behind other windows) and happens outside the
+    start/stop lock.
 
 **M6 — Transcript readability.**
 - Found in the first real meeting:
