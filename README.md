@@ -6,7 +6,7 @@ the conversation with a local model served by [Ollama](https://ollama.com), and 
 note and its transcript into an Obsidian vault. No audio, transcripts or summaries leave
 the machine.
 
-Status: **M3**, summaries. See [plan.md](plan.md) for the roadmap.
+Status: **M4**, start and stop from Spotlight. See [plan.md](plan.md) for the roadmap.
 
 ## Setup
 
@@ -27,13 +27,36 @@ Get consent from everyone in a meeting before recording it.
 
 ## Usage
 
+### From Spotlight
+
 ```sh
-uv run notes record --title "Weekly Sync"   # record until Ctrl-C, transcribe, summarize
+uv run scripts/install-shortcuts.py
+```
+
+This adds two shortcuts (confirm each import in Shortcuts, and allow them to run scripts
+when asked). Run them from Spotlight by typing their names:
+
+- **Start meeting notes** asks for a title (empty means Untitled) and starts recording in
+  the background. The orange and purple menu bar indicators show it's recording.
+- **Stop meeting notes** stops it. The transcript and summary are written in the
+  background, and a notification says when the note is ready.
+
+### From a terminal
+
+```sh
+uv run notes start --title "Weekly Sync"    # record in the background
+uv run notes status                         # what's recording or being written
+uv run notes stop                           # stop; the note is written in the background
+uv run notes record --title "Weekly Sync"   # or: record in the foreground until Ctrl-C
 uv run notes transcribe <meeting-id>        # re-run transcription (and the summary)
 uv run notes summarize <meeting-id>         # re-run the summary
 uv run notes render <meeting-id>            # re-write the note and transcript
 uv run notes check                          # check the mic and system audio can be recorded
 ```
+
+If a recording's process dies (a crash, a restart), `notes status` says so and `notes stop`
+recovers it: it stops the orphaned capture and writes the note from what was recorded.
+Background jobs log to `notes.log` in the meeting's folder.
 
 Each meeting gets a folder of audio and intermediate files in
 `~/Library/Application Support/meeting-notes/meetings/<meeting-id>/`. The note goes to

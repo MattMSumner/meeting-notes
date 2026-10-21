@@ -146,6 +146,16 @@ class MeetingStore:
         (path / "meeting.json").write_text(json.dumps(payload, indent=2) + "\n")
         return MeetingDir(path)
 
+    def all(self) -> list[MeetingDir]:
+        """Every meeting, oldest first (ids start with the date and time)."""
+        if not self.root.is_dir():
+            return []
+        return [
+            MeetingDir(path)
+            for path in sorted(self.root.iterdir())
+            if (path / "meeting.json").is_file()
+        ]
+
     def get(self, meeting_id: str) -> MeetingDir:
         path = self.root / meeting_id
         if not (path / "meeting.json").is_file():

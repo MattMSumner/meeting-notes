@@ -4,7 +4,7 @@ A personal, local-first meeting notetaker for macOS. It's a CLI that records my 
 other side of a call, transcribes locally after the meeting, summarizes with a local model,
 and writes an Obsidian-friendly markdown note.
 
-Status: **M3 done** (local summaries into Obsidian notes). M1, M2 and the spike done.
+Status: **M4 done** (start/stop from Spotlight). M1–M3 and the spike done.
 Phase 0 (Handy) set up.
 
 ---
@@ -388,6 +388,23 @@ markdown.
   App Intents metadata needs a full Xcode build.
 - Tests: state transitions (start while already recording, stop when nothing is
   recording, a stale state file after a crash, recovering an orphaned recording).
+- **Built (2026-10-21).** `notes start` / `stop` / `status`, background `record` and
+  `transcribe` jobs, `scripts/install-shortcuts.py`. What I learned:
+  - **Shortcuts work as a launcher.** A "Run Shell Script" step runs under
+    `ShortcutsMacHelper`; a process started with its own session outlives the shortcut,
+    and notes-capture's disclaim relaunch keeps permissions with NotesCapture.app (no new
+    prompts). Each shortcut asks once for permission to run scripts.
+  - **Shortcuts can be generated:** a plist workflow signed with `shortcuts sign --mode
+    anyone` imports with one click. No Xcode needed.
+  - **Shortcut scripts get a bare environment,** so they run `notes` through `zsh -lic` to
+    pick up Homebrew's PATH (ffmpeg) and `MEETING_NOTES_MY_NAME` from my shell config.
+  - **State lives with each meeting** (`session.json`: pid, process start time, phase), so
+    a meeting can be summarized while the next one records, and a crash leaves its marker
+    next to the audio. The process start time guards against pid reuse after a reboot.
+  - **Recovery tested for real:** after `kill -9` of the background job, notes-capture kept
+    recording with nothing in charge; `notes stop` stopped it cleanly and wrote the note.
+  - **The title dialog is the CLI's own** (`osascript display dialog`), not a Shortcuts
+    step, so M5 can pre-fill it from the calendar.
 
 **M5 — Calendar titles + Obsidian polish.** `notes-capture calendar-now` (EventKit) returns
 the current or nearest event's title and attendees as JSON. Add frontmatter, and write the

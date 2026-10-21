@@ -276,7 +276,7 @@ def test_a_crashed_recording_still_transcribes_both_sides(
     assert run(config, transcriber, "record", recorder=CrashingRecorder()) == 0
 
     err = capsys.readouterr().err
-    assert "Recording ended with an error" in err
+    assert "ended with an error" in err
     assert f"notes transcribe {only_meeting_dir(config).id}" in err
     body = only_transcript(config)
     assert "**[00:00:00] Me:** Can you hear me?" in body
