@@ -6,7 +6,9 @@ import signal
 import sys
 import threading
 import time
-from collections.abc import Callable, Sequence
+import traceback
+from collections.abc import Callable, Generator, Sequence
+from contextlib import contextmanager
 from datetime import datetime
 from types import FrameType
 
@@ -92,13 +94,35 @@ def _parser() -> argparse.ArgumentParser:
 STOP_SIGNALS = (signal.SIGINT, signal.SIGTERM, signal.SIGHUP)
 
 
-def _record(meeting_dir: MeetingDir, duration: float | None, recorder: Recorder) -> None:
-    stop = threading.Event()
-
+@contextmanager
+def _stop_on_signals(stop: threading.Event) -> Generator[None]:
     def on_stop_signal(signum: int, frame: FrameType | None) -> None:
         stop.set()
 
     previous = {sig: signal.signal(sig, on_stop_signal) for sig in STOP_SIGNALS}
+    try:
+        yield
+    finally:
+        for sig, handler in previous.items():
+            signal.signal(sig, handler)
+
+
+def _record(
+    meeting_dir: MeetingDir,
+    duration: float | None,
+    recorder: Recorder,
+    stop: threading.Event,
+) -> None:
+    stop_file = session.stop_request_file(meeting_dir)
+
+    def watch_for_stop_request() -> None:
+        while not stop.is_set():
+            if stop_file.exists():
+                stop.set()
+            stop.wait(0.25)
+
+    watcher = threading.Thread(target=watch_for_stop_request, daemon=True)
+    watcher.start()
     # Flushed explicitly: notes-capture writes to the same terminal, and Python buffers
     # stdout when it isn't a TTY (e.g. under Claude Code), which put our lines after its.
     timer = threading.Timer(duration, stop.set) if duration else None
@@ -115,8 +139,7 @@ def _record(meeting_dir: MeetingDir, duration: float | None, recorder: Recorder)
     finally:
         if timer:
             timer.cancel()
-        for sig, handler in previous.items():
-            signal.signal(sig, handler)
+        stop.set()  # ends the watcher
     print("Stopped.", flush=True)
 
 
@@ -142,15 +165,26 @@ class _Commands:
         self.processes = processes
         self.desktop = desktop
 
-    def _tell(self, message: str, *, error: bool = False) -> None:
-        """For commands run from a shortcut: no terminal, so also a notification."""
+    def _say(self, message: str, *, notify: bool, error: bool = False) -> None:
+        """Prints a message, and when there's no terminal to read it (a shortcut, a
+        background job) also shows it as a notification."""
         print(message, file=sys.stderr if error else sys.stdout, flush=True)
-        self.desktop.notify(message)
+        if notify:
+            self.desktop.notify(message)
 
     def _session(self, phase: Phase) -> Session:
         pid = os.getpid()
         started = self.processes.started(pid) or ""
         return Session(pid, started, phase, datetime.now().astimezone())
+
+    def _spawn_job(
+        self, meeting_dir: MeetingDir, args: list[str], phase: Phase, started_at: datetime
+    ) -> None:
+        """Runs `notes <args>` in the background for meeting_dir, recording its session
+        straight away so the next `start`, `stop` or `status` sees it."""
+        pid = self.processes.spawn(args, meeting_dir.path / "notes.log")
+        started = self.processes.started(pid) or ""
+        session.write(meeting_dir, Session(pid, started, phase, started_at))
 
     def _recording(self) -> list[Active]:
         """Recordings in progress in other processes."""
@@ -162,86 +196,93 @@ class _Commands:
             and active.session.pid != os.getpid()
         ]
 
+    def _recover(self, orphan: Active) -> None:
+        """Finishes a meeting whose process died: stops any capture still recording into it
+        and writes its note in the background."""
+        meeting_dir = orphan.meeting_dir
+        self.processes.stop_capture(meeting_dir.path)
+        session.session_file(meeting_dir).unlink(missing_ok=True)
+        session.stop_request_file(meeting_dir).unlink(missing_ok=True)
+        title = _title(meeting_dir)
+        if not meeting_dir.captures():
+            self._say(f"“{title}” stopped before any audio was saved.", notify=True)
+            return
+        self._spawn_job(
+            meeting_dir,
+            ["transcribe", meeting_dir.id, "--background"],
+            Phase.PROCESSING,
+            orphan.session.started_at,
+        )
+        self._say(
+            f"“{title}” stopped unexpectedly. Writing its note from what was recorded.",
+            notify=True,
+        )
+
     def _recover_orphans(self) -> list[Active]:
-        """Finishes meetings whose process died: stops any capture still recording into them
-        and writes their notes in the background."""
         orphans = [a for a in session.find(self.store, self.processes) if not a.running]
         for orphan in orphans:
-            meeting_dir = orphan.meeting_dir
-            self.processes.stop_capture(meeting_dir.path)
-            session.session_file(meeting_dir).unlink(missing_ok=True)
-            if not meeting_dir.captures():
-                self._tell(f"“{_title(meeting_dir)}” stopped before any audio was saved.")
-                continue
-            pid = self.processes.spawn(
-                ["transcribe", meeting_dir.id, "--background"], meeting_dir.path / "notes.log"
-            )
-            started = self.processes.started(pid) or ""
-            session.write(
-                meeting_dir, Session(pid, started, Phase.PROCESSING, orphan.session.started_at)
-            )
-            self._tell(
-                f"“{_title(meeting_dir)}” stopped unexpectedly. Writing its note from what "
-                "was recorded."
-            )
+            self._recover(orphan)
         return orphans
 
     def start(self, args: argparse.Namespace) -> int:
-        self._recover_orphans()
-        if recording := self._recording():
-            self._tell(f"Already recording “{_title(recording[0].meeting_dir)}”.", error=True)
-            return 1
-        title: str | None = args.title
-        if args.ask_title:
-            title = self.desktop.ask_text("Meeting title (leave empty for Untitled):")
-            if title is None:
-                return 0  # cancelled
-        meeting_dir = self.store.create(Meeting.new(title, datetime.now().astimezone()))
-        pid = self.processes.spawn(
-            ["record", "--meeting-id", meeting_dir.id, "--background"],
-            meeting_dir.path / "notes.log",
-        )
-        # Written here as well as by the recording itself, so a second `start` straight
-        # after this one sees it.
-        session.write(
-            meeting_dir,
-            Session(
-                pid,
-                self.processes.started(pid) or "",
+        with session.lock(self.store):
+            self._recover_orphans()
+            if recording := self._recording():
+                title = _title(recording[0].meeting_dir)
+                self._say(f"Already recording “{title}”.", notify=True, error=True)
+                return 1
+            title: str | None = args.title
+            if args.ask_title:
+                title = self.desktop.ask_text("Meeting title (leave empty for Untitled):")
+                if title is None:
+                    return 0  # cancelled
+            meeting = Meeting.new(title, datetime.now().astimezone())
+            meeting_dir = self.store.create(meeting)
+            self._spawn_job(
+                meeting_dir,
+                ["record", "--meeting-id", meeting_dir.id, "--background"],
                 Phase.RECORDING,
-                meeting_dir.load_meeting().started_at,
-            ),
-        )
+                meeting.started_at,
+            )
         print(f"Recording {meeting_dir.id} in the background. Stop it with `notes stop`.")
         return 0
 
     def stop(self, args: argparse.Namespace) -> int:
-        recovered = self._recover_orphans()
-        recording = self._recording()
-        if not recording:
-            if recovered:
-                return 0
-            self._tell("Nothing is recording.", error=True)
-            return 1
-        for active in recording:
-            self.processes.interrupt(active.session.pid)
+        with session.lock(self.store):
+            recovered = self._recover_orphans()
+            recording = self._recording()
+            if not recording:
+                if recovered:
+                    return 0
+                self._say("Nothing is recording.", notify=True, error=True)
+                return 1
+            for active in recording:
+                session.stop_request_file(active.meeting_dir).touch()
+                self.processes.interrupt(active.session.pid)
+            return max(self._wait_for_stop(active) for active in recording)
+
+    def _wait_for_stop(self, active: Active) -> int:
+        """Waits for a recording to save its audio, which it shows by moving on to writing
+        the note. Returns the exit status."""
+        meeting_dir = active.meeting_dir
         deadline = time.monotonic() + STOP_WAIT_SECONDS
-        status = 0
-        for active in recording:
-            # The recording moves on to writing the note once its audio is saved.
-            while (
-                (current := session.read(active.meeting_dir)) is not None
-                and current.phase == Phase.RECORDING
-                and session.is_running(current, self.processes)
-                and time.monotonic() < deadline
-            ):
-                time.sleep(0.2)
-            if current is not None and current.phase == Phase.RECORDING:
-                self._tell(f"“{_title(active.meeting_dir)}” didn't stop.", error=True)
-                status = 1
-            else:
-                print(f"Stopped {active.meeting_dir.id}. The note will be ready shortly.")
-        return status
+        while (
+            (current := session.read(meeting_dir)) is not None
+            and current.phase == Phase.RECORDING
+            and session.is_running(current, self.processes)
+            and time.monotonic() < deadline
+        ):
+            time.sleep(0.2)
+        if current is None or current.phase != Phase.RECORDING:
+            # If it failed instead, the job itself says so by notification.
+            print(f"Stopped {meeting_dir.id}.")
+            return 0
+        if not session.is_running(current, self.processes):
+            # It died while saving its audio.
+            self._recover(Active(meeting_dir, current, running=False))
+            return 0
+        self._say(f"“{_title(meeting_dir)}” didn't stop.", notify=True, error=True)
+        return 1
 
     def status(self, args: argparse.Namespace) -> int:
         found = session.find(self.store, self.processes)
@@ -260,51 +301,86 @@ class _Commands:
         return 0
 
     def record(self, args: argparse.Namespace) -> int:
-        if args.meeting_id is None:
-            if recording := self._recording():
-                print(
-                    f"Already recording {recording[0].meeting_dir.id}. Stop it with `notes stop`.",
-                    file=sys.stderr,
-                )
-                return 1
-            meeting_dir = self.store.create(Meeting.new(args.title, datetime.now().astimezone()))
-        else:
-            meeting_dir = self.store.get(args.meeting_id)
-        title = _title(meeting_dir)
-        session.write(meeting_dir, self._session(Phase.RECORDING))
-        try:
-            if args.background:
-                self.desktop.notify(f"Recording “{title}”.")
-            try:
-                _record(meeting_dir, args.duration, self.make_recorder(self.config))
-            except CaptureNotInstalled as error:
-                self._report(str(error), args.background)
-                return 1
-            except CaptureError as error:
-                # Whatever was recorded is still worth transcribing.
-                if not meeting_dir.captures():
-                    self._report(
-                        f"Recording “{title}” failed ({error}). No audio was saved.",
-                        args.background,
+        # First, so a stop that arrives while we're getting ready isn't lost.
+        stop = threading.Event()
+        with _stop_on_signals(stop):
+            if args.meeting_id is None:
+                with session.lock(self.store):
+                    if recording := self._recording():
+                        print(
+                            f"Already recording {recording[0].meeting_dir.id}. "
+                            "Stop it with `notes stop`.",
+                            file=sys.stderr,
+                        )
+                        return 1
+                    meeting = Meeting.new(args.title, datetime.now().astimezone())
+                    meeting_dir = self.store.create(meeting)
+                    session.write(meeting_dir, self._session(Phase.RECORDING))
+            else:
+                try:
+                    meeting_dir = self.store.get(args.meeting_id)
+                except MeetingNotFound:
+                    self._say(
+                        f"Couldn't record: the meeting folder {args.meeting_id} is missing.",
+                        notify=args.background,
+                        error=True,
                     )
                     return 1
-                self._report(
-                    f"Recording “{title}” ended with an error ({error}). Writing the note from "
-                    f"what was saved. To retry later: notes transcribe {meeting_dir.id}",
-                    args.background,
-                )
-            else:
-                if args.background:
-                    self.desktop.notify(f"Stopped recording “{title}”. Writing the note…")
-            session.write(meeting_dir, self._session(Phase.PROCESSING))
-            return self._write_note(meeting_dir, transcribe=True, background=args.background)
-        finally:
-            session.clear(meeting_dir, os.getpid())
+                session.write(meeting_dir, self._session(Phase.RECORDING))
+            try:
+                return self._record_then_write_note(meeting_dir, args, stop)
+            except Exception as error:
+                if not args.background:
+                    raise
+                self._background_failed(meeting_dir, error)
+                return 1
+            finally:
+                session.clear(meeting_dir, os.getpid())
+                session.stop_request_file(meeting_dir).unlink(missing_ok=True)
 
-    def _report(self, message: str, background: bool) -> None:
-        print(message, file=sys.stderr, flush=True)
+    def _record_then_write_note(
+        self, meeting_dir: MeetingDir, args: argparse.Namespace, stop: threading.Event
+    ) -> int:
+        title = _title(meeting_dir)
+        background: bool = args.background
         if background:
-            self.desktop.notify(message)
+            self.desktop.notify(f"Recording “{title}”.")
+        try:
+            _record(meeting_dir, args.duration, self.make_recorder(self.config), stop)
+        except CaptureNotInstalled as error:
+            self._say(str(error), notify=background, error=True)
+            return 1
+        except CaptureError as error:
+            # Whatever was recorded is still worth transcribing.
+            if not meeting_dir.captures():
+                self._say(
+                    f"Recording “{title}” failed ({error}). No audio was saved.",
+                    notify=background,
+                    error=True,
+                )
+                return 1
+            self._say(
+                f"Recording “{title}” ended with an error ({error}). Writing the note from "
+                f"what was saved. To retry later: notes transcribe {meeting_dir.id}",
+                notify=background,
+                error=True,
+            )
+        else:
+            if background:
+                self.desktop.notify(f"Stopped recording “{title}”. Writing the note…")
+        session.write(meeting_dir, self._session(Phase.PROCESSING))
+        return self._write_note(meeting_dir, transcribe=True, background=background)
+
+    def _background_failed(self, meeting_dir: MeetingDir, error: Exception) -> None:
+        """A background job failed unexpectedly. Its log gets the details; the user, who has
+        no terminal, gets a notification saying where they are and how to retry."""
+        traceback.print_exc()
+        self._say(
+            f"Couldn't write the note for “{_title(meeting_dir)}” ({error}). Details are in "
+            f"notes.log in its folder. To retry: notes transcribe {meeting_dir.id}",
+            notify=True,
+            error=True,
+        )
 
     def _write_note(
         self, meeting_dir: MeetingDir, *, transcribe: bool, background: bool = False
@@ -316,28 +392,27 @@ class _Commands:
         talk = pipeline.conversation(meeting_dir)
         title = _title(meeting_dir)
         print(f"Summarizing with {self.config.summary_model}...", flush=True)
-        summary_error: SummaryError | None = None
         try:
             pipeline.summarize(
                 meeting_dir, talk, self.make_summarizer(self.config), self.config.my_name
             )
         except pipeline.NotTranscribed as error:
-            self._report(f"Couldn't summarize: {error}", background)
+            self._say(f"Couldn't summarize: {error}", notify=background, error=True)
             return 1
         except SummaryError as error:
             # The transcript is still worth writing; the note says how to retry.
-            summary_error = error
-            print(f"Couldn't summarize: {error}", file=sys.stderr)
-            print(f"To retry: notes summarize {meeting_dir.id}", file=sys.stderr)
+            self._render(meeting_dir, talk)
+            self._say(
+                f"Wrote the transcript for “{title}”, but couldn't summarize it ({error}). "
+                f"To retry: notes summarize {meeting_dir.id}",
+                notify=background,
+                error=True,
+            )
+            return 1
         self._render(meeting_dir, talk)
         if background:
-            self.desktop.notify(
-                f"The note for “{title}” is ready."
-                if summary_error is None
-                else f"Wrote the transcript for “{title}”, but couldn't summarize it: "
-                f"{summary_error}"
-            )
-        return 0 if summary_error is None else 1
+            self.desktop.notify(f"The note for “{title}” is ready.")
+        return 0
 
     def _render(self, meeting_dir: MeetingDir, talk: pipeline.Conversation) -> None:
         rendered = pipeline.render(meeting_dir, talk, self.config)
@@ -360,13 +435,18 @@ class _Commands:
         if args.command == "render":
             self._render(meeting_dir, pipeline.conversation(meeting_dir))
             return 0
-        background = getattr(args, "background", False)
+        background: bool = getattr(args, "background", False)
         if background:
             session.write(meeting_dir, self._session(Phase.PROCESSING))
         try:
             return self._write_note(
                 meeting_dir, transcribe=args.command == "transcribe", background=background
             )
+        except Exception as error:
+            if not background:
+                raise
+            self._background_failed(meeting_dir, error)
+            return 1
         finally:
             if background:
                 session.clear(meeting_dir, os.getpid())

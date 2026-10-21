@@ -127,8 +127,8 @@ def run(
 
 
 def only_meeting_dir(config: Config) -> MeetingDir:
-    [meeting_dir] = list(config.data_dir.iterdir())
-    return MeetingDir(meeting_dir)
+    [meeting_dir] = MeetingStore(config.data_dir).all()
+    return meeting_dir
 
 
 def only_transcript(config: Config) -> str:

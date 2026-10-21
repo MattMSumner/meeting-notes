@@ -1,6 +1,7 @@
 """notes start / stop / status, and the background jobs they run, with fake processes."""
 
 import os
+import threading
 from collections.abc import Callable
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -378,3 +379,121 @@ def test_a_recovery_job_writes_the_note_and_cleans_up(
     assert status == 0
     assert session.read(meeting_dir) is None
     assert desktop.notifications == ["The note for “Crashed” is ready."]
+
+
+# Review fixes
+
+
+def test_a_background_job_that_fails_unexpectedly_says_so(
+    config: Config, processes: FakeProcesses, desktop: FakeDesktop
+):
+    meeting_dir = meeting(config, "Standup")
+
+    class BrokenTranscriber(FakeTranscriber):
+        def transcribe(self, audio: Path) -> list[Segment]:
+            raise RuntimeError("out of memory")
+
+    status = run(
+        config,
+        processes,
+        desktop,
+        "record",
+        "--meeting-id",
+        meeting_dir.id,
+        "--background",
+        transcriber=BrokenTranscriber(),
+    )
+
+    assert status == 1
+    assert session.read(meeting_dir) is None
+    assert "Couldn't write the note for “Standup” (out of memory)" in desktop.notifications[-1]
+    assert f"notes transcribe {meeting_dir.id}" in desktop.notifications[-1]
+
+
+def test_a_stop_requested_before_the_recording_is_ready_is_not_lost(
+    config: Config, processes: FakeProcesses, desktop: FakeDesktop
+):
+    meeting_dir = meeting(config)
+    session.stop_request_file(meeting_dir).touch()
+    stopped: list[bool] = []
+
+    class WaitingRecorder:
+        def record(self, directory: Path, stop: threading.Event) -> None:
+            stopped.append(stop.wait(timeout=5))
+            write_capture(directory)
+
+    main(
+        ["record", "--meeting-id", meeting_dir.id, "--background"],
+        config=config,
+        make_transcriber=lambda _: FakeTranscriber(),
+        make_summarizer=lambda _: FakeSummarizer(),
+        make_recorder=lambda _: WaitingRecorder(),
+        processes=processes,
+        desktop=desktop,
+    )
+
+    assert stopped == [True]
+    assert not session.stop_request_file(meeting_dir).exists()
+    assert list(meeting_dir.path.glob("*.tmp")) == []
+
+
+def test_stop_asks_by_file_as_well_as_by_signal(
+    config: Config, processes: FakeProcesses, desktop: FakeDesktop
+):
+    meeting_dir = meeting(config)
+    recording_by(processes, meeting_dir, pid=4000)
+    asked: list[bool] = []
+
+    def finish_recording(pid: int) -> None:
+        asked.append(session.stop_request_file(meeting_dir).exists())
+        session.write(meeting_dir, Session(pid, "started 4000", Phase.PROCESSING, datetime.now()))
+
+    processes.on_interrupt = finish_recording
+
+    assert run(config, processes, desktop, "stop") == 0
+    assert asked == [True]
+
+
+def test_a_recording_that_dies_while_stopping_is_recovered(
+    config: Config, processes: FakeProcesses, desktop: FakeDesktop
+):
+    meeting_dir = meeting(config, "Standup")
+    write_capture(meeting_dir.path)
+    recording_by(processes, meeting_dir, pid=4000)
+
+    def die(pid: int) -> None:
+        del processes.running[pid]
+
+    processes.on_interrupt = die
+
+    assert run(config, processes, desktop, "stop") == 0
+
+    assert processes.spawned == [["transcribe", meeting_dir.id, "--background"]]
+    assert "“Standup” stopped unexpectedly" in desktop.notifications[0]
+
+
+def test_a_missing_meeting_folder_is_reported(
+    config: Config, processes: FakeProcesses, desktop: FakeDesktop
+):
+    status = run(config, processes, desktop, "record", "--meeting-id", "gone", "--background")
+
+    assert status == 1
+    assert desktop.notifications == ["Couldn't record: the meeting folder gone is missing."]
+
+
+def test_start_waits_for_another_start_or_stop_to_finish(
+    config: Config, processes: FakeProcesses, desktop: FakeDesktop
+):
+    store = MeetingStore(config.data_dir)
+    done = threading.Event()
+
+    def start() -> None:
+        run(config, processes, desktop, "start", "--title", "Standup")
+        done.set()
+
+    with session.lock(store):
+        thread = threading.Thread(target=start)
+        thread.start()
+        assert not done.wait(0.3)
+    assert done.wait(5)
+    thread.join()

@@ -4,6 +4,7 @@ Each running meeting has a session.json in its folder naming the process doing t
 and what it's doing. The process removes it when it finishes. One left behind by a process
 that's gone (a crash, a reboot) marks an orphaned meeting that `notes stop` recovers."""
 
+import fcntl
 import json
 import os
 import re
@@ -11,6 +12,8 @@ import signal
 import subprocess
 import sys
 import time
+from collections.abc import Generator
+from contextlib import contextmanager
 from dataclasses import dataclass
 from datetime import datetime
 from enum import StrEnum
@@ -82,8 +85,9 @@ def write(meeting_dir: MeetingDir, session: Session) -> None:
         "phase": session.phase.value,
         "started_at": session.started_at.isoformat(),
     }
-    # Written whole then renamed, so a reader never sees half a file.
-    tmp = session_file(meeting_dir).with_suffix(".tmp")
+    # Written whole then renamed, so a reader never sees half a file. The temp name is per
+    # process: `notes start` and the recording it launches write the same session.
+    tmp = meeting_dir.path / f".session.{os.getpid()}.tmp"
     tmp.write_text(json.dumps(payload, indent=2) + "\n")
     tmp.replace(session_file(meeting_dir))
 
@@ -93,6 +97,25 @@ def clear(meeting_dir: MeetingDir, pid: int) -> None:
     session = read(meeting_dir)
     if session is not None and session.pid == pid:
         session_file(meeting_dir).unlink(missing_ok=True)
+
+
+def stop_request_file(meeting_dir: MeetingDir) -> Path:
+    """Asks a recording to stop. Unlike a signal, it can't arrive too early to be handled:
+    a recording started a moment ago reads it once it's ready."""
+    return meeting_dir.path / "stop-requested"
+
+
+@contextmanager
+def lock(store: MeetingStore) -> Generator[None]:
+    """Lets one `start` or `stop` run at a time, so two at once (a double press in
+    Spotlight) can't both start a recording or both recover the same orphan."""
+    store.root.mkdir(parents=True, exist_ok=True)
+    with (store.root / ".lock").open("w") as lock_file:
+        fcntl.flock(lock_file, fcntl.LOCK_EX)
+        try:
+            yield
+        finally:
+            fcntl.flock(lock_file, fcntl.LOCK_UN)
 
 
 def is_running(session: Session, processes: Processes) -> bool:
@@ -139,6 +162,9 @@ class SystemProcesses:
                 stderr=out,
                 # Its own session: it outlives whatever started it (a shortcut, a terminal).
                 start_new_session=True,
+                # Ctrl-C (which `notes stop` sends) is ignored until the job sets up its own
+                # handling. Otherwise a stop during Python's startup kills it outright.
+                preexec_fn=lambda: signal.signal(signal.SIGINT, signal.SIG_IGN),
             )
         return process.pid
 
