@@ -6,7 +6,7 @@ the conversation with a local model served by [Ollama](https://ollama.com), and 
 note and its transcript into an Obsidian vault. No audio, transcripts or summaries leave
 the machine.
 
-Status: **M4**, start and stop from Spotlight. See [plan.md](plan.md) for the roadmap.
+Status: **M5**, meeting titles from the calendar. See [plan.md](plan.md) for the roadmap.
 
 ## Setup
 
@@ -23,6 +23,10 @@ capture/install.sh         # builds and signs NotesCapture.app, then checks it c
 The first transcription downloads the speech model (`mlx-community/parakeet-tdt-0.6b-v2`)
 from Hugging Face. After that, everything runs offline.
 
+For meeting titles from your calendar, sync it to macOS: System Settings → Internet
+Accounts → add your Google account with only Calendars on (no calendar app needed). The
+first recording asks for Calendars access for NotesCapture.
+
 Get consent from everyone in a meeting before recording it.
 
 ## Usage
@@ -36,8 +40,8 @@ uv run scripts/install-shortcuts.py
 This adds two shortcuts (confirm each import in Shortcuts, and allow them to run scripts
 when asked). Run them from Spotlight by typing their names:
 
-- **Start meeting notes** asks for a title (empty means Untitled) and starts recording in
-  the background. The orange and purple menu bar indicators show it's recording.
+- **Start meeting notes** asks for a title, suggesting the meeting on your calendar now
+  (empty means Untitled), and starts recording in the background. The orange and purple menu bar indicators show it's recording.
 - **Stop meeting notes** stops it. The transcript and summary are written in the
   background, and a notification says when the note is ready.
 

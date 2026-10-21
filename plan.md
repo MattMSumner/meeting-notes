@@ -4,7 +4,7 @@ A personal, local-first meeting notetaker for macOS. It's a CLI that records my 
 other side of a call, transcribes locally after the meeting, summarizes with a local model,
 and writes an Obsidian-friendly markdown note.
 
-Status: **M4 done** (start/stop from Spotlight). M1–M3 and the spike done.
+Status: **M5 done** (titles from Google Calendar). M1–M4 and the spike done.
 Phase 0 (Handy) set up.
 
 ---
@@ -261,7 +261,7 @@ then transcribes and writes `transcript.md` to the notes folder.
   - **Accuracy on my voice:** very good. Errors are mostly product/proper names
     ("Claude" → "Word", "Antique" for a product name), an occasional dropped or misheard
     word ("rate" → "race"), British spellings, and numbers written as words. Names point
-    to the vocabulary prompt on the M6 list.
+    to the vocabulary prompt on the M7 list.
   - **Fully offline:** loading by repo id contacted Hugging Face on every run. It now
     loads from the local cache and only downloads if the model is missing (verified with
     network access blocked).
@@ -356,7 +356,7 @@ markdown.
     to always use it, which fixed both. Owners are named when the transcript says who the
     other person is ("Hey Alex"); "Them" otherwise.
   - **Quality on real meetings:** facts and numbers accurate and specific; misheard names
-    pass straight through (vocabulary prompt, M6). But it **over-reads stance**: tentative
+    pass straight through (vocabulary prompt, M7). But it **over-reads stance**: tentative
     remarks can come out as firm positions, even with a prompt rule against it. Asking for
     first person ("I") made things worse (it mixed "I" with third person), so it was
     dropped. Follow-up: build a few synthetic transcripts with known-correct notes and
@@ -406,7 +406,7 @@ markdown.
   - **The title dialog is the CLI's own** (`osascript display dialog`), not a Shortcuts
     step, so M5 can pre-fill it from the calendar.
 
-**M5 — Calendar titles + transcript readability.**
+**M5 — Calendar titles.**
 - **Calendar source: Google Calendar, synced by macOS.** I use Google Calendar (personal
   Gmail) in the browser, not Apple's Calendar app. macOS can still keep a local copy:
   System Settings → Internet Accounts → Google, with only Calendars on. EventKit then reads
@@ -429,23 +429,36 @@ markdown.
 - Tests: picking an event from fixture lists (overlapping events, back-to-back meetings,
   early start, no event, all-day and declined events ignored); the dialog default; the
   frontmatter.
-- **Transcript readability** (found in the first real meeting):
+- **Built (2026-10-21).** What I learned:
+  - **Internet Accounts sync works for a personal Gmail calendar.** EventKit sees its
+    events (and a shared family calendar) with titles, times and attendees, and marks
+    which attendee is me (`isCurrentUser`), so declined meetings can be skipped. The
+    Calendars permission prompt went to NotesCapture.app, as planned.
+  - **Missing fields are left out, not null:** Swift's JSONEncoder omits nil optionals
+    (an attendee without an email), so the Python side reads every field with a default.
+  - **Back-to-back meetings:** "nearest start wins" means at 10:58 the 11:00 meeting is
+    suggested over the 10:00 one that hasn't ended yet.
+  - **An edited title keeps the attendees:** retitling in the dialog is still that
+    meeting.
+
+**M6 — Transcript readability.**
+- Found in the first real meeting:
   - Split long turns into paragraphs (every 30–60 s, at sentence boundaries). One turn
     was 2½ minutes in a single block.
   - Fold short backchannels ("Yeah.", "Okay.") inline instead of giving each its own
     turn. 155 turns in 27 minutes, many of them one word.
   - Optionally pad the channel that ends early, so both files cover the whole recording.
-  - Fix turn order (found in the second real meeting). Parakeet's sentence segments can
-    run across long pauses (one 9 s segment held two words) and sometimes come back as a
-    single unpunctuated, lowercase block of 1½–2 minutes. A segment that starts before the
-    other speaker's question and continues after it sorts ahead of the question, so
-    answers appeared before the questions they answered, and merging same-speaker
-    segments folded interjections into one early-stamped block. Fix: split segments
-    wherever the gap between token timestamps is ≥ ~1 s (each sentence carries per-token
-    timings), before merging. Also try a shorter `CHUNK_SECONDS` to see whether it brings
-    back punctuation in the long blocks.
+- Fix turn order (found in the second real meeting). Parakeet's sentence segments can
+  run across long pauses (one 9 s segment held two words) and sometimes come back as a
+  single unpunctuated, lowercase block of 1½–2 minutes. A segment that starts before the
+  other speaker's question and continues after it sorts ahead of the question, so
+  answers appeared before the questions they answered, and merging same-speaker
+  segments folded interjections into one early-stamped block. Fix: split segments
+  wherever the gap between token timestamps is ≥ ~1 s (each sentence carries per-token
+  timings), before merging. Also try a shorter `CHUNK_SECONDS` to see whether it brings
+  back punctuation in the long blocks.
 
-**M6 — Stretch.** Diarization of the "them" channel; a vocabulary prompt built from my
+**M7 — Stretch.** Diarization of the "them" channel; a vocabulary prompt built from my
 jargon list; FLAC; auto-start when Zoom joins a call.
 
 ---
