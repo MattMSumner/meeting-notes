@@ -363,12 +363,31 @@ markdown.
     compare prompts and models against them (e.g. a larger dense model), rather than tuning
     on real meetings by eye.
 
-**M4 — Start/stop + hotkey.** `notes start` / `stop` / `status` using a PID file in the
-meeting directory. Hotkey via Raycast or Shortcuts calling the CLI. Crash safety: write the
-WAV header on close but keep the data flushed as it records, and have `notes stop` recover
-an orphaned recording.
-- Tests: state transitions (start while already running, stop when nothing is running,
-  stale PID).
+**M4 — Start/stop from Spotlight.** No terminal needed to record a meeting.
+- `notes start [--title T]`: starts recording in the background and returns at once. It
+  runs the existing record → transcribe → summarize → render flow detached, logging to the
+  meeting folder, and records the running meeting in a state file.
+- `notes stop`: tells the recording to stop; transcription and the summary then run in the
+  background (about a minute for 30 minutes of audio).
+- `notes status`: whether a meeting is recording, its title and how long it's been going.
+- **Feedback:** macOS notifications when recording starts, when it stops, and when the
+  note is ready (or failed, with the retry command). No auto-opening Obsidian. The
+  system's orange (mic) and purple (system audio) menu bar indicators show it's live.
+- **Triggers: Shortcuts, run from Spotlight.** "Start meeting notes" (asks for a title in a
+  text box; empty means Untitled, and M5 will pre-fill it from the calendar) and "Stop
+  meeting notes", each a "Run Shell Script" step calling the CLI. Found by typing their
+  names in Spotlight, or a Quick Key. No global hotkey (nothing to clash with Ghostty or
+  Handy) and no Raycast. A script installs them if Shortcuts can be scripted; otherwise
+  written setup steps.
+- **Check first (riskiest):** that a recording started from a shortcut survives the
+  shortcut finishing, and that mic and system audio permission still go to
+  NotesCapture.app (via the disclaim relaunch), not to Shortcuts.
+- Crash safety: `notes stop` (and `status`) recover a recording orphaned by a crash or
+  reboot, using the WAV repair from M2.
+- Not doing: a native Spotlight action (App Intents) in NotesCapture.app. Neater, but
+  App Intents metadata needs a full Xcode build.
+- Tests: state transitions (start while already recording, stop when nothing is
+  recording, a stale state file after a crash, recovering an orphaned recording).
 
 **M5 — Calendar titles + Obsidian polish.** `notes-capture calendar-now` (EventKit) returns
 the current or nearest event's title and attendees as JSON. Add frontmatter, and write the
@@ -404,7 +423,6 @@ jargon list; FLAC; auto-start when Zoom joins a call.
 | System Audio Recording Only (Privacy & Security → Screen & System Audio Recording) | `notes-capture` (itself, via disclaim). Ghostty can't get it: it has no usage description, so the request is silently denied | "Them" channel |
 | Accessibility | Handy | Pasting dictated text |
 | Calendars (Full Access) | `notes-capture` (itself, via disclaim) | Meeting titles/attendees (M5) |
-| Input Monitoring | Hotkey tool, if needed | M4 |
 
 Because of the disclaim relaunch, grants go to `notes-capture` itself, not Ghostty, so
 other programs run in Ghostty don't inherit them.
