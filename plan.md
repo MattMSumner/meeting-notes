@@ -373,6 +373,16 @@ markdown.
     dropped. Follow-up: build a few synthetic transcripts with known-correct notes and
     compare prompts and models against them (e.g. a larger dense model), rather than tuning
     on real meetings by eye.
+  - **Numbers it was never told (2026-10-22).** A real summary merged a total and one part of
+    it into one range. On a synthetic version (`numbers_transcript.txt`) the model, every
+    time, worked out a number nobody said (the rest of a total) and turned "definitely
+    doable" into "the maximum". A prompt rule helped only 1 run in 3 and made it leave my
+    name out of the overview; qwen3:32b (dense, 24 GB loaded, ~4× slower) was no better.
+    So code checks instead: `figures.py` finds every number in the summary, in digits or
+    words, and looks for it in what was said. Ollama gets one retry naming the unsaid
+    numbers (it dropped them 3/3), and any left are flagged in the note. Stance
+    ("doable" vs "maximum") and dropped figures are still open: a quoted list of figures
+    in the schema, before the overview, is the next thing to try.
 
 **M4 — Start/stop from Spotlight.** No terminal needed to record a meeting.
 - `notes start [--title T]`: starts recording in the background and returns at once. It
