@@ -112,3 +112,56 @@ def test_tells_the_model_who_else_was_invited():
     summarizer(ollama).summarize(meeting, "transcript")
 
     assert "Others invited: Alex Doe, Kim\n" in ollama.requests[0]["messages"][1]["content"]
+
+
+def with_key_point(point: str) -> str:
+    return json.dumps(
+        {
+            "overview": "Priced the project.",
+            "key_points": [point],
+            "decisions": [],
+            "action_items": [],
+        }
+    )
+
+
+TOTAL_AND_BUILD = "[00:00:15] Sam: A hundred and twenty thousand all in, ninety for the build."
+
+
+def test_a_summary_with_only_numbers_that_were_said_is_kept():
+    ollama = FakeOllama(with_key_point("$120,000 total, $90,000 build."))
+
+    summarizer(ollama).summarize(MEETING, TOTAL_AND_BUILD)
+
+    assert len(ollama.requests) == 1
+
+
+def test_retries_once_naming_numbers_nobody_said():
+    ollama = FakeOllama(
+        with_key_point("$120,000 total: $90,000 build, $30,000 support."),
+        with_key_point("$120,000 total, $90,000 build."),
+    )
+
+    summary = summarizer(ollama).summarize(MEETING, TOTAL_AND_BUILD)
+
+    assert summary.key_points == ["$120,000 total, $90,000 build."]
+    retry = ollama.requests[1]["messages"]
+    assert "Nobody said these numbers: $30,000." in retry[3]["content"]
+
+
+def test_keeps_the_first_summary_if_the_retry_is_no_better():
+    first = with_key_point("$120,000 total: $90,000 build, $30,000 support.")
+    ollama = FakeOllama(first, with_key_point("$120,000 total: $90,000 build, $35,000 support."))
+
+    summary = summarizer(ollama).summarize(MEETING, TOTAL_AND_BUILD)
+
+    assert summary.key_points == ["$120,000 total: $90,000 build, $30,000 support."]
+
+
+def test_keeps_the_first_summary_if_the_retry_is_malformed():
+    first = with_key_point("$120,000 total: $90,000 build, $30,000 support.")
+    ollama = FakeOllama(first, "not json", "still not json")
+
+    summary = summarizer(ollama).summarize(MEETING, TOTAL_AND_BUILD)
+
+    assert summary.key_points == ["$120,000 total: $90,000 build, $30,000 support."]

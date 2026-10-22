@@ -442,3 +442,20 @@ def test_an_unreadable_summary_still_renders_with_a_warning(config: Config):
     note = only_note(config)
     assert "> [!warning] summary.json couldn't be read" in note
     assert f"`notes summarize {meeting_dir.id}`" in note
+
+
+def test_the_note_flags_numbers_nobody_said(config: Config):
+    priced = SUMMARY.model_copy(update={"key_points": ["Ninety for the build, $30,000 support."]})
+
+    class PricingSummarizer(FakeSummarizer):
+        def summarize(self, meeting: Meeting, transcript: str) -> Summary:
+            return priced
+
+    run(
+        config,
+        FakeTranscriber({"me": [Segment(0.0, 1.0, "Ninety for the build.")]}),
+        "record",
+        summarizer=PricingSummarizer(),
+    )
+
+    assert "> [!warning] Nobody said this number in the meeting: $30,000." in only_note(config)

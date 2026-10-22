@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from meeting_notes.config import Config
+from meeting_notes.figures import unsaid_numbers
 from meeting_notes.merge import Line, SpeakerTrack, merge
 from meeting_notes.render import render_note, render_transcript, timestamp
 from meeting_notes.store import MeetingDir
@@ -121,6 +122,21 @@ def render(meeting_dir: MeetingDir, talk: Conversation, config: Config) -> Rende
     except SummaryError as error:
         summary = None
         note_warnings.append(f"{error}. To write a new one: `notes summarize {meeting_dir.id}`")
+    if summary is not None:
+        said = "\n".join(
+            [
+                meeting.title,
+                f"{meeting.started_at:%Y-%m-%d %H:%M}",
+                *meeting.attendees,
+                *(line.text for line in talk.lines),
+            ]
+        )
+        if unsaid := unsaid_numbers(summary, said):
+            note_warnings.append(
+                f"Nobody said {'this number' if len(unsaid) == 1 else 'these numbers'} in "
+                f"the meeting: {', '.join(unsaid)}. The summary may have worked "
+                f"{'it' if len(unsaid) == 1 else 'them'} out, so check against the transcript."
+            )
     skipped = meeting_dir.write_unless_edited(
         {
             transcript: render_transcript(meeting, talk.lines, talk.warnings),

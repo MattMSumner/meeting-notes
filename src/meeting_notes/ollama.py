@@ -8,6 +8,7 @@ from collections.abc import Callable
 from importlib import resources
 from typing import Any, cast
 
+from meeting_notes.figures import unsaid_numbers
 from meeting_notes.meeting import Meeting
 from meeting_notes.summary import Summary, SummaryError, parse_summary
 
@@ -108,17 +109,47 @@ class OllamaSummarizer:
                 f"needed, {self.num_ctx} set), so the summary would miss part of it. "
                 f"Raise MEETING_NOTES_NUM_CTX to at least {estimate}."
             )
+        reply, summary = self._ask(messages)
+        # The model sometimes works out a number nobody said, like the rest of a total.
+        # One retry, told which; the retry is kept only if it has fewer such numbers, and
+        # any left are flagged in the note.
+        said = messages[1]["content"]
+        unsaid = unsaid_numbers(summary, said)
+        if not unsaid:
+            return summary
+        try:
+            _, retried = self._ask(
+                [
+                    *messages,
+                    {"role": "assistant", "content": reply},
+                    {
+                        "role": "user",
+                        "content": f"Nobody said these numbers: {', '.join(unsaid)}. Use only "
+                        "numbers someone said, and don't work out new ones. Reply again with "
+                        "JSON only.",
+                    },
+                ]
+            )
+        except SummaryError:
+            return summary
+        return retried if len(unsaid_numbers(retried, said)) < len(unsaid) else summary
+
+    def _ask(self, messages: list[dict[str, str]]) -> tuple[str, Summary]:
+        """The model's reply and the summary in it."""
         reply = self._chat(messages)
         try:
-            return parse_summary(reply)
+            return reply, parse_summary(reply)
         except SummaryError as error:
             # Local models occasionally break the format; one retry, told what was wrong,
             # almost always fixes it.
-            messages += [
-                {"role": "assistant", "content": reply},
-                {"role": "user", "content": f"{error}. Reply again with JSON only."},
-            ]
-            return parse_summary(self._chat(messages))
+            reply = self._chat(
+                [
+                    *messages,
+                    {"role": "assistant", "content": reply},
+                    {"role": "user", "content": f"{error}. Reply again with JSON only."},
+                ]
+            )
+            return reply, parse_summary(reply)
 
     def _chat(self, messages: list[dict[str, str]]) -> str:
         response = self.post(
