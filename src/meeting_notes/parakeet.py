@@ -11,6 +11,10 @@ from meeting_notes.transcript import Segment
 # Long recordings are transcribed in overlapping chunks to bound memory use.
 CHUNK_SECONDS = 120.0
 OVERLAP_SECONDS = 15.0
+# Parakeet splits sentences only at punctuation, so a segment can run across long pauses
+# (one 9 s segment held two words) and through the other side's turn, putting answers
+# ahead of their questions. Splitting at pauses lets the turns interleave.
+PAUSE_SECONDS = 1.0
 
 
 def _local_model_dir(model: str) -> Path:
@@ -39,8 +43,13 @@ class ParakeetTranscriber:
             from parakeet_mlx import from_pretrained
 
             self._model = from_pretrained(str(_local_model_dir(self._model_name)))
+        from parakeet_mlx import DecodingConfig, SentenceConfig
+
         result = self._model.transcribe(
-            audio, chunk_duration=CHUNK_SECONDS, overlap_duration=OVERLAP_SECONDS
+            audio,
+            chunk_duration=CHUNK_SECONDS,
+            overlap_duration=OVERLAP_SECONDS,
+            decoding_config=DecodingConfig(sentence=SentenceConfig(silence_gap=PAUSE_SECONDS)),
         )
         return [
             Segment(start=float(s.start), end=float(s.end), text=str(s.text).strip())

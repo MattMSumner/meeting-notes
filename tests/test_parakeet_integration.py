@@ -44,3 +44,14 @@ def test_transcribes_speech_with_timestamps(tmp_path: Path):
         assert word in text
     assert segments[0].start < 1.0
     assert all(s.start <= s.end for s in segments)
+
+
+def test_splits_at_a_long_pause_without_punctuation(tmp_path: Path):
+    # [[slnc]] is a pause in milliseconds, in the middle of what reads as one sentence.
+    audio = speak("so the plan is [[slnc 2500]] we ship it on friday", tmp_path / "me.wav")
+
+    segments = ParakeetTranscriber(DEFAULT_MODEL).transcribe(audio)
+
+    assert len(segments) >= 2
+    assert "friday" not in segments[0].text.lower()
+    assert segments[1].start - segments[0].end >= 1.0
