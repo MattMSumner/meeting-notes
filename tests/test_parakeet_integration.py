@@ -52,6 +52,11 @@ def test_splits_at_a_long_pause_without_punctuation(tmp_path: Path):
 
     segments = ParakeetTranscriber(DEFAULT_MODEL).transcribe(audio)
 
-    assert len(segments) >= 2
-    assert "friday" not in segments[0].text.lower()
-    assert segments[1].start - segments[0].end >= 1.0
+    # Parakeet may also split at punctuation it adds, so look for the pause anywhere.
+    [after_pause] = [
+        later
+        for earlier, later in zip(segments, segments[1:], strict=False)
+        if later.start - earlier.end >= 1.0
+    ]
+    assert "friday" in after_pause.text.lower()
+    assert "plan" not in after_pause.text.lower()

@@ -475,13 +475,18 @@ interjections into one early-stamped block. The summary model reads the same ord
 this also muddles who said what. Fix: split segments wherever the gap between token
 timestamps is ≥ ~1 s (each sentence carries per-token timings), before merging. Also try
 a shorter `CHUNK_SECONDS` to see whether it brings back punctuation in the long blocks.
-- **Built (2026-10-27).** No splitting code needed: parakeet-mlx's `SentenceConfig` has a
-  `silence_gap`, applied after chunks are merged, so `ParakeetTranscriber` passes 1 s
-  (`PAUSE_SECONDS`). What I learned, re-transcribing two real meetings (counts only):
+- **Built (2026-10-27).** `ParakeetTranscriber` splits each sentence wherever a word
+  starts after a pause of 1 s or more (`PAUSE_SECONDS`), and ends each segment at its last
+  word. What I learned, re-transcribing two real meetings (counts only):
+  - parakeet-mlx's own `SentenceConfig(silence_gap=…)` splits between word pieces, so it
+    can cut a word in two. It also leaves punctuation timed at the end of a pause (about
+    a quarter of pauses) at the start of the next segment: 30 segments started with "."
+    or "," and 14 were nothing else. Punctuation stays with the words before it instead,
+    and a segment's end is its last word, not that late punctuation.
   - Segments over 20 s went from 11 to 2 and from 3 to 0; the longest from 60 s to 23 s.
-  - Segments that run through the other side's turn went from 132 to 108 and 22 to 19.
-    The rest are mostly overlapping speech with no pause (a "yeah" mid-sentence), which
-    splitting can't fix; M8 is for those.
+  - Segments that run through the other side's turn went from 132 to 87 and 22 to 13
+    (`silence_gap`: 108 and 19). The rest are mostly overlapping speech with no pause (a
+    "yeah" mid-sentence), which splitting can't fix; M8 is for those.
   - 60 s chunks didn't help: the longest segment got longer in both meetings and
     punctuation was no better. Kept 120 s. Neither meeting had an unpunctuated 1½–2
     minute block, so that case is covered only by a synthetic test (`say` with a pause).

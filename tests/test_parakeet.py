@@ -1,4 +1,4 @@
-"""ParakeetTranscriber with a fake model; the sentence splitting is parakeet-mlx's own."""
+"""ParakeetTranscriber with a fake model that splits sentences at punctuation like Parakeet."""
 
 # parakeet_mlx ships without type information.
 # pyright: reportMissingTypeStubs=false
@@ -10,7 +10,7 @@ import pytest
 from parakeet_mlx.alignment import AlignedToken, sentences_to_result, tokens_to_sentences
 
 from meeting_notes.merge import SpeakerTrack, merge
-from meeting_notes.parakeet import ParakeetTranscriber
+from meeting_notes.parakeet import CHUNK_SECONDS, OVERLAP_SECONDS, ParakeetTranscriber
 from meeting_notes.transcript import Segment
 
 
@@ -22,16 +22,27 @@ def tokens(*words: tuple[str, float]) -> list[AlignedToken]:
 class FakeModel:
     def __init__(self, heard: list[AlignedToken]) -> None:
         self.heard = heard
+        self.options: dict[str, Any] = {}
 
     def transcribe(self, audio: Path, **options: Any) -> Any:
-        config = options["decoding_config"].sentence
-        return sentences_to_result(tokens_to_sentences(self.heard, config))
+        self.options = options
+        return sentences_to_result(tokens_to_sentences(self.heard))
 
 
 def transcribe(heard: list[AlignedToken]) -> list[Segment]:
     transcriber = ParakeetTranscriber("unused")
     transcriber._model = FakeModel(heard)  # pyright: ignore[reportPrivateUsage]
     return transcriber.transcribe(Path("me.wav"))
+
+
+def test_transcribes_long_recordings_in_overlapping_chunks():
+    model = FakeModel(tokens((" hi", 0.0)))
+    transcriber = ParakeetTranscriber("unused")
+    transcriber._model = model  # pyright: ignore[reportPrivateUsage]
+
+    transcriber.transcribe(Path("me.wav"))
+
+    assert model.options == {"chunk_duration": CHUNK_SECONDS, "overlap_duration": OVERLAP_SECONDS}
 
 
 def test_splits_a_sentence_at_a_long_pause():
@@ -43,6 +54,27 @@ def test_splits_a_sentence_at_a_long_pause():
         (0.0, pytest.approx(0.7)),
         (3.0, pytest.approx(3.7)),
     ]
+
+
+def test_still_splits_at_punctuation():
+    segments = transcribe(tokens((" done.", 0.0), (" next", 0.4)))
+
+    assert [s.text for s in segments] == ["done.", "next"]
+
+
+def test_never_splits_a_word_at_a_pause():
+    # "Fri" and "day" are pieces of one word: only a word's first piece starts with a space.
+    segments = transcribe(tokens((" on", 0.0), (" Fri", 0.4), ("day", 2.0), (" then", 4.0)))
+
+    assert [s.text for s in segments] == ["on Friday", "then"]
+
+
+def test_punctuation_timed_after_a_pause_stays_with_the_words_before_it():
+    # "," isn't followed by a space, so tokens_to_sentences doesn't split there itself.
+    segments = transcribe(tokens((" so", 0.0), (" yes", 0.4), (",", 2.0), (" Friday", 2.1)))
+
+    assert [s.text for s in segments] == ["so yes,", "Friday"]
+    assert segments[0].end == pytest.approx(0.7)  # "yes" ends then; "," is timed at 2.0
 
 
 def test_keeps_a_sentence_together_across_short_pauses():

@@ -17,6 +17,26 @@ OVERLAP_SECONDS = 15.0
 PAUSE_SECONDS = 1.0
 
 
+def _split_at_pauses(tokens: list[Any]) -> list[list[Any]]:
+    """A sentence's tokens, split wherever a word starts after a pause.
+
+    Tokens are word pieces, and a word's first piece starts with a space. parakeet-mlx's
+    own silence_gap splits between any two pieces, so a hesitation mid-word ("Fri... day")
+    would split the word across two turns. Punctuation is often timed at the end of the
+    pause ("so the plan <pause>. We ship"), so it stays with the words before it and the
+    split comes at the next word."""
+    groups = [[tokens[0]]]
+    paused = False
+    for previous, token in zip(tokens, tokens[1:], strict=False):
+        if token.start - previous.end >= PAUSE_SECONDS and not token.text[:1].isalnum():
+            paused = True
+        if paused and token.text.startswith(" "):
+            groups.append([])
+            paused = False
+        groups[-1].append(token)
+    return groups
+
+
 def _local_model_dir(model: str) -> Path:
     """The model's folder in the Hugging Face cache, downloading it only if it's missing.
 
@@ -43,16 +63,15 @@ class ParakeetTranscriber:
             from parakeet_mlx import from_pretrained
 
             self._model = from_pretrained(str(_local_model_dir(self._model_name)))
-        from parakeet_mlx import DecodingConfig, SentenceConfig
-
         result = self._model.transcribe(
-            audio,
-            chunk_duration=CHUNK_SECONDS,
-            overlap_duration=OVERLAP_SECONDS,
-            decoding_config=DecodingConfig(sentence=SentenceConfig(silence_gap=PAUSE_SECONDS)),
+            audio, chunk_duration=CHUNK_SECONDS, overlap_duration=OVERLAP_SECONDS
         )
-        return [
-            Segment(start=float(s.start), end=float(s.end), text=str(s.text).strip())
-            for s in result.sentences
-            if str(s.text).strip()
-        ]
+        segments: list[Segment] = []
+        for sentence in result.sentences:
+            for tokens in _split_at_pauses(sentence.tokens):
+                text = "".join(str(token.text) for token in tokens).strip()
+                words = [token for token in tokens if any(c.isalnum() for c in token.text)]
+                if words:
+                    # Ends at the last word: punctuation can be timed at the end of a pause.
+                    segments.append(Segment(float(words[0].start), float(words[-1].end), text))
+        return segments
