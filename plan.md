@@ -475,6 +475,18 @@ interjections into one early-stamped block. The summary model reads the same ord
 this also muddles who said what. Fix: split segments wherever the gap between token
 timestamps is ≥ ~1 s (each sentence carries per-token timings), before merging. Also try
 a shorter `CHUNK_SECONDS` to see whether it brings back punctuation in the long blocks.
+- **Built (2026-10-27).** No splitting code needed: parakeet-mlx's `SentenceConfig` has a
+  `silence_gap`, applied after chunks are merged, so `ParakeetTranscriber` passes 1 s
+  (`PAUSE_SECONDS`). What I learned, re-transcribing two real meetings (counts only):
+  - Segments over 20 s went from 11 to 2 and from 3 to 0; the longest from 60 s to 23 s.
+  - Segments that run through the other side's turn went from 132 to 108 and 22 to 19.
+    The rest are mostly overlapping speech with no pause (a "yeah" mid-sentence), which
+    splitting can't fix; M8 is for those.
+  - 60 s chunks didn't help: the longest segment got longer in both meetings and
+    punctuation was no better. Kept 120 s. Neither meeting had an unpunctuated 1½–2
+    minute block, so that case is covered only by a synthetic test (`say` with a pause).
+  - Only new transcriptions change. Older meetings keep their segments until
+    `notes transcribe <id>` is run again.
 
 **M7 — Paragraphs.** Found in the first real meeting: one turn was 2½ minutes in a single
 block. Split long turns into paragraphs every 30–60 s, at sentence boundaries.
