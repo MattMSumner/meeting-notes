@@ -261,7 +261,7 @@ then transcribes and writes `transcript.md` to the notes folder.
   - **Accuracy on my voice:** very good. Errors are mostly product/proper names
     ("Claude" → "Word", "Antique" for a product name), an occasional dropped or misheard
     word ("rate" → "race"), British spellings, and numbers written as words. Names point
-    to the vocabulary prompt on the M7 list.
+    to the vocabulary prompt on the M11 list.
   - **Fully offline:** loading by repo id contacted Hugging Face on every run. It now
     loads from the local cache and only downloads if the model is missing (verified with
     network access blocked).
@@ -367,10 +367,10 @@ markdown.
     to always use it, which fixed both. Owners are named when the transcript says who the
     other person is ("Hey Alex"); "Them" otherwise.
   - **Quality on real meetings:** facts and numbers accurate and specific; misheard names
-    pass straight through (vocabulary prompt, M7). But it **over-reads stance**: tentative
+    pass straight through (vocabulary prompt, M11). But it **over-reads stance**: tentative
     remarks can come out as firm positions, even with a prompt rule against it. Asking for
     first person ("I") made things worse (it mixed "I" with third person), so it was
-    dropped. Follow-up: build a few synthetic transcripts with known-correct notes and
+    dropped. Follow-up (M10): build a few synthetic transcripts with known-correct notes and
     compare prompts and models against them (e.g. a larger dense model), rather than tuning
     on real meetings by eye.
   - **Numbers it was never told (2026-10-22).** A real summary merged a total and one part of
@@ -382,7 +382,7 @@ markdown.
     words, and looks for it in what was said. Ollama gets one retry naming the unsaid
     numbers (it dropped them 3/3), and any left are flagged in the note. Stance
     ("doable" vs "maximum") and dropped figures are still open: a quoted list of figures
-    in the schema, before the overview, is the next thing to try.
+    in the schema, before the overview, is the next thing to try (M9).
 
 **M4 — Start/stop from Spotlight.** No terminal needed to record a meeting.
 - `notes start [--title T]`: starts recording in the background and returns at once. It
@@ -466,24 +466,35 @@ markdown.
     5 s (a permission prompt can hide behind other windows) and happens outside the
     start/stop lock.
 
-**M6 — Transcript readability.**
-- Found in the first real meeting:
-  - Split long turns into paragraphs (every 30–60 s, at sentence boundaries). One turn
-    was 2½ minutes in a single block.
-  - Fold short backchannels ("Yeah.", "Okay.") inline instead of giving each its own
-    turn. 155 turns in 27 minutes, many of them one word.
-  - Optionally pad the channel that ends early, so both files cover the whole recording.
-- Fix turn order (found in the second real meeting). Parakeet's sentence segments can
-  run across long pauses (one 9 s segment held two words) and sometimes come back as a
-  single unpunctuated, lowercase block of 1½–2 minutes. A segment that starts before the
-  other speaker's question and continues after it sorts ahead of the question, so
-  answers appeared before the questions they answered, and merging same-speaker
-  segments folded interjections into one early-stamped block. Fix: split segments
-  wherever the gap between token timestamps is ≥ ~1 s (each sentence carries per-token
-  timings), before merging. Also try a shorter `CHUNK_SECONDS` to see whether it brings
-  back punctuation in the long blocks.
+**M6 — Turn order.** Found in the second real meeting. Parakeet's sentence segments can
+run across long pauses (one 9 s segment held two words) and sometimes come back as a
+single unpunctuated, lowercase block of 1½–2 minutes. A segment that starts before the
+other speaker's question and continues after it sorts ahead of the question, so answers
+appeared before the questions they answered, and merging same-speaker segments folded
+interjections into one early-stamped block. The summary model reads the same order, so
+this also muddles who said what. Fix: split segments wherever the gap between token
+timestamps is ≥ ~1 s (each sentence carries per-token timings), before merging. Also try
+a shorter `CHUNK_SECONDS` to see whether it brings back punctuation in the long blocks.
 
-**M7 — Stretch.** Diarization of the "them" channel; a vocabulary prompt built from my
+**M7 — Paragraphs.** Found in the first real meeting: one turn was 2½ minutes in a single
+block. Split long turns into paragraphs every 30–60 s, at sentence boundaries.
+
+**M8 — Fold backchannels.** Found in the first real meeting: 155 turns in 27 minutes,
+many of them one word. Fold short backchannels ("Yeah.", "Okay.") inline instead of giving
+each its own turn.
+
+**M9 — Quoted figures.** Add a list of figures to the summary schema, before the
+overview: each with who said it, what it measured and their exact words, so the summary
+is written from quotes. Aimed at the open number problems from M3: "definitely doable"
+reported as "the maximum", and figures dropped. Measured by the xfail
+`test_reports_each_sides_numbers_in_their_own_words`.
+
+**M10 — Synthetic evaluation set.** Two or three more made-up transcripts with
+known-correct notes, beside the golden and numbers ones, so prompts and models are
+compared on tests rather than by eye on real meetings: stance (a "maybe" turned into a
+decision) and action-item owners.
+
+**M11 — Stretch.** Diarization of the "them" channel; a vocabulary prompt built from my
 jargon list; FLAC; auto-start when Zoom joins a call.
 
 ---
