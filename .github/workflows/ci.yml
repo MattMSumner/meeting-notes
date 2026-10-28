@@ -1,0 +1,29 @@
+# Lint, type-check and unit-test on every push to main and every pull request.
+# macOS on Apple silicon, like the app: parakeet-mlx needs MLX, and notes-capture needs
+# macOS audio frameworks. Integration tests need real models and audio, so they stay local.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  python:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - run: uv sync --locked
+      - run: uv run ruff check
+      - run: uv run ruff format --check
+      - run: uv run pyright
+      - run: uv run pytest
+
+  swift:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - run: capture/test.sh
