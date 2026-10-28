@@ -1,0 +1,15 @@
+[00:00:02] Sam: Hey Priya, thanks for jumping on. I wanted to talk about the Lighthouse migration before the planning meeting.
+[00:00:09] Them: Yeah, sure. So where we are is the read path is fully on the new database, but writes still go to the old one and get copied over every five minutes.
+[00:00:21] Sam: Right. And the copy job failed twice last week, didn't it?
+[00:00:25] Them: It did. Both times it was the disk filling up on the old primary. We cleared space but it'll happen again.
+[00:00:34] Sam: So the options are, we move writes over now, or we keep the copy job and add more disk.
+[00:00:41] Them: I'd move writes. Adding disk buys us maybe a month, and the cutover is mostly done. The only thing left is the billing service, it still writes straight to the old tables.
+[00:00:55] Sam: How long would billing take?
+[00:00:58] Them: Alex thinks about a week. He's out on Wednesday though.
+[00:01:04] Sam: Okay. Let's do it, let's move writes over and not buy more disk. Can you write up the cutover plan?
+[00:01:11] Them: Yep, I'll have it done by Thursday.
+[00:01:14] Sam: Great. And I'll talk to Alex about starting billing on Thursday when he's back, and I'll let the finance team know there might be a short freeze on invoices.
+[00:01:25] Them: Sounds good. Oh, one more thing, the on-call rotation. We're down to three people since Sam moved teams.
+[00:01:32] Sam: Yeah, I saw. Let's not change it this month, but I'll bring it up at planning.
+[00:01:38] Them: Okay. That's everything from me.
+[00:01:40] Sam: Thanks Priya, talk soon.

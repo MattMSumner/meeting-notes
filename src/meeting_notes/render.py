@@ -105,15 +105,15 @@ def render_note(
         out += ["## Summary", "", summary.overview, ""]
         if summary.key_points:
             out += [*_bullets(summary.key_points), ""]
-        if summary.figures:
-            out += ["## Figures", ""]
-            # A correction can repeat an already-valid figure; show it only once.
-            figures = dict.fromkeys(
-                (figure.speaker, figure.subject, " ".join(figure.quote.split()))
-                for figure in summary.figures
+        if summary.details:
+            out += ["## Details", ""]
+            # A correction can repeat an already-valid detail; show it only once.
+            details = dict.fromkeys(
+                (detail.speaker, detail.subject, " ".join(detail.quote.split()))
+                for detail in summary.details
             )
             out += [
-                f"- **{speaker} — {subject}:** “{quote}”" for speaker, subject, quote in figures
+                f"- **{speaker} — {subject}:** “{quote}”" for speaker, subject, quote in details
             ]
             out.append("")
         out += ["## Decisions", "", *_bullets(summary.decisions), ""]

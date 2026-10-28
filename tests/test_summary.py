@@ -1,8 +1,8 @@
 import pytest
 
 from meeting_notes.summary import (
-    Figure,
-    Figures,
+    Detail,
+    Details,
     Narrative,
     Summary,
     SummaryError,
@@ -24,31 +24,31 @@ def test_parses_a_valid_reply():
     assert summary.overview == "Planned the release."
     assert summary.action_items[0].owner == "Me"
     assert summary.action_items[0].due is None
-    assert summary.figures == []
+    assert summary.details == []
 
 
 def test_extraction_requires_an_explicit_list_even_when_empty():
-    assert parse_response('{"figures": []}', Figures).figures == []
-    with pytest.raises(SummaryError, match="figures: Field required"):
-        parse_response("{}", Figures)
+    assert parse_response('{"details": []}', Details).details == []
+    with pytest.raises(SummaryError, match="details: Field required"):
+        parse_response("{}", Details)
 
 
 @pytest.mark.parametrize("field", ["speaker", "subject", "quote"])
 @pytest.mark.parametrize("value", ["", " \n "])
-def test_figure_fields_cannot_be_blank(field: str, value: str):
+def test_detail_fields_cannot_be_blank(field: str, value: str):
     fields = {"speaker": "Sam", "subject": "Build", "quote": "Seventy is doable."}
     fields[field] = value
     with pytest.raises(ValueError, match=field):
-        Figure.model_validate(fields)
+        Detail.model_validate(fields)
 
 
 def test_response_schemas_do_not_allow_extra_fields():
     with pytest.raises(SummaryError, match="Extra inputs"):
-        parse_response('{"figures": [], "overview": "Invented."}', Figures)
+        parse_response('{"details": [], "overview": "Invented."}', Details)
     with pytest.raises(SummaryError, match="Extra inputs"):
-        parse_response(VALID.replace('"overview":', '"figures": [], "overview":'), Narrative)
+        parse_response(VALID.replace('"overview":', '"details": [], "overview":'), Narrative)
     with pytest.raises(SummaryError, match="Extra inputs"):
-        parse_response('{"speaker":"Sam","subject":"Cost","quote":"Seventy.","value":70}', Figure)
+        parse_response('{"speaker":"Sam","subject":"Cost","quote":"Seventy.","value":70}', Detail)
 
 
 @pytest.mark.parametrize(

@@ -74,16 +74,21 @@ with their own speaker and timestamp. Standalone replies stay separate, and the 
 model still receives the original turns. Run `notes render <meeting-id>` to apply this
 formatting to an older meeting's stored segments, without transcribing or summarizing again.
 
-Summaries use two local model passes: first extract meaningful figures and verify each
-quote against its speaker's transcript, then write the summary from the full transcript
-and those quotes. The note includes a Figures section with the original wording and
-speaker labels. Unverifiable quotes get one correction attempt; if that fails, no new
-summary is saved. A failed `notes summarize` leaves the previous summary in place.
+Summaries use two independent local model tasks, each reading the full transcript. One
+extracts meaningful figures, constraints and availability as source quotes. The other
+writes a short overview, decisions and action items. Code combines their results, placing
+the quotes and their original speaker labels in a Details section. The overview leaves
+precise amounts and schedules to those quotes.
+
+Each quote is checked against its speaker's transcript. Unverifiable quotes get one
+correction attempt; if that fails, no new summary is saved. A failed `notes summarize`
+leaves the previous summary in place. Quote matching establishes where the words came
+from; it does not establish that their selection or subject labels preserve the context.
 
 Older summaries still render normally. Run `notes summarize <meeting-id>` to generate
-figures for an existing meeting; `notes render` only formats the saved results. The
-second pass adds processing time, and verified quotes do not guarantee that the prose
-interprets them correctly.
+details for an existing meeting; `notes render` only formats the saved results, including
+older key points and quoted figures. Rendering does not rewrite the saved JSON. Both model
+tasks run sequentially, and decisions and action items still require interpretation.
 
 Settings are environment variables:
 
@@ -98,7 +103,7 @@ Settings are environment variables:
 | `MEETING_NOTES_SUMMARY_THINK` | `1` (let the model reason first; `0` for models that can't) |
 | `MEETING_NOTES_OLLAMA_URL` | `http://localhost:11434` |
 
-The prompts are in [`figures.md`](src/meeting_notes/prompts/figures.md) (extraction) and
+The prompts are in [`details.md`](src/meeting_notes/prompts/details.md) (extraction) and
 [`summary.md`](src/meeting_notes/prompts/summary.md) (writing).
 
 ## Development

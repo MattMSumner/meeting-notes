@@ -2,7 +2,7 @@
 
 from typing import Protocol
 
-from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_validator
+from pydantic import AliasChoices, BaseModel, ConfigDict, Field, ValidationError, field_validator
 
 from meeting_notes.meeting import Meeting
 
@@ -21,14 +21,15 @@ class ActionItem(BaseModel):
     due: str | None = Field(description="When it's due, only if the transcript says")
 
 
-class Figure(BaseModel):
+class Detail(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     speaker: str = Field(
         min_length=1, description="The exact transcript speaker label, not an inferred name"
     )
     subject: str = Field(
-        min_length=1, description="A neutral name for what is measured, without interpreting stance"
+        min_length=1,
+        description="A neutral topic label, without interpreting stance or availability",
     )
     quote: str = Field(
         min_length=1,
@@ -44,24 +45,30 @@ class Figure(BaseModel):
         return value
 
 
-class Figures(BaseModel):
+class Details(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    figures: list[Figure]
+    details: list[Detail]
 
 
 class Narrative(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    overview: str = Field(description="Two or three sentences: what the meeting was about")
-    key_points: list[str]
+    overview: str = Field(
+        description="Two or three short sentences naming participants, topics and outcomes; "
+        "no amounts, dates or availability details (these are quoted separately)"
+    )
     decisions: list[str]
     action_items: list[ActionItem]
 
 
 class Summary(Narrative):
+    # Kept for notes saved before detailed facts were rendered as source quotes.
+    key_points: list[str] = Field(default_factory=list[str])
     # Older saved summaries have no evidence section. New extractions must supply it.
-    figures: list[Figure] = Field(default_factory=list[Figure])
+    details: list[Detail] = Field(
+        default_factory=list[Detail], validation_alias=AliasChoices("details", "figures")
+    )
 
 
 def parse_response[T: BaseModel](text: str, model: type[T]) -> T:

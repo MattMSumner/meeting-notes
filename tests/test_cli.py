@@ -439,7 +439,7 @@ def test_a_failed_resummary_keeps_the_previous_saved_summary(config: Config):
             FakeTranscriber(),
             "summarize",
             directory.id,
-            summarizer=FakeSummarizer("Couldn't verify quoted figures"),
+            summarizer=FakeSummarizer("Couldn't verify quoted details"),
         )
         == 1
     )

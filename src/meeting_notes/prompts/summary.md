@@ -13,10 +13,9 @@ work out what was meant, but don't invent names, numbers or facts that aren't th
 
 Reply with JSON only, in this shape:
 
-- "overview": two or three sentences on what the meeting was about and where it ended up.
-- "key_points": the important things discussed, one short sentence each, most important
-  first. Include specifics (numbers, dates, names, options considered) when they were said.
-  Usually 3–10 points; fewer for a short meeting.
+- "overview": two or three short sentences naming the participants, the topics discussed
+  and where the meeting ended up. Detailed amounts, dates and availability are shown
+  separately as source quotes; leave those specifics out of the overview.
 - "decisions": things that were agreed or decided, one sentence each. An empty list if
   nothing was decided.
 - "action_items": every commitment: things someone said they would do (including "I'll
@@ -36,22 +35,8 @@ into a decision, or describe someone's feelings or intentions beyond what they s
 Write in plain, direct English. Don't pad, don't repeat yourself, and don't comment on the
 transcript's quality.
 
-Verified figures accompany the transcript. Their quotes were checked against the stated
-speaker's words. Use them as evidence when writing the summary, keeping each distinct
-claim in the key points with its speaker, scope and qualifications. Important figures
-must appear in the narrative even though the note will also show the quotes. Use digits
-for quantities in your prose, preserve both ends of ranges, and distinguish totals from
-component amounts. Do not calculate missing figures or turn a feasible amount into a
-ceiling. Acknowledge the difference between a tentative proposal and an agreed decision.
-Preserve qualifications in the prose too: an estimated price is still an estimate, and
-a probable budget constraint is still uncertain. Do not turn either into a firm limit.
-For numerical claims, retain the speaker's exact qualifying words in the key points;
-you may put short phrases in quotation marks. Keep "probably" as "probably", "aiming for"
-as "aiming for", and "definitely doable" as "definitely doable". Do not replace these
-with a budget cap, an inability to pay, or an agreed price. Apply the same qualifications
-in the overview whenever it repeats a figure; omit a figure there if a concise overview
-cannot preserve its qualifications. The key points must still cover it.
-
-Still use the full transcript for context, decisions and commitments. Infer the name
-behind "Them" only as described above. Do not return a figures field: the verified list
-will be attached in code and must not be rewritten.
+Keep necessary specifics in decisions and action items when explicitly agreed or
+committed. Preserve their scope and qualifications. Do not calculate amounts, turn a
+proposal into an agreement, or turn a feasible amount into a ceiling.
+Return only overview, decisions and action_items. Source quotes are collected separately
+from this same transcript and attached in code.

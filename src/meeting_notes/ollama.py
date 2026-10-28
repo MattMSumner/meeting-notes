@@ -10,9 +10,9 @@ from typing import Any, cast
 
 from pydantic import BaseModel
 
-from meeting_notes.figures import unsaid_numbers, verify_figures
+from meeting_notes.figures import unsaid_numbers, verify_details
 from meeting_notes.meeting import Meeting
-from meeting_notes.summary import Figures, Narrative, Summary, SummaryError, parse_response
+from meeting_notes.summary import Details, Narrative, Summary, SummaryError, parse_response
 
 # Sends a JSON request to an Ollama API path and returns the JSON reply.
 Post = Callable[[str, dict[str, Any]], dict[str, Any]]
@@ -31,8 +31,8 @@ def default_prompt() -> str:
     return resources.files("meeting_notes").joinpath("prompts/summary.md").read_text()
 
 
-def default_figures_prompt() -> str:
-    return resources.files("meeting_notes").joinpath("prompts/figures.md").read_text()
+def default_details_prompt() -> str:
+    return resources.files("meeting_notes").joinpath("prompts/details.md").read_text()
 
 
 class OllamaError(SummaryError):
@@ -84,7 +84,7 @@ class OllamaSummarizer:
         my_name: str,
         prompt: str | None = None,
         think: bool = True,
-        figures_prompt: str | None = None,
+        details_prompt: str | None = None,
     ) -> None:
         self.model = model
         self.num_ctx = num_ctx
@@ -93,8 +93,8 @@ class OllamaSummarizer:
             "{name}", my_name
         )
         self.think = think
-        self.figures_prompt = (
-            figures_prompt if figures_prompt is not None else default_figures_prompt()
+        self.details_prompt = (
+            details_prompt if details_prompt is not None else default_details_prompt()
         ).replace("{name}", my_name)
 
     def summarize(self, meeting: Meeting, transcript: str) -> Summary:
@@ -106,21 +106,19 @@ class OllamaSummarizer:
         )
         _, evidence = self._ask(
             [
-                {"role": "system", "content": self.figures_prompt},
+                {"role": "system", "content": self.details_prompt},
                 {"role": "user", "content": context},
             ],
-            Figures,
-            lambda response: verify_figures(response.figures, transcript),
+            Details,
+            lambda response: verify_details(response.details, transcript),
         )
+        # Both tasks read the original transcript; only code combines their outputs.
         messages = [
             {"role": "system", "content": self.prompt},
-            {
-                "role": "user",
-                "content": context + f"\n\nVerified figures:\n{evidence.model_dump_json()}",
-            },
+            {"role": "user", "content": context},
         ]
         reply, narrative = self._ask(messages, Narrative)
-        summary = Summary(**narrative.model_dump(), figures=evidence.figures)
+        summary = Summary(**narrative.model_dump(), details=evidence.details)
         # The model sometimes works out a number nobody said, like the rest of a total.
         # One retry, told which; the retry is kept only if it has fewer such numbers, and
         # any left are flagged in the note.
@@ -145,7 +143,7 @@ class OllamaSummarizer:
             )
         except SummaryError:
             return summary
-        retried = Summary(**retried_narrative.model_dump(), figures=evidence.figures)
+        retried = Summary(**retried_narrative.model_dump(), details=evidence.details)
         return retried if len(unsaid_numbers(retried, said)) < len(unsaid) else summary
 
     def _ask[T: BaseModel](
