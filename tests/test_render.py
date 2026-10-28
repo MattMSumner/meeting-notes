@@ -119,3 +119,11 @@ def test_note_carries_the_recording_warnings():
     assert "> [!warning] Them was silent." in render_note(
         MEETING, SUMMARY, "id", True, ["Them was silent."]
     )
+
+
+def test_a_paragraph_continuing_a_turn_does_not_repeat_the_speaker():
+    lines = [Line(0.0, "Me", "First."), Line(40.0, "Me", "Second."), Line(50.0, "Them", "Yes.")]
+
+    assert render_transcript(MEETING, lines).endswith(
+        "**[00:00:00] Me:** First.\n\n**[00:00:40]** Second.\n\n**[00:00:50] Them:** Yes.\n"
+    )

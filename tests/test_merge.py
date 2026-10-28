@@ -54,3 +54,34 @@ def test_empty_channels():
         [SpeakerTrack("Me", 0.0, []), SpeakerTrack("Them", 1.0, [seg(0.0, "Hello?")])]
     )
     assert only_them == [Line(1.0, "Them", "Hello?")]
+
+
+def test_splits_a_long_turn_into_paragraphs_at_a_sentence_end():
+    me = SpeakerTrack(
+        "Me",
+        0.0,
+        # Not at 20 s (too soon) or 31 s (mid-sentence): at 40 s, after "done."
+        [
+            seg(0.0, "First point."),
+            seg(20.0, "Still on it,"),
+            seg(31.0, "done."),
+            seg(40.0, "Next."),
+        ],
+    )
+
+    assert merge([me]) == [
+        Line(0.0, "Me", "First point. Still on it, done."),
+        Line(40.0, "Me", "Next."),
+    ]
+
+
+def test_splits_unpunctuated_speech_at_the_next_pause_after_a_minute():
+    me = SpeakerTrack("Me", 0.0, [seg(0.0, "so the thing"), seg(45.0, "is that"), seg(61.0, "we")])
+
+    assert merge([me]) == [Line(0.0, "Me", "so the thing is that"), Line(61.0, "Me", "we")]
+
+
+def test_short_turns_stay_one_paragraph():
+    me = SpeakerTrack("Me", 0.0, [seg(0.0, "One."), seg(29.0, "Two.")])
+
+    assert merge([me]) == [Line(0.0, "Me", "One. Two.")]

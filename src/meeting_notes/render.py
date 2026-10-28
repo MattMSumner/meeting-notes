@@ -55,8 +55,10 @@ def render_transcript(meeting: Meeting, lines: Sequence[Line], warnings: Sequenc
     ]
     if not lines:
         out.append("_No speech was detected._")
-    for line in lines:
-        out += [f"**[{timestamp(line.start)}] {line.speaker}:** {line.text}", ""]
+    for previous, line in zip([None, *lines], lines, strict=False):
+        # A paragraph continuing the same speaker's turn doesn't repeat their name.
+        who = "" if previous and previous.speaker == line.speaker else f" {line.speaker}:"
+        out += [f"**[{timestamp(line.start)}]{who}** {line.text}", ""]
     return "\n".join(out).rstrip() + "\n"
 
 
