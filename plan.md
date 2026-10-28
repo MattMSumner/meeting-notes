@@ -495,6 +495,14 @@ a shorter `CHUNK_SECONDS` to see whether it brings back punctuation in the long 
 
 **M7 — Paragraphs.** Found in the first real meeting: one turn was 2½ minutes in a single
 block. Split long turns into paragraphs every 30–60 s, at sentence boundaries.
+- **Built (2026-10-28).** `merge` starts a new line for the same speaker at the first
+  sentence end once a paragraph has run 30 s, or at the next segment after 60 s for
+  unpunctuated speech. The transcript shows a continuing paragraph with its timestamp but
+  not the speaker's name again; the summary model just sees another labelled line. On
+  three real meetings' stored segments (counts only): turns over a minute went from 4
+  and 2 to none, and the longest from 142 s to 51 s. Paragraphs break only between
+  segments, so one long unpunctuated segment (from before M6) still makes a 290-word
+  paragraph; new transcriptions split at pauses first.
 
 **M8 — Fold backchannels.** Found in the first real meeting: 155 turns in 27 minutes,
 many of them one word. Fold short backchannels ("Yeah.", "Okay.") inline instead of giving
