@@ -202,6 +202,11 @@ def check_quoted_details(summary: Summary) -> None:
             and all(fragment in " ".join(detail.quote.lower().split()) for fragment in fragments)
             for detail in summary.details
         ), f"Missing qualified quote by {speaker}: {fragments}"
+    for detail in summary.details:
+        if "seventy for the build" in detail.quote.lower():
+            assert not re.search(r"\b(?:maximum|ceiling|cap|target)\b", detail.subject.lower()), (
+                f"The label reinterprets a feasible amount: {detail.subject}"
+            )
 
 
 def test_quotes_both_sides_details_with_their_scope_and_qualifications(numbers_summary: Summary):
