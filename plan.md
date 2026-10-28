@@ -4,7 +4,7 @@ A personal, local-first meeting notetaker for macOS. It's a CLI that records my 
 other side of a call, transcribes locally after the meeting, summarizes with a local model,
 and writes an Obsidian-friendly markdown note.
 
-Status: **M5 done** (titles from Google Calendar). M1–M4 and the spike done.
+Status: **M7 done** (paragraphs). M1–M6 and the spike done. Next: M8.
 Phase 0 (Handy) set up.
 
 ---
