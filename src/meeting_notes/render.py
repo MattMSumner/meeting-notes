@@ -44,6 +44,17 @@ def _callouts(warnings: Sequence[str]) -> list[str]:
     return out
 
 
+def _line_text(line: Line) -> str:
+    parts: list[str] = []
+    position = 0
+    for aside in line.asides:
+        parts.append(line.text[position : aside.position])
+        parts.append(f" *([{timestamp(aside.start)}] {aside.speaker}: {aside.text})*")
+        position = aside.position
+    parts.append(line.text[position:])
+    return "".join(parts)
+
+
 def render_transcript(meeting: Meeting, lines: Sequence[Line], warnings: Sequence[str] = ()) -> str:
     out = [
         *_frontmatter(meeting, "meeting, transcript"),
@@ -60,7 +71,7 @@ def render_transcript(meeting: Meeting, lines: Sequence[Line], warnings: Sequenc
         # A paragraph continuing the same speaker's turn doesn't repeat their name.
         who = "" if line.speaker == speaker else f" {line.speaker}:"
         speaker = line.speaker
-        out += [f"**[{timestamp(line.start)}]{who}** {line.text}", ""]
+        out += [f"**[{timestamp(line.start)}]{who}** {_line_text(line)}", ""]
     return "\n".join(out).rstrip() + "\n"
 
 

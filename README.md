@@ -6,7 +6,8 @@ the conversation with a local model served by [Ollama](https://ollama.com), and 
 note and its transcript into an Obsidian vault. No audio, transcripts or summaries leave
 the machine.
 
-Status: **M7**, transcripts split into paragraphs. See [plan.md](plan.md) for the roadmap.
+Status: **M8**, overlapping backchannels folded inline in transcripts. See [plan.md](plan.md)
+for the roadmap.
 
 ## Setup
 
@@ -67,6 +68,11 @@ Each meeting gets a folder of audio and intermediate files in
 `~/development/notes/meetings/YYYY-MM-DD_<title>_<HHMM>.md` and links to its transcript in
 `~/development/notes/meetings/transcripts/`. If you edit either file in Obsidian, re-running
 a stage leaves it alone rather than overwriting your changes.
+
+In the transcript, short acknowledgments that overlap the other speaker appear inline,
+with their own speaker and timestamp. Standalone replies stay separate, and the summary
+model still receives the original turns. Run `notes render <meeting-id>` to apply this
+formatting to an older meeting's stored segments, without transcribing or summarizing again.
 
 Settings are environment variables:
 

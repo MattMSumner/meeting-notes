@@ -12,7 +12,9 @@ import pytest
 from meeting_notes.cli import main
 from meeting_notes.config import Config
 from meeting_notes.meeting import Meeting
+from meeting_notes.pipeline import conversation
 from meeting_notes.recorder import CaptureError, Recorder
+from meeting_notes.render import render_transcript
 from meeting_notes.store import MeetingDir, MeetingStore
 from meeting_notes.summary import ActionItem, Summary, SummaryError
 from meeting_notes.transcript import Segment
@@ -162,6 +164,66 @@ def test_record_transcribes_both_sides_into_one_conversation(config: Config):
         "**[00:00:04] Them:** Yes, loud and clear.\n\n"
         "**[00:00:09] Me:** Great.\n"
     ) in body
+
+
+def test_backchannels_are_folded_for_display_but_reach_the_model_as_separate_turns(config: Config):
+    transcriber = FakeTranscriber(
+        {
+            "me": [Segment(0.0, 5.0, "First."), Segment(6.0, 10.0, "Next.")],
+            "them": [Segment(1.0, 2.0, "Yeah.")],
+        }
+    )
+    summarizer = FakeSummarizer()
+
+    assert run(config, transcriber, "record", summarizer=summarizer) == 0
+
+    assert summarizer.transcripts == [
+        "[00:00:00] Sam: First.\n[00:00:01] Them: Yeah.\n[00:00:06] Sam: Next."
+    ]
+    assert only_transcript(config).endswith(
+        "**[00:00:00] Me:** First. *([00:00:01] Them: Yeah.)* Next.\n"
+    )
+
+
+@pytest.mark.parametrize("edited", [False, True])
+def test_render_folds_stored_segments_unless_the_transcript_was_edited(
+    config: Config, edited: bool
+):
+    meeting = Meeting.new("Weekly Sync", datetime(2026, 10, 20, 14, 5))
+    meeting_dir = MeetingStore(config.data_dir).create(meeting)
+    write_capture(meeting_dir.path, them_offset=0.0)
+    meeting_dir.save_segments("me", [Segment(0.0, 5.0, "First."), Segment(6.0, 10.0, "Next.")])
+    meeting_dir.save_segments("them", [Segment(1.0, 2.0, "Yeah.")])
+    meeting_dir.save_summary(SUMMARY)
+    # Simulate the generated transcript from before M8, including its saved hash.
+    path = config.transcripts_dir / f"{meeting.transcript_stem}.md"
+    original = render_transcript(meeting, conversation(meeting_dir).lines)
+    meeting_dir.write_unless_edited({path: original})
+    if edited:
+        original = original.replace("First.", "Corrected.")
+        path.write_text(original)
+    saved = {
+        file: file.read_bytes()
+        for file in [
+            meeting_dir.summary_file,
+            meeting_dir.segments_file("me"),
+            meeting_dir.segments_file("them"),
+        ]
+    }
+    transcriber = FakeTranscriber()
+    summarizer = FakeSummarizer()
+
+    assert run(config, transcriber, "render", meeting_dir.id, summarizer=summarizer) == 0
+
+    assert transcriber.calls == []
+    assert summarizer.transcripts == []
+    assert all(file.read_bytes() == content for file, content in saved.items())
+    if edited:
+        assert path.read_text() == original
+    else:
+        assert path.read_text().endswith(
+            "**[00:00:00] Me:** First. *([00:00:01] Them: Yeah.)* Next.\n"
+        )
 
 
 def test_silent_system_audio_is_skipped_and_flagged(config: Config):

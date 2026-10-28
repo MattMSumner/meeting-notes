@@ -1,4 +1,8 @@
-from meeting_notes.merge import Line, SpeakerTrack, merge
+from collections import Counter
+
+import pytest
+
+from meeting_notes.merge import Aside, Line, SpeakerTrack, merge
 from meeting_notes.transcript import Segment
 
 
@@ -98,3 +102,215 @@ def test_a_long_segment_starts_a_new_paragraph_rather_than_run_past_a_minute():
     me = SpeakerTrack("Me", 0.0, [seg(0.0, "so"), Segment(50.0, 90.0, "and a long stretch")])
 
     assert [line.start for line in merge([me])] == [0.0, 50.0]
+
+
+@pytest.mark.parametrize(("speaker", "listener"), [("Me", "Them"), ("Them", "Me")])
+def test_folds_an_overlapping_acknowledgment_after_its_segment(speaker: str, listener: str):
+    tracks = [
+        SpeakerTrack(speaker, 0.0, [Segment(0.0, 5.0, "First."), seg(6.0, "Next.")]),
+        SpeakerTrack(listener, 0.0, [seg(2.0, "Yeah.")]),
+    ]
+
+    assert merge(tracks, fold_backchannels=True) == [
+        Line(0.0, speaker, "First. Next.", (Aside(6, 2.0, listener, "Yeah."),))
+    ]
+    assert merge(tracks) == [
+        Line(0.0, speaker, "First."),
+        Line(2.0, listener, "Yeah."),
+        Line(6.0, speaker, "Next."),
+    ]
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "Yeah.",
+        "YEP!",
+        "yup",
+        "Yes.",
+        "OK",
+        "Okay.",
+        "Right.",
+        "Uh-huh.",
+        "MM–HMM.",
+        "mhm",
+        "  uh   huh  ",
+        "Yeah, yeah, yeah.",
+        "Yep. Okay!",
+    ],
+)
+def test_recognizes_acknowledgments_without_changing_their_text(text: str):
+    tracks = [
+        SpeakerTrack("Me", 0.0, [Segment(0.0, 5.0, "The tests passed.")]),
+        SpeakerTrack("Them", 0.0, [seg(1.0, text)]),
+    ]
+
+    [line] = merge(tracks, fold_backchannels=True)
+
+    assert line.asides == (Aside(len(line.text), 1.0, "Them", text),)
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "Yeah?",
+        "Yeah. I disagree.",
+        "No.",
+        "Wait!",
+        "Sure.",
+        "huh",
+        "hmm",
+        "",
+        "...",
+        "Yeah yeah yeah yeah.",
+        "Uh-huh, mm-hmm.",
+        "Yeah 2.",
+        "Okay, maybe.",
+    ],
+)
+def test_keeps_questions_and_substantive_or_long_responses_separate(text: str):
+    tracks = [
+        SpeakerTrack("Me", 0.0, [Segment(0.0, 5.0, "The tests passed.")]),
+        SpeakerTrack("Them", 0.0, [seg(1.0, text)]),
+    ]
+
+    assert merge(tracks, fold_backchannels=True) == merge(tracks)
+
+
+@pytest.mark.parametrize(
+    ("start", "end", "folds"),
+    [
+        (1.0, 3.0, True),
+        (1.0, 3.001, False),
+        (3.0, 5.0, True),
+        (3.0, 5.001, False),
+        (0.0, 1.0, False),
+        (5.0, 6.0, False),
+        (6.0, 7.0, False),
+    ],
+)
+def test_requires_a_short_run_entirely_inside_the_other_segment(
+    start: float, end: float, folds: bool
+):
+    tracks = [
+        SpeakerTrack("Me", 0.0, [Segment(0.0, 5.0, "The tests passed.")]),
+        SpeakerTrack("Them", 0.0, [Segment(start, end, "Yeah.")]),
+    ]
+
+    assert len(merge(tracks, fold_backchannels=True)) == (1 if folds else 2)
+
+
+def test_checks_overlap_and_timestamps_after_applying_channel_offsets():
+    me = SpeakerTrack("Me", 10.0, [Segment(0.0, 5.0, "First."), seg(6.0, "Next.")])
+    them = SpeakerTrack("Them", 11.5, [seg(0.0, "Yeah.")])
+
+    assert merge([me, them], fold_backchannels=True) == [
+        Line(10.0, "Me", "First. Next.", (Aside(6, 11.5, "Them", "Yeah."),))
+    ]
+    # These overlap in file time but not in recording time.
+    them = SpeakerTrack("Them", 20.0, [seg(1.0, "Yeah.")])
+    assert merge([me, them], fold_backchannels=True) == merge([me, them])
+
+
+@pytest.mark.parametrize("host", ["Can we ship?", "Can we ship? Let's see.", "Okay.", "Yeah " * 4])
+def test_does_not_fold_into_a_question_or_another_acknowledgment(host: str):
+    tracks = [
+        SpeakerTrack("Me", 0.0, [Segment(0.0, 5.0, host)]),
+        SpeakerTrack("Them", 0.0, [seg(1.0, "Yeah.")]),
+    ]
+
+    assert merge(tracks, fold_backchannels=True) == merge(tracks)
+
+
+def test_folds_a_complete_run_of_repeated_acknowledgments():
+    tracks = [
+        SpeakerTrack("Me", 0.0, [Segment(0.0, 5.0, "First.")]),
+        SpeakerTrack("Them", 0.0, [seg(1.0, "Yeah."), seg(2.0, "Okay.")]),
+    ]
+
+    assert merge(tracks, fold_backchannels=True) == [
+        Line(0.0, "Me", "First.", (Aside(6, 1.0, "Them", "Yeah. Okay."),))
+    ]
+
+
+@pytest.mark.parametrize(
+    "response",
+    [
+        [seg(1.0, "Yeah."), seg(2.0, "I disagree.")],
+        [seg(1.0, "Yeah."), seg(3.0, "Okay.")],
+        [Segment(1.0, 3.5, "Yeah."), seg(1.5, "Okay.")],
+        [seg(1.0, "Yeah, yeah."), seg(2.0, "Okay, okay.")],
+        [seg(4.0, "Yeah."), seg(5.0, "Okay.")],
+    ],
+)
+def test_does_not_extract_a_backchannel_from_a_larger_run(response: list[Segment]):
+    tracks = [
+        SpeakerTrack("Me", 0.0, [Segment(0.0, 5.0, "First.")]),
+        SpeakerTrack("Them", 0.0, response),
+    ]
+
+    assert merge(tracks, fold_backchannels=True) == merge(tracks)
+
+
+def test_only_the_immediately_preceding_segment_can_host_an_aside():
+    tracks = [
+        SpeakerTrack("Me", 0.0, [Segment(0.0, 10.0, "Long."), seg(2.0, "Short.")]),
+        SpeakerTrack("Them", 0.0, [seg(4.0, "Yeah.")]),
+    ]
+
+    assert merge(tracks, fold_backchannels=True) == merge(tracks)
+
+
+def test_an_aside_does_not_become_the_host_of_another_aside():
+    tracks = [
+        SpeakerTrack("Me", 0.0, [Segment(0.0, 5.0, "First."), Segment(2.0, 2.5, "Okay.")]),
+        SpeakerTrack("Them", 0.0, [Segment(1.0, 3.0, "Yeah.")]),
+    ]
+
+    assert merge(tracks, fold_backchannels=True) == [
+        Line(0.0, "Me", "First. Okay.", (Aside(6, 1.0, "Them", "Yeah."),))
+    ]
+
+
+@pytest.mark.parametrize("sentence_end", [".", ","])
+def test_paragraph_breaks_depend_on_main_speech_not_asides(sentence_end: str):
+    tracks = [
+        SpeakerTrack(
+            "Me",
+            0.0,
+            [
+                Segment(0.0, 5.0, "First."),
+                Segment(20.0, 25.0, f"Second{sentence_end}"),
+                seg(35.0, "Third."),
+                seg(61.0, "Fourth."),
+            ],
+        ),
+        SpeakerTrack("Them", 0.0, [seg(1.0, "Yeah."), seg(21.0, "Okay.")]),
+    ]
+
+    lines = merge(tracks, fold_backchannels=True)
+
+    assert [line.start for line in lines] == ([0.0, 35.0] if sentence_end == "." else [0.0, 61.0])
+    assert lines[0].asides == (Aside(6, 1.0, "Them", "Yeah."), Aside(14, 21.0, "Them", "Okay."))
+    assert lines[1].asides == ()
+    # Folding keeps every word, including punctuation and its speaker, exactly once.
+    original = Counter(
+        (track.speaker, word)
+        for track in tracks
+        for segment in track.segments
+        for word in segment.text.split()
+    )
+    displayed = Counter((line.speaker, word) for line in lines for word in line.text.split())
+    displayed.update(
+        (aside.speaker, word)
+        for line in lines
+        for aside in line.asides
+        for word in aside.text.split()
+    )
+    assert displayed == original
+
+
+def test_folding_handles_empty_and_single_speaker_recordings():
+    assert merge([], fold_backchannels=True) == []
+    track = SpeakerTrack("Me", 0.0, [seg(0.0, "Yeah."), seg(2.0, "Okay.")])
+    assert merge([track], fold_backchannels=True) == merge([track])

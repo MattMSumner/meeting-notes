@@ -33,6 +33,8 @@ def transcribe(meeting_dir: MeetingDir, transcriber: Transcriber) -> None:
 @dataclass(frozen=True)
 class Conversation:
     lines: list[Line]
+    transcript_lines: list[Line]
+    """The display view, with overlapping backchannels folded into asides."""
     transcribed: bool
     """Every channel with audio has been transcribed."""
     warnings: list[str]
@@ -68,7 +70,7 @@ def conversation(meeting_dir: MeetingDir) -> Conversation:
             tracks.append(SpeakerTrack(speaker, capture.offset, meeting_dir.load_segments(channel)))
         else:
             transcribed = False
-    return Conversation(merge(tracks), transcribed, warnings)
+    return Conversation(merge(tracks), merge(tracks, fold_backchannels=True), transcribed, warnings)
 
 
 def transcript_text(lines: Sequence[Line], my_name: str) -> str:
@@ -146,7 +148,7 @@ def render(meeting_dir: MeetingDir, talk: Conversation, config: Config) -> Rende
             )
     skipped = meeting_dir.write_unless_edited(
         {
-            transcript: render_transcript(meeting, talk.lines, talk.warnings),
+            transcript: render_transcript(meeting, talk.transcript_lines, talk.warnings),
             note: render_note(meeting, summary, meeting_dir.id, bool(talk.lines), note_warnings),
         }
     )

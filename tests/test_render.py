@@ -3,7 +3,7 @@ from datetime import datetime
 import pytest
 
 from meeting_notes.meeting import Meeting
-from meeting_notes.merge import Line
+from meeting_notes.merge import Aside, Line
 from meeting_notes.render import render_note, render_transcript, timestamp
 from meeting_notes.summary import ActionItem, Summary
 
@@ -126,4 +126,27 @@ def test_a_paragraph_continuing_a_turn_does_not_repeat_the_speaker():
 
     assert render_transcript(MEETING, lines).endswith(
         "**[00:00:00] Me:** First.\n\n**[00:00:40]** Second.\n\n**[00:00:50] Them:** Yes.\n"
+    )
+
+
+def test_renders_asides_inline_with_their_own_speaker_and_time():
+    lines = [
+        Line(
+            0.0,
+            "Me",
+            "First. Second. Third.",
+            (
+                Aside(6, 1.0, "Them", "Yeah."),
+                Aside(14, 21.0, "Them", "Okay."),
+            ),
+        ),
+        Line(40.0, "Me", "Fourth.", (Aside(7, 42.0, "Them", "Right."),)),
+        Line(50.0, "Them", "Next point."),
+    ]
+
+    assert render_transcript(MEETING, lines).endswith(
+        "**[00:00:00] Me:** First. *([00:00:01] Them: Yeah.)* "
+        "Second. *([00:00:21] Them: Okay.)* Third.\n\n"
+        "**[00:00:40]** Fourth. *([00:00:42] Them: Right.)*\n\n"
+        "**[00:00:50] Them:** Next point.\n"
     )
