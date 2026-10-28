@@ -4,7 +4,7 @@ A personal, local-first meeting notetaker for macOS. It's a CLI that records my 
 other side of a call, transcribes locally after the meeting, summarizes with a local model,
 and writes an Obsidian-friendly markdown note.
 
-Status: **M7 done** (paragraphs). M1–M6 and the spike done. Next: M8.
+Status: **M8 done** (fold backchannels). M1–M7 and the spike done. Next: M9.
 Phase 0 (Handy) set up.
 
 ---
@@ -508,6 +508,22 @@ block. Split long turns into paragraphs every 30–60 s, at sentence boundaries.
 **M8 — Fold backchannels.** Found in the first real meeting: 155 turns in 27 minutes,
 many of them one word. Fold short backchannels ("Yeah.", "Okay.") inline instead of giving
 each its own turn.
+- **Built (2026-10-28).** Short acknowledgment-only runs (at most 2 s and 3 words) fold
+  inline when they fit entirely inside the preceding segment from the other speaker.
+  Each aside keeps its words, speaker and timestamp, after the containing segment;
+  questions, standalone replies and substantive interruptions stay separate. What I learned:
+  - **Check whole runs before paragraphing:** a short acknowledgment at the start of a
+    longer response must stay with that response. A fixed phrase list and full overlap
+    favor leaving uncertain cases alone.
+  - **Display and summary need separate views.** Only the readable transcript folds;
+    the summary input and number checks retain the original turns. Paragraph breaks
+    still depend on the main speaker's text and timing, not the asides.
+  - **Read-only replay of 18 stored meetings (counts only):** 133 runs folded; displayed
+    speaker changes 1,742 → 1,476 and paragraphs 1,989 → 1,747. No word, attribution or
+    insertion-position failures; summary input unchanged byte-for-byte for all 18.
+  - **No retranscription needed:** `notes render <id>` uses the saved segments and keeps
+    existing summaries. Edited vault files are still left alone. Synthetic tests cover
+    overlap boundaries, channel offsets, phrase matching, paragraphs and rerendering.
 
 **M9 — Quoted figures.** Add a list of figures to the summary schema, before the
 overview: each with who said it, what it measured and their exact words, so the summary
