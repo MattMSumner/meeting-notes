@@ -526,20 +526,31 @@ each its own turn.
     overlap boundaries, channel offsets, phrase matching, paragraphs and rerendering.
 
 **M9 — Hybrid notes with quoted details.** Run two independent model tasks against the
-full transcript. One extracts meaningful figures, constraints and availability as source
-quotes; the other writes a short overview, decisions and action items. Code attaches the
-verified quotes as Details, with no final rewriting pass. Important figures belong in
-these quotes and no longer need repetition in generated prose. The overview leaves
-precise amounts and schedules to the details; decisions and actions retain necessary
-specifics when explicitly agreed or committed.
+full transcript. One selects the IDs of complete source turns containing meaningful
+figures, constraints, operational quantities and availability. Code copies each selected
+turn in full, preserving neighboring claims and qualifications, and labels it with its
+source speaker and time. The other task writes a short overview, decisions and action
+items. Code attaches the copied turns as Details, with no final rewriting pass or
+generated topic labels. The overview leaves precise amounts and schedules to the details;
+decisions and actions retain necessary specifics when explicitly agreed or committed.
 
-Verify quotes under their original speaker labels, allowing one correction attempt.
-Persistent failures leave any previous summary in place. Older key points still render,
-and draft `figures` load as `details` without rewriting the saved JSON. Keep the same model,
-thinking and context settings, run tasks sequentially, and measure their latency.
-Acceptance: five fresh generations each of the synthetic golden, pricing and scheduling
-variant fixtures, checking prose and evidence separately. Source matching establishes
-provenance, not the meaning of generated subject labels or the completeness of selection.
+IDs follow source position, so equal timestamps remain distinct turns. Deduplicate
+selected IDs and restore source order. A missing list, malformed reply or unknown ID gets
+one correction; persistent failures stop before writing and preserve any previous
+summary. Reject malformed source transcripts rather than silently dropping text. Meeting
+metadata is not selectable, and source timestamps do not count as spoken numbers. Older
+key points and topic labels still render; draft `figures` load as `details` without
+rewriting saved JSON. Keep the writer's prompt, schema and transcript context unchanged
+during this selector refactor, along with model, thinking and context settings.
+
+Milestone acceptance remains five fresh full generations each of the synthetic golden,
+pricing and scheduling variant fixtures, checking prose and evidence separately. For the
+selector refactor, first require five selection-only runs per fixture and a greeting-only
+control, checking exact source copying, important-turn coverage and irrelevant selections.
+Then run one fresh full summary per original fixture to check assembly and report writer
+failures separately. Measure latency and quoted text size against the previous hybrid
+candidate. Whole-turn copying guarantees source wording, not complete selection or
+faithful interpretation in generated prose.
 - **Implemented, not built (2026-10-28).** Draft PR #13 adds extraction, source verification,
   the separate writing pass, saved figures and rendering. All 270 unit tests, lint and strict
   types pass. The model-quality acceptance gate is still open:
@@ -587,6 +598,34 @@ provenance, not the meaning of generated subject labels or the completeness of s
     includes the failed extraction. Model, thinking and context settings are unchanged.
     This fixed candidate remains a draft pending better evidence coverage and action
     completeness; no reviewing model pass or broad M10 evaluation set was added.
+- **Source-turn revision, not built (2026-10-28).** The selector returns only turn IDs;
+  code copies complete source turns with speaker and time headings. All 298 unit tests,
+  formatting, lint, strict types, and Python and Swift CI pass. The selector component
+  passes its repeated acceptance checks; M9 still requires the full-note quality gate:
+  - The first selector passed pricing and greeting controls 5/5 each, but both scheduling
+    fixtures 0/5 because it skipped operational facts. Those facts were also absent from
+    the previous hybrid quotes. The final prompt explicitly includes operational
+    background and keeps qualifying facts even when their turns also contain actions.
+  - Five fresh selection-only runs per fixture: pricing 5/5, golden 5/5, scheduling
+    variant 5/5, greeting-only control 5/5. All required turns were retained; no forbidden
+    greeting or acknowledgment turns were selected. No invalid IDs, source-copy failures
+    or correction requests occurred. Greeting controls selected zero turns in 5/5 runs.
+  - Copying the entire budget turn retained the previously omitted qualification in
+    5/5 pricing runs. Whole turns also preserve nearby claims, so the notes are longer:
+    median quoted characters were 340 → 829 for golden, 463 → 527 for pricing and
+    302 → 800 for the scheduling variant. The prior pricing size uses its four returned
+    summaries; one prior extraction failed.
+  - ID selection is not always faster. Median extraction/selection times were 22 s → 83 s
+    for golden, 74 s → 43 s for pricing and 34 s → 58 s for the scheduling variant.
+    Greeting controls took 5 s. The model, thinking mode and context size are unchanged.
+  - One fresh full summary per original fixture passed source selection and assembly
+    3/3. Complete checks passed pricing 1/1, golden 0/1 and scheduling variant 0/1.
+    Both scheduling summaries still omitted the planning commitment from action items;
+    the golden overview also repeated a date. The writer's prompt, schema and original
+    transcript context were unchanged. Full elapsed times were 58 s for pricing, 117 s
+    for golden and 76 s for the scheduling variant. These smoke checks do not replace the
+    milestone's five full generations per fixture. PR #13 remains a draft for writer
+    completeness and overview format; the selector changes have not been adopted on main.
 
 **M10 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
