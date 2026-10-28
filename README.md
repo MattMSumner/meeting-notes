@@ -6,7 +6,7 @@ the conversation with a local model served by [Ollama](https://ollama.com), and 
 note and its transcript into an Obsidian vault. No audio, transcripts or summaries leave
 the machine.
 
-Status: **M5**, meeting titles from the calendar. See [plan.md](plan.md) for the roadmap.
+Status: **M7**, transcripts split into paragraphs. See [plan.md](plan.md) for the roadmap.
 
 ## Setup
 
