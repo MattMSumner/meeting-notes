@@ -525,14 +525,21 @@ each its own turn.
     existing summaries. Edited vault files are still left alone. Synthetic tests cover
     overlap boundaries, channel offsets, phrase matching, paragraphs and rerendering.
 
-**M9 — Quoted figures.** Use two model passes: extract meaningful figures, verify their
-quotes and speaker labels against the transcript, then write the summary from that
-evidence and the full transcript. Attach the verified figures in code and show them in a
-Figures section in the note. Aimed at the open number problems from M3: "definitely doable"
-reported as "the maximum", and figures dropped. A failed extraction gets one correction
-attempt; persistent failures leave any previous summary in place. Keep the same model
-and thinking settings, and measure the additional latency. Acceptance: five runs each
-of the synthetic numbers and golden fixtures, checking prose and evidence separately.
+**M9 — Hybrid notes with quoted details.** Run two independent model tasks against the
+full transcript. One extracts meaningful figures, constraints and availability as source
+quotes; the other writes a short overview, decisions and action items. Code attaches the
+verified quotes as Details, with no final rewriting pass. Important figures belong in
+these quotes and no longer need repetition in generated prose. The overview leaves
+precise amounts and schedules to the details; decisions and actions retain necessary
+specifics when explicitly agreed or committed.
+
+Verify quotes under their original speaker labels, allowing one correction attempt.
+Persistent failures leave any previous summary in place. Older key points still render,
+and draft `figures` load as `details` without rewriting the saved JSON. Keep the same model,
+thinking and context settings, run tasks sequentially, and measure their latency.
+Acceptance: five fresh generations each of the synthetic golden, pricing and scheduling
+variant fixtures, checking prose and evidence separately. Source matching establishes
+provenance, not the meaning of generated subject labels or the completeness of selection.
 - **Implemented, not built (2026-10-28).** Draft PR #13 adds extraction, source verification,
   the separate writing pass, saved figures and rendering. All 270 unit tests, lint and strict
   types pass. The model-quality acceptance gate is still open:
@@ -549,11 +556,37 @@ of the synthetic numbers and golden fixtures, checking prose and evidence separa
     The existing model, thinking mode and context settings were kept.
   - A targeted writer-prompt change, tested against the same five independent extractions
     per fixture, regressed to golden 2/5 and pricing 0/5. It was reverted. The better
-    candidate and the stronger regression test remain in the draft; the pricing xfail
-    stays until the full acceptance gate passes. Further prompt tuning alone has not
+    candidate and the stronger regression test remained in the draft; the pricing xfail
+    was retained at this stage. Further prompt tuning alone had not
     established reliable prose coverage and interpretation.
   - A fresh end-to-end Ollama integration run with xfail disabled also reproduced the
     availability reversal: three pricing tests passed and the golden test failed.
+- **Hybrid revision, not built (2026-10-28).** The draft now implements the independent
+  extraction and writing tasks described above, with legacy loading and rendering.
+  All 274 unit tests, formatting, lint and strict types pass. The model-quality gate
+  remains open, so this architecture has not been adopted on main:
+  - Two writer-only comparisons, five generations per original fixture, both passed
+    the revised pricing prose checks 5/5 but repeated dates in golden overviews 5/5.
+    Adding the overview restriction to the response schema did not resolve it.
+  - Five fresh full generations per fixture: golden 0/5, pricing 0/5, scheduling variant
+    0/5 on the complete acceptance checks. The original absence-to-return reversal
+    appeared in 0/10 scheduling summaries, and their availability quotes passed 10/10.
+  - A planning commitment was omitted from action items in 10/10 scheduling summaries.
+    Inspection of the archived baseline and prior candidate found the same omission
+    in 5/5 each; it is now an explicit regression assertion. Golden overviews also
+    repeated dates in 5/5; variant overviews met the format requirement in 5/5.
+  - Source verification succeeded for 14/15 generations, with six correction requests.
+    One pricing extraction failed after correction, so writing did not run. The other
+    four pricing summaries omitted a qualified budget constraint from the quotes.
+    Source matching alone does not detect missing evidence or misleading labels.
+  - Coverage assertions now check quoted details rather than requiring every figure
+    in prose. Assertions still check any amounts repeated in prose, and reject labels
+    that reinterpret feasible amounts as targets or ceilings. No model-quality failures
+    are hidden behind xfail.
+  - Median attempt times: golden 43 s, pricing 85 s, scheduling variant 50 s; pricing
+    includes the failed extraction. Model, thinking and context settings are unchanged.
+    This fixed candidate remains a draft pending better evidence coverage and action
+    completeness; no reviewing model pass or broad M10 evaluation set was added.
 
 **M10 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
