@@ -525,11 +525,35 @@ each its own turn.
     existing summaries. Edited vault files are still left alone. Synthetic tests cover
     overlap boundaries, channel offsets, phrase matching, paragraphs and rerendering.
 
-**M9 — Quoted figures.** Add a list of figures to the summary schema, before the
-overview: each with who said it, what it measured and their exact words, so the summary
-is written from quotes. Aimed at the open number problems from M3: "definitely doable"
-reported as "the maximum", and figures dropped. Measured by the xfail
-`test_reports_each_sides_numbers_in_their_own_words`.
+**M9 — Quoted figures.** Use two model passes: extract meaningful figures, verify their
+quotes and speaker labels against the transcript, then write the summary from that
+evidence and the full transcript. Attach the verified figures in code and show them in a
+Figures section in the note. Aimed at the open number problems from M3: "definitely doable"
+reported as "the maximum", and figures dropped. A failed extraction gets one correction
+attempt; persistent failures leave any previous summary in place. Keep the same model
+and thinking settings, and measure the additional latency. Acceptance: five runs each
+of the synthetic numbers and golden fixtures, checking prose and evidence separately.
+- **Implemented, not built (2026-10-28).** Draft PR #13 adds extraction, source verification,
+  the separate writing pass, saved figures and rendering. All 270 unit tests, lint and strict
+  types pass. The model-quality acceptance gate is still open:
+  - Five baseline generations per fixture: pricing checks 0/5, golden checks 5/5.
+    The two-pass candidate passed pricing 5/5 and the original golden assertions 5/5,
+    but inspection found an availability reversal in 2/5 golden summaries. A new
+    regression assertion catches it, leaving the expanded golden check at 3/5.
+  - All ten extractions ultimately passed source verification; three needed the one
+    correction attempt. Exact source words and speaker labels do not guarantee that
+    the writing pass preserves their meaning. The renderer suppresses exact duplicate
+    figure entries produced by a correction, without changing the saved evidence.
+  - Median elapsed time on the synthetic fixtures: golden 13 s → 128 s; pricing
+    43 s → 193 s. Extraction dominates: median 113 s and 175 s, including corrections.
+    The existing model, thinking mode and context settings were kept.
+  - A targeted writer-prompt change, tested against the same five independent extractions
+    per fixture, regressed to golden 2/5 and pricing 0/5. It was reverted. The better
+    candidate and the stronger regression test remain in the draft; the pricing xfail
+    stays until the full acceptance gate passes. Further prompt tuning alone has not
+    established reliable prose coverage and interpretation.
+  - A fresh end-to-end Ollama integration run with xfail disabled also reproduced the
+    availability reversal: three pricing tests passed and the golden test failed.
 
 **M10 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
