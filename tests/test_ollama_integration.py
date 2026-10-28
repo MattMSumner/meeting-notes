@@ -58,6 +58,11 @@ def check_golden(summary: Summary) -> None:
     mine = " ".join(item.task.lower() for item in summary.action_items if item.owner == "Sam")
     assert "dan" in mine and "finance" in mine
     assert "Sam" in summary.overview
+    # Dan is out on Monday; quoting that correctly must not become a Monday return.
+    prose = " ".join([summary.overview, *summary.key_points, *summary.decisions]).lower()
+    assert not re.search(r"\b(?:return(?:s|ing)?|back)\s+(?:on\s+)?monday\b", prose), (
+        "Turned an absence on Monday into a return on Monday"
+    )
 
 
 def test_summarizes_the_golden_transcript(golden_summary: Summary):

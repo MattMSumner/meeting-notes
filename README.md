@@ -98,7 +98,8 @@ Settings are environment variables:
 | `MEETING_NOTES_SUMMARY_THINK` | `1` (let the model reason first; `0` for models that can't) |
 | `MEETING_NOTES_OLLAMA_URL` | `http://localhost:11434` |
 
-The summary prompt is in [`src/meeting_notes/prompts/summary.md`](src/meeting_notes/prompts/summary.md).
+The prompts are in [`figures.md`](src/meeting_notes/prompts/figures.md) (extraction) and
+[`summary.md`](src/meeting_notes/prompts/summary.md) (writing).
 
 ## Development
 
