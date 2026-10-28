@@ -75,11 +75,18 @@ def transcript_text(lines: Sequence[Line], my_name: str) -> str:
     """The conversation as plain text for the summary model.
 
     My lines are labelled with my name, not "Me": told only "Me", the model guesses who
-    that is, sometimes crediting me to someone else or calling me by a role."""
+    that is, sometimes crediting me to someone else or calling me by a role. A turn split
+    into paragraphs is one line again, so it doesn't read as several turns."""
     names = {"Me": my_name}
+    turns: list[Line] = []
+    for line in lines:
+        if turns and turns[-1].speaker == line.speaker:
+            turns[-1] = Line(turns[-1].start, line.speaker, f"{turns[-1].text} {line.text}")
+        else:
+            turns.append(line)
     return "\n".join(
-        f"[{timestamp(line.start)}] {names.get(line.speaker, line.speaker)}: {line.text}"
-        for line in lines
+        f"[{timestamp(turn.start)}] {names.get(turn.speaker, turn.speaker)}: {turn.text}"
+        for turn in turns
     )
 
 

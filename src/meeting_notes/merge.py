@@ -8,8 +8,10 @@ from meeting_notes.transcript import Segment
 # A long turn is split into paragraphs: at the first sentence end once a paragraph has run
 # this long...
 PARAGRAPH_SECONDS = 30.0
-# ...or, for speech that comes back without punctuation, at the next pause after this.
+# ...or, for speech that comes back without punctuation, before it would run past this.
 LONGEST_PARAGRAPH_SECONDS = 60.0
+# Closing quotes and brackets can follow a sentence's last mark: 'he said "done."'
+_CLOSERS = "\"')]”’"
 
 
 @dataclass(frozen=True)
@@ -36,23 +38,31 @@ def merge(tracks: Sequence[SpeakerTrack]) -> list[Line]:
     Segments are ordered by when they start. Ties go to the track listed first."""
     timed = sorted(
         (
-            (track.offset + segment.start, order, track.speaker, segment.text)
+            (
+                track.offset + segment.start,
+                order,
+                track.offset + segment.end,
+                track.speaker,
+                segment.text,
+            )
             for order, track in enumerate(tracks)
             for segment in track.segments
         ),
         key=lambda item: (item[0], item[1]),
     )
     lines: list[Line] = []
-    for start, _, speaker, text in timed:
+    for start, _, end, speaker, text in timed:
         previous = lines[-1] if lines else None
-        if previous and previous.speaker == speaker and not _paragraph_ends(previous, start):
+        if previous and previous.speaker == speaker and not _paragraph_ends(previous, start, end):
             lines[-1] = Line(previous.start, speaker, f"{previous.text} {text}")
         else:
             lines.append(Line(start, speaker, text))
     return lines
 
 
-def _paragraph_ends(paragraph: Line, next_start: float) -> bool:
-    length = next_start - paragraph.start
-    sentence_ended = paragraph.text.endswith((".", "?", "!"))
-    return length >= LONGEST_PARAGRAPH_SECONDS or (length >= PARAGRAPH_SECONDS and sentence_ended)
+def _paragraph_ends(paragraph: Line, next_start: float, next_end: float) -> bool:
+    """Whether the paragraph ends before the next segment, which starts and ends then."""
+    sentence_ended = paragraph.text.rstrip(_CLOSERS).endswith((".", "?", "!", "…"))
+    return next_end - paragraph.start > LONGEST_PARAGRAPH_SECONDS or (
+        next_start - paragraph.start >= PARAGRAPH_SECONDS and sentence_ended
+    )

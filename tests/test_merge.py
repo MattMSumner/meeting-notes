@@ -85,3 +85,16 @@ def test_short_turns_stay_one_paragraph():
     me = SpeakerTrack("Me", 0.0, [seg(0.0, "One."), seg(29.0, "Two.")])
 
     assert merge([me]) == [Line(0.0, "Me", "One. Two.")]
+
+
+def test_a_sentence_end_can_be_followed_by_a_closing_quote_or_an_ellipsis():
+    for ending in ('he said "done."', "right?)", "and then\u2026"):
+        me = SpeakerTrack("Me", 0.0, [seg(0.0, "Start."), seg(20.0, ending), seg(31.0, "Next.")])
+
+        assert len(merge([me])) == 2, ending
+
+
+def test_a_long_segment_starts_a_new_paragraph_rather_than_run_past_a_minute():
+    me = SpeakerTrack("Me", 0.0, [seg(0.0, "so"), Segment(50.0, 90.0, "and a long stretch")])
+
+    assert [line.start for line in merge([me])] == [0.0, 50.0]
