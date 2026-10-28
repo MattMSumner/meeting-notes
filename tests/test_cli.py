@@ -428,6 +428,26 @@ def test_summarize_reruns_only_the_summary(config: Config):
     assert "Agreed to ship on Friday." in only_note(config)
 
 
+def test_a_failed_resummary_keeps_the_previous_saved_summary(config: Config):
+    run(config, FakeTranscriber({"me": [Segment(0.0, 1.0, "Hello.")]}), "record")
+    directory = only_meeting_dir(config)
+    saved = directory.summary_file.read_bytes()
+
+    assert (
+        run(
+            config,
+            FakeTranscriber(),
+            "summarize",
+            directory.id,
+            summarizer=FakeSummarizer("Couldn't verify quoted figures"),
+        )
+        == 1
+    )
+
+    assert directory.summary_file.read_bytes() == saved
+    assert "Hello." in only_transcript(config)
+
+
 def test_a_meeting_with_no_speech_is_not_summarized(config: Config):
     summarizer = FakeSummarizer()
 

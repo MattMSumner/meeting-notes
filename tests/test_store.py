@@ -6,7 +6,7 @@ import pytest
 
 from meeting_notes.meeting import Meeting
 from meeting_notes.store import ChannelCapture, MeetingDir, MeetingNotFound, MeetingStore
-from meeting_notes.summary import SummaryError
+from meeting_notes.summary import Figure, Summary, SummaryError
 from meeting_notes.transcript import Segment
 
 STARTED = datetime(2026, 10, 20, 14, 5, tzinfo=timezone(timedelta(hours=-4)))
@@ -154,6 +154,21 @@ def test_an_unreadable_summary_is_a_summary_error(tmp_path: Path):
 
     with pytest.raises(SummaryError, match="summary.json couldn't be read"):
         meeting_dir.load_summary()
+
+
+def test_loads_legacy_summaries_without_rewriting_them_and_round_trips_figures(tmp_path: Path):
+    directory = MeetingDir(tmp_path)
+    original = '{"overview":"Pricing.","key_points":[],"decisions":[],"action_items":[]}'
+    directory.summary_file.write_text(original)
+
+    summary = directory.load_summary()
+
+    assert isinstance(summary, Summary)
+    assert summary.figures == []
+    assert directory.summary_file.read_text() == original
+    summary.figures = [Figure(speaker="Sam", subject="Build budget", quote="Seventy is doable.")]
+    directory.save_summary(summary)
+    assert directory.load_summary() == summary
 
 
 def test_attendees_round_trip_and_older_meetings_have_none(tmp_path: Path):

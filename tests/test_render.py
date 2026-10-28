@@ -5,7 +5,7 @@ import pytest
 from meeting_notes.meeting import Meeting
 from meeting_notes.merge import Aside, Line
 from meeting_notes.render import render_note, render_transcript, timestamp
-from meeting_notes.summary import ActionItem, Summary
+from meeting_notes.summary import ActionItem, Figure, Summary
 
 MEETING = Meeting.new("Weekly Sync", datetime(2026, 10, 20, 14, 5))
 
@@ -106,6 +106,42 @@ def test_note_says_none_for_empty_sections():
 
     assert "## Decisions\n\n_None._\n" in note
     assert "## Action items\n\n_None._\n" in note
+    assert "## Figures" not in note
+
+
+def test_renders_verified_figures_between_the_summary_and_decisions():
+    summary = SUMMARY.model_copy(
+        update={
+            "figures": [
+                Figure(
+                    speaker="Them",
+                    subject="Build budget",
+                    quote="Seventy for the build is definitely doable.",
+                ),
+            ]
+        }
+    )
+
+    note = render_note(MEETING, summary, "id")
+
+    assert (
+        "## Figures\n\n- **Them — Build budget:** “Seventy for the build is definitely doable.”\n\n"
+        in note
+    )
+    assert note.index("## Summary") < note.index("## Figures") < note.index("## Decisions")
+
+
+def test_shows_duplicate_figures_once_without_losing_distinct_subjects():
+    quote = "There's no travel budget, and we pay on net ninety terms."
+    travel = Figure(speaker="Them", subject="Travel budget", quote=quote)
+    terms = Figure(speaker="Them", subject="Payment terms", quote=quote)
+    summary = SUMMARY.model_copy(update={"figures": [travel, travel, terms]})
+
+    note = render_note(MEETING, summary, "id")
+
+    assert note.count("**Them — Travel budget:**") == 1
+    assert note.count("**Them — Payment terms:**") == 1
+    assert len(summary.figures) == 3
 
 
 def test_note_without_a_summary_says_how_to_write_one():

@@ -8,9 +8,11 @@ from collections.abc import Callable
 from importlib import resources
 from typing import Any, cast
 
-from meeting_notes.figures import unsaid_numbers
+from pydantic import BaseModel
+
+from meeting_notes.figures import unsaid_numbers, verify_figures
 from meeting_notes.meeting import Meeting
-from meeting_notes.summary import Summary, SummaryError, parse_summary
+from meeting_notes.summary import Figures, Narrative, Summary, SummaryError, parse_response
 
 # Sends a JSON request to an Ollama API path and returns the JSON reply.
 Post = Callable[[str, dict[str, Any]], dict[str, Any]]
@@ -27,6 +29,10 @@ REPLY_TOKENS = 4096
 def default_prompt() -> str:
     """The prompt, with {name} standing for the person who recorded the meeting."""
     return resources.files("meeting_notes").joinpath("prompts/summary.md").read_text()
+
+
+def default_figures_prompt() -> str:
+    return resources.files("meeting_notes").joinpath("prompts/figures.md").read_text()
 
 
 class OllamaError(SummaryError):
@@ -78,6 +84,7 @@ class OllamaSummarizer:
         my_name: str,
         prompt: str | None = None,
         think: bool = True,
+        figures_prompt: str | None = None,
     ) -> None:
         self.model = model
         self.num_ctx = num_ctx
@@ -86,39 +93,44 @@ class OllamaSummarizer:
             "{name}", my_name
         )
         self.think = think
+        self.figures_prompt = (
+            figures_prompt if figures_prompt is not None else default_figures_prompt()
+        ).replace("{name}", my_name)
 
     def summarize(self, meeting: Meeting, transcript: str) -> Summary:
+        context = (
+            f"Meeting: {meeting.title}\n"
+            f"Date: {meeting.started_at:%A %Y-%m-%d %H:%M}\n"
+            + (f"Others invited: {', '.join(meeting.attendees)}\n" if meeting.attendees else "")
+            + f"\nTranscript:\n\n{transcript}"
+        )
+        _, evidence = self._ask(
+            [
+                {"role": "system", "content": self.figures_prompt},
+                {"role": "user", "content": context},
+            ],
+            Figures,
+            lambda response: verify_figures(response.figures, transcript),
+        )
         messages = [
             {"role": "system", "content": self.prompt},
             {
                 "role": "user",
-                "content": f"Meeting: {meeting.title}\n"
-                f"Date: {meeting.started_at:%A %Y-%m-%d %H:%M}\n"
-                # From the calendar: lets the model name people and spell names right.
-                + (f"Others invited: {', '.join(meeting.attendees)}\n" if meeting.attendees else "")
-                + f"\nTranscript:\n\n{transcript}",
+                "content": context + f"\n\nVerified figures:\n{evidence.model_dump_json()}",
             },
         ]
-        # Ollama doesn't refuse a prompt that's too long: it quietly drops part of it (in a
-        # test, 7.4k tokens became 2k with a 4k context) and reports only what it kept. So
-        # the check has to happen before sending.
-        estimate = sum(len(m["content"]) for m in messages) // CHARS_PER_TOKEN + REPLY_TOKENS
-        if estimate > self.num_ctx:
-            raise OllamaError(
-                f"The transcript is too long for the model's context (about {estimate} tokens "
-                f"needed, {self.num_ctx} set), so the summary would miss part of it. "
-                f"Raise MEETING_NOTES_NUM_CTX to at least {estimate}."
-            )
-        reply, summary = self._ask(messages)
+        reply, narrative = self._ask(messages, Narrative)
+        summary = Summary(**narrative.model_dump(), figures=evidence.figures)
         # The model sometimes works out a number nobody said, like the rest of a total.
         # One retry, told which; the retry is kept only if it has fewer such numbers, and
         # any left are flagged in the note.
-        said = messages[1]["content"]
+        # Generated evidence must never become the source for the unsaid-number check.
+        said = context
         unsaid = unsaid_numbers(summary, said)
         if not unsaid:
             return summary
         try:
-            _, retried = self._ask(
+            _, retried_narrative = self._ask(
                 [
                     *messages,
                     {"role": "assistant", "content": reply},
@@ -128,30 +140,55 @@ class OllamaSummarizer:
                         "numbers someone said, and don't work out new ones. Reply again with "
                         "JSON only.",
                     },
-                ]
+                ],
+                Narrative,
             )
         except SummaryError:
             return summary
+        retried = Summary(**retried_narrative.model_dump(), figures=evidence.figures)
         return retried if len(unsaid_numbers(retried, said)) < len(unsaid) else summary
 
-    def _ask(self, messages: list[dict[str, str]]) -> tuple[str, Summary]:
-        """The model's reply and the summary in it."""
-        reply = self._chat(messages)
+    def _ask[T: BaseModel](
+        self,
+        messages: list[dict[str, str]],
+        model: type[T],
+        verify: Callable[[T], None] | None = None,
+    ) -> tuple[str, T]:
+        """Parse and verify a structured reply, with one correction attempt."""
+
+        def read(reply: str) -> T:
+            response = parse_response(reply, model)
+            if verify is not None:
+                verify(response)
+            return response
+
+        schema = model.model_json_schema()
+        reply = self._chat(messages, schema)
         try:
-            return reply, parse_summary(reply)
+            return reply, read(reply)
         except SummaryError as error:
-            # Local models occasionally break the format; one retry, told what was wrong,
-            # almost always fixes it.
+            # One chance to correct malformed output or unverified evidence.
             reply = self._chat(
                 [
                     *messages,
                     {"role": "assistant", "content": reply},
                     {"role": "user", "content": f"{error}. Reply again with JSON only."},
-                ]
+                ],
+                schema,
             )
-            return reply, parse_summary(reply)
+            return reply, read(reply)
 
-    def _chat(self, messages: list[dict[str, str]]) -> str:
+    def _chat(self, messages: list[dict[str, str]], schema: dict[str, Any]) -> str:
+        # Check every request, including corrections: Ollama can silently truncate input.
+        estimate = (
+            sum(len(m["content"]) for m in messages) + len(json.dumps(schema))
+        ) // CHARS_PER_TOKEN + REPLY_TOKENS
+        if estimate > self.num_ctx:
+            raise OllamaError(
+                f"The transcript is too long for the model's context (about {estimate} tokens "
+                f"needed, {self.num_ctx} set), so the summary would miss part of it. "
+                f"Raise MEETING_NOTES_NUM_CTX to at least {estimate}."
+            )
         response = self.post(
             "/api/chat",
             {
@@ -160,7 +197,7 @@ class OllamaSummarizer:
                 "stream": False,
                 "think": self.think,
                 # Constrains the reply to the schema, so it's almost always valid.
-                "format": Summary.model_json_schema(),
+                "format": schema,
                 "options": {
                     # Ollama's default context is a few thousand tokens and it drops the
                     # start of anything longer without saying so. An hour-long meeting is

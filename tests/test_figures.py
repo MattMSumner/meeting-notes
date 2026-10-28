@@ -1,7 +1,7 @@
 import pytest
 
-from meeting_notes.figures import numbers, unsaid_numbers
-from meeting_notes.summary import ActionItem, Summary
+from meeting_notes.figures import numbers, unsaid_numbers, verify_figures
+from meeting_notes.summary import ActionItem, Figure, Summary, SummaryError
 
 
 @pytest.mark.parametrize(
@@ -60,3 +60,45 @@ def test_timestamps_are_not_something_anyone_said():
 
 def test_checks_action_items_and_ignores_small_counts():
     assert unsaid_numbers(summary("Two options came up.", due="October 24"), SAID) == ["24"]
+
+
+def test_checks_numbers_in_figure_subjects_and_quotes():
+    result = summary()
+    result.figures = [Figure(speaker="Sam", subject="$30,000 retainer", quote="Thirty thousand.")]
+
+    assert unsaid_numbers(result, SAID) == ["$30,000", "Thirty thousand"]
+
+
+def test_verifies_quotes_with_only_whitespace_normalized():
+    quote = Figure(
+        speaker="Them",
+        subject="Build budget",
+        quote="Seventy for\n the build is definitely doable.",
+    )
+
+    verify_figures([quote], SAID)
+    assert quote.quote == "Seventy for\n the build is definitely doable."
+    verify_figures([], SAID)
+
+
+@pytest.mark.parametrize(
+    ("speaker", "quote"),
+    [
+        ("Sam", "Seventy for the build is definitely doable."),
+        ("Nadia", "Seventy for the build is definitely doable."),
+        ("them", "Seventy for the build is definitely doable."),
+        ("Them", "$70k for the build is definitely doable."),
+        ("Them", "Seventy for the build is the maximum."),
+        ("Them", "seventy for the build is definitely doable."),
+        ("Them", "Seventy for the build is definitely doable!"),
+        ("Sam", "a hundred and twenty thousand. The build itself"),
+        ("Sam", "eighty to ninety thousand is what I'm aiming for. Seventy"),
+        ("Sam", "All in, … a hundred and twenty thousand."),
+        ("Sam", "120k budget"),
+    ],
+)
+def test_rejects_quotes_without_a_verbatim_match_in_one_turn(speaker: str, quote: str):
+    with pytest.raises(SummaryError, match="figures.0.quote"):
+        verify_figures(
+            [Figure(speaker=speaker, subject="Price", quote=quote)], "Meeting: 120k budget\n" + SAID
+        )

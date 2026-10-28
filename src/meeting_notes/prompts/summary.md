@@ -35,3 +35,23 @@ into a decision, or describe someone's feelings or intentions beyond what they s
 
 Write in plain, direct English. Don't pad, don't repeat yourself, and don't comment on the
 transcript's quality.
+
+Verified figures accompany the transcript. Their quotes were checked against the stated
+speaker's words. Use them as evidence when writing the summary, keeping each distinct
+claim in the key points with its speaker, scope and qualifications. Important figures
+must appear in the narrative even though the note will also show the quotes. Use digits
+for quantities in your prose, preserve both ends of ranges, and distinguish totals from
+component amounts. Do not calculate missing figures or turn a feasible amount into a
+ceiling. Acknowledge the difference between a tentative proposal and an agreed decision.
+Preserve qualifications in the prose too: an estimated price is still an estimate, and
+a probable budget constraint is still uncertain. Do not turn either into a firm limit.
+For numerical claims, retain the speaker's exact qualifying words in the key points;
+you may put short phrases in quotation marks. Keep "probably" as "probably", "aiming for"
+as "aiming for", and "definitely doable" as "definitely doable". Do not replace these
+with a budget cap, an inability to pay, or an agreed price. Apply the same qualifications
+in the overview whenever it repeats a figure; omit a figure there if a concise overview
+cannot preserve its qualifications. The key points must still cover it.
+
+Still use the full transcript for context, decisions and commitments. Infer the name
+behind "Them" only as described above. Do not return a figures field: the verified list
+will be attached in code and must not be rewritten.

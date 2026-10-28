@@ -6,13 +6,17 @@ was written in digits ("$120,000", "120k") or, as speech recognition often does,
 ("a hundred and twenty thousand")."""
 
 import re
-from collections.abc import Iterator
+from collections.abc import Iterator, Sequence
 
-from meeting_notes.summary import Summary
+from meeting_notes.summary import Figure, Summary, SummaryError
 
 _TOKEN = re.compile(r"\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d+(?:\.\d+)?|[a-z]+", re.IGNORECASE)
 # The transcript's line timestamps, which nobody said.
 _TIMESTAMP = re.compile(r"\[\d+:\d\d:\d\d\]")
+_TURN = re.compile(
+    r"^\[\d+:\d\d:\d\d\] ([^:\n]+): (.*?)(?=^\[\d+:\d\d:\d\d\] |\Z)",
+    re.MULTILINE | re.DOTALL,
+)
 
 _UNITS = {
     word: value
@@ -91,13 +95,18 @@ def numbers(text: str) -> Iterator[tuple[str, float]]:
 
 def unsaid_numbers(summary: Summary, said: str) -> list[str]:
     """The numbers in the summary that aren't in what was said, as the summary wrote them."""
-    heard = {round(value, 6) for _, value in numbers(said)}
     texts = [
         summary.overview,
         *summary.key_points,
         *summary.decisions,
         *(f"{item.task} {item.due or ''}" for item in summary.action_items),
+        *(f"{figure.subject} {figure.quote}" for figure in summary.figures),
     ]
+    return _unsaid_numbers(texts, said)
+
+
+def _unsaid_numbers(texts: Sequence[str], said: str) -> list[str]:
+    heard = {round(value, 6) for _, value in numbers(said)}
     unsaid: list[str] = []
     for text in texts:
         for written, value in numbers(text):
@@ -107,3 +116,28 @@ def unsaid_numbers(summary: Summary, said: str) -> list[str]:
             if value >= SMALLEST_CHECKED and not candidates & heard and written not in unsaid:
                 unsaid.append(written)
     return unsaid
+
+
+def verify_figures(figures: Sequence[Figure], transcript: str) -> None:
+    """Quotes must belong to one turn by their stated speaker, not to meeting metadata."""
+    turns = [(speaker, " ".join(text.split())) for speaker, text in _TURN.findall(transcript)]
+    problems = [
+        f"figures.{index}.quote was not found verbatim under speaker {figure.speaker!r}"
+        for index, figure in enumerate(figures)
+        if not any(
+            speaker == figure.speaker and " ".join(figure.quote.split()) in text
+            for speaker, text in turns
+        )
+    ]
+    # The writer cannot fix these labels: they are attached unchanged after it finishes.
+    for index, figure in enumerate(figures):
+        if unsaid := _unsaid_numbers([figure.subject], transcript):
+            problems.append(
+                f"figures.{index}.subject contains numbers nobody said: {', '.join(unsaid)}"
+            )
+    if problems:
+        raise SummaryError(
+            "Couldn't verify quoted figures: "
+            + "; ".join(problems)
+            + ". Copy continuous excerpts from the stated speaker, keeping wording and punctuation."
+        )

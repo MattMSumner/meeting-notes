@@ -74,6 +74,17 @@ with their own speaker and timestamp. Standalone replies stay separate, and the 
 model still receives the original turns. Run `notes render <meeting-id>` to apply this
 formatting to an older meeting's stored segments, without transcribing or summarizing again.
 
+Summaries use two local model passes: first extract meaningful figures and verify each
+quote against its speaker's transcript, then write the summary from the full transcript
+and those quotes. The note includes a Figures section with the original wording and
+speaker labels. Unverifiable quotes get one correction attempt; if that fails, no new
+summary is saved. A failed `notes summarize` leaves the previous summary in place.
+
+Older summaries still render normally. Run `notes summarize <meeting-id>` to generate
+figures for an existing meeting; `notes render` only formats the saved results. The
+second pass adds processing time, and verified quotes do not guarantee that the prose
+interprets them correctly.
+
 Settings are environment variables:
 
 | Variable | Default |
