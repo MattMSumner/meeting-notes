@@ -5,14 +5,16 @@ import json
 import urllib.error
 import urllib.request
 from collections.abc import Callable
+from dataclasses import asdict
 from importlib import resources
 from typing import Any, cast
 
 from pydantic import BaseModel
 
-from meeting_notes.figures import unsaid_numbers, verify_details
+from meeting_notes.figures import unsaid_numbers
 from meeting_notes.meeting import Meeting
-from meeting_notes.summary import Details, Narrative, Summary, SummaryError, parse_response
+from meeting_notes.summary import Narrative, Summary, SummaryError, TurnSelection, parse_response
+from meeting_notes.turns import parse_turns, selected_details, verify_selection
 
 # Sends a JSON request to an Ollama API path and returns the JSON reply.
 Post = Callable[[str, dict[str, Any]], dict[str, Any]]
@@ -104,21 +106,28 @@ class OllamaSummarizer:
             + (f"Others invited: {', '.join(meeting.attendees)}\n" if meeting.attendees else "")
             + f"\nTranscript:\n\n{transcript}"
         )
-        _, evidence = self._ask(
+        turns = parse_turns(transcript)
+        _, selection = self._ask(
             [
                 {"role": "system", "content": self.details_prompt},
-                {"role": "user", "content": context},
+                {
+                    "role": "user",
+                    "content": json.dumps(
+                        {"turns": [asdict(turn) for turn in turns]}, ensure_ascii=False
+                    ),
+                },
             ],
-            Details,
-            lambda response: verify_details(response.details, transcript),
+            TurnSelection,
+            lambda response: verify_selection(response.turn_ids, turns),
         )
+        details = selected_details(selection.turn_ids, turns)
         # Both tasks read the original transcript; only code combines their outputs.
         messages = [
             {"role": "system", "content": self.prompt},
             {"role": "user", "content": context},
         ]
         reply, narrative = self._ask(messages, Narrative)
-        summary = Summary(**narrative.model_dump(), details=evidence.details)
+        summary = Summary(**narrative.model_dump(), details=details)
         # The model sometimes works out a number nobody said, like the rest of a total.
         # One retry, told which; the retry is kept only if it has fewer such numbers, and
         # any left are flagged in the note.
@@ -143,7 +152,7 @@ class OllamaSummarizer:
             )
         except SummaryError:
             return summary
-        retried = Summary(**retried_narrative.model_dump(), details=evidence.details)
+        retried = Summary(**retried_narrative.model_dump(), details=details)
         return retried if len(unsaid_numbers(retried, said)) < len(unsaid) else summary
 
     def _ask[T: BaseModel](

@@ -107,14 +107,22 @@ def render_note(
             out += [*_bullets(summary.key_points), ""]
         if summary.details:
             out += ["## Details", ""]
-            # A correction can repeat an already-valid detail; show it only once.
-            details = dict.fromkeys(
-                (detail.speaker, detail.subject, " ".join(detail.quote.split()))
-                for detail in summary.details
-            )
-            out += [
-                f"- **{speaker} — {subject}:** “{quote}”" for speaker, subject, quote in details
-            ]
+            legacy: set[tuple[str, str | None, str]] = set()
+            for detail in summary.details:
+                quote = " ".join(detail.quote.split())
+                heading = detail.speaker
+                if detail.start is not None:
+                    heading += f" — {timestamp(detail.start)}"
+                else:
+                    # Older extractions could repeat an entry. Selected turn IDs are
+                    # already unique, even when different turns have identical text.
+                    key = (detail.speaker, detail.subject, quote)
+                    if key in legacy:
+                        continue
+                    legacy.add(key)
+                    if detail.subject:
+                        heading += f" — {detail.subject}"
+                out.append(f"- **{heading}:** “{quote}”")
             out.append("")
         out += ["## Decisions", "", *_bullets(summary.decisions), ""]
         actions = [_action_item(item) for item in summary.action_items] or ["_None._"]

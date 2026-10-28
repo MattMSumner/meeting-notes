@@ -75,20 +75,24 @@ model still receives the original turns. Run `notes render <meeting-id>` to appl
 formatting to an older meeting's stored segments, without transcribing or summarizing again.
 
 Summaries use two independent local model tasks, each reading the full transcript. One
-extracts meaningful figures, constraints and availability as source quotes. The other
-writes a short overview, decisions and action items. Code combines their results, placing
-the quotes and their original speaker labels in a Details section. The overview leaves
-precise amounts and schedules to those quotes.
+selects the IDs of speaker turns containing meaningful figures, constraints and
+availability. Code copies those turns in full and labels them with their source speaker
+and timestamp in a Details section. This keeps neighboring claims and qualifications
+together; long turns can produce longer quotes. The other task writes a short overview,
+decisions and action items. The overview leaves precise amounts and schedules to the
+quoted details.
 
-Each quote is checked against its speaker's transcript. Unverifiable quotes get one
-correction attempt; if that fails, no new summary is saved. A failed `notes summarize`
-leaves the previous summary in place. Quote matching establishes where the words came
-from; it does not establish that their selection or subject labels preserve the context.
+The selector returns only IDs. It cannot rewrite quotes, invent speaker labels or add
+topic headings. Malformed responses and unknown IDs get one correction attempt; if that
+fails, no new summary is saved. A failed `notes summarize` leaves the previous summary
+in place. Copying source turns preserves their wording; selecting all the important
+turns still requires model judgment.
 
 Older summaries still render normally. Run `notes summarize <meeting-id>` to generate
 details for an existing meeting; `notes render` only formats the saved results, including
-older key points and quoted figures. Rendering does not rewrite the saved JSON. Both model
-tasks run sequentially, and decisions and action items still require interpretation.
+older key points and quoted figures with their original topic labels. Rendering does not
+rewrite the saved JSON. Both model tasks run sequentially, and decisions and action items
+still require interpretation.
 
 Settings are environment variables:
 

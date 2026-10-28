@@ -69,6 +69,22 @@ def test_checks_numbers_in_detail_subjects_and_quotes():
     assert unsaid_numbers(result, SAID) == ["$30,000", "Thirty thousand"]
 
 
+def test_source_times_are_metadata_not_spoken_numbers():
+    result = summary()
+    result.details = [Detail(speaker="Them", start=33, quote="Seventy is doable.")]
+
+    assert unsaid_numbers(result, SAID) == []
+
+
+@pytest.mark.parametrize(
+    ("start", "quote"),
+    [(15, "Seventy for the build is definitely doable."), (33, "Seventy for the build")],
+)
+def test_timestamped_details_must_copy_the_whole_turn_at_that_time(start: float, quote: str):
+    with pytest.raises(SummaryError, match="details.0.quote"):
+        verify_details([Detail(speaker="Them", start=start, quote=quote)], SAID)
+
+
 def test_verifies_quotes_with_only_whitespace_normalized():
     quote = Detail(
         speaker="Them",
@@ -99,6 +115,4 @@ def test_verifies_quotes_with_only_whitespace_normalized():
 )
 def test_rejects_quotes_without_a_verbatim_match_in_one_turn(speaker: str, quote: str):
     with pytest.raises(SummaryError, match="details.0.quote"):
-        verify_details(
-            [Detail(speaker=speaker, subject="Price", quote=quote)], "Meeting: 120k budget\n" + SAID
-        )
+        verify_details([Detail(speaker=speaker, subject="Price", quote=quote)], SAID)

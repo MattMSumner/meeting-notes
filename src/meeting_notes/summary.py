@@ -27,7 +27,8 @@ class Detail(BaseModel):
     speaker: str = Field(
         min_length=1, description="The exact transcript speaker label, not an inferred name"
     )
-    subject: str = Field(
+    subject: str | None = Field(
+        default=None,
         min_length=1,
         description="A neutral topic label, without interpreting stance or availability",
     )
@@ -36,19 +37,20 @@ class Detail(BaseModel):
         description="Complete sentence(s) copied verbatim, including scope and qualifications; "
         "never just the number",
     )
+    start: float | None = Field(default=None, ge=0, allow_inf_nan=False)
 
     @field_validator("speaker", "subject", "quote")
     @classmethod
-    def not_blank(cls, value: str) -> str:
-        if not value.strip():
+    def not_blank(cls, value: str | None) -> str | None:
+        if value is not None and not value.strip():
             raise ValueError("must not be blank")
         return value
 
 
-class Details(BaseModel):
+class TurnSelection(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    details: list[Detail]
+    turn_ids: list[str]
 
 
 class Narrative(BaseModel):

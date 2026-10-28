@@ -196,6 +196,21 @@ def test_reads_draft_figures_as_details_without_rewriting_the_file(tmp_path: Pat
     assert saved["details"][0]["quote"] == "Seventy is doable."
 
 
+def test_source_details_round_trip_without_generated_topic_labels(tmp_path: Path):
+    directory = MeetingDir(tmp_path)
+    summary = Summary(
+        overview="Pricing.",
+        decisions=[],
+        action_items=[],
+        details=[Detail(speaker="Them", start=0, quote="Seventy is doable.")],
+    )
+
+    directory.save_summary(summary)
+
+    assert directory.load_summary() == summary
+    assert summary.details[0].subject is None
+
+
 def test_attendees_round_trip_and_older_meetings_have_none(tmp_path: Path):
     store = MeetingStore(tmp_path)
     meeting_dir = store.create(Meeting.new("Sync", STARTED, ("Alex Doe",)))

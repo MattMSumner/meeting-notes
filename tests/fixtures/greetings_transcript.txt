@@ -1,0 +1,4 @@
+[00:00:03] Sam: Hello.
+[00:00:09] Them: Hi.
+[00:00:15] Sam: Thanks for joining.
+[00:00:22] Them: You're welcome.

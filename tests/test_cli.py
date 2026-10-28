@@ -6,17 +6,19 @@ import signal
 import threading
 from datetime import datetime
 from pathlib import Path
+from typing import Any
 
 import pytest
 
 from meeting_notes.cli import main
 from meeting_notes.config import Config
 from meeting_notes.meeting import Meeting
+from meeting_notes.ollama import OllamaSummarizer
 from meeting_notes.pipeline import conversation
 from meeting_notes.recorder import CaptureError, Recorder
 from meeting_notes.render import render_transcript
 from meeting_notes.store import MeetingDir, MeetingStore
-from meeting_notes.summary import ActionItem, Summary, SummaryError
+from meeting_notes.summary import ActionItem, Summarizer, Summary, SummaryError
 from meeting_notes.transcript import Segment
 
 
@@ -117,7 +119,7 @@ def run(
     transcriber: FakeTranscriber,
     *argv: str,
     recorder: Recorder | None = None,
-    summarizer: FakeSummarizer | None = None,
+    summarizer: Summarizer | None = None,
 ) -> int:
     return main(
         list(argv),
@@ -432,6 +434,11 @@ def test_a_failed_resummary_keeps_the_previous_saved_summary(config: Config):
     run(config, FakeTranscriber({"me": [Segment(0.0, 1.0, "Hello.")]}), "record")
     directory = only_meeting_dir(config)
     saved = directory.summary_file.read_bytes()
+    requests: list[dict[str, Any]] = []
+
+    def post(path: str, body: dict[str, Any]) -> dict[str, Any]:
+        requests.append(body)
+        return {"message": {"content": '{"turn_ids":["t999"]}'}, "done_reason": "stop"}
 
     assert (
         run(
@@ -439,12 +446,14 @@ def test_a_failed_resummary_keeps_the_previous_saved_summary(config: Config):
             FakeTranscriber(),
             "summarize",
             directory.id,
-            summarizer=FakeSummarizer("Couldn't verify quoted details"),
+            summarizer=OllamaSummarizer("m", 32768, post, "Sam"),
         )
         == 1
     )
 
     assert directory.summary_file.read_bytes() == saved
+    assert len(requests) == 2
+    assert all(request["format"]["required"] == ["turn_ids"] for request in requests)
     assert "Hello." in only_transcript(config)
 
 

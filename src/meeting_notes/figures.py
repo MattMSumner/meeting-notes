@@ -9,14 +9,11 @@ import re
 from collections.abc import Iterator, Sequence
 
 from meeting_notes.summary import Detail, Summary, SummaryError
+from meeting_notes.turns import parse_turns
 
 _TOKEN = re.compile(r"\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d+(?:\.\d+)?|[a-z]+", re.IGNORECASE)
 # The transcript's line timestamps, which nobody said.
 _TIMESTAMP = re.compile(r"\[\d+:\d\d:\d\d\]")
-_TURN = re.compile(
-    r"^\[\d+:\d\d:\d\d\] ([^:\n]+): (.*?)(?=^\[\d+:\d\d:\d\d\] |\Z)",
-    re.MULTILINE | re.DOTALL,
-)
 
 _UNITS = {
     word: value
@@ -100,7 +97,7 @@ def unsaid_numbers(summary: Summary, said: str) -> list[str]:
         *summary.key_points,
         *summary.decisions,
         *(f"{item.task} {item.due or ''}" for item in summary.action_items),
-        *(f"{detail.subject} {detail.quote}" for detail in summary.details),
+        *(f"{detail.subject or ''} {detail.quote}" for detail in summary.details),
     ]
     return _unsaid_numbers(texts, said)
 
@@ -120,18 +117,23 @@ def _unsaid_numbers(texts: Sequence[str], said: str) -> list[str]:
 
 def verify_details(details: Sequence[Detail], transcript: str) -> None:
     """Quotes must belong to one turn by their stated speaker, not to meeting metadata."""
-    turns = [(speaker, " ".join(text.split())) for speaker, text in _TURN.findall(transcript)]
+    turns = parse_turns(transcript)
     problems = [
         f"details.{index}.quote was not found verbatim under speaker {detail.speaker!r}"
         for index, detail in enumerate(details)
         if not any(
-            speaker == detail.speaker and " ".join(detail.quote.split()) in text
-            for speaker, text in turns
+            turn.speaker == detail.speaker
+            and (
+                (detail.start == turn.start and detail.quote == turn.text)
+                if detail.start is not None
+                else " ".join(detail.quote.split()) in " ".join(turn.text.split())
+            )
+            for turn in turns
         )
     ]
     # The writer cannot fix these labels: they are attached unchanged after it finishes.
     for index, detail in enumerate(details):
-        if unsaid := _unsaid_numbers([detail.subject], transcript):
+        if unsaid := _unsaid_numbers([detail.subject or ""], transcript):
             problems.append(
                 f"details.{index}.subject contains numbers nobody said: {', '.join(unsaid)}"
             )

@@ -156,6 +156,29 @@ def test_renders_legacy_figures_and_key_points_as_saved_content():
     assert "**Them — Budget:** “Seventy is doable.”" in note
 
 
+def test_renders_source_times_including_zero_without_topic_labels():
+    summary = SUMMARY.model_copy(
+        update={
+            "details": [
+                Detail(speaker="Sam", start=0, quote="About seventy.\nProbably doable."),
+                Detail(speaker="Them", start=3723, quote="I return on Tuesday."),
+            ]
+        }
+    )
+
+    note = render_note(MEETING, summary, "id")
+
+    assert "**Sam — 00:00:00:** “About seventy. Probably doable.”" in note
+    assert "**Them — 01:02:03:** “I return on Tuesday.”" in note
+
+
+def test_distinct_selected_turns_remain_visible_even_if_their_words_and_times_match():
+    detail = Detail(speaker="Sam", start=33, quote="Seventy is doable.")
+    summary = SUMMARY.model_copy(update={"details": [detail, detail]})
+
+    assert render_note(MEETING, summary, "id").count("**Sam — 00:00:33:**") == 2
+
+
 def test_note_without_a_summary_says_how_to_write_one():
     note = render_note(MEETING, None, "2026-10-20-1405-weekly-sync")
 

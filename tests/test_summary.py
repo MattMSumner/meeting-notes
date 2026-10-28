@@ -2,10 +2,10 @@ import pytest
 
 from meeting_notes.summary import (
     Detail,
-    Details,
     Narrative,
     Summary,
     SummaryError,
+    TurnSelection,
     parse_response,
     parse_summary,
 )
@@ -28,9 +28,9 @@ def test_parses_a_valid_reply():
 
 
 def test_extraction_requires_an_explicit_list_even_when_empty():
-    assert parse_response('{"details": []}', Details).details == []
-    with pytest.raises(SummaryError, match="details: Field required"):
-        parse_response("{}", Details)
+    assert parse_response('{"turn_ids": []}', TurnSelection).turn_ids == []
+    with pytest.raises(SummaryError, match="turn_ids: Field required"):
+        parse_response("{}", TurnSelection)
 
 
 @pytest.mark.parametrize("field", ["speaker", "subject", "quote"])
@@ -44,11 +44,17 @@ def test_detail_fields_cannot_be_blank(field: str, value: str):
 
 def test_response_schemas_do_not_allow_extra_fields():
     with pytest.raises(SummaryError, match="Extra inputs"):
-        parse_response('{"details": [], "overview": "Invented."}', Details)
+        parse_response('{"turn_ids": [], "overview": "Invented."}', TurnSelection)
     with pytest.raises(SummaryError, match="Extra inputs"):
         parse_response(VALID.replace('"overview":', '"details": [], "overview":'), Narrative)
     with pytest.raises(SummaryError, match="Extra inputs"):
         parse_response('{"speaker":"Sam","subject":"Cost","quote":"Seventy.","value":70}', Detail)
+
+
+@pytest.mark.parametrize("start", [-1, float("inf"), float("nan")])
+def test_source_times_must_be_finite_and_nonnegative(start: float):
+    with pytest.raises(ValueError, match="start"):
+        Detail(speaker="Sam", quote="Seventy is doable.", start=start)
 
 
 @pytest.mark.parametrize(
