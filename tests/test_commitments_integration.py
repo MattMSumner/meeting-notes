@@ -15,7 +15,7 @@ from test_ollama_integration import (
     check_scheduling_timing,
 )
 
-from meeting_notes.commitments import verify_commitments
+from meeting_notes.commitments import action_item, action_turn_ids, verify_commitments
 from meeting_notes.config import Config
 from meeting_notes.meeting import Meeting
 from meeting_notes.ollama import OllamaSummarizer, http_post
@@ -24,7 +24,15 @@ from meeting_notes.turns import parse_turns
 
 pytestmark = pytest.mark.integration
 FIXTURES = Path(__file__).parent / "fixtures"
-CASES = ["golden", "availability", "numbers", "no_commitments", "conditional_commitments"]
+CASES = [
+    "golden",
+    "availability",
+    "numbers",
+    "no_commitments",
+    "conditional_commitments",
+    "timing_roles",
+    "accepted_requests",
+]
 
 
 def meeting_for(case: str) -> Meeting:
@@ -55,6 +63,39 @@ def check_conditional_commitments(summary: Summary) -> None:
     assert report.owner is None and report.due is None, "Guessed the report owner or deadline"
 
 
+def check_timing_roles(summary: Summary) -> None:
+    assert summary.decisions == [], "Promises are not separate agreements"
+    assert len(summary.action_items) == 5, "Expected five independent communication tasks"
+    for person, work, due in (
+        ("Morgan", "pilot", None),
+        ("Lee", "audit", "wednesday"),
+        ("Casey", "rota", None),
+        ("Jordan", "patch", None),
+        ("Taylor", "campaign", "monday"),
+    ):
+        [item] = [item for item in summary.action_items if person.lower() in item.task.lower()]
+        assert item.owner == "Sam" and work in item.task.lower()
+        assert any(
+            verb in item.task.lower()
+            for verb in ("talk", "contact", "ask", "speak", "discuss", "message")
+        )
+        if due is None:
+            assert item.due is None, "Related timing became a communication deadline"
+        else:
+            assert due in (item.due or "").lower(), "Lost the explicit communication deadline"
+
+
+def check_accepted_requests(summary: Summary) -> None:
+    assert summary.decisions == []
+    assert len(summary.action_items) == 2
+    for work, due in (("checklist", "thursday"), ("guide", "planning")):
+        [item] = [item for item in summary.action_items if work in item.task.lower()]
+        assert item.owner == "Riley"
+        assert due in (item.due or "").lower()
+        if work == "guide":
+            assert "rollback" in item.task.lower(), "Lost the requested scope of the review"
+
+
 def checks_for(case: str, summary: Summary) -> list[tuple[str, Callable[[], None]]]:
     if case in ("golden", "availability"):
         person, absent = ("Dan", "Monday") if case == "golden" else ("Alex", "Wednesday")
@@ -71,6 +112,10 @@ def checks_for(case: str, summary: Summary) -> list[tuple[str, Callable[[], None
         ]
     if case == "no_commitments":
         return [("empty", lambda: check_no_commitments(summary))]
+    if case == "timing_roles":
+        return [("timing_roles", lambda: check_timing_roles(summary))]
+    if case == "accepted_requests":
+        return [("accepted_requests", lambda: check_accepted_requests(summary))]
     return [("conditions_and_ownership", lambda: check_conditional_commitments(summary))]
 
 
@@ -83,7 +128,7 @@ def accepted_evidence(replies: list[str], summary: Summary, transcript: str) -> 
         except SummaryError:
             continue
         if [item.text for item in evidence.decisions] == summary.decisions and [
-            item.model_dump(exclude={"turn_ids"}) for item in evidence.action_items
+            action_item(item).model_dump() for item in evidence.action_items
         ] == [item.model_dump() for item in summary.action_items]:
             return evidence
     raise AssertionError("No validated source references match the assembled commitments")
@@ -97,16 +142,59 @@ def check_references(case: str, evidence: Commitments) -> None:
         for item in evidence.action_items:
             text = item.task.lower()
             if "cutover" in text:
-                assert {"t9", "t10"} <= set(item.turn_ids), "Missing request or acceptance"
+                assert item.kind == "accepted_request"
+                assert "t9" in item.request_turn_ids, "Missing original request"
+                assert "t10" in item.commitment_turn_ids, "Missing acceptance"
+                assert item.action_timing is not None and item.action_timing.turn_id == "t10"
             elif "finance" in text or "billing" in text:
-                assert "t11" in item.turn_ids
+                assert "t11" in item.commitment_turn_ids
+                assert item.kind == "promise" and item.action_timing is None
+                if "billing" in text:
+                    back = "tuesday" if case == "golden" else "thursday"
+                    assert any(
+                        timing.turn_id == "t11" and back in timing.value.lower()
+                        for timing in item.related_timing
+                    ), "Missing related work timing"
             else:
-                assert "t13" in item.turn_ids
+                assert "t13" in item.commitment_turn_ids
+                assert item.action_timing is not None and item.action_timing.turn_id == "t13"
     elif case == "numbers":
-        assert all("t12" in item.turn_ids for item in evidence.action_items)
+        for item in evidence.action_items:
+            assert item.kind == "accepted_request"
+            assert "t11" in item.request_turn_ids and "t12" in item.commitment_turn_ids
+            assert item.action_timing is not None and item.action_timing.turn_id == "t12"
     elif case == "conditional_commitments":
         for item in evidence.action_items:
-            assert ("t1" if "publish" in item.task.lower() else "t2") in item.turn_ids
+            publish = "publish" in item.task.lower()
+            assert ("t1" if publish else "t2") in item.commitment_turn_ids
+            assert item.kind == ("promise" if publish else "reported_commitment")
+    elif case == "timing_roles":
+        for person, source, day in (
+            ("morgan", "t1", "thursday"),
+            ("lee", "t2", "friday"),
+            ("casey", "t3", "monday"),
+            ("jordan", "t4", "tuesday"),
+            ("taylor", "t5", None),
+        ):
+            [item] = [item for item in evidence.action_items if person in item.task.lower()]
+            assert item.kind == "promise" and source in item.commitment_turn_ids
+            if day is None:
+                assert item.related_timing == []
+            else:
+                assert any(
+                    t.turn_id == source and day in t.value.lower() for t in item.related_timing
+                )
+            assert (item.action_timing is not None) == (person in ("lee", "taylor"))
+            if item.action_timing is not None:
+                assert item.action_timing.turn_id == source
+    elif case == "accepted_requests":
+        for work, request, acceptance in (("checklist", "t1", "t2"), ("guide", "t3", "t6")):
+            [item] = [item for item in evidence.action_items if work in item.task.lower()]
+            assert item.kind == "accepted_request"
+            assert request in item.request_turn_ids and acceptance in item.commitment_turn_ids
+            assert item.action_timing is not None and item.action_timing.turn_id == acceptance
+            if work == "guide":
+                assert "t5" in action_turn_ids(item), "Missing the review's requested scope"
 
 
 @pytest.fixture(scope="module", params=CASES)

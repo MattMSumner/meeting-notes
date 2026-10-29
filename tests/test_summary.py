@@ -3,6 +3,7 @@ import pytest
 from meeting_notes.summary import (
     Commitments,
     Detail,
+    ExtractedAction,
     Overview,
     Summary,
     SummaryError,
@@ -74,19 +75,70 @@ def test_decisions_need_text_and_source_references(item: str):
         parse_response('{"decisions":[' + item + '],"action_items":[]}', Commitments)
 
 
-@pytest.mark.parametrize("field", ["owner", "task", "due"])
-def test_action_fields_are_required_and_cannot_be_blank(field: str):
-    data = {
-        "decisions": [],
-        "action_items": [{"owner": None, "task": "Check it", "due": None, "turn_ids": ["t1"]}],
+@pytest.fixture
+def action_data() -> dict[str, object]:
+    return {
+        "kind": "promise",
+        "commitment_turn_ids": ["t1"],
+        "request_turn_ids": [],
+        "context_turn_ids": [],
+        "related_timing": [],
+        "action_timing": None,
+        "owner": None,
+        "task": "Check it",
     }
-    assert Commitments.model_validate(data).action_items[0].owner is None
-    data["action_items"][0][field] = " "
+
+
+@pytest.mark.parametrize("field", ["owner", "task"])
+def test_action_fields_are_required_and_cannot_be_blank(field: str, action_data: dict[str, object]):
+    assert ExtractedAction.model_validate(action_data).owner is None
+    action_data[field] = " "
     with pytest.raises(ValueError, match=field):
-        Commitments.model_validate(data)
-    del data["action_items"][0][field]
+        ExtractedAction.model_validate(action_data)
+    del action_data[field]
     with pytest.raises(ValueError, match=field):
-        Commitments.model_validate(data)
+        ExtractedAction.model_validate(action_data)
+
+
+@pytest.mark.parametrize("field", list(ExtractedAction.model_fields))
+def test_actions_require_every_evidence_field(field: str, action_data: dict[str, object]):
+    del action_data[field]
+    with pytest.raises(ValueError, match=field):
+        ExtractedAction.model_validate(action_data)
+
+
+@pytest.mark.parametrize("ids", [[], [" "], [1]])
+def test_actions_need_nonblank_commitment_references(ids: object, action_data: dict[str, object]):
+    action_data["commitment_turn_ids"] = ids
+    with pytest.raises(ValueError, match="commitment_turn_ids"):
+        ExtractedAction.model_validate(action_data)
+
+
+def test_accepted_requests_require_the_request(action_data: dict[str, object]):
+    action_data["kind"] = "accepted_request"
+    with pytest.raises(ValueError, match="needs request_turn_ids"):
+        ExtractedAction.model_validate(action_data)
+    action_data["request_turn_ids"] = ["t2"]
+    assert ExtractedAction.model_validate(action_data).request_turn_ids == ["t2"]
+
+
+@pytest.mark.parametrize("kind", ["promise", "reported_commitment"])
+def test_other_commitments_do_not_claim_request_evidence(kind: str, action_data: dict[str, object]):
+    action_data.update(kind=kind, request_turn_ids=["t2"])
+    with pytest.raises(ValueError, match="must have kind accepted_request"):
+        ExtractedAction.model_validate(action_data)
+
+
+@pytest.mark.parametrize("field", ["turn_id", "quote", "value"])
+def test_timing_fields_are_required_and_nonblank(field: str, action_data: dict[str, object]):
+    timing = {"turn_id": "t1", "quote": "I'll do it by Friday.", "value": "by Friday"}
+    action_data["action_timing"] = timing
+    timing[field] = " "
+    with pytest.raises(ValueError, match=field):
+        ExtractedAction.model_validate(action_data)
+    del timing[field]
+    with pytest.raises(ValueError, match=field):
+        ExtractedAction.model_validate(action_data)
 
 
 @pytest.mark.parametrize("start", [-1, float("inf"), float("nan")])

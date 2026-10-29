@@ -59,11 +59,23 @@ def decision(text: str, turn_ids: tuple[str, ...] = ("t1",)) -> str:
     return json.dumps({"decisions": [{"text": text, "turn_ids": turn_ids}], "action_items": []})
 
 
-def action(task: str = "Check the plan") -> str:
+def action(task: str = "Check the plan", /, **fields: object) -> str:
     return json.dumps(
         {
             "decisions": [],
-            "action_items": [{"owner": "Sam", "task": task, "due": None, "turn_ids": ["t1"]}],
+            "action_items": [
+                {
+                    "kind": "promise",
+                    "commitment_turn_ids": ["t1"],
+                    "request_turn_ids": [],
+                    "context_turn_ids": [],
+                    "related_timing": [],
+                    "action_timing": None,
+                    "owner": "Sam",
+                    "task": task,
+                    **fields,
+                }
+            ],
         }
     )
 
@@ -265,6 +277,59 @@ def test_corrects_unknown_commitment_references_before_writing():
     assert "Unknown turn IDs: t99" in ollama.requests[2]["messages"][-1]["content"]
 
 
+@pytest.mark.parametrize(
+    "fields,reason",
+    [
+        ({"kind": "accepted_request"}, "needs request_turn_ids"),
+        (
+            {
+                "action_timing": {
+                    "turn_id": "t1",
+                    "quote": "I'll check by Friday.",
+                    "value": "Friday",
+                }
+            },
+            "quote was not found verbatim",
+        ),
+        (
+            {"related_timing": [{"turn_id": "t1", "quote": "Hi.", "value": "Friday"}]},
+            "value was not found verbatim",
+        ),
+    ],
+)
+def test_corrects_bad_action_evidence_without_repeating_other_tasks(
+    fields: dict[str, object],
+    reason: str,
+):
+    ollama = FakeOllama(EVIDENCE, action(**fields), action(), GOOD)
+    summary = summarizer(ollama).summarize(MEETING, TRANSCRIPT)
+    assert summary.action_items[0].due is None
+    assert reason in ollama.requests[2]["messages"][-1]["content"]
+    assert [r["format"]["required"] for r in ollama.requests] == [
+        ["turn_ids"],
+        ["decisions", "action_items"],
+        ["decisions", "action_items"],
+        ["overview"],
+    ]
+
+
+def test_keeps_valid_action_when_a_number_retry_has_invalid_timing():
+    first = action("Spend $30.")
+    bad = action(
+        "Check the plan",
+        action_timing={
+            "turn_id": "t1",
+            "quote": "I'll check by Friday.",
+            "value": "Friday",
+        },
+    )
+    ollama = FakeOllama(EMPTY_SELECTION, first, bad, bad, GOOD)
+    summary = summarizer(ollama).summarize(MEETING, TRANSCRIPT)
+    assert summary.action_items[0].task == "Spend $30."
+    assert summary.action_items[0].due is None
+    assert unsaid_numbers(summary, TRANSCRIPT) == ["$30"]
+
+
 def test_changing_earlier_outputs_cannot_change_later_inputs():
     empty = FakeOllama(EMPTY_SELECTION, EMPTY_COMMITMENTS, GOOD)
     extracted = FakeOllama(EVIDENCE, action(), GOOD)
@@ -288,6 +353,8 @@ def test_failed_selection_never_calls_later_tasks(reply: str):
         "{}",
         decision("Keep it.", ("t99",)),
         '{"decisions":[{"text":"Keep it.","turn_ids":[]}],"action_items":[]}',
+        action(kind="accepted_request"),
+        action(action_timing={"turn_id": "t1", "quote": "By Friday.", "value": "Friday"}),
     ],
 )
 def test_failed_commitments_never_call_the_overview(reply: str):

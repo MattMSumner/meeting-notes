@@ -11,11 +11,10 @@ from typing import Any, cast
 
 from pydantic import BaseModel
 
-from meeting_notes.commitments import commitment_texts, verify_commitments
+from meeting_notes.commitments import action_item, commitment_texts, verify_commitments
 from meeting_notes.figures import unsaid_numbers_in
 from meeting_notes.meeting import Meeting
 from meeting_notes.summary import (
-    ActionItem,
     Commitments,
     Overview,
     Summary,
@@ -174,10 +173,7 @@ class OllamaSummarizer:
         return Summary(
             overview=overview.overview,
             decisions=[decision.text for decision in commitments.decisions],
-            action_items=[
-                ActionItem.model_validate(item.model_dump(exclude={"turn_ids"}))
-                for item in commitments.action_items
-            ],
+            action_items=[action_item(item) for item in commitments.action_items],
             details=details,
         )
 
