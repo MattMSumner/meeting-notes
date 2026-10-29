@@ -758,6 +758,40 @@ generated prose.
     repeatability, not general reliability. Any failed stage ends this candidate rather
     than starting another prompt-tuning cycle.
 
+- **Reference-only screen stopped, not built (2026-10-29).** Implementation `78ab71d`
+  restores the earlier extractor and changes only the citation instruction. The separate
+  preregistration is `1cc2e41`. All 351 unit tests (326 restored baseline tests plus 25
+  scoring regressions), formatting, lint, strict types and Python/Swift CI pass.
+  - Re-scoring archived outputs under the common rubric gives the earlier design 15/25
+    and the timing revision 8/35. The historical 20/25 and 13/35 remain valid only under
+    their original checks: the common rubric requires both pricing references and the
+    explicit report-back promise. The five-fixture common subset is 15/25 versus 0/25.
+  - All seven fresh baseline screens completed; three pass the complete shared rubric.
+    All five original summaries exactly match archived baseline outputs, with no drift.
+    The two newly measured controls expose two related dates used as action deadlines,
+    and two missing request references plus a missing requested-scope reference. These
+    are baseline findings, not regressions caused by the new citation instruction.
+  - The first candidate screen failed four metrics describing three defects: a decision's
+    original time scope became the follow-up meeting's time, a related work date became
+    a communication deadline, and an explicit planning deadline disappeared from saved
+    due (planning remained in task text). The paired baseline passed this fixture.
+    All four separate actions, owners, uncertainty and required references were retained.
+  - Stopped immediately under the screening gate: baseline 3/7 overall, candidate 0/1
+    completed with six candidate cases unrun. No 35-run confirmation, deadline-evidence
+    experiment or full summaries ran. One rejected screen is sufficient for this stop
+    rule, but does not estimate the candidate's repeated failure rate or establish the
+    cause of earlier regressions. No further prompt tuning was performed.
+  - All eight model responses were structurally valid; no corrections, transport failures
+    or substituted results. Every frozen source, prompt, schema, fixture, setting and
+    evaluation hash still matches. Model identity and Ollama version were recorded and
+    checked before each request. All eight outputs received manual review; pricing's
+    existing combined-task deadline ambiguity is also retained as a limitation.
+  - Baseline extraction took 405 s total; the paired first case took 101 s for baseline
+    and 94 s for candidate. These are single observations, not a latency improvement
+    claim. Local durable artifacts retain raw outputs, hashes, common rescoring, manual
+    reviews and the incomplete screening record. Only aggregate results are published.
+    PR #13 remains a draft; this candidate is rejected and M9 is not built or on main.
+
 **M10 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
 compared on tests rather than by eye on real meetings: stance (a "maybe" turned into a
