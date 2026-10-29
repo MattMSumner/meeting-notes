@@ -543,15 +543,14 @@ metadata is not selectable, and source timestamps do not count as spoken numbers
 key points and topic labels still render; draft `figures` load as `details` without
 rewriting saved JSON. The commitments task includes explicit deferrals and small follow-ups,
 allows several items from one turn, and preserves conditions and uncertain ownership.
-Actions distinguish direct promises, accepted requests and reported commitments, with
-separate references for the commitment, original request and needed context. Accepted
-requests require both sides. Timing evidence separates the action's own schedule from
-related work dates or availability; only the action's own timing becomes its saved
-deadline. Each time phrase must occur in a verbatim quote from its referenced source turn,
-allowing whitespace differences only. Source matching does not prove which event is timed.
-Code normalizes references and removes only exact duplicate records. Evidence stays
-internal, keeping saved decisions and actions compatible. Invalid extraction gets one
-correction before failing without saving a partial summary. Number corrections retry only the task that introduced the unsupported number.
+The reference-only experiment restores the earlier extraction shape: turn_ids, owner,
+due and task. Each accepted request must cite both the request and acceptance, including
+intervening requested scope. Code validates source IDs, normalizes references and removes
+only exact duplicate records; this does not prove that the references are sufficient.
+Deadlines must schedule the action itself, not related work or availability. Evidence
+stays internal and saved decisions and actions stay compatible. Invalid extraction gets
+one correction before failing without saving a partial summary. Number corrections retry
+only the task that introduced the unsupported number.
 Keep the accepted Details selector fixed during this refactor, along with model, thinking
 and context settings. The overview keeps its existing requirements with a narrower schema.
 
@@ -724,6 +723,40 @@ generated prose.
   - The 35/35 prerequisite failed, so no complete summaries or larger full-note batch
     were run for this candidate. PR #13 stays a draft; M9 is not built or adopted on main.
     A different approach requires a separate discussion.
+
+- **Reference-only experiment planned (2026-10-29).** Restore the exact commitments
+  implementation from `8cc3568`, changing only its citation instruction: accepted requests
+  always cite request and acceptance, even when the acceptance names the work, plus any
+  intervening requested scope. Keep schema field order, other prompt wording, model,
+  thinking, context, selector, overview and the three normal calls fixed.
+  - Freeze a common semantic rubric before inference and re-score the archived 25-run
+    baseline and 35-run timing revision. Reference checks use either schema's supporting
+    IDs; role-array and kind fields are not semantic requirements. Require the pricing
+    report-back promise and both its request and acceptance. Score decisions, coverage,
+    ownership, qualifications, timing and references independently. Historical headline
+    scores remain recorded under their original checks; new scores are separate.
+  - Screen the exact baseline once on each of the seven existing fixtures, then the
+    citation-only candidate once each (14 calls). Investigate material drift in original
+    baseline behavior before testing the candidate. Preserve all rows and stop the
+    candidate if references remain incomplete or any new semantic regression appears.
+  - Only after screening and manual review pass, freeze and run 35 fresh candidate
+    extractions (five per fixture), separate from the screening rows. Require complete
+    references and preservation of separate actions, owners, conditions, uncertainty,
+    report-back and explicit deadlines. The existing scheduling-variant timing defect
+    may remain only as an explicitly reported failure of overall acceptance. It is not
+    a passing 35/35 candidate. Review every distinct output, including dates in task text.
+  - Only after reference-stage success, freeze that result and separately test one
+    nullable deadline-evidence object instead of due. Allow context from other cited
+    turns to resolve the action; source matching verifies provenance, not date attachment.
+    Check both invented and lost deadlines. Repeat the screen and five-run evaluation;
+    require 35/35 plus manual acceptance before three original-fixture complete summaries.
+    The full-note milestone gate remains later work. No broad M10 set or extra model call.
+  - Freeze input text, metadata, prompts, schemas, sources, checks and inference settings;
+    record Ollama version/model identity, corrections, latency and distinct output counts.
+    Keep raw results local, never replace failures with reruns, and label a stopped batch
+    incomplete. Repeated temperature-zero runs on these known development fixtures test
+    repeatability, not general reliability. Any failed stage ends this candidate rather
+    than starting another prompt-tuning cycle.
 
 **M10 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
