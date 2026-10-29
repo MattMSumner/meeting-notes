@@ -1,4 +1,4 @@
-"""Two-pass summaries against local Ollama. Only synthetic transcripts belong here.
+"""Three-task summaries against local Ollama. Only synthetic transcripts belong here.
 
     uv run pytest -m integration tests/test_ollama_integration.py
 
@@ -51,40 +51,64 @@ def numbers_summary() -> Summary:
     )
 
 
+def check_scheduling_decisions(summary: Summary) -> None:
+    assert len(summary.decisions) == 2, "Expected migration and rotation decisions"
+    assert any("write" in text.lower() for text in summary.decisions)
+    assert any(
+        any(word in text.lower() for word in ("rotation", "on-call", "on call"))
+        and "month" in text.lower()
+        and re.search(r"unchanged|defer|keep|not.{0,20}chang|no.{0,20}chang", text.lower())
+        for text in summary.decisions
+    ), "Missing the rotation decision with its original time scope"
+    assert not any(
+        re.search(r"\buntil\s+(?:(?:the|next)\s+)*planning\b", text.lower())
+        for text in summary.decisions
+    ), "Replaced the decision's time scope with the follow-up meeting"
+
+
+def check_scheduling_actions(summary: Summary, person: str = "Dan") -> None:
+    assert len(summary.action_items) == 4, "Expected four distinct commitments"
+    [priya] = [item for item in summary.action_items if item.owner == "Priya"]
+    assert "plan" in priya.task.lower() and "cutover" in priya.task.lower()
+    mine = [item for item in summary.action_items if item.owner == "Sam"]
+    assert len(mine) == 3
+    assert any(
+        person.lower() in item.task.lower()
+        and "billing" in item.task.lower()
+        and re.search(r"\b(talk|speak|discuss|contact|coordinate|ask|check)\b", item.task.lower())
+        for item in mine
+    )
+    assert any(
+        "finance" in item.task.lower()
+        and re.search(r"\b(possible|potential|might|may|possibility)\b", item.task.lower())
+        for item in mine
+    ), "The finance notice must preserve the uncertainty about a freeze"
+    assert any(
+        any(word in item.task.lower() for word in ("rotation", "on-call", "on call"))
+        and "planning" in f"{item.task} {item.due or ''}".lower()
+        for item in mine
+    ), "Missing a self-contained commitment to raise the rotation at planning"
+
+
+def check_scheduling_timing(summary: Summary, person: str = "Dan", absent: str = "Monday") -> None:
+    [priya] = [item for item in summary.action_items if item.owner == "Priya"]
+    assert "thursday" in (priya.due or "").lower()
+    [billing] = [item for item in summary.action_items if person.lower() in item.task.lower()]
+    assert billing.due is None, "A planned work start is not the deadline for talking about it"
+    assert absent.lower() not in billing.task.lower(), "Turned an absence into action timing"
+    [finance] = [item for item in summary.action_items if "finance" in item.task.lower()]
+    assert finance.due is None, "Invented a deadline for informing finance"
+
+
 def check_golden(
     summary: Summary, person: str = "Dan", absent: str = "Monday", back: str = "Tuesday"
 ) -> None:
-    assert (
-        "billing"
-        in " ".join(
-            [
-                summary.overview,
-                *((detail.subject or "") + " " + detail.quote for detail in summary.details),
-            ]
-        ).lower()
-    )
-    assert any("write" in decision.lower() for decision in summary.decisions)
-    [priya] = [item for item in summary.action_items if item.owner == "Priya"]
-    assert "plan" in priya.task.lower() and "thursday" in (priya.due or "").lower()
-    mine = " ".join(item.task.lower() for item in summary.action_items if item.owner == "Sam")
-    assert person.lower() in mine and "finance" in mine
-    assert any(
-        item.owner == "Sam"
-        and "planning" in item.task.lower()
-        and any(word in item.task.lower() for word in ("rotation", "on-call", "on call"))
-        for item in summary.action_items
-    ), "Dropped the commitment to raise the on-call rotation at planning"
+    check_scheduling_decisions(summary)
+    check_scheduling_actions(summary, person)
+    check_scheduling_timing(summary, person, absent)
     assert "Sam" in summary.overview
-    # An absence must not become a return or the day of a commitment.
     prose = " ".join(prose_sentences(summary)).lower()
-    assert not re.search(rf"\b(?:return(?:s|ing)?|back)\s+(?:on\s+)?{absent.lower()}\b", prose), (
-        f"Turned an absence on {absent} into a return on {absent}"
-    )
-    for item in summary.action_items:
-        if person.lower() in item.task.lower():
-            assert absent.lower() not in f"{item.task} {item.due}".lower()
-            if item.due:
-                assert back.lower() in item.due.lower()
+    assert not re.search(rf"\b(?:return(?:s|ing)?|back)\s+(?:on\s+)?{absent.lower()}\b", prose)
 
 
 def prose_sentences(summary: Summary) -> list[str]:
@@ -105,8 +129,8 @@ def check_overview(summary: Summary) -> None:
 
 
 def test_summarizes_the_golden_transcript(golden_summary: Summary):
-    check_golden(golden_summary)
     check_overview(golden_summary)
+    assert "Sam" in golden_summary.overview
     verify_details(golden_summary.details, GOLDEN.read_text())
 
 
@@ -125,14 +149,43 @@ def test_quotes_availability_with_its_context(golden_summary: Summary):
     check_availability(golden_summary, "Monday", "Tuesday")
 
 
-def test_preserves_availability_when_people_and_days_change():
-    summary = summarize_fixture(
+@pytest.fixture(scope="module")
+def availability_summary() -> Summary:
+    return summarize_fixture(
         AVAILABILITY, Meeting.new("Lighthouse migration", datetime(2026, 10, 20, 10, 0))
     )
-    check_golden(summary, "Alex", "Wednesday", "Thursday")
-    check_overview(summary)
-    verify_details(summary.details, AVAILABILITY.read_text())
-    check_availability(summary, "Wednesday", "Thursday")
+
+
+@pytest.mark.parametrize(
+    "fixture_name,person,absent,back",
+    [
+        ("golden_summary", "Dan", "Monday", "Tuesday"),
+        ("availability_summary", "Alex", "Wednesday", "Thursday"),
+    ],
+)
+@pytest.mark.parametrize("check", ["decisions", "actions", "timing", "overview", "source"])
+def test_scheduling_sections_independently(
+    request: pytest.FixtureRequest,
+    fixture_name: str,
+    person: str,
+    absent: str,
+    back: str,
+    check: str,
+):
+    summary: Summary = request.getfixturevalue(fixture_name)
+    if check == "decisions":
+        check_scheduling_decisions(summary)
+    elif check == "actions":
+        check_scheduling_actions(summary, person)
+    elif check == "timing":
+        check_scheduling_timing(summary, person, absent)
+    elif check == "overview":
+        check_overview(summary)
+        assert "Sam" in summary.overview
+    else:
+        check_availability(summary, absent, back)
+        source = GOLDEN if fixture_name == "golden_summary" else AVAILABILITY
+        verify_details(summary.details, source.read_text())
 
 
 def check_said_numbers(summary: Summary) -> None:
@@ -177,7 +230,7 @@ def test_preserves_the_meaning_of_any_amount_repeated_in_prose(numbers_summary: 
 
 
 def check_pricing_commitments(summary: Summary) -> None:
-    assert "Sam" in summary.overview
+    assert summary.decisions == [], "Prices and payment policies were discussed, not agreed"
     [follow_up] = summary.action_items
     assert follow_up.owner == "Nadia"
     assert "procurement" in follow_up.task.lower()
@@ -186,6 +239,7 @@ def check_pricing_commitments(summary: Summary) -> None:
 
 def test_keeps_the_pricing_follow_up_with_its_owner(numbers_summary: Summary):
     check_pricing_commitments(numbers_summary)
+    assert "Sam" in numbers_summary.overview
 
 
 def check_quoted_details(summary: Summary) -> None:

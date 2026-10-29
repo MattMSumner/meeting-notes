@@ -1,0 +1,4 @@
+[00:00:03] Sam: If security approves the release, I'll publish the update on Friday. Without that approval I won't publish it.
+[00:00:12] Them: Someone from the audit team has committed to sending the risk report. I don't know who took it on or when it will arrive.
+[00:00:21] Sam: Okay. There isn't a decision about the release yet; approval is still pending.
+[00:00:29] Them: Understood.

@@ -22,7 +22,7 @@ CASES = [
     ("availability", {"t2", "t3", "t6", "t8", "t11", "t12"}, {"t1", "t14", "t15"}),
     ("greetings", set[str](), {"t1", "t2", "t3", "t4"}),
 ]
-WRITER_REPLY = '{"overview":"Discussed the meeting.","decisions":[],"action_items":[]}'
+WRITER_REPLY = '{"overview":"Sam discussed the meeting."}'
 
 
 def check_selection(
@@ -52,7 +52,12 @@ def test_selects_complete_relevant_turns(case: str, required: set[str], forbidde
     def post(path: str, body: dict[str, Any]) -> dict[str, Any]:
         if "turn_ids" in body["format"]["properties"]:
             return real_post(path, body)
-        return {"message": {"content": WRITER_REPLY}, "done_reason": "stop"}
+        reply = (
+            '{"decisions":[],"action_items":[]}'
+            if "decisions" in body["format"]["properties"]
+            else WRITER_REPLY
+        )
+        return {"message": {"content": reply}, "done_reason": "stop"}
 
     transcript = (FIXTURES / f"{case}_transcript.txt").read_text()
     summary = OllamaSummarizer(

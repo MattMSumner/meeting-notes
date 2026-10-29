@@ -11,9 +11,18 @@ from typing import Any, cast
 
 from pydantic import BaseModel
 
-from meeting_notes.figures import unsaid_numbers
+from meeting_notes.commitments import commitment_texts, verify_commitments
+from meeting_notes.figures import unsaid_numbers_in
 from meeting_notes.meeting import Meeting
-from meeting_notes.summary import Narrative, Summary, SummaryError, TurnSelection, parse_response
+from meeting_notes.summary import (
+    ActionItem,
+    Commitments,
+    Overview,
+    Summary,
+    SummaryError,
+    TurnSelection,
+    parse_response,
+)
 from meeting_notes.turns import parse_turns, selected_details, verify_selection
 
 # Sends a JSON request to an Ollama API path and returns the JSON reply.
@@ -35,6 +44,10 @@ def default_prompt() -> str:
 
 def default_details_prompt() -> str:
     return resources.files("meeting_notes").joinpath("prompts/details.md").read_text()
+
+
+def default_commitments_prompt() -> str:
+    return resources.files("meeting_notes").joinpath("prompts/commitments.md").read_text()
 
 
 class OllamaError(SummaryError):
@@ -87,6 +100,7 @@ class OllamaSummarizer:
         prompt: str | None = None,
         think: bool = True,
         details_prompt: str | None = None,
+        commitments_prompt: str | None = None,
     ) -> None:
         self.model = model
         self.num_ctx = num_ctx
@@ -97,6 +111,9 @@ class OllamaSummarizer:
         self.think = think
         self.details_prompt = (
             details_prompt if details_prompt is not None else default_details_prompt()
+        ).replace("{name}", my_name)
+        self.commitments_prompt = (
+            commitments_prompt if commitments_prompt is not None else default_commitments_prompt()
         ).replace("{name}", my_name)
 
     def summarize(self, meeting: Meeting, transcript: str) -> Summary:
@@ -121,23 +138,66 @@ class OllamaSummarizer:
             lambda response: verify_selection(response.turn_ids, turns),
         )
         details = selected_details(selection.turn_ids, turns)
-        # Both tasks read the original transcript; only code combines their outputs.
-        messages = [
-            {"role": "system", "content": self.prompt},
-            {"role": "user", "content": context},
-        ]
-        reply, narrative = self._ask(messages, Narrative)
-        summary = Summary(**narrative.model_dump(), details=details)
+        commitments = self._ask_with_number_check(
+            [
+                {"role": "system", "content": self.commitments_prompt},
+                {
+                    "role": "user",
+                    "content": json.dumps(
+                        {
+                            "meeting": {
+                                "title": meeting.title,
+                                "date": meeting.started_at.strftime("%A %Y-%m-%d %H:%M"),
+                                "attendees": meeting.attendees,
+                            },
+                            "turns": [asdict(turn) for turn in turns],
+                        },
+                        ensure_ascii=False,
+                    ),
+                },
+            ],
+            Commitments,
+            commitment_texts,
+            context,
+            lambda response: verify_commitments(response, turns),
+        )
+        # Each task reads the original conversation; only code combines their outputs.
+        overview = self._ask_with_number_check(
+            [
+                {"role": "system", "content": self.prompt},
+                {"role": "user", "content": context},
+            ],
+            Overview,
+            lambda response: [response.overview],
+            context,
+        )
+        return Summary(
+            overview=overview.overview,
+            decisions=[decision.text for decision in commitments.decisions],
+            action_items=[
+                ActionItem.model_validate(item.model_dump(exclude={"turn_ids"}))
+                for item in commitments.action_items
+            ],
+            details=details,
+        )
+
+    def _ask_with_number_check[T: BaseModel](
+        self,
+        messages: list[dict[str, str]],
+        model: type[T],
+        texts: Callable[[T], list[str]],
+        said: str,
+        verify: Callable[[T], None] | None = None,
+    ) -> T:
+        reply, result = self._ask(messages, model, verify)
         # The model sometimes works out a number nobody said, like the rest of a total.
         # One retry, told which; the retry is kept only if it has fewer such numbers, and
         # any left are flagged in the note.
-        # Generated evidence must never become the source for the unsaid-number check.
-        said = context
-        unsaid = unsaid_numbers(summary, said)
+        unsaid = unsaid_numbers_in(texts(result), said)
         if not unsaid:
-            return summary
+            return result
         try:
-            _, retried_narrative = self._ask(
+            _, retried = self._ask(
                 [
                     *messages,
                     {"role": "assistant", "content": reply},
@@ -148,12 +208,12 @@ class OllamaSummarizer:
                         "JSON only.",
                     },
                 ],
-                Narrative,
+                model,
+                verify,
             )
         except SummaryError:
-            return summary
-        retried = Summary(**retried_narrative.model_dump(), details=details)
-        return retried if len(unsaid_numbers(retried, said)) < len(unsaid) else summary
+            return result
+        return retried if len(unsaid_numbers_in(texts(retried), said)) < len(unsaid) else result
 
     def _ask[T: BaseModel](
         self,

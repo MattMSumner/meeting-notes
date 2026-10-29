@@ -74,13 +74,14 @@ with their own speaker and timestamp. Standalone replies stay separate, and the 
 model still receives the original turns. Run `notes render <meeting-id>` to apply this
 formatting to an older meeting's stored segments, without transcribing or summarizing again.
 
-Summaries use two independent local model tasks, each reading the full transcript. One
+Summaries use three independent local model tasks, each reading the full transcript. One
 selects the IDs of speaker turns containing meaningful figures, constraints and
 availability. Code copies those turns in full and labels them with their source speaker
 and timestamp in a Details section. This keeps neighboring claims and qualifications
-together; long turns can produce longer quotes. The other task writes a short overview,
-decisions and action items. The overview leaves precise amounts and schedules to the
-quoted details.
+together; long turns can produce longer quotes. A second task extracts decisions and
+action items, including small follow-ups, with supporting source-turn references. A third
+writes only the short overview. Code assembles the note, keeping precise amounts and
+schedules in the details and in commitments that need them.
 
 The selector returns only IDs. It cannot rewrite quotes, invent speaker labels or add
 topic headings. Malformed responses and unknown IDs get one correction attempt; if that
@@ -88,11 +89,17 @@ fails, no new summary is saved. A failed `notes summarize` leaves the previous s
 in place. Copying source turns preserves their wording; selecting all the important
 turns still requires model judgment.
 
+Decisions and actions also get one correction for malformed responses or unknown source
+references. A persistent failure preserves the previous summary. Conditions, owners and
+deadlines still require interpretation; valid references alone do not establish that an
+item is correct or that every commitment was found. References stay internal, so saved
+decisions and action items keep their existing format. Unsupported-number corrections
+retry only the task that introduced the number, and any remaining numbers are flagged.
+
 Older summaries still render normally. Run `notes summarize <meeting-id>` to generate
 details for an existing meeting; `notes render` only formats the saved results, including
 older key points and quoted figures with their original topic labels. Rendering does not
-rewrite the saved JSON. Both model tasks run sequentially, and decisions and action items
-still require interpretation.
+rewrite the saved JSON. All three model tasks run sequentially.
 
 Settings are environment variables:
 
@@ -107,8 +114,9 @@ Settings are environment variables:
 | `MEETING_NOTES_SUMMARY_THINK` | `1` (let the model reason first; `0` for models that can't) |
 | `MEETING_NOTES_OLLAMA_URL` | `http://localhost:11434` |
 
-The prompts are in [`details.md`](src/meeting_notes/prompts/details.md) (extraction) and
-[`summary.md`](src/meeting_notes/prompts/summary.md) (writing).
+The prompts are in [`details.md`](src/meeting_notes/prompts/details.md) (source selection),
+[`commitments.md`](src/meeting_notes/prompts/commitments.md) (decisions and actions), and
+[`summary.md`](src/meeting_notes/prompts/summary.md) (overview).
 
 ## Development
 

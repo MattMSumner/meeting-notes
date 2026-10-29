@@ -1,8 +1,9 @@
 import pytest
 
 from meeting_notes.summary import (
+    Commitments,
     Detail,
-    Narrative,
+    Overview,
     Summary,
     SummaryError,
     TurnSelection,
@@ -46,9 +47,46 @@ def test_response_schemas_do_not_allow_extra_fields():
     with pytest.raises(SummaryError, match="Extra inputs"):
         parse_response('{"turn_ids": [], "overview": "Invented."}', TurnSelection)
     with pytest.raises(SummaryError, match="Extra inputs"):
-        parse_response(VALID.replace('"overview":', '"details": [], "overview":'), Narrative)
+        parse_response(VALID, Overview)
     with pytest.raises(SummaryError, match="Extra inputs"):
         parse_response('{"speaker":"Sam","subject":"Cost","quote":"Seventy.","value":70}', Detail)
+
+
+def test_commitments_require_both_lists_even_when_empty():
+    assert parse_response('{"decisions": [], "action_items": []}', Commitments).decisions == []
+    for field in ("decisions", "action_items"):
+        with pytest.raises(SummaryError, match="Field required"):
+            parse_response('{"' + field + '": []}', Commitments)
+
+
+@pytest.mark.parametrize(
+    "item",
+    [
+        '{"text":"Ship.","turn_ids":[]}',
+        '{"text":"Ship."}',
+        '{"text":" ","turn_ids":["t1"]}',
+        '{"text":"Ship.","turn_ids":[1]}',
+        '{"text":"Ship.","turn_ids":[""]}',
+    ],
+)
+def test_decisions_need_text_and_source_references(item: str):
+    with pytest.raises(SummaryError):
+        parse_response('{"decisions":[' + item + '],"action_items":[]}', Commitments)
+
+
+@pytest.mark.parametrize("field", ["owner", "task", "due"])
+def test_action_fields_are_required_and_cannot_be_blank(field: str):
+    data = {
+        "decisions": [],
+        "action_items": [{"owner": None, "task": "Check it", "due": None, "turn_ids": ["t1"]}],
+    }
+    assert Commitments.model_validate(data).action_items[0].owner is None
+    data["action_items"][0][field] = " "
+    with pytest.raises(ValueError, match=field):
+        Commitments.model_validate(data)
+    del data["action_items"][0][field]
+    with pytest.raises(ValueError, match=field):
+        Commitments.model_validate(data)
 
 
 @pytest.mark.parametrize("start", [-1, float("inf"), float("nan")])

@@ -1,8 +1,16 @@
 """A meeting's summary and the interface any summarization backend implements."""
 
-from typing import Protocol
+from typing import Annotated, Protocol
 
-from pydantic import AliasChoices, BaseModel, ConfigDict, Field, ValidationError, field_validator
+from pydantic import (
+    AfterValidator,
+    AliasChoices,
+    BaseModel,
+    ConfigDict,
+    Field,
+    ValidationError,
+    field_validator,
+)
 
 from meeting_notes.meeting import Meeting
 
@@ -53,18 +61,65 @@ class TurnSelection(BaseModel):
     turn_ids: list[str]
 
 
-class Narrative(BaseModel):
+def _not_blank(value: str) -> str:
+    if not value.strip():
+        raise ValueError("must not be blank")
+    return value
+
+
+NonBlank = Annotated[str, Field(min_length=1), AfterValidator(_not_blank)]
+
+
+class ExtractedDecision(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    overview: str = Field(
+    turn_ids: list[NonBlank] = Field(min_length=1)
+    text: NonBlank = Field(
+        description="The agreed choice with its explicit subject and original time scope"
+    )
+
+
+class ExtractedAction(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    turn_ids: list[NonBlank] = Field(min_length=1)
+    owner: NonBlank | None = Field(
+        description="Name established anywhere in the conversation, including greetings; "
+        '"Them" only for an unnamed responsible speaker; null for an unknown responsible person'
+    )
+    due: NonBlank | None = Field(
+        description="Only an explicit deadline for doing this action; "
+        "dates of work being discussed are not deadlines for discussing it. "
+        "Null when the action itself has no stated deadline."
+    )
+    task: NonBlank = Field(
+        description="Self-contained action starting with a verb; "
+        "resolve pronouns and keep conditions"
+    )
+
+
+class Commitments(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    decisions: list[ExtractedDecision]
+    action_items: list[ExtractedAction]
+
+
+class Overview(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    overview: NonBlank = Field(
         description="Two or three short sentences naming participants, topics and outcomes; "
         "no amounts, dates or availability details (these are quoted separately)"
     )
+
+
+class Summary(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    overview: str
     decisions: list[str]
     action_items: list[ActionItem]
-
-
-class Summary(Narrative):
     # Kept for notes saved before detailed facts were rendered as source quotes.
     key_points: list[str] = Field(default_factory=list[str])
     # Older saved summaries have no evidence section. New extractions must supply it.

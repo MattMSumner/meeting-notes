@@ -430,7 +430,8 @@ def test_summarize_reruns_only_the_summary(config: Config):
     assert "Agreed to ship on Friday." in only_note(config)
 
 
-def test_a_failed_resummary_keeps_the_previous_saved_summary(config: Config):
+@pytest.mark.parametrize("failed_stage", ["turn_ids", "decisions", "overview"])
+def test_a_failed_resummary_keeps_the_previous_saved_summary(config: Config, failed_stage: str):
     run(config, FakeTranscriber({"me": [Segment(0.0, 1.0, "Hello.")]}), "record")
     directory = only_meeting_dir(config)
     saved = directory.summary_file.read_bytes()
@@ -438,7 +439,14 @@ def test_a_failed_resummary_keeps_the_previous_saved_summary(config: Config):
 
     def post(path: str, body: dict[str, Any]) -> dict[str, Any]:
         requests.append(body)
-        return {"message": {"content": '{"turn_ids":["t999"]}'}, "done_reason": "stop"}
+        fields = body["format"]["required"]
+        if failed_stage in fields:
+            reply = "not json"
+        elif fields == ["turn_ids"]:
+            reply = '{"turn_ids":[]}'
+        else:
+            reply = '{"decisions":[],"action_items":[]}'
+        return {"message": {"content": reply}, "done_reason": "stop"}
 
     assert (
         run(
@@ -452,8 +460,8 @@ def test_a_failed_resummary_keeps_the_previous_saved_summary(config: Config):
     )
 
     assert directory.summary_file.read_bytes() == saved
-    assert len(requests) == 2
-    assert all(request["format"]["required"] == ["turn_ids"] for request in requests)
+    assert sum(failed_stage in request["format"]["required"] for request in requests) == 2
+    assert failed_stage in requests[-1]["format"]["required"]
     assert "Hello." in only_transcript(config)
 
 

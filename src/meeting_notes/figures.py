@@ -99,10 +99,10 @@ def unsaid_numbers(summary: Summary, said: str) -> list[str]:
         *(f"{item.task} {item.due or ''}" for item in summary.action_items),
         *(f"{detail.subject or ''} {detail.quote}" for detail in summary.details),
     ]
-    return _unsaid_numbers(texts, said)
+    return unsaid_numbers_in(texts, said)
 
 
-def _unsaid_numbers(texts: Sequence[str], said: str) -> list[str]:
+def unsaid_numbers_in(texts: Sequence[str], said: str) -> list[str]:
     heard = {round(value, 6) for _, value in numbers(said)}
     unsaid: list[str] = []
     for text in texts:
@@ -133,7 +133,7 @@ def verify_details(details: Sequence[Detail], transcript: str) -> None:
     ]
     # The writer cannot fix these labels: they are attached unchanged after it finishes.
     for index, detail in enumerate(details):
-        if unsaid := _unsaid_numbers([detail.subject or ""], transcript):
+        if unsaid := unsaid_numbers_in([detail.subject or ""], transcript):
             problems.append(
                 f"details.{index}.subject contains numbers nobody said: {', '.join(unsaid)}"
             )
