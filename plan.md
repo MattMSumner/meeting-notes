@@ -543,11 +543,15 @@ metadata is not selectable, and source timestamps do not count as spoken numbers
 key points and topic labels still render; draft `figures` load as `details` without
 rewriting saved JSON. The commitments task includes explicit deferrals and small follow-ups,
 allows several items from one turn, and preserves conditions and uncertain ownership.
-Action deadlines must schedule the action itself, not related work being discussed.
-Each item needs known source references; code normalizes those references and removes only
-exact duplicate records. References stay internal, keeping saved decisions and actions
-compatible. Invalid extraction gets one correction before failing without saving a partial
-summary. Number corrections retry only the task that introduced the unsupported number.
+Actions distinguish direct promises, accepted requests and reported commitments, with
+separate references for the commitment, original request and needed context. Accepted
+requests require both sides. Timing evidence separates the action's own schedule from
+related work dates or availability; only the action's own timing becomes its saved
+deadline. Each time phrase must occur in a verbatim quote from its referenced source turn,
+allowing whitespace differences only. Source matching does not prove which event is timed.
+Code normalizes references and removes only exact duplicate records. Evidence stays
+internal, keeping saved decisions and actions compatible. Invalid extraction gets one
+correction before failing without saving a partial summary. Number corrections retry only the task that introduced the unsupported number.
 Keep the accepted Details selector fixed during this refactor, along with model, thinking
 and context settings. The overview keeps its existing requirements with a narrower schema.
 
@@ -557,13 +561,16 @@ selector refactor, first require five selection-only runs per fixture and a gree
 control, checking exact source copying, important-turn coverage and irrelevant selections.
 Then run one fresh full summary per original fixture to check assembly and report writer
 failures separately. Measure latency and quoted text size against the previous hybrid
-candidate. For the commitments refactor, run five extraction-only generations for each
-original fixture plus two focused controls: proposals without commitments, and conditional
-or unknown-owner commitments (25 checks). Check decision and action coverage, ownership,
-timing, qualifications and source references separately. Then run one complete summary
-per original fixture. If all three pass, run the milestone's five full generations per
-fixture before declaring it ready. Whole-turn copying guarantees source wording, not
-complete selection or faithful interpretation in generated prose.
+candidate. For the commitments timing revision, run five extraction-only generations for
+each original fixture plus four focused controls: proposals without commitments,
+conditional or unknown-owner promises, action versus related timing, and adjacent or
+separated request/acceptance pairs (35 checks). Check decision and action coverage,
+ownership, timing, qualifications and evidence roles separately. After isolated acceptance
+passes, run one complete summary per original fixture, requiring commitments and source
+selection to pass 3/3. Keep the overview fixed and report its failures separately; overview
+repair and the larger full-note acceptance batch remain subsequent work. Whole-turn
+copying guarantees source wording, not complete selection or faithful interpretation in
+generated prose.
 - **Implemented, not built (2026-10-28).** Draft PR #13 adds extraction, source verification,
   the separate writing pass, saved figures and rendering. All 270 unit tests, lint and strict
   types pass. The model-quality acceptance gate is still open:
@@ -679,6 +686,44 @@ complete selection or faithful interpretation in generated prose.
   - The three-summary prerequisite failed, so the larger full-note acceptance batch was
     not run. PR #13 remains a draft pending deadline attribution, complete supporting
     references and overview fidelity. M9 has not been adopted on main.
+
+- **Timing-evidence revision, not built (2026-10-29).** Actions now separate commitment,
+  request and context references, and distinguish their own timing from related timing.
+  Quotes and values are source-checked; only action timing supplies the saved deadline.
+  All 367 unit tests, formatting, lint and strict types pass. The frozen implementation
+  remains at `b980935`; model-quality acceptance failed:
+  - Five extraction-only runs across seven fixtures passed 13/35: golden 0/5,
+    scheduling variant 0/5, pricing 5/5, proposals without commitments 0/5,
+    conditional or unknown-owner commitments 0/5, action versus related timing 5/5,
+    and adjacent or separated accepted requests 3/5. On the original five-fixture
+    subset this is 5/25, down from the previous design's 20/25.
+  - Request and acceptance references are now complete in both scheduling fixtures
+    (10/10) and the accepted-request control (5/5). The variant previously omitted
+    the request in 5/5. This improvement does not establish faithful timing:
+    the variant still assigns a related work start as a communication deadline in
+    5/5, and its decision leaves the subject as an unresolved pronoun in 5/5.
+  - Golden merges two independent promises into one item in 5/5 (three actions instead
+    of four), despite correct timing. Both negative and conditional controls invent
+    decisions in 5/5; conditional actions themselves remain present. Accepted requests
+    retain their references but misclassify action deadlines as related timing in 2/5,
+    leaving deadlines empty and also adding decisions.
+  - Manual review covers all nine distinct summaries; the four resumed outputs match
+    previously reviewed hashes. Pricing passes automated checks in 5/5 but omits the
+    explicit promise to report back after discussing the proposal. Exact source quotes
+    do not prove event attribution, completeness or faithful task wording.
+  - All 35 model responses validated without correction requests. The 31 saved results
+    were combined with only the four missing fifth runs after verifying identical
+    prompts, schemas, implementation, settings, fixtures and checks. Four sandbox-denied
+    localhost attempts returned no model responses; their transport errors are preserved
+    separately and excluded from the 35 model generations. No failed model row was replaced.
+  - Median extraction seconds versus the prior commitments design: golden 114 → 137,
+    variant 82 → 168, pricing 39 → 78, negative control 16 → 22, conditional control
+    54 → 62. New timing and accepted-request controls took 107 s and 67 s. The first
+    resumed call may include model loading; these medians include it. Model, thinking,
+    context, selector and overview remain unchanged.
+  - The 35/35 prerequisite failed, so no complete summaries or larger full-note batch
+    were run for this candidate. PR #13 stays a draft; M9 is not built or adopted on main.
+    A different approach requires a separate discussion.
 
 **M10 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
