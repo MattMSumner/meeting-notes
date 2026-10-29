@@ -792,6 +792,39 @@ generated prose.
     reviews and the incomplete screening record. Only aggregate results are published.
     PR #13 remains a draft; this candidate is rejected and M9 is not built or on main.
 
+- **Quoted-commitment preview (2026-10-29), awaiting format review.** The next experiment
+  replaces rewritten decisions and checkboxes with one chronological "Decisions and
+  commitments" section containing complete source turns. First judge the format with
+  manually selected turns from the seven existing synthetic fixtures; no model calls.
+  - Copy original words, speaker labels and timestamps using the source-turn helpers.
+    Preserve conditions and context, including request/acceptance pairs and scope turns.
+    Deduplicate IDs and restore source order, retaining distinct equal-timestamp turns.
+    Several promises within one turn stay together. Empty selection says "None selected."
+  - Keep repeated quotes in both Details and the new section. Do not infer owners,
+    deadlines, labels or groups. Source labels may remain "Them". Generated selection,
+    legacy saved-schema changes and production pipeline integration remain deferred.
+  - Deliver seven before/after section comparisons from the saved baseline screen, plus
+    three full-note pairs from archived original-fixture summaries. Full-note overviews
+    and Details stay unchanged, including known overview defects, so the comparison
+    isolates the new section. An index records selected-turn counts, quoted characters,
+    section lengths and overlap with Details. These are format previews, not model results.
+  - Preview tooling and the synthetic selection manifest are versioned; all generated
+    notes, provenance and prior evaluation artifacts stay local. The application CLI,
+    summarizer, saved Summary format, renderer and vault-writing pipeline stay unchanged.
+  - Verify source copying/context, unknown IDs, duplicate IDs, equal timestamps, empty
+    selection, unchanged overview/Details, output confinement and no network/model calls.
+    After delivery, stop for the user's format review before planning or running the
+    selector experiment. PR #13 remains a draft and M9 remains unbuilt.
+  - **Preview generated (2026-10-29).** Seven section comparisons and three full-note
+    pairs contain 26 selected turns and 2,004 quoted characters in total. Shared turns
+    with Details are 3, 2 and 0 for the original three fixtures; both copies remain.
+    All source/input hashes and 20 index links verified. Every full-note overview,
+    Details section and transcript link is unchanged. No inference ran.
+  - All 375 unit tests (including 24 preview tests), formatting, lint and strict types
+    pass. The CLI confines output to the ignored local preview directory and rejects
+    overwrites and symlink escapes. Generated previews and provenance are excluded
+    from Git. Implementation pauses here for the requested format review.
+
 **M10 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
 compared on tests rather than by eye on real meetings: stance (a "maybe" turned into a
