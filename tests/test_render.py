@@ -5,7 +5,7 @@ import pytest
 from meeting_notes.meeting import Meeting
 from meeting_notes.merge import Aside, Line
 from meeting_notes.render import render_note, render_transcript, timestamp
-from meeting_notes.summary import ActionItem, Summary
+from meeting_notes.summary import ActionItem, Detail, Summary, parse_summary
 
 MEETING = Meeting.new("Weekly Sync", datetime(2026, 10, 20, 14, 5))
 
@@ -106,6 +106,77 @@ def test_note_says_none_for_empty_sections():
 
     assert "## Decisions\n\n_None._\n" in note
     assert "## Action items\n\n_None._\n" in note
+    assert "## Details" not in note
+
+
+def test_renders_verified_details_between_the_summary_and_decisions():
+    summary = SUMMARY.model_copy(
+        update={
+            "details": [
+                Detail(
+                    speaker="Them",
+                    subject="Build budget",
+                    quote="Seventy for the build is definitely doable.",
+                ),
+            ]
+        }
+    )
+
+    note = render_note(MEETING, summary, "id")
+
+    assert (
+        "## Details\n\n- **Them — Build budget:** “Seventy for the build is definitely doable.”\n\n"
+        in note
+    )
+    assert note.index("## Summary") < note.index("## Details") < note.index("## Decisions")
+
+
+def test_shows_duplicate_details_once_without_losing_distinct_subjects():
+    quote = "There's no travel budget, and we pay on net ninety terms."
+    travel = Detail(speaker="Them", subject="Travel budget", quote=quote)
+    terms = Detail(speaker="Them", subject="Payment terms", quote=quote)
+    summary = SUMMARY.model_copy(update={"details": [travel, travel, terms]})
+
+    note = render_note(MEETING, summary, "id")
+
+    assert note.count("**Them — Travel budget:**") == 1
+    assert note.count("**Them — Payment terms:**") == 1
+    assert len(summary.details) == 3
+
+
+def test_renders_legacy_figures_and_key_points_as_saved_content():
+    original = """{"overview":"Pricing.","key_points":["Still under review."],
+        "decisions":[],"action_items":[],"figures":[
+        {"speaker":"Them","subject":"Budget","quote":"Seventy is doable."}]}"""
+
+    note = render_note(MEETING, parse_summary(original), "id")
+
+    assert "- Still under review." in note
+    assert "## Details" in note
+    assert "**Them — Budget:** “Seventy is doable.”" in note
+
+
+def test_renders_source_times_including_zero_without_topic_labels():
+    summary = SUMMARY.model_copy(
+        update={
+            "details": [
+                Detail(speaker="Sam", start=0, quote="About seventy.\nProbably doable."),
+                Detail(speaker="Them", start=3723, quote="I return on Tuesday."),
+            ]
+        }
+    )
+
+    note = render_note(MEETING, summary, "id")
+
+    assert "**Sam — 00:00:00:** “About seventy. Probably doable.”" in note
+    assert "**Them — 01:02:03:** “I return on Tuesday.”" in note
+
+
+def test_distinct_selected_turns_remain_visible_even_if_their_words_and_times_match():
+    detail = Detail(speaker="Sam", start=33, quote="Seventy is doable.")
+    summary = SUMMARY.model_copy(update={"details": [detail, detail]})
+
+    assert render_note(MEETING, summary, "id").count("**Sam — 00:00:33:**") == 2
 
 
 def test_note_without_a_summary_says_how_to_write_one():

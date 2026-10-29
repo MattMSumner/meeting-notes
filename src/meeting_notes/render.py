@@ -105,6 +105,25 @@ def render_note(
         out += ["## Summary", "", summary.overview, ""]
         if summary.key_points:
             out += [*_bullets(summary.key_points), ""]
+        if summary.details:
+            out += ["## Details", ""]
+            legacy: set[tuple[str, str | None, str]] = set()
+            for detail in summary.details:
+                quote = " ".join(detail.quote.split())
+                heading = detail.speaker
+                if detail.start is not None:
+                    heading += f" — {timestamp(detail.start)}"
+                else:
+                    # Older extractions could repeat an entry. Selected turn IDs are
+                    # already unique, even when different turns have identical text.
+                    key = (detail.speaker, detail.subject, quote)
+                    if key in legacy:
+                        continue
+                    legacy.add(key)
+                    if detail.subject:
+                        heading += f" — {detail.subject}"
+                out.append(f"- **{heading}:** “{quote}”")
+            out.append("")
         out += ["## Decisions", "", *_bullets(summary.decisions), ""]
         actions = [_action_item(item) for item in summary.action_items] or ["_None._"]
         out += ["## Action items", "", *actions, ""]
