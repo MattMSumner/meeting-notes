@@ -525,14 +525,15 @@ each its own turn.
     existing summaries. Edited vault files are still left alone. Synthetic tests cover
     overlap boundaries, channel offsets, phrase matching, paragraphs and rerendering.
 
-**M9 — Hybrid notes with quoted details.** Run two independent model tasks against the
+**M9 — Hybrid notes with quoted details.** Run three independent model tasks against the
 full transcript. One selects the IDs of complete source turns containing meaningful
 figures, constraints, operational quantities and availability. Code copies each selected
 turn in full, preserving neighboring claims and qualifications, and labels it with its
-source speaker and time. The other task writes a short overview, decisions and action
-items. Code attaches the copied turns as Details, with no final rewriting pass or
-generated topic labels. The overview leaves precise amounts and schedules to the details;
-decisions and actions retain necessary specifics when explicitly agreed or committed.
+source speaker and time. A second task extracts decisions and action items with supporting
+turn IDs; a third writes only the short overview. Code assembles the three results, with
+no final rewriting pass or generated topic labels for Details. The overview leaves precise
+amounts and schedules to the details; decisions and actions retain necessary specifics
+when explicitly agreed or committed.
 
 IDs follow source position, so equal timestamps remain distinct turns. Deduplicate
 selected IDs and restore source order. A missing list, malformed reply or unknown ID gets
@@ -540,8 +541,15 @@ one correction; persistent failures stop before writing and preserve any previou
 summary. Reject malformed source transcripts rather than silently dropping text. Meeting
 metadata is not selectable, and source timestamps do not count as spoken numbers. Older
 key points and topic labels still render; draft `figures` load as `details` without
-rewriting saved JSON. Keep the writer's prompt, schema and transcript context unchanged
-during this selector refactor, along with model, thinking and context settings.
+rewriting saved JSON. The commitments task includes explicit deferrals and small follow-ups,
+allows several items from one turn, and preserves conditions and uncertain ownership.
+Action deadlines must schedule the action itself, not related work being discussed.
+Each item needs known source references; code normalizes those references and removes only
+exact duplicate records. References stay internal, keeping saved decisions and actions
+compatible. Invalid extraction gets one correction before failing without saving a partial
+summary. Number corrections retry only the task that introduced the unsupported number.
+Keep the accepted Details selector fixed during this refactor, along with model, thinking
+and context settings. The overview keeps its existing requirements with a narrower schema.
 
 Milestone acceptance remains five fresh full generations each of the synthetic golden,
 pricing and scheduling variant fixtures, checking prose and evidence separately. For the
@@ -549,8 +557,13 @@ selector refactor, first require five selection-only runs per fixture and a gree
 control, checking exact source copying, important-turn coverage and irrelevant selections.
 Then run one fresh full summary per original fixture to check assembly and report writer
 failures separately. Measure latency and quoted text size against the previous hybrid
-candidate. Whole-turn copying guarantees source wording, not complete selection or
-faithful interpretation in generated prose.
+candidate. For the commitments refactor, run five extraction-only generations for each
+original fixture plus two focused controls: proposals without commitments, and conditional
+or unknown-owner commitments (25 checks). Check decision and action coverage, ownership,
+timing, qualifications and source references separately. Then run one complete summary
+per original fixture. If all three pass, run the milestone's five full generations per
+fixture before declaring it ready. Whole-turn copying guarantees source wording, not
+complete selection or faithful interpretation in generated prose.
 - **Implemented, not built (2026-10-28).** Draft PR #13 adds extraction, source verification,
   the separate writing pass, saved figures and rendering. All 270 unit tests, lint and strict
   types pass. The model-quality acceptance gate is still open:
@@ -626,6 +639,46 @@ faithful interpretation in generated prose.
     for golden and 76 s for the scheduling variant. These smoke checks do not replace the
     milestone's five full generations per fixture. PR #13 remains a draft for writer
     completeness and overview format; the selector changes have not been adopted on main.
+- **Commitments revision, not built (2026-10-29).** Decisions and actions now have a
+  dedicated extraction task with supporting turn IDs; the final task writes only the
+  overview. All three tasks read the original conversation, and code assembles their
+  results. The accepted selector, model, thinking mode and context settings are unchanged.
+  All 326 unit tests, formatting, lint, strict types, and Python and Swift CI pass.
+  The implementation is complete, but its model-quality gate remains open:
+  - Five fresh extraction-only generations per fixture: golden 5/5, pricing 5/5,
+    scheduling variant 0/5, proposals without commitments 5/5, conditional and
+    unknown-owner commitments 5/5. The 25-run batch resumed after a pause with identical
+    prompts, schemas, settings, fixtures and checks; completed results were preserved.
+  - Both scheduling fixtures retained two decisions and four actions in all 10 runs,
+    including the previously omitted planning commitment. Archived hybrid outputs had
+    that action in 0/10 runs, and the latest source-turn summaries had it in 0/2.
+    Ownership, decision time scope and uncertainty checks passed in all 10 extractions.
+  - The scheduling variant incorrectly used the planned start of related work as a
+    conversation deadline in 5/5 runs, and cited only the acceptance rather than both
+    the request and acceptance for another action in 5/5. The deadline is a regression:
+    none of its five archived hybrid outputs assigned that deadline. Reference
+    completeness is a new check; a known turn ID alone does not prove full support.
+  - All 25 responses were structurally valid and used known IDs, with no correction
+    requests. The negative control invented no decisions or actions in 5/5 runs;
+    conditional and unknown-owner controls retained both commitments, the condition,
+    and unknown ownership and deadline in 5/5. These checks do not establish reliability
+    beyond the small synthetic set.
+  - Median extraction times were 114 s for golden, 82 s for the scheduling variant,
+    39 s for pricing, 16 s for the negative control and 54 s for conditional commitments.
+    The first resumed control includes model loading; medians include that observation.
+  - One fresh complete summary per original fixture passed source selection and assembly
+    3/3 and commitments checks 2/3. Full automated checks passed pricing 1/1, golden 0/1
+    and scheduling variant 0/1. Both scheduling notes retained the planning action; the
+    variant repeated its deadline and reference failures. All nine requests succeeded
+    without corrections.
+  - Both scheduling overviews repeated dates. Manual inspection also found one overview
+    presenting a proposed work start as settled; the pricing overview was ambiguous about
+    which build amount was considered feasible despite passing its automated checks.
+    Full elapsed times were 203 s, 159 s and 113 s for golden, variant and pricing,
+    compared with 117 s, 76 s and 58 s in the previous single-summary smoke checks.
+  - The three-summary prerequisite failed, so the larger full-note acceptance batch was
+    not run. PR #13 remains a draft pending deadline attribution, complete supporting
+    references and overview fidelity. M9 has not been adopted on main.
 
 **M10 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
