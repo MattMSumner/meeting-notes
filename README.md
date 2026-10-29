@@ -89,14 +89,10 @@ fails, no new summary is saved. A failed `notes summarize` leaves the previous s
 in place. Copying source turns preserves their wording; selecting all the important
 turns still requires model judgment.
 
-Actions distinguish promises, accepted requests and reported commitments, with separate
-sources for requests, acceptances and supporting context. Timing evidence separates the
-action's own schedule from dates for related work or availability. Only the action's own
-timing becomes its saved deadline; quotes and time phrases must match their source turns.
-Decisions and actions get one correction for malformed responses or invalid evidence.
-A persistent failure preserves the previous summary. Conditions, owners and the event
-being scheduled still require interpretation; valid evidence alone does not establish
-that an item is correct or that every commitment was found. Evidence stays internal, so saved
+Decisions and actions also get one correction for malformed responses or unknown source
+references. A persistent failure preserves the previous summary. Conditions, owners and
+deadlines still require interpretation; valid references alone do not establish that an
+item is correct or that every commitment was found. References stay internal, so saved
 decisions and action items keep their existing format. Unsupported-number corrections
 retry only the task that introduced the number, and any remaining numbers are flagged.
 

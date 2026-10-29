@@ -430,41 +430,8 @@ def test_summarize_reruns_only_the_summary(config: Config):
     assert "Agreed to ship on Friday." in only_note(config)
 
 
-@pytest.mark.parametrize(
-    "failed_stage,bad_reply",
-    [(stage, "not json") for stage in ("turn_ids", "decisions", "overview")]
-    + [
-        (
-            "decisions",
-            json.dumps(
-                {
-                    "decisions": [],
-                    "action_items": [
-                        {
-                            "kind": "promise",
-                            "commitment_turn_ids": ["t1"],
-                            "request_turn_ids": [],
-                            "context_turn_ids": [],
-                            "related_timing": [],
-                            "action_timing": {
-                                "turn_id": "t1",
-                                "quote": "I'll send it Friday.",
-                                "value": "Friday",
-                            },
-                            "owner": "Sam",
-                            "task": "Send the plan",
-                        }
-                    ],
-                }
-            ),
-        )
-    ],
-)
-def test_a_failed_resummary_keeps_the_previous_saved_summary(
-    config: Config,
-    failed_stage: str,
-    bad_reply: str,
-):
+@pytest.mark.parametrize("failed_stage", ["turn_ids", "decisions", "overview"])
+def test_a_failed_resummary_keeps_the_previous_saved_summary(config: Config, failed_stage: str):
     run(config, FakeTranscriber({"me": [Segment(0.0, 1.0, "Hello.")]}), "record")
     directory = only_meeting_dir(config)
     saved = directory.summary_file.read_bytes()
@@ -474,7 +441,7 @@ def test_a_failed_resummary_keeps_the_previous_saved_summary(
         requests.append(body)
         fields = body["format"]["required"]
         if failed_stage in fields:
-            reply = bad_reply
+            reply = "not json"
         elif fields == ["turn_ids"]:
             reply = '{"turn_ids":[]}'
         else:

@@ -1,6 +1,6 @@
 """A meeting's summary and the interface any summarization backend implements."""
 
-from typing import Annotated, Literal, Protocol, Self
+from typing import Annotated, Protocol
 
 from pydantic import (
     AfterValidator,
@@ -10,7 +10,6 @@ from pydantic import (
     Field,
     ValidationError,
     field_validator,
-    model_validator,
 )
 
 from meeting_notes.meeting import Meeting
@@ -80,59 +79,23 @@ class ExtractedDecision(BaseModel):
     )
 
 
-class TimingEvidence(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
-    turn_id: NonBlank
-    quote: NonBlank = Field(
-        description="Verbatim source clause identifying the event being timed, not just a date"
-    )
-    value: NonBlank = Field(
-        description="The time phrase copied from that quote, without calculation"
-    )
-
-
 class ExtractedAction(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    commitment_turn_ids: list[NonBlank] = Field(min_length=1)
-    request_turn_ids: list[NonBlank] = Field(
-        description="The original request for an accepted_request; empty for other kinds"
-    )
-    context_turn_ids: list[NonBlank]
-    kind: Literal["promise", "accepted_request", "reported_commitment"] = Field(
-        description="Use accepted_request when request_turn_ids is nonempty, "
-        "even for 'I'll' replies"
-    )
+    turn_ids: list[NonBlank] = Field(min_length=1)
     owner: NonBlank | None = Field(
         description="Name established anywhere in the conversation, including greetings; "
         '"Them" only for an unnamed responsible speaker; null for an unknown responsible person'
+    )
+    due: NonBlank | None = Field(
+        description="Only an explicit deadline for doing this action; "
+        "dates of work being discussed are not deadlines for discussing it. "
+        "Null when the action itself has no stated deadline."
     )
     task: NonBlank = Field(
         description="Self-contained action starting with a verb; "
         "resolve pronouns and keep conditions"
     )
-    related_timing: list[TimingEvidence] = Field(
-        description="Dates for other activities discussed in task or someone's availability; "
-        "exclude the schedule for executing task's main verb"
-    )
-    action_timing: TimingEvidence | None = Field(
-        description="Explicit schedule for executing task's main verb; otherwise null. "
-        "Timing of an activity being discussed does not schedule discussing it."
-    )
-
-    @model_validator(mode="after")
-    def check_request(self) -> Self:
-        if self.kind == "accepted_request" and not self.request_turn_ids:
-            raise ValueError(
-                "accepted_request needs request_turn_ids as well as acceptance evidence"
-            )
-        if self.kind != "accepted_request" and self.request_turn_ids:
-            raise ValueError(
-                "An item with request_turn_ids must have kind accepted_request; "
-                "retain the original request and its acceptance"
-            )
-        return self
 
 
 class Commitments(BaseModel):
