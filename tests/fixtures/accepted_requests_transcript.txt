@@ -1,0 +1,7 @@
+[00:00:02] Sam: Hi Riley. Could you draft the release checklist?
+[00:00:09] Them: Yes, I'll have it ready by Thursday.
+[00:00:15] Sam: Could you also review the deployment guide?
+[00:00:21] Them: The guide is in the shared folder.
+[00:00:27] Sam: The review should cover the rollback section.
+[00:00:35] Them: I can take that on too. I'll finish the review at planning.
+[00:00:42] Sam: Thanks, Riley.

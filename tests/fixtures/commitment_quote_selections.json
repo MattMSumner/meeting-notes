@@ -1,0 +1,41 @@
+{
+  "golden": [
+    "t9",
+    "t10",
+    "t11",
+    "t12",
+    "t13"
+  ],
+  "availability": [
+    "t9",
+    "t10",
+    "t11",
+    "t12",
+    "t13"
+  ],
+  "numbers": [
+    "t10",
+    "t11",
+    "t12"
+  ],
+  "no_commitments": [],
+  "conditional_commitments": [
+    "t1",
+    "t2",
+    "t3"
+  ],
+  "timing_roles": [
+    "t1",
+    "t2",
+    "t3",
+    "t4",
+    "t5"
+  ],
+  "accepted_requests": [
+    "t1",
+    "t2",
+    "t3",
+    "t5",
+    "t6"
+  ]
+}

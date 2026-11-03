@@ -6,9 +6,10 @@ was written in digits ("$120,000", "120k") or, as speech recognition often does,
 ("a hundred and twenty thousand")."""
 
 import re
-from collections.abc import Iterator
+from collections.abc import Iterator, Sequence
 
-from meeting_notes.summary import Summary
+from meeting_notes.summary import Detail, Summary, SummaryError
+from meeting_notes.turns import parse_turns
 
 _TOKEN = re.compile(r"\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d+(?:\.\d+)?|[a-z]+", re.IGNORECASE)
 # The transcript's line timestamps, which nobody said.
@@ -91,13 +92,18 @@ def numbers(text: str) -> Iterator[tuple[str, float]]:
 
 def unsaid_numbers(summary: Summary, said: str) -> list[str]:
     """The numbers in the summary that aren't in what was said, as the summary wrote them."""
-    heard = {round(value, 6) for _, value in numbers(said)}
     texts = [
         summary.overview,
         *summary.key_points,
         *summary.decisions,
         *(f"{item.task} {item.due or ''}" for item in summary.action_items),
+        *(f"{detail.subject or ''} {detail.quote}" for detail in summary.details),
     ]
+    return unsaid_numbers_in(texts, said)
+
+
+def unsaid_numbers_in(texts: Sequence[str], said: str) -> list[str]:
+    heard = {round(value, 6) for _, value in numbers(said)}
     unsaid: list[str] = []
     for text in texts:
         for written, value in numbers(text):
@@ -107,3 +113,33 @@ def unsaid_numbers(summary: Summary, said: str) -> list[str]:
             if value >= SMALLEST_CHECKED and not candidates & heard and written not in unsaid:
                 unsaid.append(written)
     return unsaid
+
+
+def verify_details(details: Sequence[Detail], transcript: str) -> None:
+    """Quotes must belong to one turn by their stated speaker, not to meeting metadata."""
+    turns = parse_turns(transcript)
+    problems = [
+        f"details.{index}.quote was not found verbatim under speaker {detail.speaker!r}"
+        for index, detail in enumerate(details)
+        if not any(
+            turn.speaker == detail.speaker
+            and (
+                (detail.start == turn.start and detail.quote == turn.text)
+                if detail.start is not None
+                else " ".join(detail.quote.split()) in " ".join(turn.text.split())
+            )
+            for turn in turns
+        )
+    ]
+    # The writer cannot fix these labels: they are attached unchanged after it finishes.
+    for index, detail in enumerate(details):
+        if unsaid := unsaid_numbers_in([detail.subject or ""], transcript):
+            problems.append(
+                f"details.{index}.subject contains numbers nobody said: {', '.join(unsaid)}"
+            )
+    if problems:
+        raise SummaryError(
+            "Couldn't verify quoted details: "
+            + "; ".join(problems)
+            + ". Copy continuous excerpts from the stated speaker, keeping wording and punctuation."
+        )

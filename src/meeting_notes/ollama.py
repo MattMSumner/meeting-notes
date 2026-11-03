@@ -5,12 +5,25 @@ import json
 import urllib.error
 import urllib.request
 from collections.abc import Callable
+from dataclasses import asdict
 from importlib import resources
 from typing import Any, cast
 
-from meeting_notes.figures import unsaid_numbers
+from pydantic import BaseModel
+
+from meeting_notes.commitments import commitment_texts, verify_commitments
+from meeting_notes.figures import unsaid_numbers_in
 from meeting_notes.meeting import Meeting
-from meeting_notes.summary import Summary, SummaryError, parse_summary
+from meeting_notes.summary import (
+    ActionItem,
+    Commitments,
+    Overview,
+    Summary,
+    SummaryError,
+    TurnSelection,
+    parse_response,
+)
+from meeting_notes.turns import parse_turns, selected_details, verify_selection
 
 # Sends a JSON request to an Ollama API path and returns the JSON reply.
 Post = Callable[[str, dict[str, Any]], dict[str, Any]]
@@ -27,6 +40,14 @@ REPLY_TOKENS = 4096
 def default_prompt() -> str:
     """The prompt, with {name} standing for the person who recorded the meeting."""
     return resources.files("meeting_notes").joinpath("prompts/summary.md").read_text()
+
+
+def default_details_prompt() -> str:
+    return resources.files("meeting_notes").joinpath("prompts/details.md").read_text()
+
+
+def default_commitments_prompt() -> str:
+    return resources.files("meeting_notes").joinpath("prompts/commitments.md").read_text()
 
 
 class OllamaError(SummaryError):
@@ -78,6 +99,8 @@ class OllamaSummarizer:
         my_name: str,
         prompt: str | None = None,
         think: bool = True,
+        details_prompt: str | None = None,
+        commitments_prompt: str | None = None,
     ) -> None:
         self.model = model
         self.num_ctx = num_ctx
@@ -86,37 +109,93 @@ class OllamaSummarizer:
             "{name}", my_name
         )
         self.think = think
+        self.details_prompt = (
+            details_prompt if details_prompt is not None else default_details_prompt()
+        ).replace("{name}", my_name)
+        self.commitments_prompt = (
+            commitments_prompt if commitments_prompt is not None else default_commitments_prompt()
+        ).replace("{name}", my_name)
 
     def summarize(self, meeting: Meeting, transcript: str) -> Summary:
-        messages = [
-            {"role": "system", "content": self.prompt},
-            {
-                "role": "user",
-                "content": f"Meeting: {meeting.title}\n"
-                f"Date: {meeting.started_at:%A %Y-%m-%d %H:%M}\n"
-                # From the calendar: lets the model name people and spell names right.
-                + (f"Others invited: {', '.join(meeting.attendees)}\n" if meeting.attendees else "")
-                + f"\nTranscript:\n\n{transcript}",
-            },
-        ]
-        # Ollama doesn't refuse a prompt that's too long: it quietly drops part of it (in a
-        # test, 7.4k tokens became 2k with a 4k context) and reports only what it kept. So
-        # the check has to happen before sending.
-        estimate = sum(len(m["content"]) for m in messages) // CHARS_PER_TOKEN + REPLY_TOKENS
-        if estimate > self.num_ctx:
-            raise OllamaError(
-                f"The transcript is too long for the model's context (about {estimate} tokens "
-                f"needed, {self.num_ctx} set), so the summary would miss part of it. "
-                f"Raise MEETING_NOTES_NUM_CTX to at least {estimate}."
-            )
-        reply, summary = self._ask(messages)
+        context = (
+            f"Meeting: {meeting.title}\n"
+            f"Date: {meeting.started_at:%A %Y-%m-%d %H:%M}\n"
+            + (f"Others invited: {', '.join(meeting.attendees)}\n" if meeting.attendees else "")
+            + f"\nTranscript:\n\n{transcript}"
+        )
+        turns = parse_turns(transcript)
+        _, selection = self._ask(
+            [
+                {"role": "system", "content": self.details_prompt},
+                {
+                    "role": "user",
+                    "content": json.dumps(
+                        {"turns": [asdict(turn) for turn in turns]}, ensure_ascii=False
+                    ),
+                },
+            ],
+            TurnSelection,
+            lambda response: verify_selection(response.turn_ids, turns),
+        )
+        details = selected_details(selection.turn_ids, turns)
+        commitments = self._ask_with_number_check(
+            [
+                {"role": "system", "content": self.commitments_prompt},
+                {
+                    "role": "user",
+                    "content": json.dumps(
+                        {
+                            "meeting": {
+                                "title": meeting.title,
+                                "date": meeting.started_at.strftime("%A %Y-%m-%d %H:%M"),
+                                "attendees": meeting.attendees,
+                            },
+                            "turns": [asdict(turn) for turn in turns],
+                        },
+                        ensure_ascii=False,
+                    ),
+                },
+            ],
+            Commitments,
+            commitment_texts,
+            context,
+            lambda response: verify_commitments(response, turns),
+        )
+        # Each task reads the original conversation; only code combines their outputs.
+        overview = self._ask_with_number_check(
+            [
+                {"role": "system", "content": self.prompt},
+                {"role": "user", "content": context},
+            ],
+            Overview,
+            lambda response: [response.overview],
+            context,
+        )
+        return Summary(
+            overview=overview.overview,
+            decisions=[decision.text for decision in commitments.decisions],
+            action_items=[
+                ActionItem.model_validate(item.model_dump(exclude={"turn_ids"}))
+                for item in commitments.action_items
+            ],
+            details=details,
+        )
+
+    def _ask_with_number_check[T: BaseModel](
+        self,
+        messages: list[dict[str, str]],
+        model: type[T],
+        texts: Callable[[T], list[str]],
+        said: str,
+        verify: Callable[[T], None] | None = None,
+    ) -> T:
+        reply, result = self._ask(messages, model, verify)
         # The model sometimes works out a number nobody said, like the rest of a total.
         # One retry, told which; the retry is kept only if it has fewer such numbers, and
         # any left are flagged in the note.
-        said = messages[1]["content"]
-        unsaid = unsaid_numbers(summary, said)
+        unsaid = unsaid_numbers_in(texts(result), said)
         if not unsaid:
-            return summary
+            return result
         try:
             _, retried = self._ask(
                 [
@@ -128,30 +207,55 @@ class OllamaSummarizer:
                         "numbers someone said, and don't work out new ones. Reply again with "
                         "JSON only.",
                     },
-                ]
+                ],
+                model,
+                verify,
             )
         except SummaryError:
-            return summary
-        return retried if len(unsaid_numbers(retried, said)) < len(unsaid) else summary
+            return result
+        return retried if len(unsaid_numbers_in(texts(retried), said)) < len(unsaid) else result
 
-    def _ask(self, messages: list[dict[str, str]]) -> tuple[str, Summary]:
-        """The model's reply and the summary in it."""
-        reply = self._chat(messages)
+    def _ask[T: BaseModel](
+        self,
+        messages: list[dict[str, str]],
+        model: type[T],
+        verify: Callable[[T], None] | None = None,
+    ) -> tuple[str, T]:
+        """Parse and verify a structured reply, with one correction attempt."""
+
+        def read(reply: str) -> T:
+            response = parse_response(reply, model)
+            if verify is not None:
+                verify(response)
+            return response
+
+        schema = model.model_json_schema()
+        reply = self._chat(messages, schema)
         try:
-            return reply, parse_summary(reply)
+            return reply, read(reply)
         except SummaryError as error:
-            # Local models occasionally break the format; one retry, told what was wrong,
-            # almost always fixes it.
+            # One chance to correct malformed output or unverified evidence.
             reply = self._chat(
                 [
                     *messages,
                     {"role": "assistant", "content": reply},
                     {"role": "user", "content": f"{error}. Reply again with JSON only."},
-                ]
+                ],
+                schema,
             )
-            return reply, parse_summary(reply)
+            return reply, read(reply)
 
-    def _chat(self, messages: list[dict[str, str]]) -> str:
+    def _chat(self, messages: list[dict[str, str]], schema: dict[str, Any]) -> str:
+        # Check every request, including corrections: Ollama can silently truncate input.
+        estimate = (
+            sum(len(m["content"]) for m in messages) + len(json.dumps(schema))
+        ) // CHARS_PER_TOKEN + REPLY_TOKENS
+        if estimate > self.num_ctx:
+            raise OllamaError(
+                f"The transcript is too long for the model's context (about {estimate} tokens "
+                f"needed, {self.num_ctx} set), so the summary would miss part of it. "
+                f"Raise MEETING_NOTES_NUM_CTX to at least {estimate}."
+            )
         response = self.post(
             "/api/chat",
             {
@@ -160,7 +264,7 @@ class OllamaSummarizer:
                 "stream": False,
                 "think": self.think,
                 # Constrains the reply to the schema, so it's almost always valid.
-                "format": Summary.model_json_schema(),
+                "format": schema,
                 "options": {
                     # Ollama's default context is a few thousand tokens and it drops the
                     # start of anything longer without saying so. An hour-long meeting is

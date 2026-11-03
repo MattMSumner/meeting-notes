@@ -6,7 +6,7 @@ import pytest
 
 from meeting_notes.meeting import Meeting
 from meeting_notes.store import ChannelCapture, MeetingDir, MeetingNotFound, MeetingStore
-from meeting_notes.summary import SummaryError
+from meeting_notes.summary import Detail, Summary, SummaryError
 from meeting_notes.transcript import Segment
 
 STARTED = datetime(2026, 10, 20, 14, 5, tzinfo=timezone(timedelta(hours=-4)))
@@ -154,6 +154,61 @@ def test_an_unreadable_summary_is_a_summary_error(tmp_path: Path):
 
     with pytest.raises(SummaryError, match="summary.json couldn't be read"):
         meeting_dir.load_summary()
+
+
+def test_loads_legacy_summaries_without_rewriting_them_and_round_trips_details(tmp_path: Path):
+    directory = MeetingDir(tmp_path)
+    original = '{"overview":"Pricing.","key_points":[],"decisions":[],"action_items":[]}'
+    directory.summary_file.write_text(original)
+
+    summary = directory.load_summary()
+
+    assert isinstance(summary, Summary)
+    assert summary.details == []
+    assert directory.summary_file.read_text() == original
+    summary.details = [Detail(speaker="Sam", subject="Build budget", quote="Seventy is doable.")]
+    directory.save_summary(summary)
+    assert directory.load_summary() == summary
+
+
+def test_reads_draft_figures_as_details_without_rewriting_the_file(tmp_path: Path):
+    directory = MeetingDir(tmp_path)
+    original = json.dumps(
+        {
+            "overview": "Pricing.",
+            "key_points": ["The proposal is under review."],
+            "decisions": [],
+            "action_items": [],
+            "figures": [{"speaker": "Them", "subject": "Budget", "quote": "Seventy is doable."}],
+        }
+    )
+    directory.summary_file.write_text(original)
+
+    summary = directory.load_summary()
+
+    assert summary is not None
+    assert summary.details == [Detail(speaker="Them", subject="Budget", quote="Seventy is doable.")]
+    assert summary.key_points == ["The proposal is under review."]
+    assert directory.summary_file.read_text() == original
+    directory.save_summary(summary)
+    saved = json.loads(directory.summary_file.read_text())
+    assert "figures" not in saved
+    assert saved["details"][0]["quote"] == "Seventy is doable."
+
+
+def test_source_details_round_trip_without_generated_topic_labels(tmp_path: Path):
+    directory = MeetingDir(tmp_path)
+    summary = Summary(
+        overview="Pricing.",
+        decisions=[],
+        action_items=[],
+        details=[Detail(speaker="Them", start=0, quote="Seventy is doable.")],
+    )
+
+    directory.save_summary(summary)
+
+    assert directory.load_summary() == summary
+    assert summary.details[0].subject is None
 
 
 def test_attendees_round_trip_and_older_meetings_have_none(tmp_path: Path):

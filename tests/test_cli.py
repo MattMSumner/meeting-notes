@@ -6,17 +6,19 @@ import signal
 import threading
 from datetime import datetime
 from pathlib import Path
+from typing import Any
 
 import pytest
 
 from meeting_notes.cli import main
 from meeting_notes.config import Config
 from meeting_notes.meeting import Meeting
+from meeting_notes.ollama import OllamaSummarizer
 from meeting_notes.pipeline import conversation
 from meeting_notes.recorder import CaptureError, Recorder
 from meeting_notes.render import render_transcript
 from meeting_notes.store import MeetingDir, MeetingStore
-from meeting_notes.summary import ActionItem, Summary, SummaryError
+from meeting_notes.summary import ActionItem, Summarizer, Summary, SummaryError
 from meeting_notes.transcript import Segment
 
 
@@ -117,7 +119,7 @@ def run(
     transcriber: FakeTranscriber,
     *argv: str,
     recorder: Recorder | None = None,
-    summarizer: FakeSummarizer | None = None,
+    summarizer: Summarizer | None = None,
 ) -> int:
     return main(
         list(argv),
@@ -426,6 +428,41 @@ def test_summarize_reruns_only_the_summary(config: Config):
 
     assert transcriber.calls == []
     assert "Agreed to ship on Friday." in only_note(config)
+
+
+@pytest.mark.parametrize("failed_stage", ["turn_ids", "decisions", "overview"])
+def test_a_failed_resummary_keeps_the_previous_saved_summary(config: Config, failed_stage: str):
+    run(config, FakeTranscriber({"me": [Segment(0.0, 1.0, "Hello.")]}), "record")
+    directory = only_meeting_dir(config)
+    saved = directory.summary_file.read_bytes()
+    requests: list[dict[str, Any]] = []
+
+    def post(path: str, body: dict[str, Any]) -> dict[str, Any]:
+        requests.append(body)
+        fields = body["format"]["required"]
+        if failed_stage in fields:
+            reply = "not json"
+        elif fields == ["turn_ids"]:
+            reply = '{"turn_ids":[]}'
+        else:
+            reply = '{"decisions":[],"action_items":[]}'
+        return {"message": {"content": reply}, "done_reason": "stop"}
+
+    assert (
+        run(
+            config,
+            FakeTranscriber(),
+            "summarize",
+            directory.id,
+            summarizer=OllamaSummarizer("m", 32768, post, "Sam"),
+        )
+        == 1
+    )
+
+    assert directory.summary_file.read_bytes() == saved
+    assert sum(failed_stage in request["format"]["required"] for request in requests) == 2
+    assert failed_stage in requests[-1]["format"]["required"]
+    assert "Hello." in only_transcript(config)
 
 
 def test_a_meeting_with_no_speech_is_not_summarized(config: Config):

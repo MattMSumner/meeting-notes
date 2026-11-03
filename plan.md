@@ -4,7 +4,9 @@ A personal, local-first meeting notetaker for macOS. It's a CLI that records my 
 other side of a call, transcribes locally after the meeting, summarizes with a local model,
 and writes an Obsidian-friendly markdown note.
 
-Status: **M8 done** (fold backchannels). M1–M7 and the spike done. Next: M9.
+Status: **M8 done** (fold backchannels). M1–M7 and the spike done. M9 remains unbuilt;
+model experiments are stopped after failed acceptance. Next proposed step: an offline
+review-assisted workflow sketch using saved synthetic outputs.
 Phase 0 (Handy) set up.
 
 ---
@@ -525,11 +527,417 @@ each its own turn.
     existing summaries. Edited vault files are still left alone. Synthetic tests cover
     overlap boundaries, channel offsets, phrase matching, paragraphs and rerendering.
 
-**M9 — Quoted figures.** Add a list of figures to the summary schema, before the
-overview: each with who said it, what it measured and their exact words, so the summary
-is written from quotes. Aimed at the open number problems from M3: "definitely doable"
-reported as "the maximum", and figures dropped. Measured by the xfail
-`test_reports_each_sides_numbers_in_their_own_words`.
+**M9 — Hybrid notes with quoted details.** Run three independent model tasks against the
+full transcript. One selects the IDs of complete source turns containing meaningful
+figures, constraints, operational quantities and availability. Code copies each selected
+turn in full, preserving neighboring claims and qualifications, and labels it with its
+source speaker and time. A second task extracts decisions and action items with supporting
+turn IDs; a third writes only the short overview. Code assembles the three results, with
+no final rewriting pass or generated topic labels for Details. The overview leaves precise
+amounts and schedules to the details; decisions and actions retain necessary specifics
+when explicitly agreed or committed.
+
+IDs follow source position, so equal timestamps remain distinct turns. Deduplicate
+selected IDs and restore source order. A missing list, malformed reply or unknown ID gets
+one correction; persistent failures stop before writing and preserve any previous
+summary. Reject malformed source transcripts rather than silently dropping text. Meeting
+metadata is not selectable, and source timestamps do not count as spoken numbers. Older
+key points and topic labels still render; draft `figures` load as `details` without
+rewriting saved JSON. The commitments task includes explicit deferrals and small follow-ups,
+allows several items from one turn, and preserves conditions and uncertain ownership.
+The reference-only experiment restores the earlier extraction shape: turn_ids, owner,
+due and task. Each accepted request must cite both the request and acceptance, including
+intervening requested scope. Code validates source IDs, normalizes references and removes
+only exact duplicate records; this does not prove that the references are sufficient.
+Deadlines must schedule the action itself, not related work or availability. Evidence
+stays internal and saved decisions and actions stay compatible. Invalid extraction gets
+one correction before failing without saving a partial summary. Number corrections retry
+only the task that introduced the unsupported number.
+Keep the accepted Details selector fixed during this refactor, along with model, thinking
+and context settings. The overview keeps its existing requirements with a narrower schema.
+
+Milestone acceptance remains five fresh full generations each of the synthetic golden,
+pricing and scheduling variant fixtures, checking prose and evidence separately. For the
+selector refactor, first require five selection-only runs per fixture and a greeting-only
+control, checking exact source copying, important-turn coverage and irrelevant selections.
+Then run one fresh full summary per original fixture to check assembly and report writer
+failures separately. Measure latency and quoted text size against the previous hybrid
+candidate. For the commitments timing revision, run five extraction-only generations for
+each original fixture plus four focused controls: proposals without commitments,
+conditional or unknown-owner promises, action versus related timing, and adjacent or
+separated request/acceptance pairs (35 checks). Check decision and action coverage,
+ownership, timing, qualifications and evidence roles separately. After isolated acceptance
+passes, run one complete summary per original fixture, requiring commitments and source
+selection to pass 3/3. Keep the overview fixed and report its failures separately; overview
+repair and the larger full-note acceptance batch remain subsequent work. Whole-turn
+copying guarantees source wording, not complete selection or faithful interpretation in
+generated prose.
+- **Implemented, not built (2026-10-28).** Draft PR #13 adds extraction, source verification,
+  the separate writing pass, saved figures and rendering. All 270 unit tests, lint and strict
+  types pass. The model-quality acceptance gate is still open:
+  - Five baseline generations per fixture: pricing checks 0/5, golden checks 5/5.
+    The two-pass candidate passed pricing 5/5 and the original golden assertions 5/5,
+    but inspection found an availability reversal in 2/5 golden summaries. A new
+    regression assertion catches it, leaving the expanded golden check at 3/5.
+  - All ten extractions ultimately passed source verification; three needed the one
+    correction attempt. Exact source words and speaker labels do not guarantee that
+    the writing pass preserves their meaning. The renderer suppresses exact duplicate
+    figure entries produced by a correction, without changing the saved evidence.
+  - Median elapsed time on the synthetic fixtures: golden 13 s → 128 s; pricing
+    43 s → 193 s. Extraction dominates: median 113 s and 175 s, including corrections.
+    The existing model, thinking mode and context settings were kept.
+  - A targeted writer-prompt change, tested against the same five independent extractions
+    per fixture, regressed to golden 2/5 and pricing 0/5. It was reverted. The better
+    candidate and the stronger regression test remained in the draft; the pricing xfail
+    was retained at this stage. Further prompt tuning alone had not
+    established reliable prose coverage and interpretation.
+  - A fresh end-to-end Ollama integration run with xfail disabled also reproduced the
+    availability reversal: three pricing tests passed and the golden test failed.
+- **Hybrid revision, not built (2026-10-28).** The draft now implements the independent
+  extraction and writing tasks described above, with legacy loading and rendering.
+  All 274 unit tests, formatting, lint and strict types pass. The model-quality gate
+  remains open, so this architecture has not been adopted on main:
+  - Two writer-only comparisons, five generations per original fixture, both passed
+    the revised pricing prose checks 5/5 but repeated dates in golden overviews 5/5.
+    Adding the overview restriction to the response schema did not resolve it.
+  - Five fresh full generations per fixture: golden 0/5, pricing 0/5, scheduling variant
+    0/5 on the complete acceptance checks. The original absence-to-return reversal
+    appeared in 0/10 scheduling summaries, and their availability quotes passed 10/10.
+  - A planning commitment was omitted from action items in 10/10 scheduling summaries.
+    Inspection of the archived baseline and prior candidate found the same omission
+    in 5/5 each; it is now an explicit regression assertion. Golden overviews also
+    repeated dates in 5/5; variant overviews met the format requirement in 5/5.
+  - Source verification succeeded for 14/15 generations, with six correction requests.
+    One pricing extraction failed after correction, so writing did not run. The other
+    four pricing summaries omitted a qualified budget constraint from the quotes.
+    Source matching alone does not detect missing evidence or misleading labels.
+  - Coverage assertions now check quoted details rather than requiring every figure
+    in prose. Assertions still check any amounts repeated in prose, and reject labels
+    that reinterpret feasible amounts as targets or ceilings. No model-quality failures
+    are hidden behind xfail.
+  - Median attempt times: golden 43 s, pricing 85 s, scheduling variant 50 s; pricing
+    includes the failed extraction. Model, thinking and context settings are unchanged.
+    This fixed candidate remains a draft pending better evidence coverage and action
+    completeness; no reviewing model pass or broad M10 evaluation set was added.
+- **Source-turn revision, not built (2026-10-28).** The selector returns only turn IDs;
+  code copies complete source turns with speaker and time headings. All 298 unit tests,
+  formatting, lint, strict types, and Python and Swift CI pass. The selector component
+  passes its repeated acceptance checks; M9 still requires the full-note quality gate:
+  - The first selector passed pricing and greeting controls 5/5 each, but both scheduling
+    fixtures 0/5 because it skipped operational facts. Those facts were also absent from
+    the previous hybrid quotes. The final prompt explicitly includes operational
+    background and keeps qualifying facts even when their turns also contain actions.
+  - Five fresh selection-only runs per fixture: pricing 5/5, golden 5/5, scheduling
+    variant 5/5, greeting-only control 5/5. All required turns were retained; no forbidden
+    greeting or acknowledgment turns were selected. No invalid IDs, source-copy failures
+    or correction requests occurred. Greeting controls selected zero turns in 5/5 runs.
+  - Copying the entire budget turn retained the previously omitted qualification in
+    5/5 pricing runs. Whole turns also preserve nearby claims, so the notes are longer:
+    median quoted characters were 340 → 829 for golden, 463 → 527 for pricing and
+    302 → 800 for the scheduling variant. The prior pricing size uses its four returned
+    summaries; one prior extraction failed.
+  - ID selection is not always faster. Median extraction/selection times were 22 s → 83 s
+    for golden, 74 s → 43 s for pricing and 34 s → 58 s for the scheduling variant.
+    Greeting controls took 5 s. The model, thinking mode and context size are unchanged.
+  - One fresh full summary per original fixture passed source selection and assembly
+    3/3. Complete checks passed pricing 1/1, golden 0/1 and scheduling variant 0/1.
+    Both scheduling summaries still omitted the planning commitment from action items;
+    the golden overview also repeated a date. The writer's prompt, schema and original
+    transcript context were unchanged. Full elapsed times were 58 s for pricing, 117 s
+    for golden and 76 s for the scheduling variant. These smoke checks do not replace the
+    milestone's five full generations per fixture. PR #13 remains a draft for writer
+    completeness and overview format; the selector changes have not been adopted on main.
+- **Commitments revision, not built (2026-10-29).** Decisions and actions now have a
+  dedicated extraction task with supporting turn IDs; the final task writes only the
+  overview. All three tasks read the original conversation, and code assembles their
+  results. The accepted selector, model, thinking mode and context settings are unchanged.
+  All 326 unit tests, formatting, lint, strict types, and Python and Swift CI pass.
+  The implementation is complete, but its model-quality gate remains open:
+  - Five fresh extraction-only generations per fixture: golden 5/5, pricing 5/5,
+    scheduling variant 0/5, proposals without commitments 5/5, conditional and
+    unknown-owner commitments 5/5. The 25-run batch resumed after a pause with identical
+    prompts, schemas, settings, fixtures and checks; completed results were preserved.
+  - Both scheduling fixtures retained two decisions and four actions in all 10 runs,
+    including the previously omitted planning commitment. Archived hybrid outputs had
+    that action in 0/10 runs, and the latest source-turn summaries had it in 0/2.
+    Ownership, decision time scope and uncertainty checks passed in all 10 extractions.
+  - The scheduling variant incorrectly used the planned start of related work as a
+    conversation deadline in 5/5 runs, and cited only the acceptance rather than both
+    the request and acceptance for another action in 5/5. The deadline is a regression:
+    none of its five archived hybrid outputs assigned that deadline. Reference
+    completeness is a new check; a known turn ID alone does not prove full support.
+  - All 25 responses were structurally valid and used known IDs, with no correction
+    requests. The negative control invented no decisions or actions in 5/5 runs;
+    conditional and unknown-owner controls retained both commitments, the condition,
+    and unknown ownership and deadline in 5/5. These checks do not establish reliability
+    beyond the small synthetic set.
+  - Median extraction times were 114 s for golden, 82 s for the scheduling variant,
+    39 s for pricing, 16 s for the negative control and 54 s for conditional commitments.
+    The first resumed control includes model loading; medians include that observation.
+  - One fresh complete summary per original fixture passed source selection and assembly
+    3/3 and commitments checks 2/3. Full automated checks passed pricing 1/1, golden 0/1
+    and scheduling variant 0/1. Both scheduling notes retained the planning action; the
+    variant repeated its deadline and reference failures. All nine requests succeeded
+    without corrections.
+  - Both scheduling overviews repeated dates. Manual inspection also found one overview
+    presenting a proposed work start as settled; the pricing overview was ambiguous about
+    which build amount was considered feasible despite passing its automated checks.
+    Full elapsed times were 203 s, 159 s and 113 s for golden, variant and pricing,
+    compared with 117 s, 76 s and 58 s in the previous single-summary smoke checks.
+  - The three-summary prerequisite failed, so the larger full-note acceptance batch was
+    not run. PR #13 remains a draft pending deadline attribution, complete supporting
+    references and overview fidelity. M9 has not been adopted on main.
+
+- **Timing-evidence revision, not built (2026-10-29).** Actions now separate commitment,
+  request and context references, and distinguish their own timing from related timing.
+  Quotes and values are source-checked; only action timing supplies the saved deadline.
+  All 367 unit tests, formatting, lint and strict types pass. The frozen implementation
+  remains at `b980935`; model-quality acceptance failed:
+  - Five extraction-only runs across seven fixtures passed 13/35: golden 0/5,
+    scheduling variant 0/5, pricing 5/5, proposals without commitments 0/5,
+    conditional or unknown-owner commitments 0/5, action versus related timing 5/5,
+    and adjacent or separated accepted requests 3/5. On the original five-fixture
+    subset this is 5/25, down from the previous design's 20/25.
+  - Request and acceptance references are now complete in both scheduling fixtures
+    (10/10) and the accepted-request control (5/5). The variant previously omitted
+    the request in 5/5. This improvement does not establish faithful timing:
+    the variant still assigns a related work start as a communication deadline in
+    5/5, and its decision leaves the subject as an unresolved pronoun in 5/5.
+  - Golden merges two independent promises into one item in 5/5 (three actions instead
+    of four), despite correct timing. Both negative and conditional controls invent
+    decisions in 5/5; conditional actions themselves remain present. Accepted requests
+    retain their references but misclassify action deadlines as related timing in 2/5,
+    leaving deadlines empty and also adding decisions.
+  - Manual review covers all nine distinct summaries; the four resumed outputs match
+    previously reviewed hashes. Pricing passes automated checks in 5/5 but omits the
+    explicit promise to report back after discussing the proposal. Exact source quotes
+    do not prove event attribution, completeness or faithful task wording.
+  - All 35 model responses validated without correction requests. The 31 saved results
+    were combined with only the four missing fifth runs after verifying identical
+    prompts, schemas, implementation, settings, fixtures and checks. Four sandbox-denied
+    localhost attempts returned no model responses; their transport errors are preserved
+    separately and excluded from the 35 model generations. No failed model row was replaced.
+  - Median extraction seconds versus the prior commitments design: golden 114 → 137,
+    variant 82 → 168, pricing 39 → 78, negative control 16 → 22, conditional control
+    54 → 62. New timing and accepted-request controls took 107 s and 67 s. The first
+    resumed call may include model loading; these medians include it. Model, thinking,
+    context, selector and overview remain unchanged.
+  - The 35/35 prerequisite failed, so no complete summaries or larger full-note batch
+    were run for this candidate. PR #13 stays a draft; M9 is not built or adopted on main.
+    A different approach requires a separate discussion.
+
+- **Reference-only experiment planned (2026-10-29).** Restore the exact commitments
+  implementation from `8cc3568`, changing only its citation instruction: accepted requests
+  always cite request and acceptance, even when the acceptance names the work, plus any
+  intervening requested scope. Keep schema field order, other prompt wording, model,
+  thinking, context, selector, overview and the three normal calls fixed.
+  - Freeze a common semantic rubric before inference and re-score the archived 25-run
+    baseline and 35-run timing revision. Reference checks use either schema's supporting
+    IDs; role-array and kind fields are not semantic requirements. Require the pricing
+    report-back promise and both its request and acceptance. Score decisions, coverage,
+    ownership, qualifications, timing and references independently. Historical headline
+    scores remain recorded under their original checks; new scores are separate.
+  - Screen the exact baseline once on each of the seven existing fixtures, then the
+    citation-only candidate once each (14 calls). Investigate material drift in original
+    baseline behavior before testing the candidate. Preserve all rows and stop the
+    candidate if references remain incomplete or any new semantic regression appears.
+  - Only after screening and manual review pass, freeze and run 35 fresh candidate
+    extractions (five per fixture), separate from the screening rows. Require complete
+    references and preservation of separate actions, owners, conditions, uncertainty,
+    report-back and explicit deadlines. The existing scheduling-variant timing defect
+    may remain only as an explicitly reported failure of overall acceptance. It is not
+    a passing 35/35 candidate. Review every distinct output, including dates in task text.
+  - Only after reference-stage success, freeze that result and separately test one
+    nullable deadline-evidence object instead of due. Allow context from other cited
+    turns to resolve the action; source matching verifies provenance, not date attachment.
+    Check both invented and lost deadlines. Repeat the screen and five-run evaluation;
+    require 35/35 plus manual acceptance before three original-fixture complete summaries.
+    The full-note milestone gate remains later work. No broad M10 set or extra model call.
+  - Freeze input text, metadata, prompts, schemas, sources, checks and inference settings;
+    record Ollama version/model identity, corrections, latency and distinct output counts.
+    Keep raw results local, never replace failures with reruns, and label a stopped batch
+    incomplete. Repeated temperature-zero runs on these known development fixtures test
+    repeatability, not general reliability. Any failed stage ends this candidate rather
+    than starting another prompt-tuning cycle.
+
+- **Reference-only screen stopped, not built (2026-10-29).** Implementation `78ab71d`
+  restores the earlier extractor and changes only the citation instruction. The separate
+  preregistration is `1cc2e41`. All 351 unit tests (326 restored baseline tests plus 25
+  scoring regressions), formatting, lint, strict types and Python/Swift CI pass.
+  - Re-scoring archived outputs under the common rubric gives the earlier design 15/25
+    and the timing revision 8/35. The historical 20/25 and 13/35 remain valid only under
+    their original checks: the common rubric requires both pricing references and the
+    explicit report-back promise. The five-fixture common subset is 15/25 versus 0/25.
+  - All seven fresh baseline screens completed; three pass the complete shared rubric.
+    All five original summaries exactly match archived baseline outputs, with no drift.
+    The two newly measured controls expose two related dates used as action deadlines,
+    and two missing request references plus a missing requested-scope reference. These
+    are baseline findings, not regressions caused by the new citation instruction.
+  - The first candidate screen failed four metrics describing three defects: a decision's
+    original time scope became the follow-up meeting's time, a related work date became
+    a communication deadline, and an explicit planning deadline disappeared from saved
+    due (planning remained in task text). The paired baseline passed this fixture.
+    All four separate actions, owners, uncertainty and required references were retained.
+  - Stopped immediately under the screening gate: baseline 3/7 overall, candidate 0/1
+    completed with six candidate cases unrun. No 35-run confirmation, deadline-evidence
+    experiment or full summaries ran. One rejected screen is sufficient for this stop
+    rule, but does not estimate the candidate's repeated failure rate or establish the
+    cause of earlier regressions. No further prompt tuning was performed.
+  - All eight model responses were structurally valid; no corrections, transport failures
+    or substituted results. Every frozen source, prompt, schema, fixture, setting and
+    evaluation hash still matches. Model identity and Ollama version were recorded and
+    checked before each request. All eight outputs received manual review; pricing's
+    existing combined-task deadline ambiguity is also retained as a limitation.
+  - Baseline extraction took 405 s total; the paired first case took 101 s for baseline
+    and 94 s for candidate. These are single observations, not a latency improvement
+    claim. Local durable artifacts retain raw outputs, hashes, common rescoring, manual
+    reviews and the incomplete screening record. Only aggregate results are published.
+    PR #13 remains a draft; this candidate is rejected and M9 is not built or on main.
+
+- **Quoted-commitment preview (2026-10-29), later rejected in format review.** This experiment
+  replaces rewritten decisions and checkboxes with one chronological "Decisions and
+  commitments" section containing complete source turns. First judge the format with
+  manually selected turns from the seven existing synthetic fixtures; no model calls.
+  - Copy original words, speaker labels and timestamps using the source-turn helpers.
+    Preserve conditions and context, including request/acceptance pairs and scope turns.
+    Deduplicate IDs and restore source order, retaining distinct equal-timestamp turns.
+    Several promises within one turn stay together. Empty selection says "None selected."
+  - Keep repeated quotes in both Details and the new section. Do not infer owners,
+    deadlines, labels or groups. Source labels may remain "Them". Generated selection,
+    legacy saved-schema changes and production pipeline integration remain deferred.
+  - Deliver seven before/after section comparisons from the saved baseline screen, plus
+    three full-note pairs from archived original-fixture summaries. Full-note overviews
+    and Details stay unchanged, including known overview defects, so the comparison
+    isolates the new section. An index records selected-turn counts, quoted characters,
+    section lengths and overlap with Details. These are format previews, not model results.
+  - Preview tooling and the synthetic selection manifest are versioned; all generated
+    notes, provenance and prior evaluation artifacts stay local. The application CLI,
+    summarizer, saved Summary format, renderer and vault-writing pipeline stay unchanged.
+  - Verify source copying/context, unknown IDs, duplicate IDs, equal timestamps, empty
+    selection, unchanged overview/Details, output confinement and no network/model calls.
+    After delivery, stop for the user's format review before planning or running the
+    selector experiment. PR #13 remains a draft and M9 remains unbuilt.
+  - **Preview generated (2026-10-29).** Seven section comparisons and three full-note
+    pairs contain 26 selected turns and 2,004 quoted characters in total. Shared turns
+    with Details are 3, 2 and 0 for the original three fixtures; both copies remain.
+    All source/input hashes and 20 index links verified. Every full-note overview,
+    Details section and transcript link is unchanged. No inference ran.
+  - All 375 unit tests (including 24 preview tests), formatting, lint and strict types
+    pass. The CLI confines output to the ignored local preview directory and rejects
+    overwrites and symlink escapes. Generated previews and provenance are excluded
+    from Git. Implementation paused at that point for the requested format review.
+
+- **Model and sampling comparisons (2026-10-29–2026-11-02), acceptance failed.**
+  The owner found whole-turn commitment quotations less readable; that selector proposal
+  stayed stopped. Separately authorized commitments-only comparisons used the seven
+  existing synthetic fixtures, frozen source text and metadata, the simpler schema and
+  the original baseline prompt. The repository's citation-only prompt was already
+  rejected and was not silently reused as the baseline. No production model was changed.
+  - The original temperature-zero comparison remained incomplete: seven Qwen3:30b
+    cases completed, two candidate cases timed out and twelve cells remained unrun in
+    the planned 21-cell design. Qwen3:30b passed 2/7 cases under both automated and manual
+    review, compared with the earlier baseline's 3/7 despite identical requests, model
+    identity and server version. Qwen3.5:9b-q4_K_M and Gemma4:12b-it-q4_K_M each passed a separate compatibility
+    smoke, then timed out at 600 s on their first scored fixture. Gemma's continuation
+    was separately authorized. Neither timeout supplies a semantic score or model ranking.
+  - A separate Gemma temperature-zero streaming diagnostic used a 1200 s absolute limit.
+    It ended naturally at the length limit after 819 s, with 31,148 generated tokens,
+    zero answer characters and a checklist repeated 208 consecutive times. No answer
+    was scored. This trace does not establish the cause of Qwen's earlier timeout.
+  - Changing only temperature to one in the next Gemma diagnostic produced valid JSON
+    in 49 s, but the case failed: request evidence and structured planning due were
+    missing (28/30 properties). A separate Qwen3.5 temperature-one diagnostic produced
+    valid JSON in 181 s, but also lost planning from due while retaining it in prose
+    (29/30 properties). Qwen's temperature, streaming and timeout differed from its
+    original attempt, so that comparison cannot isolate temperature as the cause.
+  - Fresh seven-case screens followed; diagnostics were excluded from their counts.
+    These are single observations per known fixture, not repeatability or generalization
+    evidence. Each response was valid JSON, without corrections or replacement runs.
+
+    | Fresh screen | Automated cases | Manual cases | Median seconds |
+    |---|---:|---:|---:|
+    | Gemma4, temperature 1, thinking on | 3/7 | 3/7 | 66.798 |
+    | Gemma4, temperature 1, thinking off | 2/7 | 2/7 | 5.594 |
+    | Qwen3.5, temperature 1, thinking on | 5/7 | 4/7 | 168.607 |
+
+  - Gemma with thinking retained planning and conditional publication timing in prose
+    but omitted them from due, invented an agreed price cap from a feasible amount and
+    added an action from an acknowledgment. Turning thinking off removed the cap and
+    acknowledgment errors, but promoted existing terms into a decision, lost a request
+    citation and an actual communication deadline, and still mishandled timing.
+  - Qwen3.5 retained planning in prose but omitted it from due, omitted a related-work
+    start date in the scheduling variant, and lost the pricing request citation. The
+    omitted work date passed the automated checks, which explains 5/7 versus 4/7 manual.
+    No invented decisions or actions were found in that screen. None passed acceptance.
+    Observed latency differences do not establish stable speed advantages or reliability.
+
+- **Contract-alignment comparison (2026-11-02), candidate rejected.** Fourteen fresh
+  Qwen3.5 temperature-one, thinking-enabled calls compared a control and one bundled
+  candidate per fixture, alternating which arm ran first. Three prompt changes clarified
+  action schedules in due, complete request/acceptance/scope citations and retention of
+  related-work dates in task prose; only due's schema description also changed. Schema
+  structure and all other settings stayed fixed. This does not isolate individual edits.
+  - Control passed 4/7 automatically and manually. Candidate passed 6/7 automatically
+    but only 4/7 manually. All fourteen responses were valid; none were retried, corrected
+    or substituted. The apparent automated improvement did not improve complete manual
+    acceptance and was insufficient for repeatability testing or adoption.
+  - Both scheduling candidates restored planning due but omitted the billing start date
+    from the task. Pricing gained the original request citation but lost the explicit
+    report-back promise. The other four fixture pairs passed manual review. Extra source
+    IDs did not preserve task details omitted from the actual wording.
+  - The fresh control differed from the preceding Qwen screen: the scheduling variant
+    now retained its work date but lost planning due, reversing its earlier defect.
+    Both outputs failed manually. Historical controls remain separate, not replaced.
+    Control/candidate median times were 172.125/118.954 s; total call time was 2305 s.
+    Different loading/cache conditions and one observation per cell limit interpretation.
+  - The shared scorer missed omitted related-work dates and other task-level timing
+    errors; it was not weakened or silently repaired. The pricing combined-task due
+    ambiguity also remains: discussion timing does not independently date report-back.
+    Absent amounts and zero unsupported-number warnings do not prove numerical accuracy.
+
+- **Source-clause format and selection screen (2026-11-02), format approved but automatic
+  selection rejected.** Three manual comparisons used saved failed candidate actions
+  from the golden, scheduling-variant and pricing fixtures. Only task prose changed to
+  short exact source clauses; checkbox, owner and due layout stayed fixed, with supporting
+  context shown separately. The owner approved readability. No inference ran for these
+  previews, and hand selection is not model-accuracy evidence.
+  - The separately approved protocol proposed up to seven fresh Qwen3.5 calls, stopping
+    at the first failure. It replaced task prose with one to three separate exact source
+    clauses, allowing requested work and scope from different turns. Owners, due and
+    citations were selected afresh; decisions remained paraphrases. A new frozen rubric
+    checked exact copying, complete semantics, supporting context and readability rather
+    than treating the old paraphrase-oriented lexical scorer as an acceptance gate.
+  - All 64 offline validator/runner/collector checks passed before execution. Independent
+    review checked the protocol and implementation. Fresh preflight verified model and
+    server identity, native settings and absence of active meeting jobs or resident models.
+  - The first fixture returned valid JSON in 321 s: two decisions, four separate actions
+    and five exact source substrings. It failed manual review. A related billing start
+    became the conversation's due, while the planning quote omitted the rotation subject.
+    Supporting citations also omitted needed subject and owner-name context. Correct
+    owners, finance uncertainty and planning due remained; they did not rescue the errors.
+  - Primary and independent reviews agreed. The screen stopped after one call: 0/1
+    accepted completed cases, six unrun. This is not a completed seven-case result.
+    No retries, repairs, replacement answers or further fixtures ran. Raw reconstruction,
+    frozen inputs and preservation hashes verified; the screen model was unloaded cleanly.
+    The multi-clause accepted-request fixture remains untested.
+
+- **Current stopping point (2026-11-03).** M9 is not built or adopted on main; M8 remains
+  the shipped version. No tested model/profile/candidate passed complete acceptance.
+  Exact quotations establish copied wording, not completeness, correct attribution or
+  faithful timing. More prompt tuning and the old whole-turn selector remain stopped.
+  - Across the later model-comparison history there were 50 requests including smokes,
+    timeouts and separate diagnostics, followed by one source-clause request. This is
+    not completion of the original 21-cell comparison, and these stages are not pooled
+    into an accuracy score. No repeatability batch or full-note generation followed them.
+  - The next proposed step is an offline sketch of a review-assisted workflow using
+    saved synthetic outputs: assess whether checking and correcting compact actions
+    beside their sources is easier than reading the transcript. No workflow has been
+    implemented or validated, and unattended-accuracy requirements have not been relaxed.
+  - Detailed requests, raw responses, frozen protocols, hashes, manual reviews and
+    checkpoints remain in ignored local artifacts. This committed summary records their
+    aggregate results; it does not back up those raw artifacts to GitHub. All fixtures
+    are synthetic. No private meeting content or names are included here, and no
+    production configuration, vault content or shipped behavior changed in these stages.
 
 **M10 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
