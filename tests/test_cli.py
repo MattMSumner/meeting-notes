@@ -11,6 +11,7 @@ import pytest
 
 from meeting_notes.cli import main
 from meeting_notes.config import Config
+from meeting_notes.macos import MacDesktop
 from meeting_notes.meeting import Meeting
 from meeting_notes.pipeline import conversation
 from meeting_notes.recorder import CaptureError, Recorder
@@ -101,6 +102,14 @@ class FakeSummarizer:
         return SUMMARY
 
 
+@pytest.fixture(autouse=True)
+def no_open(monkeypatch: pytest.MonkeyPatch):
+    def open_note(self: MacDesktop, path: Path) -> None:
+        pass
+
+    monkeypatch.setattr(MacDesktop, "open_note", open_note)
+
+
 @pytest.fixture
 def config(tmp_path: Path) -> Config:
     return Config(
@@ -139,7 +148,11 @@ def only_transcript(config: Config) -> str:
 
 
 def only_note(config: Config) -> str:
-    [note] = [p for p in config.notes_dir.iterdir() if p.is_file()]
+    [note] = [
+        p
+        for p in config.notes_dir.iterdir()
+        if p.is_file() and not p.name.endswith("_handwritten.md")
+    ]
     return note.read_text()
 
 
@@ -441,7 +454,11 @@ def test_render_leaves_a_note_edited_in_the_vault_alone(
     config: Config, capsys: pytest.CaptureFixture[str]
 ):
     run(config, FakeTranscriber({"me": [Segment(0.0, 1.0, "Hello.")]}), "record")
-    [note] = [p for p in config.notes_dir.iterdir() if p.is_file()]
+    [note] = [
+        p
+        for p in config.notes_dir.iterdir()
+        if p.is_file() and not p.name.endswith("_handwritten.md")
+    ]
     edited = note.read_text().replace("- [ ]", "- [x]")
     note.write_text(edited)
 
@@ -521,3 +538,57 @@ def test_the_note_flags_numbers_nobody_said(config: Config):
     )
 
     assert "> [!warning] Nobody said this number in the meeting: $30,000." in only_note(config)
+
+
+def test_handwritten_notes_survive_reruns_and_are_not_model_input(config: Config):
+    transcriber = FakeTranscriber({"me": [Segment(0, 1, "Hello.")]})
+    run(config, transcriber, "record")
+    directory = only_meeting_dir(config)
+    path = directory.load_meeting().handwritten_path
+    assert path is not None
+    path.write_text("Personal observation: 12345\n")
+    for command in ("render", "summarize", "transcribe"):
+        summarizer = FakeSummarizer()
+        assert run(config, transcriber, command, directory.id, summarizer=summarizer) == 0
+        assert path.read_text() == "Personal observation: 12345\n"
+        assert all("12345" not in text for text in summarizer.transcripts)
+    assert f"Handwritten notes: [[{path.stem}]]" in only_note(config)
+    assert str(path) not in (directory.path / "written.json").read_text()
+
+
+def test_open_failure_does_not_prevent_capture(config: Config, monkeypatch: pytest.MonkeyPatch):
+    from meeting_notes.macos import DesktopError
+
+    def fail(self: MacDesktop, path: Path) -> None:
+        raise DesktopError("unavailable")
+
+    monkeypatch.setattr(MacDesktop, "open_note", fail)
+    assert run(config, FakeTranscriber(), "record") == 0
+    path = only_meeting_dir(config).load_meeting().handwritten_path
+    assert path is not None and path.is_file()
+
+
+def test_handwritten_collision_keeps_existing_file(config: Config, monkeypatch: pytest.MonkeyPatch):
+    original = MeetingStore.create
+    occupied: list[Path] = []
+
+    def create(self: MeetingStore, meeting: Meeting) -> MeetingDir:
+        directory = original(self, meeting)
+        config.notes_dir.mkdir(parents=True, exist_ok=True)
+        path = config.notes_dir / f"{directory.load_meeting().note_stem}_handwritten.md"
+        path.write_text("Existing writing")
+        occupied.append(path)
+        return directory
+
+    monkeypatch.setattr(MeetingStore, "create", create)
+    assert run(config, FakeTranscriber(), "record") == 0
+    path = only_meeting_dir(config).load_meeting().handwritten_path
+    assert path is not None and path.name.endswith("_2_handwritten.md")
+    assert occupied[0].read_text() == "Existing writing"
+
+
+def test_failed_capture_keeps_handwritten_note(config: Config):
+    assert run(config, FakeTranscriber(), "record", recorder=CrashingRecorder(False)) == 1
+    path = only_meeting_dir(config).load_meeting().handwritten_path
+    assert path is not None and path.is_file()
+    assert "Available after processing" in path.read_text()

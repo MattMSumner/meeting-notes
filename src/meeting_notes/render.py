@@ -108,5 +108,7 @@ def render_note(
         out += ["## Decisions", "", *_bullets(summary.decisions), ""]
         actions = [_action_item(item) for item in summary.action_items] or ["_None._"]
         out += ["## Action items", "", *actions, ""]
+    if meeting.handwritten_path is not None:
+        out += [f"Handwritten notes: [[{meeting.handwritten_path.stem}]]", ""]
     out.append(f"Transcript: [[{meeting.transcript_stem}]]")
     return "\n".join(out) + "\n"

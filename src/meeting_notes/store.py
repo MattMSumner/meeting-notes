@@ -54,7 +54,21 @@ class MeetingDir:
             title=data["title"],
             started_at=datetime.fromisoformat(data["started_at"]),
             attendees=tuple(data.get("attendees", [])),
+            handwritten_path=Path(data["handwritten_path"])
+            if data.get("handwritten_path")
+            else None,
         )
+
+    def save_handwritten_path(self, path: Path) -> None:
+        metadata = self.path / "meeting.json"
+        data = json.loads(metadata.read_text())
+        data["handwritten_path"] = str(path)
+        tmp = self.path / ".meeting.tmp"
+        try:
+            tmp.write_text(json.dumps(data, indent=2) + "\n")
+            tmp.replace(metadata)
+        finally:
+            tmp.unlink(missing_ok=True)
 
     @property
     def has_manifest(self) -> bool:

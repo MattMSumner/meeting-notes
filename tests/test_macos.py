@@ -30,3 +30,21 @@ def test_any_other_failure_is_an_error(monkeypatch: pytest.MonkeyPatch):
 
     with pytest.raises(DesktopError, match="Not authorized"):
         MacDesktop().ask_text("Title?")
+
+
+def test_open_note_encodes_absolute_path_and_requests_new_tab(monkeypatch: pytest.MonkeyPatch):
+    from pathlib import Path
+    from urllib.parse import parse_qs, urlsplit
+
+    seen: list[str] = []
+
+    def run(args: list[str], **kwargs: Any) -> subprocess.CompletedProcess[str]:
+        seen.extend(args)
+        assert kwargs["timeout"] == 5
+        return subprocess.CompletedProcess(args, 0, "", "")
+
+    monkeypatch.setattr(subprocess, "run", run)
+    path = Path("/tmp/Café & # notes.md")
+    MacDesktop().open_note(path)
+    assert seen[0] == "open"
+    assert parse_qs(urlsplit(seen[1]).query) == {"path": [str(path.resolve())], "paneType": ["tab"]}

@@ -402,11 +402,57 @@ class _Commands:
                 session.clear(meeting_dir, os.getpid())
                 session.stop_request_file(meeting_dir).unlink(missing_ok=True)
 
+    def _prepare_handwritten(self, meeting_dir: MeetingDir, background: bool) -> None:
+        def warn(message: str) -> None:
+            print(message, file=sys.stderr, flush=True)
+            if background:
+                try:
+                    self.desktop.notify(message)
+                except (OSError, DesktopError):
+                    pass  # Notification failure must not prevent capture either.
+
+        meeting = meeting_dir.load_meeting()
+        path = meeting.handwritten_path
+        try:
+            if path is None:
+                folder = self.config.notes_dir.expanduser().resolve()
+                folder.mkdir(parents=True, exist_ok=True)
+                number = 1
+                while True:
+                    suffix = "" if number == 1 else f"_{number}"
+                    path = folder / f"{meeting.note_stem}{suffix}_handwritten.md"
+                    try:
+                        with path.open("x", encoding="utf-8") as note:
+                            note.write(
+                                f"# {meeting.title}\n\nAvailable after processing: "
+                                f"[[{meeting.note_stem}|Summary]] · "
+                                f"[[{meeting.transcript_stem}|Transcript]]\n\n"
+                            )
+                        break
+                    except FileExistsError:
+                        number += 1
+                try:
+                    meeting_dir.save_handwritten_path(path)
+                except OSError as error:
+                    warn(f"Couldn't associate handwritten note {path} ({error}).")
+            elif not path.is_file():
+                warn(f"Handwritten note is missing: {path}. Recording will continue.")
+                return
+        except OSError as error:
+            warn(f"Couldn't create handwritten note ({error}). Recording will continue.")
+            return
+        print(f"Handwritten notes: {path}", flush=True)
+        try:
+            self.desktop.open_note(path)
+        except (DesktopError, OSError) as error:
+            warn(f"Couldn't open handwritten note {path} ({error}). Recording will continue.")
+
     def _record_then_write_note(
         self, meeting_dir: MeetingDir, args: argparse.Namespace, signals: _StopSignals
     ) -> int:
         title = _title(meeting_dir)
         background: bool = args.background
+        self._prepare_handwritten(meeting_dir, background)
         if background:
             self.desktop.notify(f"Recording “{title}”.")
         try:

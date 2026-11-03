@@ -55,6 +55,9 @@ class FakeDesktop:
         self.notifications: list[str] = []
         self.asked = 0
 
+    def open_note(self, path: Path) -> None:
+        pass
+
     def notify(self, message: str) -> None:
         self.notifications.append(message)
 
@@ -776,7 +779,7 @@ def test_record_without_a_title_uses_the_calendar(
 
     [meeting_dir] = MeetingStore(config.data_dir).all()
     assert meeting_dir.load_meeting().title == "Standup"
-    [note] = [p for p in config.notes_dir.iterdir() if p.is_file()]
+    note = config.notes_dir / f"{meeting_dir.load_meeting().note_stem}.md"
     assert 'attendees: ["Alex Doe"]\n' in note.read_text()
 
 

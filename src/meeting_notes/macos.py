@@ -1,7 +1,9 @@
 """Notifications and dialogs, for when notes runs from a shortcut with no terminal."""
 
 import subprocess
+from pathlib import Path
 from typing import Protocol
+from urllib.parse import quote, urlencode
 
 APP_TITLE = "Meeting notes"
 # AppleScript's "User canceled." error.
@@ -13,6 +15,8 @@ class DesktopError(Exception):
 
 
 class Desktop(Protocol):
+    def open_note(self, path: Path) -> None: ...
+
     def notify(self, message: str) -> None: ...
 
     def ask_text(self, prompt: str, default: str = "") -> str | None:
@@ -25,6 +29,17 @@ def _applescript_string(text: str) -> str:
 
 
 class MacDesktop:
+    def open_note(self, path: Path) -> None:
+        query = urlencode({"path": str(path.resolve()), "paneType": "tab"}, quote_via=quote)
+        try:
+            result = subprocess.run(
+                ["open", f"obsidian://open?{query}"], capture_output=True, text=True, timeout=5
+            )
+        except (OSError, subprocess.TimeoutExpired) as error:
+            raise DesktopError(str(error)) from error
+        if result.returncode:
+            raise DesktopError(result.stderr.strip() or f"open exited {result.returncode}")
+
     def notify(self, message: str) -> None:
         script = (
             f"display notification {_applescript_string(message)} "

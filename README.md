@@ -6,7 +6,8 @@ the conversation with a local model served by [Ollama](https://ollama.com), and 
 note and its transcript into an Obsidian vault. No audio, transcripts or summaries leave
 the machine.
 
-Status: **M8**, overlapping backchannels folded inline in transcripts. See [plan.md](plan.md)
+Status: **M9 implementation**, handwritten notes open in Obsidian at recording start.
+Manual Obsidian acceptance is pending. See [plan.md](plan.md)
 for the roadmap.
 
 ## Setup
@@ -58,6 +59,19 @@ uv run notes summarize <meeting-id>         # re-run the summary
 uv run notes render <meeting-id>            # re-write the note and transcript
 uv run notes check                          # check the mic and system audio can be recorded
 ```
+
+Starting through Spotlight or `notes record` creates a separate `_handwritten.md` file
+beside the generated summary and opens it in a new Obsidian tab. Write ordinary bullets
+or prose below its title and links. The summary and transcript links become available
+after processing; no placeholder files are created. The generated summary links back to
+your writing. The notes directory must belong to an existing Obsidian vault.
+
+Handwritten text is **not yet input to the summary model**. Stop still transcribes and
+summarizes automatically. Your writing is never rewritten by processing or rerunning a
+stage, even if capture fails or no speech is detected. Creation or opening problems warn
+without preventing recording; if opening fails, use the printed file path. Renamed or
+moved handwritten files are not tracked automatically. Older meetings gain no handwritten
+file when processed again.
 
 If a recording's process dies (a crash, a restart), `notes status` says so and `notes stop`
 recovers it: it stops the orphaned capture and writes the note from what was recorded.

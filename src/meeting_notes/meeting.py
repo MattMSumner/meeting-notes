@@ -3,6 +3,7 @@
 import re
 from dataclasses import dataclass
 from datetime import datetime
+from pathlib import Path
 
 UNTITLED = "Untitled"
 
@@ -27,6 +28,8 @@ class Meeting:
     started_at: datetime
     attendees: tuple[str, ...] = ()
     """Everyone else invited, from the calendar."""
+
+    handwritten_path: Path | None = None
 
     @classmethod
     def new(
