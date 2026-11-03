@@ -4,9 +4,9 @@ A personal, local-first meeting notetaker for macOS. It's a CLI that records my 
 other side of a call, transcribes locally after the meeting, summarizes with a local model,
 and writes an Obsidian-friendly markdown note.
 
-Status: **M8 shipped** (fold backchannels). M1–M7 and the spike done. Proposed next:
-M9 creates handwritten notes in Obsidian; M10 adds explicit notes-guided enhancement.
-Neither is built. This roadmap update authorizes no feature implementation or model calls.
+Status: **M8 shipped**. M9 and M10 implementations are present; manual Obsidian
+acceptance is pending. M10 quality evaluation has not run and M10 remains unbuilt.
+No model calls are authorized as part of this implementation.
 Phase 0 (Handy) set up.
 
 ---
@@ -71,23 +71,29 @@ pipeline state with enums and dataclasses.
 
 ## Architecture
 
-**Shipped through M8:** recording ends with automatic transcript-only summarization.
-Handwritten notes are not created or used as model input today.
+**Implemented workflow (M10 quality/manual acceptance pending):**
 
 ```
-notes start [--title T]
-  ├─ notes-capture (Swift)  ── me.wav   (mic, 16 kHz mono)
-  │                         └─ them.wav (global tap: all system output, 16 kHz mono)
-  └─ writes PID + meeting.json (start time, calendar event from notes-capture)
-
-notes stop
-  ├─ signal capture to stop, wait for WAVs to finalize
-  ├─ transcribe me.wav, them.wav  → segments with timestamps (JSON)
-  ├─ merge by time                → transcript.md  ("**Me:** … / **Them:** …")
-  ├─ summarize (Ollama)           → summary.json (summary, key points, decisions, action items)
-  └─ render                       → ~/development/notes/meetings/2026-10-17_Weekly Sync_1400.md
-                                  → ~/development/notes/meetings/transcripts/2026-10-17_Weekly Sync_1400_transcript.md
+notes start / record
+  ├─ create and open handwritten note in Obsidian
+  └─ record me.wav + them.wav and capture offsets
+notes stop / foreground completion / recovery / transcribe
+  ├─ transcribe usable channels → segments.*.json
+  ├─ clear saved generation and evidence
+  └─ render transcript and ready-to-enhance status (preserve edited vault files)
+notes enhance <id> / summarize <id> / enhance --choose
+  ├─ claim meeting; reject incomplete, no-speech or busy meetings
+  ├─ snapshot handwritten bytes, effective text, segment transcript and context
+  ├─ generate with separately labelled sources → source-specific number checks
+  ├─ atomically replace versioned summary.json (summary + evidence)
+  └─ render; Spotlight notifies and opens a newly published summary in a new tab
+notes render <id>
+  └─ use saved generation/evidence; never reread original handwritten file
 ```
+
+A nonblocking per-meeting lock serializes processing; short global claims coordinate
+session ownership. An `enhancing` crash requires explicit `notes enhance <id>` retry.
+Legacy flat summaries and meetings with no handwritten-path metadata remain supported.
 
 **Each stage reads the previous stage's files and writes its own**, so any stage can be
 re-run on its own:
@@ -114,7 +120,9 @@ notes start [--title T]
 notes stop
 notes status
 notes record [--title T]        # foreground capture; Ctrl-C ends the meeting
-notes transcribe <meeting-id>   # re-run transcription and summarization
+notes transcribe <meeting-id>   # re-transcribe; ready to enhance
+notes enhance   <meeting-id>   # explicit generation
+notes enhance --choose         # chooser and detached worker
 notes summarize  <meeting-id>
 notes render     <meeting-id>
 ```
@@ -123,17 +131,13 @@ Configuration uses the environment variables documented in [README.md](README.md
 Keep the shipped models and settings: Parakeet TDT 0.6B v2, Ollama `qwen3:30b`,
 `num_ctx=32768` and thinking enabled. All processing stays local.
 
-**Proposed workflow:** M9 adds a separate `…_handwritten.md` file beside the generated
-summary, opens it at start, and keeps automatic transcript-only summaries on stop. The
-handwritten note and generated summary link to one another; the transcript retains its
-existing filename and link. M10 changes stop to transcribe and report ready to enhance;
-`notes enhance <meeting-id>` or the **Enhance meeting notes** Spotlight shortcut then
-generates the summary from a saved snapshot of the writing and the transcript.
-`notes summarize <meeting-id>` remains a compatible generation entry point. Rendering
-uses the saved evidence, never the current contents of a subsequently edited handwritten
-file. The enhancement command and workflow changes are planned, not available in M8.
+Handwritten notes remain separate files. Successful enhancement saves exact source inputs
+alongside its summary. Later rendering uses that evidence even if the handwritten file
+changes or disappears. A missing associated handwritten file prevents new inference.
+Summary/Decisions/Action items remain grounded in speech; optional From your notes and
+Conflicts sections separate written-only material and unresolved accounts.
 
-### Generated Obsidian note shape (M8)
+### Core generated Obsidian note shape (optional M10 sections follow Action items)
 
 ```markdown
 ---
@@ -645,6 +649,13 @@ Re-running transcription also leaves generation to the explicit enhancement acti
   notes, empty notes, additional written context, conflicting facts and ambiguous dates.
   Passing that evaluation is a separate prerequisite for declaring M10 built; implementing
   the workflow alone is insufficient. This roadmap update authorizes no model calls.
+
+- **Implementation (2026-11-03; not Built):** explicit enhancement, saved input wrappers,
+  source-aware number checks, chooser, per-meeting serialization and unit coverage are
+  implemented. Five synthetic comparison pairs, baseline source at `199dd62`, proposed
+  prompt/schema/settings, guarded runner and manual rubric are frozen in `evaluation/m10/`.
+  No model runs, quality scores or real-meeting evaluation were performed. Decide inference
+  budget/repetitions separately. Quality evaluation and manual acceptance remain required.
 
 For both stages, run formatting, lint, strict types and unit tests before committing;
 run Swift tests only if capture code changes. Keep shipped model settings unchanged.
