@@ -4,7 +4,9 @@ A personal, local-first meeting notetaker for macOS. It's a CLI that records my 
 other side of a call, transcribes locally after the meeting, summarizes with a local model,
 and writes an Obsidian-friendly markdown note.
 
-Status: **M8 done** (fold backchannels). M1–M7 and the spike done. Next: M9.
+Status: **M8 shipped** (fold backchannels). M1–M7 and the spike done. Proposed next:
+M9 creates handwritten notes in Obsidian; M10 adds explicit notes-guided enhancement.
+Neither is built. This roadmap update authorizes no feature implementation or model calls.
 Phase 0 (Handy) set up.
 
 ---
@@ -69,6 +71,9 @@ pipeline state with enums and dataclasses.
 
 ## Architecture
 
+**Shipped through M8:** recording ends with automatic transcript-only summarization.
+Handwritten notes are not created or used as model input today.
+
 ```
 notes start [--title T]
   ├─ notes-capture (Swift)  ── me.wav   (mic, 16 kHz mono)
@@ -79,7 +84,7 @@ notes stop
   ├─ signal capture to stop, wait for WAVs to finalize
   ├─ transcribe me.wav, them.wav  → segments with timestamps (JSON)
   ├─ merge by time                → transcript.md  ("**Me:** … / **Them:** …")
-  ├─ summarize (Ollama)           → summary.json (summary, decisions, action items)
+  ├─ summarize (Ollama)           → summary.json (summary, key points, decisions, action items)
   └─ render                       → ~/development/notes/meetings/2026-10-17_Weekly Sync_1400.md
                                   → ~/development/notes/meetings/transcripts/2026-10-17_Weekly Sync_1400_transcript.md
 ```
@@ -88,34 +93,47 @@ notes stop
 re-run on its own:
 
 ```
-~/Library/Application Support/notes/meetings/2026-10-17-1400-weekly-sync/
+~/Library/Application Support/meeting-notes/meetings/2026-10-17-1400-weekly-sync/
   meeting.json        # times, calendar event, attendees
   me.wav  them.wav    # ~115 MB/hour each at 16 kHz/16-bit; FLAC later if disk matters
   segments.me.json  segments.them.json
-  transcript.md
+  capture.json        # channel start offsets and capture results
   summary.json
 ```
 
 Audio and intermediate JSON stay **out of the Obsidian vault**, which keeps sync and search
 fast. Only the note and its transcript go into the vault, as separate files: the note links
 to the transcript with a wikilink, and the transcript links back to the note. The tool
-never writes outside `~/development/notes/meetings/`.
+writes vault files only inside `~/development/notes/meetings/`; audio and intermediate
+files live in the application-support folder above.
 
-CLI surface (v1):
+Current CLI usage (see [README.md](README.md) for setup and Spotlight shortcuts):
 
 ```
 notes start [--title T]
 notes stop
 notes status
-notes transcribe <meeting-id>   # re-run a stage
+notes record [--title T]        # foreground capture; Ctrl-C ends the meeting
+notes transcribe <meeting-id>   # re-run transcription and summarization
 notes summarize  <meeting-id>
 notes render     <meeting-id>
 ```
 
-Config file `~/.config/notes/config.toml`: notes folder (default `~/development/notes/meetings`), Ollama
-model and `num_ctx`, transcription model path.
+Configuration uses the environment variables documented in [README.md](README.md).
+Keep the shipped models and settings: Parakeet TDT 0.6B v2, Ollama `qwen3:30b`,
+`num_ctx=32768` and thinking enabled. All processing stays local.
 
-### Obsidian note shape
+**Proposed workflow:** M9 adds a separate `…_handwritten.md` file beside the generated
+summary, opens it at start, and keeps automatic transcript-only summaries on stop. The
+handwritten note and generated summary link to one another; the transcript retains its
+existing filename and link. M10 changes stop to transcribe and report ready to enhance;
+`notes enhance <meeting-id>` or the **Enhance meeting notes** Spotlight shortcut then
+generates the summary from a saved snapshot of the writing and the transcript.
+`notes summarize <meeting-id>` remains a compatible generation entry point. Rendering
+uses the saved evidence, never the current contents of a subsequently edited handwritten
+file. The enhancement command and workflow changes are planned, not available in M8.
+
+### Generated Obsidian note shape (M8)
 
 ```markdown
 ---
@@ -124,9 +142,10 @@ time: "14:00"
 title: Weekly Sync
 attendees: [Alex, Sam]
 tags: [meeting]
-source: notes-cli
+source: meeting-notes
 ---
 ## Summary
+Overview, followed by key-point bullets.
 ## Decisions
 ## Action items
 - [ ] Owner — task (due if mentioned)
@@ -261,7 +280,7 @@ then transcribes and writes `transcript.md` to the notes folder.
   - **Accuracy on my voice:** very good. Errors are mostly product/proper names
     ("Claude" → "Word", "Antique" for a product name), an occasional dropped or misheard
     word ("rate" → "race"), British spellings, and numbers written as words. Names point
-    to the vocabulary prompt on the M11 list.
+    to the vocabulary prompt on the M12 list.
   - **Fully offline:** loading by repo id contacted Hugging Face on every run. It now
     loads from the local cache and only downloads if the model is missing (verified with
     network access blocked).
@@ -367,10 +386,10 @@ markdown.
     to always use it, which fixed both. Owners are named when the transcript says who the
     other person is ("Hey Alex"); "Them" otherwise.
   - **Quality on real meetings:** facts and numbers accurate and specific; misheard names
-    pass straight through (vocabulary prompt, M11). But it **over-reads stance**: tentative
+    pass straight through (vocabulary prompt, M12). But it **over-reads stance**: tentative
     remarks can come out as firm positions, even with a prompt rule against it. Asking for
     first person ("I") made things worse (it mixed "I" with third person), so it was
-    dropped. Follow-up (M10): build a few synthetic transcripts with known-correct notes and
+    dropped. Follow-up (M11): build a few synthetic transcripts with known-correct notes and
     compare prompts and models against them (e.g. a larger dense model), rather than tuning
     on real meetings by eye.
   - **Numbers it was never told (2026-10-22).** A real summary merged a total and one part of
@@ -382,7 +401,8 @@ markdown.
     words, and looks for it in what was said. Ollama gets one retry naming the unsaid
     numbers (it dropped them 3/3), and any left are flagged in the note. Stance
     ("doable" vs "maximum") and dropped figures are still open: a quoted list of figures
-    in the schema, before the overview, is the next thing to try (M9).
+    in the schema, before the overview, was the original M9 proposal. That approach
+    later failed acceptance and is parked (see the history below).
 
 **M4 — Start/stop from Spotlight.** No terminal needed to record a meeting.
 - `notes start [--title T]`: starts recording in the background and returns at once. It
@@ -525,18 +545,82 @@ each its own turn.
     existing summaries. Edited vault files are still left alone. Synthetic tests cover
     overlap boundaries, channel offsets, phrase matching, paragraphs and rerendering.
 
-**M9 — Quoted figures.** Add a list of figures to the summary schema, before the
-overview: each with who said it, what it measured and their exact words, so the summary
-is written from quotes. Aimed at the open number problems from M3: "definitely doable"
-reported as "the maximum", and figures dropped. Measured by the xfail
-`test_reports_each_sides_numbers_in_their_own_words`.
+**Parked experiment (2026-11-03).** The former M9 quoted-figures approach failed
+acceptance and remains unbuilt and unadopted. See the pushed
+[experiment summary at `00b44a8`](https://github.com/MattMSumner/meeting-notes/commit/00b44a8).
+Its implementation stays on the experiment branch; do not merge or cherry-pick it into
+these milestones. M8 remains the shipped behavior.
 
-**M10 — Synthetic evaluation set.** Two or three more made-up transcripts with
+**M9 — Take meeting notes in Obsidian.** Starting a meeting creates and opens a
+handwritten note with the meeting title, links to the generated summary and transcript,
+and an otherwise empty writing area. Plain bullets and prose need no special syntax.
+Stopping still transcribes and automatically summarizes the transcript. Handwritten
+notes are not model input in this stage.
+
+- Create the handwritten file beside the summary with a `_handwritten.md` suffix. Keep
+  existing summary and transcript filenames, and link the summary back to the writing.
+  Create files exclusively and resolve filename collisions without overwriting. Persist
+  the actual handwritten-note path with the meeting so later stages use the same file.
+- Extend the desktop adapter in `macos.py` to open Obsidian's built-in open URI with an
+  encoded absolute path. Use no Obsidian plugin or custom editor.
+- Apply the same behavior to background `start` and foreground `record`, creating only
+  one handwritten note per meeting. Failure to create or open it reports a clear warning
+  without preventing audio capture.
+- Never rewrite the handwritten file during stop, recovery, transcription, summarization
+  or rendering. Preserve it even if capture fails or produces no speech. Historical
+  meetings stay unchanged; absent handwritten-note metadata is valid for older meetings.
+  Automatic discovery of renamed or moved handwritten files is outside this stage.
+- **Validation:** unit-test creation, filename collisions, URI encoding, opening failures,
+  background and foreground starts, recovery and preservation across reruns. Manually
+  verify the Obsidian workflow with a synthetic meeting.
+- **Acceptance:** the owner can start, type in Obsidian, stop, and find both their unchanged
+  writing and the normal generated summary. Re-running existing stages cannot erase the
+  writing. This is a planned milestone, not a Built note.
+
+**M10 — Enhance notes with the transcript.** Make notes-guided enhancement explicit.
+Stop (including the end of foreground recording) ends capture and transcribes, then reports
+that the meeting is ready to enhance; it no longer automatically generates a summary.
+Re-running transcription also leaves generation to the explicit enhancement action.
+
+- Add an **Enhance meeting notes** Spotlight shortcut with a chooser of completed,
+  transcribed meetings identified by title and time. Selection resolves to a stable
+  meeting ID; cancellation does nothing. Add `notes enhance <meeting-id>` and retain
+  `notes summarize <meeting-id>` as a compatible entry point to the same generation behavior.
+- Snapshot the saved handwritten text when enhancement starts and store that exact input
+  alongside the generated result. Later rendering uses the same evidence. Pass handwritten
+  notes and transcript as separately labelled inputs; count both in context-size checks.
+- Keep Summary, Key points, Decisions and Action items (M8 currently renders key points
+  as bullets under Summary). Add separate sections for useful context found only in the
+  handwritten notes and for conflicts between sources; omit those sections when empty.
+  Notes guide emphasis, but omissions do not instruct the model to discard other important
+  commitments. Do not silently turn personal observations into spoken agreements or choose
+  between conflicting sources.
+- Update number checking to distinguish written from spoken evidence. A handwritten number
+  is neither automatically invented nor automatically supported by the transcript.
+- Preserve the original handwritten file and existing protection for user-edited generated
+  summaries. Empty notes permit transcript-only enhancement. A missing or unreadable
+  previously associated note is an error, not permission to silently drop that input.
+  Older meetings without note metadata remain readable and renderable without migration.
+- **Validation:** test chooser cancellation and stable selection, exact input snapshots,
+  empty versus missing or unreadable notes, source separation, context limits, number
+  checks, preservation and backward compatibility. Manually verify enhancement with a
+  synthetic meeting.
+- **Quality acceptance:** before inference, freeze a bounded comparison covering sparse
+  notes, empty notes, additional written context, conflicting facts and ambiguous dates.
+  Passing that evaluation is a separate prerequisite for declaring M10 built; implementing
+  the workflow alone is insufficient. This roadmap update authorizes no model calls.
+
+For both stages, run formatting, lint, strict types and unit tests before committing;
+run Swift tests only if capture code changes. Keep shipped model settings unchanged.
+Live transcription, in-place AI editing, custom Obsidian plugins and automatic tracking
+of renamed or moved notes are outside this roadmap replacement.
+
+**M11 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
 compared on tests rather than by eye on real meetings: stance (a "maybe" turned into a
 decision) and action-item owners.
 
-**M11 — Stretch.** Diarization of the "them" channel; a vocabulary prompt built from my
+**M12 — Stretch.** Diarization of the "them" channel; a vocabulary prompt built from my
 jargon list; FLAC; auto-start when Zoom joins a call.
 
 ---
