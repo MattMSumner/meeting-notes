@@ -4,7 +4,9 @@ A personal, local-first meeting notetaker for macOS. It's a CLI that records my 
 other side of a call, transcribes locally after the meeting, summarizes with a local model,
 and writes an Obsidian-friendly markdown note.
 
-Status: **M8 done** (fold backchannels). M1–M7 and the spike done. Next: M9.
+Status: **M8 done** (fold backchannels). M1–M7 and the spike done. M9 remains unbuilt;
+model experiments are stopped after failed acceptance. Next proposed step: an offline
+review-assisted workflow sketch using saved synthetic outputs.
 Phase 0 (Handy) set up.
 
 ---
@@ -792,7 +794,7 @@ generated prose.
     reviews and the incomplete screening record. Only aggregate results are published.
     PR #13 remains a draft; this candidate is rejected and M9 is not built or on main.
 
-- **Quoted-commitment preview (2026-10-29), awaiting format review.** The next experiment
+- **Quoted-commitment preview (2026-10-29), later rejected in format review.** This experiment
   replaces rewritten decisions and checkboxes with one chronological "Decisions and
   commitments" section containing complete source turns. First judge the format with
   manually selected turns from the seven existing synthetic fixtures; no model calls.
@@ -823,7 +825,119 @@ generated prose.
   - All 375 unit tests (including 24 preview tests), formatting, lint and strict types
     pass. The CLI confines output to the ignored local preview directory and rejects
     overwrites and symlink escapes. Generated previews and provenance are excluded
-    from Git. Implementation pauses here for the requested format review.
+    from Git. Implementation paused at that point for the requested format review.
+
+- **Model and sampling comparisons (2026-10-29–2026-11-02), acceptance failed.**
+  The owner found whole-turn commitment quotations less readable; that selector proposal
+  stayed stopped. Separately authorized commitments-only comparisons used the seven
+  existing synthetic fixtures, frozen source text and metadata, the simpler schema and
+  the original baseline prompt. The repository's citation-only prompt was already
+  rejected and was not silently reused as the baseline. No production model was changed.
+  - The original temperature-zero comparison remained incomplete: seven Qwen3:30b
+    cases completed, two candidate cases timed out and twelve cells remained unrun in
+    the planned 21-cell design. Qwen3:30b passed 2/7 cases under both automated and manual
+    review, compared with the earlier baseline's 3/7 despite identical requests, model
+    identity and server version. Qwen3.5:9b-q4_K_M and Gemma4:12b-it-q4_K_M each passed a separate compatibility
+    smoke, then timed out at 600 s on their first scored fixture. Gemma's continuation
+    was separately authorized. Neither timeout supplies a semantic score or model ranking.
+  - A separate Gemma temperature-zero streaming diagnostic used a 1200 s absolute limit.
+    It ended naturally at the length limit after 819 s, with 31,148 generated tokens,
+    zero answer characters and a checklist repeated 208 consecutive times. No answer
+    was scored. This trace does not establish the cause of Qwen's earlier timeout.
+  - Changing only temperature to one in the next Gemma diagnostic produced valid JSON
+    in 49 s, but the case failed: request evidence and structured planning due were
+    missing (28/30 properties). A separate Qwen3.5 temperature-one diagnostic produced
+    valid JSON in 181 s, but also lost planning from due while retaining it in prose
+    (29/30 properties). Qwen's temperature, streaming and timeout differed from its
+    original attempt, so that comparison cannot isolate temperature as the cause.
+  - Fresh seven-case screens followed; diagnostics were excluded from their counts.
+    These are single observations per known fixture, not repeatability or generalization
+    evidence. Each response was valid JSON, without corrections or replacement runs.
+
+    | Fresh screen | Automated cases | Manual cases | Median seconds |
+    |---|---:|---:|---:|
+    | Gemma4, temperature 1, thinking on | 3/7 | 3/7 | 66.798 |
+    | Gemma4, temperature 1, thinking off | 2/7 | 2/7 | 5.594 |
+    | Qwen3.5, temperature 1, thinking on | 5/7 | 4/7 | 168.607 |
+
+  - Gemma with thinking retained planning and conditional publication timing in prose
+    but omitted them from due, invented an agreed price cap from a feasible amount and
+    added an action from an acknowledgment. Turning thinking off removed the cap and
+    acknowledgment errors, but promoted existing terms into a decision, lost a request
+    citation and an actual communication deadline, and still mishandled timing.
+  - Qwen3.5 retained planning in prose but omitted it from due, omitted a related-work
+    start date in the scheduling variant, and lost the pricing request citation. The
+    omitted work date passed the automated checks, which explains 5/7 versus 4/7 manual.
+    No invented decisions or actions were found in that screen. None passed acceptance.
+    Observed latency differences do not establish stable speed advantages or reliability.
+
+- **Contract-alignment comparison (2026-11-02), candidate rejected.** Fourteen fresh
+  Qwen3.5 temperature-one, thinking-enabled calls compared a control and one bundled
+  candidate per fixture, alternating which arm ran first. Three prompt changes clarified
+  action schedules in due, complete request/acceptance/scope citations and retention of
+  related-work dates in task prose; only due's schema description also changed. Schema
+  structure and all other settings stayed fixed. This does not isolate individual edits.
+  - Control passed 4/7 automatically and manually. Candidate passed 6/7 automatically
+    but only 4/7 manually. All fourteen responses were valid; none were retried, corrected
+    or substituted. The apparent automated improvement did not improve complete manual
+    acceptance and was insufficient for repeatability testing or adoption.
+  - Both scheduling candidates restored planning due but omitted the billing start date
+    from the task. Pricing gained the original request citation but lost the explicit
+    report-back promise. The other four fixture pairs passed manual review. Extra source
+    IDs did not preserve task details omitted from the actual wording.
+  - The fresh control differed from the preceding Qwen screen: the scheduling variant
+    now retained its work date but lost planning due, reversing its earlier defect.
+    Both outputs failed manually. Historical controls remain separate, not replaced.
+    Control/candidate median times were 172.125/118.954 s; total call time was 2305 s.
+    Different loading/cache conditions and one observation per cell limit interpretation.
+  - The shared scorer missed omitted related-work dates and other task-level timing
+    errors; it was not weakened or silently repaired. The pricing combined-task due
+    ambiguity also remains: discussion timing does not independently date report-back.
+    Absent amounts and zero unsupported-number warnings do not prove numerical accuracy.
+
+- **Source-clause format and selection screen (2026-11-02), format approved but automatic
+  selection rejected.** Three manual comparisons used saved failed candidate actions
+  from the golden, scheduling-variant and pricing fixtures. Only task prose changed to
+  short exact source clauses; checkbox, owner and due layout stayed fixed, with supporting
+  context shown separately. The owner approved readability. No inference ran for these
+  previews, and hand selection is not model-accuracy evidence.
+  - The separately approved protocol proposed up to seven fresh Qwen3.5 calls, stopping
+    at the first failure. It replaced task prose with one to three separate exact source
+    clauses, allowing requested work and scope from different turns. Owners, due and
+    citations were selected afresh; decisions remained paraphrases. A new frozen rubric
+    checked exact copying, complete semantics, supporting context and readability rather
+    than treating the old paraphrase-oriented lexical scorer as an acceptance gate.
+  - All 64 offline validator/runner/collector checks passed before execution. Independent
+    review checked the protocol and implementation. Fresh preflight verified model and
+    server identity, native settings and absence of active meeting jobs or resident models.
+  - The first fixture returned valid JSON in 321 s: two decisions, four separate actions
+    and five exact source substrings. It failed manual review. A related billing start
+    became the conversation's due, while the planning quote omitted the rotation subject.
+    Supporting citations also omitted needed subject and owner-name context. Correct
+    owners, finance uncertainty and planning due remained; they did not rescue the errors.
+  - Primary and independent reviews agreed. The screen stopped after one call: 0/1
+    accepted completed cases, six unrun. This is not a completed seven-case result.
+    No retries, repairs, replacement answers or further fixtures ran. Raw reconstruction,
+    frozen inputs and preservation hashes verified; the screen model was unloaded cleanly.
+    The multi-clause accepted-request fixture remains untested.
+
+- **Current stopping point (2026-11-03).** M9 is not built or adopted on main; M8 remains
+  the shipped version. No tested model/profile/candidate passed complete acceptance.
+  Exact quotations establish copied wording, not completeness, correct attribution or
+  faithful timing. More prompt tuning and the old whole-turn selector remain stopped.
+  - Across the later model-comparison history there were 50 requests including smokes,
+    timeouts and separate diagnostics, followed by one source-clause request. This is
+    not completion of the original 21-cell comparison, and these stages are not pooled
+    into an accuracy score. No repeatability batch or full-note generation followed them.
+  - The next proposed step is an offline sketch of a review-assisted workflow using
+    saved synthetic outputs: assess whether checking and correcting compact actions
+    beside their sources is easier than reading the transcript. No workflow has been
+    implemented or validated, and unattended-accuracy requirements have not been relaxed.
+  - Detailed requests, raw responses, frozen protocols, hashes, manual reviews and
+    checkpoints remain in ignored local artifacts. This committed summary records their
+    aggregate results; it does not back up those raw artifacts to GitHub. All fixtures
+    are synthetic. No private meeting content or names are included here, and no
+    production configuration, vault content or shipped behavior changed in these stages.
 
 **M10 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
