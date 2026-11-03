@@ -21,6 +21,14 @@ class ActionItem(BaseModel):
     due: str | None = Field(description="When it's due, only if the transcript says")
 
 
+class Conflict(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    topic: str
+    transcript: str
+    handwritten: str
+
+
 class Summary(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -28,6 +36,8 @@ class Summary(BaseModel):
     key_points: list[str]
     decisions: list[str]
     action_items: list[ActionItem]
+    notes_context: list[str] = Field(default_factory=list)
+    conflicts: list[Conflict] = Field(default_factory=lambda: list[Conflict]())
 
 
 def parse_summary(text: str) -> Summary:
@@ -45,4 +55,6 @@ def parse_summary(text: str) -> Summary:
 
 
 class Summarizer(Protocol):
-    def summarize(self, meeting: Meeting, transcript: str) -> Summary: ...
+    def summarize(
+        self, meeting: Meeting, transcript: str, *, handwritten_text: str = ""
+    ) -> Summary: ...

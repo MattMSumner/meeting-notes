@@ -6,8 +6,8 @@ the conversation with a local model served by [Ollama](https://ollama.com), and 
 note and its transcript into an Obsidian vault. No audio, transcripts or summaries leave
 the machine.
 
-Status: **M9 implementation**, handwritten notes open in Obsidian at recording start.
-Manual Obsidian acceptance is pending. See [plan.md](plan.md)
+Status: **M10 implementation**, explicit notes-guided enhancement.
+Quality evaluation and manual Obsidian acceptance are pending; M10 is not yet built. See [plan.md](plan.md)
 for the roadmap.
 
 ## Setup
@@ -39,7 +39,7 @@ Get consent from everyone in a meeting before recording it.
 uv run scripts/install-shortcuts.py
 ```
 
-This adds two shortcuts (confirm each import in Shortcuts, and allow them to run scripts
+This adds three shortcuts (confirm each import in Shortcuts, and allow them to run scripts
 when asked). Run the installer from your configured terminal: it captures supported
 `MEETING_NOTES_*` settings and PATH, including Homebrew tools. The launchers use plain
 `/bin/sh` without reading interactive shell startup files. Reinstall after changing settings;
@@ -47,8 +47,11 @@ delete existing copies first to avoid duplicate shortcuts. Run them from Spotlig
 
 - **Start meeting notes** asks for a title, suggesting the meeting on your calendar now
   (empty means Untitled), and starts recording in the background. The orange and purple menu bar indicators show it's recording.
-- **Stop meeting notes** stops it. The transcript and summary are written in the
-  background, and a notification says when the note is ready.
+- **Stop meeting notes** stops capture and writes the transcript in the background,
+  then reports ready to enhance.
+- **Enhance meeting notes** lists ready meetings newest first, including previously
+  enhanced ones. Choose one to enhance in the background and open its summary in a new
+  Obsidian tab. Cancel does nothing. Reinstall shortcuts to add this action.
 
 ### From a terminal
 
@@ -57,8 +60,10 @@ uv run notes start --title "Weekly Sync"    # record in the background
 uv run notes status                         # what's recording or being written
 uv run notes stop                           # stop; the note is written in the background
 uv run notes record --title "Weekly Sync"   # or: record in the foreground
-uv run notes transcribe <meeting-id>        # re-run transcription (and the summary)
-uv run notes summarize <meeting-id>         # re-run the summary
+uv run notes transcribe <meeting-id>        # re-transcribe; clear generation; ready to enhance
+uv run notes enhance <meeting-id>           # snapshot writing and generate a summary
+uv run notes summarize <meeting-id>         # alias for enhance
+uv run notes enhance --choose               # chooser; detached enhancement
 uv run notes render <meeting-id>            # re-write the note and transcript
 uv run notes check                          # check the mic and system audio can be recorded
 ```
@@ -75,12 +80,32 @@ or prose below its title and links. The summary and transcript links become avai
 after processing; no placeholder files are created. The generated summary links back to
 your writing. The notes directory must belong to an existing Obsidian vault.
 
-Handwritten text is **not yet input to the summary model**. Stop still transcribes and
-summarizes automatically. Your writing is never rewritten by processing or rerunning a
-stage, even if capture fails or no speech is detected. Creation or opening problems warn
-without preventing recording; if opening fails, use the printed file path. Renamed or
-moved handwritten files are not tracked automatically. Older meetings gain no handwritten
-file when processed again.
+Enhancement reads your associated handwritten file once, preserving exact UTF-8 text,
+and saves both the original and the effective input (without recognized generated title
+and link lines). It builds the model transcript from stored segments, with your speaker
+name substituted; editing the vault transcript does not change that input. Missing,
+unreadable or invalid UTF-8 handwritten files must be restored before enhancement.
+Renamed or moved handwritten files are not tracked. Older meetings with no associated
+path, blank writing, and untouched templates use transcript-only enhancement.
+
+Your writing is never rewritten. Notes guide emphasis; Decisions and Action items remain
+spoken commitments. Written-only observations and tasks appear under **From your notes**.
+**Conflicts** identifies both sources without resolving them. Number warnings check each
+section against its assigned saved evidence, distinguishing other-source numbers and
+metadata; presence checks cannot establish correct attribution or meaning.
+
+Stop, foreground recording completion, recovery, and `transcribe` never invoke the summary
+model. Successful transcription clears the prior generated result and evidence and writes
+“ready to enhance” at the summary path. Edited vault files remain protected, with a warning
+that the status note was not published. No-speech meetings retain your writing and cannot
+be enhanced. Each meeting permits only one processing command at a time.
+
+Enhancement atomically saves the summary and evidence in a versioned `summary.json`.
+Failures preserve the previous result; re-enhancement takes a fresh snapshot. `render`
+uses saved evidence, so deleting or changing the original writing after enhancement does
+not change the result or its warnings. If an edited summary prevents publication, the
+result is saved internally and the shortcut does not open the old file as the new result.
+Move the protected file aside and run `notes render <meeting-id>` to publish it.
 
 If a recording's process dies (a crash, a restart), `notes status` says so and `notes stop`
 recovers it: it stops the orphaned capture and writes the note from what was recorded.
@@ -94,6 +119,8 @@ sessions and missing or damaged meeting metadata do not prevent capture shutdown
 fall back to the meeting ID. Missing metadata may still need repair before processing audio.
 The automatic recording timer runs in Python; a surviving helper after a process crash is
 handled by this recovery path. Background jobs log to `notes.log` in the meeting's folder.
+A crashed enhancement does not automatically rerun or transcribe; retry with
+`notes enhance <meeting-id>`. Background jobs log to `notes.log` in the meeting's folder.
 
 Each meeting gets a folder of audio and intermediate files in
 `~/Library/Application Support/meeting-notes/meetings/<meeting-id>/`. The note goes to
@@ -116,7 +143,7 @@ Settings are environment variables:
 | `MEETING_NOTES_MODEL` | `mlx-community/parakeet-tdt-0.6b-v2` (speech to text) |
 | `MEETING_NOTES_MY_NAME` | first name on your macOS account (what the summary calls you) |
 | `MEETING_NOTES_SUMMARY_MODEL` | `qwen3:30b` (Ollama) |
-| `MEETING_NOTES_NUM_CTX` | `32768` (tokens; must fit the whole transcript) |
+| `MEETING_NOTES_NUM_CTX` | `32768` (tokens; must fit both sources, prompt, schema, corrections and reply) |
 | `MEETING_NOTES_SUMMARY_THINK` | `1` (let the model reason first; `0` for models that can't) |
 | `MEETING_NOTES_OLLAMA_URL` | `http://localhost:11434` |
 
@@ -130,3 +157,6 @@ uv run pytest -m integration   # real models and audio hardware; never runs in C
 uv run pyright                 # strict type checking
 uv run ruff check . && uv run ruff format --check .
 ```
+
+The frozen M10 comparison and manual rubric are in [evaluation/m10/README.md](evaluation/m10/README.md).
+No inference has been run for M10; select a budget and repetitions before evaluation.

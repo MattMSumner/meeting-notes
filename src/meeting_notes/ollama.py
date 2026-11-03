@@ -8,7 +8,8 @@ from collections.abc import Callable
 from importlib import resources
 from typing import Any, cast
 
-from meeting_notes.figures import unsaid_numbers
+from meeting_notes.evidence import meeting_context
+from meeting_notes.figures import evidence_issues
 from meeting_notes.meeting import Meeting
 from meeting_notes.summary import Summary, SummaryError, parse_summary
 
@@ -87,34 +88,24 @@ class OllamaSummarizer:
         )
         self.think = think
 
-    def summarize(self, meeting: Meeting, transcript: str) -> Summary:
+    def summarize(
+        self, meeting: Meeting, transcript: str, *, handwritten_text: str = ""
+    ) -> Summary:
         messages = [
             {"role": "system", "content": self.prompt},
             {
                 "role": "user",
-                "content": f"Meeting: {meeting.title}\n"
-                f"Date: {meeting.started_at:%A %Y-%m-%d %H:%M}\n"
-                # From the calendar: lets the model name people and spell names right.
-                + (f"Others invited: {', '.join(meeting.attendees)}\n" if meeting.attendees else "")
-                + f"\nTranscript:\n\n{transcript}",
+                "content": meeting_context(meeting)
+                + f"\nTranscript:\n\n{transcript}"
+                + f"\n\nHandwritten notes:\n\n{handwritten_text}",
             },
         ]
-        # Ollama doesn't refuse a prompt that's too long: it quietly drops part of it (in a
-        # test, 7.4k tokens became 2k with a 4k context) and reports only what it kept. So
-        # the check has to happen before sending.
-        estimate = sum(len(m["content"]) for m in messages) // CHARS_PER_TOKEN + REPLY_TOKENS
-        if estimate > self.num_ctx:
-            raise OllamaError(
-                f"The transcript is too long for the model's context (about {estimate} tokens "
-                f"needed, {self.num_ctx} set), so the summary would miss part of it. "
-                f"Raise MEETING_NOTES_NUM_CTX to at least {estimate}."
-            )
         reply, summary = self._ask(messages)
         # The model sometimes works out a number nobody said, like the rest of a total.
         # One retry, told which; the retry is kept only if it has fewer such numbers, and
         # any left are flagged in the note.
-        said = messages[1]["content"]
-        unsaid = unsaid_numbers(summary, said)
+        context = meeting_context(meeting)
+        unsaid = evidence_issues(summary, transcript, handwritten_text, context)
         if not unsaid:
             return summary
         try:
@@ -124,15 +115,20 @@ class OllamaSummarizer:
                     {"role": "assistant", "content": reply},
                     {
                         "role": "user",
-                        "content": f"Nobody said these numbers: {', '.join(unsaid)}. Use only "
-                        "numbers someone said, and don't work out new ones. Reply again with "
-                        "JSON only.",
+                        "content": "Source-specific number issues: "
+                        + "; ".join(unsaid)
+                        + ". Correct these using the assigned source; do not transfer numbers "
+                        "between sources or work out new ones. Reply again with JSON only.",
                     },
                 ]
             )
         except SummaryError:
             return summary
-        return retried if len(unsaid_numbers(retried, said)) < len(unsaid) else summary
+        return (
+            retried
+            if len(evidence_issues(retried, transcript, handwritten_text, context)) < len(unsaid)
+            else summary
+        )
 
     def _ask(self, messages: list[dict[str, str]]) -> tuple[str, Summary]:
         """The model's reply and the summary in it."""
@@ -152,24 +148,25 @@ class OllamaSummarizer:
             return reply, parse_summary(reply)
 
     def _chat(self, messages: list[dict[str, str]]) -> str:
-        response = self.post(
-            "/api/chat",
-            {
-                "model": self.model,
-                "messages": messages,
-                "stream": False,
-                "think": self.think,
-                # Constrains the reply to the schema, so it's almost always valid.
-                "format": Summary.model_json_schema(),
-                "options": {
-                    # Ollama's default context is a few thousand tokens and it drops the
-                    # start of anything longer without saying so. An hour-long meeting is
-                    # about 10-15k tokens.
-                    "num_ctx": self.num_ctx,
-                    "temperature": 0,
-                },
-            },
-        )
+        body: dict[str, Any] = {
+            "model": self.model,
+            "messages": messages,
+            "stream": False,
+            "think": self.think,
+            "format": Summary.model_json_schema(),
+            "options": {"num_ctx": self.num_ctx, "temperature": 0},
+        }
+        # Include both sources, schema, settings and correction history on every call.
+        estimate = (
+            len(json.dumps(body, ensure_ascii=False)) + CHARS_PER_TOKEN - 1
+        ) // CHARS_PER_TOKEN + REPLY_TOKENS
+        if estimate > self.num_ctx:
+            raise OllamaError(
+                f"The complete request is too long for the model's context (about {estimate} "
+                f"tokens needed, {self.num_ctx} set). "
+                f"Raise MEETING_NOTES_NUM_CTX to at least {estimate}."
+            )
+        response = self.post("/api/chat", body)
         if response.get("done_reason") == "length":
             raise OllamaError(
                 f"The model ran out of context ({self.num_ctx} tokens) before finishing its "

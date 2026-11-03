@@ -94,9 +94,13 @@ class FakeSummarizer:
     def __init__(self, error: str | None = None) -> None:
         self.error = error
         self.transcripts: list[str] = []
+        self.notes: list[str] = []
 
-    def summarize(self, meeting: Meeting, transcript: str) -> Summary:
+    def summarize(
+        self, meeting: Meeting, transcript: str, *, handwritten_text: str = ""
+    ) -> Summary:
         self.transcripts.append(transcript)
+        self.notes.append(handwritten_text)
         if self.error:
             raise SummaryError(self.error)
         return SUMMARY
@@ -190,6 +194,10 @@ def test_backchannels_are_folded_for_display_but_reach_the_model_as_separate_tur
 
     assert run(config, transcriber, "record", summarizer=summarizer) == 0
 
+    assert summarizer.transcripts == []
+    assert (
+        run(config, transcriber, "enhance", only_meeting_dir(config).id, summarizer=summarizer) == 0
+    )
     assert summarizer.transcripts == [
         "[00:00:00] Sam: First.\n[00:00:01] Them: Yeah.\n[00:00:06] Sam: Next."
     ]
@@ -392,7 +400,7 @@ def test_check_without_the_binary_says_so(config: Config, capsys: pytest.Capture
     assert "Recording" not in err
 
 
-def test_record_summarizes_the_conversation_into_a_note(config: Config):
+def test_explicit_enhancement_summarizes_the_conversation_into_a_note(config: Config):
     transcriber = FakeTranscriber(
         {"me": [Segment(0.0, 2.0, "Ready to ship?")], "them": [Segment(3.0, 4.0, "Friday.")]}
     )
@@ -400,6 +408,10 @@ def test_record_summarizes_the_conversation_into_a_note(config: Config):
 
     assert run(config, transcriber, "record", "--title", "Release", summarizer=summarizer) == 0
 
+    assert summarizer.transcripts == []
+    assert (
+        run(config, transcriber, "enhance", only_meeting_dir(config).id, summarizer=summarizer) == 0
+    )
     assert summarizer.transcripts == ["[00:00:00] Sam: Ready to ship?\n[00:00:03] Them: Friday."]
     meeting = only_meeting_dir(config).load_meeting()
     note = config.notes_dir / f"{meeting.note_stem}.md"
@@ -415,15 +427,22 @@ def test_a_failed_summary_still_writes_the_transcript_and_says_how_to_retry(
 ):
     transcriber = FakeTranscriber({"me": [Segment(0.0, 1.0, "Hello.")]})
 
-    status = run(config, transcriber, "record", summarizer=FakeSummarizer("Ollama is down"))
+    assert run(config, transcriber, "record") == 0
+    status = run(
+        config,
+        transcriber,
+        "enhance",
+        only_meeting_dir(config).id,
+        summarizer=FakeSummarizer("Ollama is down"),
+    )
 
     meeting_id = only_meeting_dir(config).id
     assert status == 1
     assert "Hello." in only_transcript(config)
-    assert f"`notes summarize {meeting_id}`" in only_note(config)
+    assert f"`notes enhance {meeting_id}`" in only_note(config)
     err = capsys.readouterr().err
     assert "Ollama is down" in err
-    assert f"notes summarize {meeting_id}" in err
+    assert f"notes enhance {meeting_id}" in err
 
 
 def test_summarize_reruns_only_the_summary(config: Config):
@@ -459,7 +478,7 @@ def test_render_leaves_a_note_edited_in_the_vault_alone(
         for p in config.notes_dir.iterdir()
         if p.is_file() and not p.name.endswith("_handwritten.md")
     ]
-    edited = note.read_text().replace("- [ ]", "- [x]")
+    edited = note.read_text() + "User edit\n"
     note.write_text(edited)
 
     assert run(config, FakeTranscriber(), "render", only_meeting_dir(config).id) == 0
@@ -471,6 +490,7 @@ def test_render_leaves_a_note_edited_in_the_vault_alone(
 def test_retranscribing_with_no_speech_drops_the_old_summary(config: Config):
     run(config, FakeTranscriber({"me": [Segment(0.0, 1.0, "Hello.")]}), "record")
     meeting_dir = only_meeting_dir(config)
+    assert run(config, FakeTranscriber(), "enhance", meeting_dir.id) == 0
     assert "Agreed to ship on Friday." in only_note(config)
 
     run(config, FakeTranscriber(), "transcribe", meeting_dir.id)
@@ -493,7 +513,7 @@ def test_a_failed_summary_after_retranscribing_does_not_show_the_old_one(config:
     )
 
     assert "Agreed to ship on Friday." not in only_note(config)
-    assert f"`notes summarize {meeting_dir.id}`" in only_note(config)
+    assert f"`notes enhance {meeting_dir.id}`" in only_note(config)
 
 
 def test_summarize_before_transcribing_says_to_transcribe(
@@ -520,14 +540,16 @@ def test_an_unreadable_summary_still_renders_with_a_warning(config: Config):
 
     note = only_note(config)
     assert "> [!warning] summary.json couldn't be read" in note
-    assert f"`notes summarize {meeting_dir.id}`" in note
+    assert f"`notes enhance {meeting_dir.id}`" in note
 
 
 def test_the_note_flags_numbers_nobody_said(config: Config):
     priced = SUMMARY.model_copy(update={"key_points": ["Ninety for the build, $30,000 support."]})
 
     class PricingSummarizer(FakeSummarizer):
-        def summarize(self, meeting: Meeting, transcript: str) -> Summary:
+        def summarize(
+            self, meeting: Meeting, transcript: str, *, handwritten_text: str = ""
+        ) -> Summary:
             return priced
 
     run(
@@ -537,10 +559,20 @@ def test_the_note_flags_numbers_nobody_said(config: Config):
         summarizer=PricingSummarizer(),
     )
 
-    assert "> [!warning] Nobody said this number in the meeting: $30,000." in only_note(config)
+    assert (
+        run(
+            config,
+            FakeTranscriber(),
+            "enhance",
+            only_meeting_dir(config).id,
+            summarizer=PricingSummarizer(),
+        )
+        == 0
+    )
+    assert "key point: $30,000 (transcript; found in neither source" in only_note(config)
 
 
-def test_handwritten_notes_survive_reruns_and_are_not_model_input(config: Config):
+def test_handwritten_notes_survive_reruns_and_are_separate_model_input(config: Config):
     transcriber = FakeTranscriber({"me": [Segment(0, 1, "Hello.")]})
     run(config, transcriber, "record")
     directory = only_meeting_dir(config)
@@ -552,6 +584,9 @@ def test_handwritten_notes_survive_reruns_and_are_not_model_input(config: Config
         assert run(config, transcriber, command, directory.id, summarizer=summarizer) == 0
         assert path.read_text() == "Personal observation: 12345\n"
         assert all("12345" not in text for text in summarizer.transcripts)
+        assert summarizer.notes == (
+            ["Personal observation: 12345\n"] if command == "summarize" else []
+        )
     assert f"Handwritten notes: [[{path.stem}]]" in only_note(config)
     assert str(path) not in (directory.path / "written.json").read_text()
 

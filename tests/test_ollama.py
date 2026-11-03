@@ -55,7 +55,8 @@ def test_sends_the_transcript_with_an_explicit_context_size_and_schema():
     system, user = request["messages"]
     assert system == {"role": "system", "content": "Summarize for Sam."}
     assert "Meeting: Weekly Sync" in user["content"]
-    assert user["content"].endswith("[00:00:00] Me: Hi.")
+    assert "Transcript:\n\n[00:00:00] Me: Hi." in user["content"]
+    assert "Handwritten notes:" in user["content"]
 
 
 def test_retries_once_after_a_malformed_reply_saying_what_was_wrong():
@@ -146,7 +147,7 @@ def test_retries_once_naming_numbers_nobody_said():
 
     assert summary.key_points == ["$120,000 total, $90,000 build."]
     retry = ollama.requests[1]["messages"]
-    assert "Nobody said these numbers: $30,000." in retry[3]["content"]
+    assert "$30,000 (transcript; found in neither source" in retry[3]["content"]
 
 
 def test_keeps_the_first_summary_if_the_retry_is_no_better():
@@ -165,3 +166,34 @@ def test_keeps_the_first_summary_if_the_retry_is_malformed():
     summary = summarizer(ollama).summarize(MEETING, TOTAL_AND_BUILD)
 
     assert summary.key_points == ["$120,000 total: $90,000 build, $30,000 support."]
+
+
+def test_combined_sources_can_exceed_context_even_when_each_fits():
+    ollama = FakeOllama(GOOD)
+    with pytest.raises(OllamaError, match="complete request"):
+        summarizer(ollama, num_ctx=8192).summarize(
+            MEETING, "spoken " * 900, handwritten_text="written " * 900
+        )
+    assert ollama.requests == []
+
+
+def test_format_correction_checks_complete_request_before_sending():
+    ollama = FakeOllama("x" * 20000, GOOD)
+    with pytest.raises(OllamaError, match="complete request"):
+        summarizer(ollama, num_ctx=8192).summarize(MEETING, "Spoken")
+    assert len(ollama.requests) == 1
+
+
+def test_number_correction_over_context_keeps_first_valid_result():
+    first = with_key_point("$30,000 " + "x" * 20000)
+    ollama = FakeOllama(first, GOOD)
+    result = summarizer(ollama, num_ctx=8192).summarize(MEETING, "Spoken")
+    assert result.key_points == json.loads(first)["key_points"]
+    assert len(ollama.requests) == 1
+
+
+def test_wrong_source_numbers_trigger_source_specific_correction():
+    ollama = FakeOllama(with_key_point("Budget $500"), with_key_point("Budget $120"))
+    result = summarizer(ollama).summarize(MEETING, "Budget $120", handwritten_text="Budget $500")
+    assert result.key_points == ["Budget $120"]
+    assert "found only in the other source" in ollama.requests[1]["messages"][-1]["content"]
