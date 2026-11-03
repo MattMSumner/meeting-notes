@@ -10,6 +10,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
+from meeting_notes.evidence import Evidence, Generation
 from meeting_notes.meeting import Meeting
 from meeting_notes.summary import Summary, SummaryError
 from meeting_notes.transcript import Segment
@@ -110,16 +111,29 @@ class MeetingDir:
     def summary_file(self) -> Path:
         return self.path / "summary.json"
 
-    def save_summary(self, summary: Summary) -> None:
-        self.summary_file.write_text(summary.model_dump_json(indent=2) + "\n")
+    def save_summary(self, summary: Summary, evidence: Evidence | None = None) -> None:
+        result = Generation(summary=summary, evidence=evidence) if evidence else summary
+        tmp = self.path / ".summary.tmp"
+        try:
+            tmp.write_text(result.model_dump_json(indent=2) + "\n", encoding="utf-8")
+            tmp.replace(self.summary_file)
+        finally:
+            tmp.unlink(missing_ok=True)
 
     def load_summary(self) -> Summary | None:
         """The saved summary, or None if there isn't one. Raises SummaryError if it's unreadable."""
+        result = self.load_generation()
+        return result.summary if isinstance(result, Generation) else result
+
+    def load_generation(self) -> Generation | Summary | None:
         if not self.summary_file.is_file():
             return None
         try:
-            return Summary.model_validate_json(self.summary_file.read_text())
-        except ValueError as error:  # pydantic's ValidationError is a ValueError
+            data = json.loads(self.summary_file.read_text(encoding="utf-8"))
+            if isinstance(data, dict) and {"version", "summary", "evidence"} & data.keys():
+                return Generation.model_validate(data)
+            return Summary.model_validate(data)
+        except (ValueError, OSError) as error:
             raise SummaryError(f"summary.json couldn't be read ({error})") from None
 
     def clear_summary(self) -> None:

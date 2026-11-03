@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Builds the "Start meeting notes" and "Stop meeting notes" shortcuts and opens them for import.
+"""Builds the Start, Stop and Enhance meeting notes shortcuts and opens them for import.
 
 Run them from Spotlight by typing their names (or give them Quick Keys in Spotlight's
 settings). Each is a single "Run Shell Script" step that calls `notes`.
@@ -24,6 +24,7 @@ NOTES = REPO / ".venv" / "bin" / "notes"
 SHORTCUTS = {
     "Start meeting notes": "start --ask-title",
     "Stop meeting notes": "stop",
+    "Enhance meeting notes": "enhance --choose",
 }
 
 

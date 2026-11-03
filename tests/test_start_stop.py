@@ -55,6 +55,9 @@ class FakeDesktop:
         self.notifications: list[str] = []
         self.asked = 0
 
+    def choose_meeting(self, choices: list[tuple[str, str]]) -> str | None:
+        return self.answer
+
     def open_note(self, path: Path) -> None:
         pass
 
@@ -352,7 +355,7 @@ def test_a_background_recording_reports_by_notification_and_cleans_up(
     assert desktop.notifications == [
         "Recording “Standup”.",
         "Stopped recording “Standup”. Writing the note…",
-        "The note for “Standup” is ready.",
+        f"Ready to enhance: notes enhance {meeting_dir.id}",
     ]
 
 
@@ -384,7 +387,7 @@ def test_a_recovery_job_writes_the_note_and_cleans_up(
 
     assert status == 0
     assert session.read(meeting_dir) is None
-    assert desktop.notifications == ["The note for “Crashed” is ready."]
+    assert desktop.notifications == [f"Ready to enhance: notes enhance {meeting_dir.id}"]
 
 
 # Review fixes
