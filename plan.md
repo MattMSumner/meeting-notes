@@ -5,7 +5,7 @@ other side of a call, transcribes locally after the meeting, summarizes with a l
 and writes an Obsidian-friendly markdown note.
 
 Status: **M8 shipped**. M9 and M10 implementations are present; manual Obsidian
-acceptance is pending. M10 quality evaluation has not run and M10 remains unbuilt.
+acceptance was reported complete for M10. Its frozen quality evaluation failed; M10 remains unbuilt.
 No model calls are authorized as part of this implementation.
 Phase 0 (Handy) set up.
 
@@ -656,6 +656,14 @@ Re-running transcription also leaves generation to the explicit enhancement acti
   prompt/schema/settings, guarded runner and manual rubric are frozen in `evaluation/m10/`.
   No model runs, quality scores or real-meeting evaluation were performed. Decide inference
   budget/repetitions separately. Quality evaluation and manual acceptance remain required.
+
+- **Evaluation (2026-11-03; not Built):** user reported manual Obsidian acceptance
+  complete. The approved five-case comparison ran three repetitions per arm (30 summaries,
+  30 requests, no corrections/errors). Rubric review found critical conflict qualification
+  failures in all three proposed conflict outputs; spoken commitments were preserved.
+  Both arms weakened conditional due wording. Full synthetic evidence and per-repetition
+  scores: [evaluation report](evaluation/m10/results/report.md). Quality acceptance failed;
+  fixes require a new freeze and agreed rerun. No Built note or merge yet.
 
 For both stages, run formatting, lint, strict types and unit tests before committing;
 run Swift tests only if capture code changes. Keep shipped model settings unchanged.
