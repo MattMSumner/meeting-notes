@@ -9,7 +9,9 @@ from dataclasses import dataclass, replace
 from datetime import datetime
 from pathlib import Path
 from typing import Any
+from uuid import uuid4
 
+from meeting_notes.audit import Audit
 from meeting_notes.evidence import Evidence, Generation
 from meeting_notes.meeting import Meeting
 from meeting_notes.summary import Summary, SummaryError
@@ -111,14 +113,38 @@ class MeetingDir:
     def summary_file(self) -> Path:
         return self.path / "summary.json"
 
-    def save_summary(self, summary: Summary, evidence: Evidence | None = None) -> None:
-        result = Generation(summary=summary, evidence=evidence) if evidence else summary
+    def save_summary(
+        self, summary: Summary, evidence: Evidence | None = None, audit: Audit | None = None
+    ) -> None:
+        result = (
+            Generation(version=2 if audit else 1, summary=summary, evidence=evidence, audit=audit)
+            if evidence
+            else summary
+        )
         tmp = self.path / ".summary.tmp"
         try:
             tmp.write_text(result.model_dump_json(indent=2) + "\n", encoding="utf-8")
             tmp.replace(self.summary_file)
         finally:
             tmp.unlink(missing_ok=True)
+
+    def save_attempt(self, evidence: Evidence, audit: Audit) -> None:
+        """Preserve failed drafts independently of the last successful generation."""
+        folder = self.path / "attempts"
+        folder.mkdir(exist_ok=True)
+        destination = folder / f"{uuid4().hex}.json"
+        temporary = destination.with_suffix(".tmp")
+        try:
+            temporary.write_text(
+                json.dumps(
+                    {"evidence": evidence.model_dump(), "audit": audit.model_dump()}, indent=2
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+            temporary.replace(destination)
+        finally:
+            temporary.unlink(missing_ok=True)
 
     def load_summary(self) -> Summary | None:
         """The saved summary, or None if there isn't one. Raises SummaryError if it's unreadable."""
