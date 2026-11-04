@@ -637,6 +637,14 @@ Re-running transcription also leaves generation to the explicit enhancement acti
   has run; its rerun budget requires separate agreement. Quality acceptance remains failed
   for v1 and pending for v2; manual workflow acceptance was previously reported complete.
 
+- **V2 evaluation (2026-11-04; not Built):** approved rerun produced 30 summaries
+  using 32 requests, with no execution errors. Conditional due phrasing passed in 3/3
+  proposed cases, but conflict qualification failed in 3/3 and unsupported task deadlines
+  appeared in 2/3 empty-note outputs. Five proposed outputs have critical failures; M10
+  remains unbuilt. [V2 scores and evidence](evaluation/m10/v2/results/report.md) preserve
+  the run, corrections/observability limits and per-repetition assessment. No further
+  prompt changes or inference were performed; any next candidate needs a new freeze.
+
 For both stages, run formatting, lint, strict types and unit tests before committing;
 run Swift tests only if capture code changes. Keep shipped model settings unchanged.
 Live transcription, in-place AI editing, custom Obsidian plugins and automatic tracking
