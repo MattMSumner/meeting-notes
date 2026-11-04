@@ -197,3 +197,22 @@ def test_wrong_source_numbers_trigger_source_specific_correction():
     result = summarizer(ollama).summarize(MEETING, "Budget $120", handwritten_text="Budget $500")
     assert result.key_points == ["Budget $120"]
     assert "found only in the other source" in ollama.requests[1]["messages"][-1]["content"]
+
+
+def test_default_request_requires_standalone_due_and_qualifies_conflicts():
+    ollama = FakeOllama(GOOD)
+    model = OllamaSummarizer("qwen3:30b", 32768, ollama, "Sam")
+    model.summarize(MEETING, "Sam: Tuesday, or Thursday if approval slips.")
+    [request] = ollama.requests
+    prompt = request["messages"][0]["content"]
+    schema = request["format"]
+    # Both model-facing instructions must carry the constraint: a shorter schema
+    # description must not encourage the model to drop what the prompt preserves.
+    assert "This field must stand on its own" in prompt
+    assert 'not just "Tuesday"' in prompt
+    due = schema["$defs"]["ActionItem"]["properties"]["due"]["description"]
+    assert "alternative, condition" in due and "stand on its own" in due
+    assert "A separate Conflicts" in prompt
+    for field in ("overview", "key_points"):
+        assert "disputed" in schema["properties"][field]["description"]
+        assert "Conflicts" in schema["properties"][field]["description"]

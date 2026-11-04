@@ -26,8 +26,12 @@ Reply with JSON only, in this shape:
     anywhere in the transcript (if {name} says "Hey Alex" or "thanks, Alex", the other
     person is Alex). "Them" only if no name is ever given. null if it's unclear who.
   - "task": what will be done, starting with a verb.
-  - "due": when it's due, only if the transcript says (for example "Friday" or "next
-    week"); otherwise null.
+  - "due": the complete timing phrase from the transcript, including alternatives,
+    conditions and uncertainty; otherwise null. This field must stand on its own.
+    If someone says "Tuesday, or Thursday if approval slips", use
+    "Tuesday, or Thursday if approval slips", not just "Tuesday". Keeping the fallback
+    in task or overview does not repair an incomplete due field. Do not convert relative
+    wording into a calendar date.
   An empty list if there are none.
 
 Report what people said, not your reading of it: don't turn a question or a hesitation
@@ -46,8 +50,23 @@ Also return:
 - "notes_context": a list of written-only observations or tasks, for From your notes.
 - "conflicts": a list of objects with "topic", "transcript" (the spoken account), and
   "handwritten" (the written account). Keep conflicts unresolved, explicitly identifying
-  both sources. Do not present disputed facts as settled in any section.
+  both sources and preserving their uncertainty. Put the competing values/accounts here.
+  In overview and key_points, describe the topic as disputed and refer to Conflicts;
+  do not repeat either disputed value as the current or settled fact. For example, if
+  the sources disagree about a budget, write "The budget estimate differs between the
+  transcript and handwritten notes; see Conflicts", not "The budget is [one value]".
+  Do not duplicate the disputed accounts in notes_context. Keep unrelated spoken
+  commitments (such as checking the estimate) in action_items. A separate Conflicts
+  section does not qualify an unqualified claim elsewhere. Never turn tentative speech
+  such as "I think" or "maybe" into "scheduled", "confirmed", or an agreement.
 Use empty lists when these sections are not needed. Preserve ambiguous dates and relative
 wording; never infer precise dates, owners or deadlines. Metadata is context, not evidence
 that someone said or agreed to something. Never transfer a number from one source into
 claims attributed to the other. Numeric presence alone does not establish agreement.
+
+Before returning JSON, check each section for disputed values presented as settled and
+check each due field against the full spoken timing phrase. Preserve what remains
+unknown: do not expand an unspecified "it" into a document or turn "release" into a
+specific deployment action. Do not repeat action items in decisions unless a separate
+agreement was actually made. Use notes to guide emphasis without copying emphasis cues
+such as "focus on ..." into notes_context as if they were additional meeting facts.

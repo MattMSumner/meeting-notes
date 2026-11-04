@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1] / "evaluation" / "m10"
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--freeze", choices=("v1", "v2"), default="v1")
     parser.add_argument("--arm", choices=("baseline", "proposed"), required=True)
     parser.add_argument("--repetitions", type=int, required=True)
     parser.add_argument("--max-requests", type=int, required=True)
@@ -22,18 +23,19 @@ def main() -> None:
     args = parser.parse_args()
     if not args.run or args.repetitions < 1 or args.max_requests < 1:
         parser.error("Choose a positive repetition count and request budget, then pass --run.")
-    manifest = json.loads((ROOT / "sha256.json").read_text())
+    root = ROOT if args.freeze == "v1" else ROOT / args.freeze
+    manifest = json.loads((root / "sha256.json").read_text())
     for name, expected in manifest.items():
-        if hashlib.sha256((ROOT / name).read_bytes()).hexdigest() != expected:
+        if hashlib.sha256((root / name).read_bytes()).hexdigest() != expected:
             parser.error(f"Frozen material changed: {name}")
     # Import the frozen implementation, independently of the installed working tree.
-    sys.path.insert(0, str(ROOT / args.arm))
+    sys.path.insert(0, str(root / args.arm))
     from meeting_notes.meeting import Meeting
     from meeting_notes.ollama import OllamaSummarizer, http_post
     from meeting_notes.summary import SummaryError
 
-    settings = json.loads((ROOT / "settings.json").read_text())
-    pairs = json.loads((ROOT / "pairs.json").read_text())
+    settings = json.loads((root / "settings.json").read_text())
+    pairs = json.loads((root / "pairs.json").read_text())
     post = http_post("http://localhost:11434")
     requests = 0
 
@@ -49,6 +51,7 @@ def main() -> None:
         output.write(
             json.dumps(
                 {
+                    "freeze": args.freeze,
                     "arm": args.arm,
                     "repetitions": args.repetitions,
                     "max_requests": args.max_requests,
