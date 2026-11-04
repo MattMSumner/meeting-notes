@@ -657,6 +657,17 @@ Re-running transcription also leaves generation to the explicit enhancement acti
   have occurred. Choose a new inference budget before evaluation and check the new
   failure/review-warning behavior manually. V1/v2 failures remain recorded and unmodified.
 
+- **V3 stage-one evaluation (2026-11-04; not Built):** approved three repetitions with
+  a 234-request cap and first-pass quality gate. One repetition across 13 cases and both
+  arms used 38 requests (13 baseline, 25 proposed). Baseline published 13/13; proposed
+  published 5/13 and blocked 8/13 after correction, regressing commitment completeness.
+  Stopped at the agreed gate; no remaining repetitions or candidate tuning. Task/timing
+  text coupling and full-line note citations repeatedly prevent valid output; shared-number
+  and status-conflict handling succeed in their single published cases. All attempts and
+  [scores](evaluation/m10/v3/results/report.md) are preserved; freezes remain unchanged.
+  A revised candidate needs a new freeze/budget and new failure/review-warning manual
+  acceptance. M10 remains unbuilt.
+
 For both stages, run formatting, lint, strict types and unit tests before committing;
 run Swift tests only if capture code changes. Keep shipped model settings unchanged.
 Live transcription, in-place AI editing, custom Obsidian plugins and automatic tracking
