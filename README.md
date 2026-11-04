@@ -7,7 +7,8 @@ note and its transcript into an Obsidian vault. No audio, transcripts or summari
 the machine.
 
 Status: **M10 implementation**, explicit notes-guided enhancement.
-Quality evaluation and manual Obsidian acceptance are pending; M10 is not yet built. See [plan.md](plan.md)
+Quality evaluation has failed; M10 is not yet built. The original manual Obsidian workflow passed,
+but the new validation failure/review-warning workflow still needs acceptance. See [plan.md](plan.md)
 for the roadmap.
 
 ## Setup
@@ -148,7 +149,9 @@ is frozen in [evaluation/m10/v2/](evaluation/m10/v2/README.md). Its
 still failed conflicts and introduced unsupported task deadlines. M10 remains unbuilt.
 
 The [v3 candidate](evaluation/m10/v3/README.md) adds evidence references and validation.
-It has not been evaluated with models. The model proposes claims with exact source spans;
+Its [first-stage evaluation](evaluation/m10/v3/results/report.md) published only 5/13 summaries;
+eight cases remained blocked after correction. The staged run stopped after one repetition,
+using 38 requests across both arms. The model proposes claims with exact source spans;
 code checks references, compiles known conflicts into neutral core references, and keeps
 both full accounts under Conflicts. Automatic deadlines require a complete trailing timing
 phrase from the same statement as that task. Other timing exchanges are quoted in review

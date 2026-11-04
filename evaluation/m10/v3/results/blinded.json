@@ -1,0 +1,562 @@
+[
+  {
+    "id": "R01",
+    "case": "sparse",
+    "transcript": "[00:00:00] Sam: I will compare the two deployment options.\n[00:00:05] Them: Alex here. I will test recovery next week.\n[00:00:10] Sam: Monitoring costs 120 dollars. We have not chosen a deployment option.",
+    "handwritten_text": "Focus on deployment options.",
+    "summary": {
+      "overview": "We have not chosen a deployment option.",
+      "key_points": [
+        "Monitoring costs 120 dollars."
+      ],
+      "decisions": [
+        "I will compare the two deployment options.",
+        "I will test recovery"
+      ],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "I will compare the two deployment options.",
+          "due": null
+        },
+        {
+          "owner": "Them",
+          "task": "I will test recovery",
+          "due": "next week"
+        }
+      ],
+      "notes_context": [],
+      "conflicts": []
+    },
+    "error": null,
+    "warnings": []
+  },
+  {
+    "id": "R02",
+    "case": "empty",
+    "transcript": "[00:00:00] Sam: I will tag the release Friday.\n[00:00:05] Them: Alex here. I will check the rollback procedure.\n[00:00:10] Sam: Agreed, release Friday.",
+    "handwritten_text": "",
+    "summary": {
+      "overview": "The meeting reviewed the synthetic release schedule and confirmed the release date. Alex agreed to check the rollback procedure, and the team finalized the release tagging for Friday.",
+      "key_points": [
+        "Release tagging scheduled for Friday.",
+        "Alex will check the rollback procedure.",
+        "Team agreed to release on Friday."
+      ],
+      "decisions": [
+        "Release scheduled for Friday."
+      ],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "tag the release",
+          "due": "Friday"
+        },
+        {
+          "owner": "Alex",
+          "task": "check the rollback procedure",
+          "due": null
+        }
+      ]
+    },
+    "error": null,
+    "warnings": []
+  },
+  {
+    "id": "R03",
+    "case": "same_speaker_tasks",
+    "transcript": "[00:00:00] Sam: I will send the draft Friday. I will check rollback.",
+    "handwritten_text": "",
+    "summary": {
+      "overview": "The meeting was a brief synthetic release review where Sam outlined two action items. The discussion concluded with Sam committing to send a draft and check rollback by Friday.",
+      "key_points": [
+        "Sam will send the draft by Friday.",
+        "Sam will check rollback."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "Send draft",
+          "due": "Friday"
+        },
+        {
+          "owner": "Sam",
+          "task": "Check rollback",
+          "due": null
+        }
+      ]
+    },
+    "error": null,
+    "warnings": []
+  },
+  {
+    "id": "R04",
+    "case": "later_timing",
+    "transcript": "[00:00:00] Sam: I will check rollback.\n[00:00:05] Them: When?\n[00:00:07] Sam: Friday.",
+    "handwritten_text": "",
+    "summary": null,
+    "error": "Enhancement failed evidence validation: action_items.0: deadline must come from this task's commitment, not another passage",
+    "warnings": []
+  },
+  {
+    "id": "R05",
+    "case": "front_loaded_timing",
+    "transcript": "[00:00:00] Sam: Next Tuesday, I will send the draft.",
+    "handwritten_text": "",
+    "summary": null,
+    "error": "Enhancement failed evidence validation: action_items.0: task wording must be an exact phrase in its commitment; Deadline needs review for Sam will send the draft next Tuesday. Timing evidence (association unverified): Next Tuesday",
+    "warnings": []
+  },
+  {
+    "id": "R06",
+    "case": "status_conflict",
+    "transcript": "[00:00:00] Sam: I think the staging environment is ready. I will verify the health checks.",
+    "handwritten_text": "Staging is paused pending repairs.",
+    "summary": {
+      "overview": "Sources disagree; see Conflicts. verify the health checks",
+      "key_points": [
+        "Sources disagree; see Conflicts.",
+        "verify the health checks"
+      ],
+      "decisions": [
+        "verify the health checks"
+      ],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "verify the health checks",
+          "due": null
+        }
+      ],
+      "notes_context": [],
+      "conflicts": [
+        {
+          "topic": "staging environment status",
+          "transcript": "I think the staging environment is ready.",
+          "handwritten": "Staging is paused pending repairs."
+        }
+      ]
+    },
+    "error": null,
+    "warnings": []
+  },
+  {
+    "id": "R07",
+    "case": "revised_timing",
+    "transcript": "[00:00:00] Sam: I will send the draft Friday.\n[00:00:05] Sam: Actually, Monday instead. I mean the draft.",
+    "handwritten_text": "",
+    "summary": {
+      "overview": "Sam corrected the timeline for sending the draft from Friday to Monday. The meeting concluded with this updated deadline for the draft submission.",
+      "key_points": [
+        "Sam changed the draft submission date from Friday to Monday."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "Send draft on Monday",
+          "due": "Monday"
+        }
+      ]
+    },
+    "error": null,
+    "warnings": []
+  },
+  {
+    "id": "R08",
+    "case": "status_conflict",
+    "transcript": "[00:00:00] Sam: I think the staging environment is ready. I will verify the health checks.",
+    "handwritten_text": "",
+    "summary": {
+      "overview": "The meeting discussed the readiness of the staging environment for the synthetic release. Sam confirmed the environment is ready and will verify health checks next.",
+      "key_points": [
+        "The staging environment is ready for the synthetic release."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "verify health checks",
+          "due": null
+        }
+      ]
+    },
+    "error": null,
+    "warnings": []
+  },
+  {
+    "id": "R09",
+    "case": "empty",
+    "transcript": "[00:00:00] Sam: I will tag the release Friday.\n[00:00:05] Them: Alex here. I will check the rollback procedure.\n[00:00:10] Sam: Agreed, release Friday.",
+    "handwritten_text": "",
+    "summary": null,
+    "error": "Enhancement failed evidence validation: action_items.0: cite the complete trailing timing phrase after the task",
+    "warnings": []
+  },
+  {
+    "id": "R10",
+    "case": "additional",
+    "transcript": "[00:00:00] Sam: I will send the draft Friday.\n[00:00:05] Them: Alex here. I will review it next week.",
+    "handwritten_text": "",
+    "summary": {
+      "overview": "The synthetic release review meeting focused on the draft timeline. Sam agreed to send the draft on Friday. Alex agreed to review it next week.",
+      "key_points": [
+        "Sam will send the draft on Friday.",
+        "Alex will review the draft next week."
+      ],
+      "decisions": [
+        "Sam will send the draft on Friday.",
+        "Alex will review the draft next week."
+      ],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "send the draft",
+          "due": "Friday"
+        },
+        {
+          "owner": "Alex",
+          "task": "review the draft",
+          "due": "next week"
+        }
+      ]
+    },
+    "error": null,
+    "warnings": []
+  },
+  {
+    "id": "R11",
+    "case": "shared_numbers",
+    "transcript": "[00:00:00] Sam: Monitoring costs 120 dollars. Support costs 120 dollars too. I will check the monitoring invoice.",
+    "handwritten_text": "Support quote: 150 dollars.",
+    "summary": {
+      "overview": "Monitoring costs 120 dollars. Sources disagree; see Conflicts.",
+      "key_points": [
+        "Monitoring costs 120 dollars.",
+        "Sources disagree; see Conflicts."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "I will check the monitoring invoice.",
+          "due": null
+        }
+      ],
+      "notes_context": [],
+      "conflicts": [
+        {
+          "topic": "Support cost discrepancy",
+          "transcript": "Support costs 120 dollars too.",
+          "handwritten": "Support quote: 150 dollars."
+        }
+      ]
+    },
+    "error": null,
+    "warnings": []
+  },
+  {
+    "id": "R12",
+    "case": "additional",
+    "transcript": "[00:00:00] Sam: I will send the draft Friday.\n[00:00:05] Them: Alex here. I will review it next week.",
+    "handwritten_text": "Personal context: the internal workshop has 40 seats.\nTask for myself: ask the venue about access.",
+    "summary": null,
+    "error": "Enhancement failed evidence validation: action_items.0: cite the complete trailing timing phrase after the task; action_items.1: cite the complete trailing timing phrase after the task",
+    "warnings": []
+  },
+  {
+    "id": "R13",
+    "case": "tentative_task",
+    "transcript": "[00:00:00] Sam: Maybe I could check rollback. I am not committing to it yet.\n[00:00:05] Them: Alex here. I will send the checklist tomorrow.",
+    "handwritten_text": "",
+    "summary": null,
+    "error": "Enhancement failed evidence validation: action_items.0: cite the complete trailing timing phrase after the task",
+    "warnings": []
+  },
+  {
+    "id": "R14",
+    "case": "coordinated_tasks",
+    "transcript": "[00:00:00] Sam: I will send the draft Friday and check rollback.",
+    "handwritten_text": "",
+    "summary": null,
+    "error": "Enhancement failed evidence validation: action_items.0: commitment must cite a complete transcript statement; action_items.0: coordinated commitment is ambiguous; review task/timing association; action_items.0: cite the complete trailing timing phrase after the task; action_items.1: commitment must cite a complete transcript statement; Timing needs review for check rollback: no deadline was assigned. Source statement: I will send the draft Friday and check rollback.",
+    "warnings": []
+  },
+  {
+    "id": "R15",
+    "case": "ambiguous_dates",
+    "transcript": "[00:00:00] Sam: I will send it next Friday, or the Friday after if review slips.\n[00:00:05] Them: Alex here. Maybe we can launch in spring.\n[00:00:10] Sam: No launch decision yet.",
+    "handwritten_text": "",
+    "summary": {
+      "overview": "The meeting was a synthetic release review. Sam committed to sending the review document next Friday or the following Friday if the review slips, and no launch decision was made.",
+      "key_points": [
+        "Sam will send the review document next Friday or the Friday after if the review slips.",
+        "Alex suggested a spring launch, but Sam stated no launch decision has been made."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "send it next Friday, or the Friday after if review slips",
+          "due": "next Friday"
+        }
+      ]
+    },
+    "error": null,
+    "warnings": []
+  },
+  {
+    "id": "R16",
+    "case": "front_loaded_timing",
+    "transcript": "[00:00:00] Sam: Next Tuesday, I will send the draft.",
+    "handwritten_text": "",
+    "summary": {
+      "overview": "The meeting was a brief synthetic release review where Sam confirmed sending a draft next Tuesday. No other topics were discussed as the transcript is very short.",
+      "key_points": [
+        "Sam will send the draft next Tuesday."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "Send draft",
+          "due": "next Tuesday"
+        }
+      ]
+    },
+    "error": null,
+    "warnings": []
+  },
+  {
+    "id": "R17",
+    "case": "same_speaker_tasks",
+    "transcript": "[00:00:00] Sam: I will send the draft Friday. I will check rollback.",
+    "handwritten_text": "",
+    "summary": {
+      "overview": "I will send the draft I will check rollback",
+      "key_points": [
+        "I will send the draft",
+        "I will check rollback"
+      ],
+      "decisions": [
+        "I will send the draft",
+        "I will check rollback"
+      ],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "I will send the draft",
+          "due": "Friday"
+        },
+        {
+          "owner": "Sam",
+          "task": "I will check rollback",
+          "due": null
+        }
+      ],
+      "notes_context": [],
+      "conflicts": []
+    },
+    "error": null,
+    "warnings": []
+  },
+  {
+    "id": "R18",
+    "case": "tentative_task",
+    "transcript": "[00:00:00] Sam: Maybe I could check rollback. I am not committing to it yet.\n[00:00:05] Them: Alex here. I will send the checklist tomorrow.",
+    "handwritten_text": "",
+    "summary": {
+      "overview": "The synthetic release review meeting discussed a potential rollback check and a checklist. Sam indicated he would not commit to checking rollback, while Alex agreed to send the checklist the following day.",
+      "key_points": [
+        "Sam considered checking rollback but did not commit to it.",
+        "Alex agreed to send the checklist tomorrow."
+      ],
+      "decisions": [
+        "Alex will send the checklist tomorrow."
+      ],
+      "action_items": [
+        {
+          "owner": "Alex",
+          "task": "Send the checklist",
+          "due": "tomorrow"
+        }
+      ]
+    },
+    "error": null,
+    "warnings": []
+  },
+  {
+    "id": "R19",
+    "case": "ambiguous_dates",
+    "transcript": "[00:00:00] Sam: I will send it next Friday, or the Friday after if review slips.\n[00:00:05] Them: Alex here. Maybe we can launch in spring.\n[00:00:10] Sam: No launch decision yet.",
+    "handwritten_text": "Follow up after the holiday. Maybe ask Casey to help.",
+    "summary": {
+      "overview": "I will send it Consider launching in spring. No launch decision made yet.",
+      "key_points": [
+        "I will send it",
+        "Consider launching in spring.",
+        "No launch decision made yet."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "I will send it",
+          "due": "next Friday, or the Friday after if review slips."
+        }
+      ],
+      "notes_context": [
+        "Follow up after the holiday. Maybe ask Casey to help."
+      ],
+      "conflicts": []
+    },
+    "error": null,
+    "warnings": []
+  },
+  {
+    "id": "R20",
+    "case": "conflicting",
+    "transcript": "[00:00:00] Sam: The current estimate is 120 thousand dollars.\n[00:00:05] Them: Alex here. I think delivery is in June.\n[00:00:10] Sam: I will verify the estimate. We have not approved the budget.",
+    "handwritten_text": "Estimate: 150 thousand dollars. Delivery: July.",
+    "summary": null,
+    "error": "Enhancement failed evidence validation: conflict: claim_estimate_notes must quote the complete source statement; conflict: claim_delivery_notes must quote the complete source statement",
+    "warnings": []
+  },
+  {
+    "id": "R21",
+    "case": "later_timing",
+    "transcript": "[00:00:00] Sam: I will check rollback.\n[00:00:05] Them: When?\n[00:00:07] Sam: Friday.",
+    "handwritten_text": "",
+    "summary": {
+      "overview": "The Synthetic release review meeting discussed the timing for checking the rollback. Sam committed to checking the rollback on Friday, which was the main topic of the meeting.",
+      "key_points": [
+        "Sam committed to checking the rollback on Friday."
+      ],
+      "decisions": [
+        "Sam will check the rollback on Friday."
+      ],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "check rollback",
+          "due": "Friday"
+        }
+      ]
+    },
+    "error": null,
+    "warnings": []
+  },
+  {
+    "id": "R22",
+    "case": "sparse",
+    "transcript": "[00:00:00] Sam: I will compare the two deployment options.\n[00:00:05] Them: Alex here. I will test recovery next week.\n[00:00:10] Sam: Monitoring costs 120 dollars. We have not chosen a deployment option.",
+    "handwritten_text": "",
+    "summary": {
+      "overview": "The Synthetic release review meeting discussed deployment options and monitoring costs, with the team still undecided on a deployment option. Alex committed to testing recovery next week.",
+      "key_points": [
+        "Deployment option not chosen.",
+        "Monitoring costs $120."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "Compare the two deployment options",
+          "due": null
+        },
+        {
+          "owner": "Alex",
+          "task": "Test recovery",
+          "due": "next week"
+        }
+      ]
+    },
+    "error": null,
+    "warnings": []
+  },
+  {
+    "id": "R23",
+    "case": "shared_numbers",
+    "transcript": "[00:00:00] Sam: Monitoring costs 120 dollars. Support costs 120 dollars too. I will check the monitoring invoice.",
+    "handwritten_text": "",
+    "summary": {
+      "overview": "The meeting reviewed synthetic release costs, focusing on monitoring and support expenses. Sam noted both costs at $120 each and committed to verifying the monitoring invoice.",
+      "key_points": [
+        "Monitoring costs $120, support costs $120.",
+        "Sam will verify the monitoring invoice."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "Check monitoring invoice",
+          "due": null
+        }
+      ]
+    },
+    "error": null,
+    "warnings": []
+  },
+  {
+    "id": "R24",
+    "case": "revised_timing",
+    "transcript": "[00:00:00] Sam: I will send the draft Friday.\n[00:00:05] Sam: Actually, Monday instead. I mean the draft.",
+    "handwritten_text": "",
+    "summary": null,
+    "error": "Enhancement failed evidence validation: action_items.0: cite the complete trailing timing phrase after the task",
+    "warnings": []
+  },
+  {
+    "id": "R25",
+    "case": "conflicting",
+    "transcript": "[00:00:00] Sam: The current estimate is 120 thousand dollars.\n[00:00:05] Them: Alex here. I think delivery is in June.\n[00:00:10] Sam: I will verify the estimate. We have not approved the budget.",
+    "handwritten_text": "",
+    "summary": {
+      "overview": "The meeting reviewed the synthetic release budget estimate and delivery timeline. The budget estimate of $120,000 has not been approved, and Sam will verify it; Alex stated delivery is expected in June.",
+      "key_points": [
+        "The budget estimate for the synthetic release is $120,000 and has not been approved.",
+        "Alex mentioned delivery is expected in June.",
+        "Sam will verify the budget estimate."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "verify the estimate",
+          "due": null
+        }
+      ]
+    },
+    "error": null,
+    "warnings": []
+  },
+  {
+    "id": "R26",
+    "case": "coordinated_tasks",
+    "transcript": "[00:00:00] Sam: I will send the draft Friday and check rollback.",
+    "handwritten_text": "",
+    "summary": {
+      "overview": "The Synthetic release review meeting focused on finalizing the release process. Sam committed to sending the draft by Friday and checking rollback procedures.",
+      "key_points": [
+        "Sam will send the draft on Friday.",
+        "Sam will check rollback procedures."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "Send draft",
+          "due": "Friday"
+        },
+        {
+          "owner": "Sam",
+          "task": "Check rollback",
+          "due": null
+        }
+      ]
+    },
+    "error": null,
+    "warnings": []
+  }
+]
