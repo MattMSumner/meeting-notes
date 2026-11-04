@@ -629,6 +629,14 @@ Re-running transcription also leaves generation to the explicit enhancement acti
   scores: [evaluation report](evaluation/m10/results/report.md). Quality acceptance failed;
   fixes require a new freeze and agreed rerun. No Built note or merge yet.
 
+- **Revision (2026-11-04; not Built):** revised prompt and schema descriptions require
+  unresolved conflict references in core sections and complete conditional due phrases.
+  Added request-contract and saved-render regression checks. The original scored freeze
+  is unchanged; `evaluation/m10/v2/` freezes the candidate with the same five pairs,
+  baseline, settings and rubric. Versioned runner selection is available. No v2 inference
+  has run; its rerun budget requires separate agreement. Quality acceptance remains failed
+  for v1 and pending for v2; manual workflow acceptance was previously reported complete.
+
 For both stages, run formatting, lint, strict types and unit tests before committing;
 run Swift tests only if capture code changes. Keep shipped model settings unchanged.
 Live transcription, in-place AI editing, custom Obsidian plugins and automatic tracking
