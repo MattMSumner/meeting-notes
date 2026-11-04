@@ -681,6 +681,18 @@ Re-running transcription also leaves generation to the explicit enhancement acti
   the run, corrections/observability limits and per-repetition assessment. No further
   prompt changes or inference were performed; any next candidate needs a new freeze.
 
+- **Evidence-backed candidate (2026-11-04; not Built):** shared claim IDs and exact source
+  spans replace freely repeated model prose. Code controls known-conflict placement,
+  checks task-local timing and spoken owner evidence, and retains uncertain timing in
+  review warnings. Blocking failures get one shared correction attempt, then preserve
+  the prior result. Requests, replies, validation findings and selection are saved with
+  successful generation or separately for failures; legacy wrappers still load.
+  V3 freezes 13 synthetic cases (five unchanged, eight new) with the same baseline,
+  model/settings and six-dimension rubric. Unit tests cover structural checks and saved
+  audit rendering; they do not establish entailment or completeness. No v3 model runs
+  have occurred. Choose a new inference budget before evaluation and check the new
+  failure/review-warning behavior manually. V1/v2 failures remain recorded and unmodified.
+
 For both stages, run formatting, lint, strict types and unit tests before committing;
 run Swift tests only if capture code changes. Keep shipped model settings unchanged.
 Live transcription, in-place AI editing, custom Obsidian plugins and automatic tracking
