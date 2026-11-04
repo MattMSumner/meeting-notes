@@ -422,10 +422,13 @@ def test_conflicts_render_both_accounts_and_empty_sections_are_omitted(h: Harnes
     assert "## From your notes" not in path.read_text()
 
 
-def test_frozen_evaluation_materials_match_manifest_without_inference():
+@pytest.mark.parametrize("freeze", ["v1", "v2"])
+def test_frozen_evaluation_materials_match_manifest_without_inference(freeze: str):
     import hashlib
 
     root = Path(__file__).resolve().parents[1] / "evaluation" / "m10"
+    if freeze == "v2":
+        root /= "v2"
     manifest: dict[str, str] = json.loads((root / "sha256.json").read_text())
     for name, expected in manifest.items():
         assert hashlib.sha256((root / name).read_bytes()).hexdigest() == expected, name
@@ -437,3 +440,56 @@ def test_frozen_evaluation_materials_match_manifest_without_inference():
         "conflicting",
         "ambiguous_dates",
     }
+
+
+def test_full_deadline_and_dispute_qualification_survive_saved_render(h: Harness):
+    from test_ollama import FakeOllama
+
+    from meeting_notes.ollama import OllamaSummarizer
+
+    directory = h.ready()
+    directory.save_segments(
+        "me",
+        [
+            Segment(
+                0,
+                5,
+                "The estimate is 80 thousand. I will verify it Tuesday, "
+                "or Thursday if approval slips.",
+            )
+        ],
+    )
+    path = directory.path / "writing.md"
+    path.write_text("Estimate: 95 thousand.\n")
+    directory.save_handwritten_path(path)
+    reply = {
+        "overview": "The estimate is disputed; see Conflicts. Sam will verify it.",
+        "key_points": ["The sources disagree about the estimate; see Conflicts."],
+        "decisions": [],
+        "action_items": [
+            {
+                "owner": "Sam",
+                "task": "Verify the estimate",
+                "due": "Tuesday, or Thursday if approval slips",
+            }
+        ],
+        "conflicts": [
+            {"topic": "Estimate", "transcript": "80 thousand", "handwritten": "95 thousand"}
+        ],
+        "notes_context": [],
+    }
+    api = FakeOllama(json.dumps(reply))
+    model = OllamaSummarizer("qwen3:30b", 32768, api, "Sam")
+    pipeline.summarize(directory, pipeline.conversation(directory), model, "Sam")
+    path.unlink()
+    assert h.run("render", directory.id) == 0
+    saved = directory.load_summary()
+    assert saved is not None
+    assert saved.action_items[0].due == "Tuesday, or Thursday if approval slips"
+    body = (h.config.notes_dir / f"{directory.load_meeting().note_stem}.md").read_text()
+    assert "(due Tuesday, or Thursday if approval slips)" in body
+    core, conflict = body.split("## Conflicts")
+    assert "80 thousand" not in core and "95 thousand" not in core
+    assert "Transcript: 80 thousand Handwritten notes: 95 thousand" in conflict
+    assert "Check number" not in body
+    assert len(api.requests) == 1

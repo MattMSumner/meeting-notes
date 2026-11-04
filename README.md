@@ -139,4 +139,8 @@ uv run ruff check . && uv run ruff format --check .
 ```
 
 The frozen M10 comparison and manual rubric are in [evaluation/m10/README.md](evaluation/m10/README.md).
-No inference has been run for M10; select a budget and repetitions before evaluation.
+The [v1 scored report](evaluation/m10/results/report.md) preserves the completed comparison.
+Agree on a budget and repetitions before running a new freeze.
+
+The first frozen comparison failed conflict qualification. A revised prompt/schema candidate
+is frozen in [evaluation/m10/v2/](evaluation/m10/v2/README.md); its quality rerun is pending.
