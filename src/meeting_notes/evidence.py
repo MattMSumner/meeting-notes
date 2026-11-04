@@ -2,8 +2,10 @@
 
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, model_validator
 
+from meeting_notes.audit import Audit
+from meeting_notes.grounding import Draft, passages, validate
 from meeting_notes.meeting import Meeting
 from meeting_notes.summary import Summary, SummaryError
 
@@ -26,9 +28,33 @@ class Evidence(BaseModel):
 class Generation(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    version: Literal[1] = 1
+    version: Literal[1, 2] = 1
     summary: Summary
     evidence: Evidence
+    audit: Audit | None = None
+
+    @model_validator(mode="after")
+    def check_audit(self) -> "Generation":
+        if self.version == 1:
+            if self.audit is not None:
+                raise ValueError("A generation audit requires wrapper version 2")
+            return self
+        audit = self.audit
+        if audit is None or audit.selected is None:
+            raise ValueError("Version 2 requires a selected, validated attempt")
+        if not 0 <= audit.selected < len(audit.attempts):
+            raise ValueError("Selected attempt is out of range")
+        if audit.passages != passages(self.evidence.transcript, self.evidence.handwritten_text):
+            raise ValueError("Saved passages differ from the saved evidence")
+        attempt = audit.attempts[audit.selected]
+        if attempt.error or attempt.blocking or attempt.reply is None:
+            raise ValueError("Selected attempt was not publishable")
+        checked = validate(
+            Draft.model_validate_json(attempt.reply), audit.passages, self.evidence.context
+        )
+        if checked.summary != self.summary or checked.warnings != attempt.warnings:
+            raise ValueError("Saved summary does not match its validated draft")
+        return self
 
 
 def snapshot(meeting: Meeting, transcript: str) -> Evidence:

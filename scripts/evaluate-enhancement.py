@@ -5,6 +5,7 @@ import argparse
 import hashlib
 import json
 import sys
+from copy import deepcopy
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -14,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[1] / "evaluation" / "m10"
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--freeze", choices=("v1", "v2"), default="v1")
+    parser.add_argument("--freeze", choices=("v1", "v2", "v3"), default="v1")
     parser.add_argument("--arm", choices=("baseline", "proposed"), required=True)
     parser.add_argument("--repetitions", type=int, required=True)
     parser.add_argument("--max-requests", type=int, required=True)
@@ -38,13 +39,22 @@ def main() -> None:
     pairs = json.loads((root / "pairs.json").read_text())
     post = http_post("http://localhost:11434")
     requests = 0
+    trace: list[dict[str, Any]] = []
 
     def bounded_post(path: str, body: dict[str, Any]) -> dict[str, Any]:
         nonlocal requests
         if requests >= args.max_requests:
             raise SummaryError("Chosen request budget exhausted")
         requests += 1
-        return post(path, body)
+        attempt: dict[str, Any] = {"request": deepcopy(body), "request_number": requests}
+        trace.append(attempt)
+        try:
+            response = post(path, body)
+        except SummaryError as error:
+            attempt["error"] = str(error)
+            raise
+        attempt["response"] = response
+        return response
 
     # Exclusive creation prevents replacing previous evaluation evidence.
     with args.output.open("x", encoding="utf-8") as output:
@@ -65,6 +75,7 @@ def main() -> None:
             for pair in pairs:
                 if requests >= args.max_requests:
                     return
+                trace = []
                 context = pair["meeting"]
                 meeting = Meeting.new(
                     context["title"],
@@ -89,6 +100,10 @@ def main() -> None:
                     result["summary"] = summary.model_dump()
                 except SummaryError as error:
                     result["error"] = str(error)
+                audit = getattr(model, "audit", None)
+                if audit is not None:
+                    result["audit"] = audit.model_dump()
+                result["transport"] = trace
                 result["requests_so_far"] = requests
                 output.write(json.dumps(result) + "\n")
                 output.flush()

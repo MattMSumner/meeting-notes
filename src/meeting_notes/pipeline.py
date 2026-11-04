@@ -4,6 +4,7 @@ from collections.abc import Sequence
 from dataclasses import dataclass
 from pathlib import Path
 
+from meeting_notes.audit import AuditedSummarizer
 from meeting_notes.config import Config
 from meeting_notes.evidence import Generation, snapshot
 from meeting_notes.figures import evidence_issues, unsaid_numbers
@@ -109,10 +110,21 @@ def summarize(
         raise SummaryError("No speech was detected. Your writing is unchanged; nothing to enhance.")
     meeting = meeting_dir.load_meeting()
     evidence = snapshot(meeting, transcript_text(talk.lines, my_name))
-    result = summarizer.summarize(
-        meeting, evidence.transcript, handwritten_text=evidence.handwritten_text
-    )
-    meeting_dir.save_summary(result, evidence)
+    try:
+        result = summarizer.summarize(
+            meeting, evidence.transcript, handwritten_text=evidence.handwritten_text
+        )
+    except SummaryError as error:
+        if isinstance(summarizer, AuditedSummarizer):
+            raise SummaryError(
+                f"{error} Draft diagnostics: {meeting_dir.path / 'attempts'}"
+            ) from error
+        raise
+    finally:
+        if isinstance(summarizer, AuditedSummarizer):
+            meeting_dir.save_attempt(evidence, summarizer.audit)
+    audit = summarizer.audit if isinstance(summarizer, AuditedSummarizer) else None
+    meeting_dir.save_summary(result, evidence, audit)
 
 
 @dataclass(frozen=True)
@@ -136,7 +148,10 @@ def render(meeting_dir: MeetingDir, talk: Conversation, config: Config) -> Rende
         summary = None
         saved = None
         note_warnings.append(f"{error}. To write a new one: `notes enhance {meeting_dir.id}`")
-    if isinstance(saved, Generation):
+    if isinstance(saved, Generation) and saved.audit is not None:
+        if saved.audit.selected is not None:
+            note_warnings.extend(saved.audit.attempts[saved.audit.selected].warnings)
+    elif isinstance(saved, Generation):
         evidence = saved.evidence
         issues = evidence_issues(
             saved.summary, evidence.transcript, evidence.handwritten_text, evidence.context

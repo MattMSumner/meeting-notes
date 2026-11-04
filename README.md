@@ -146,3 +146,20 @@ The first frozen comparison failed conflict qualification. A revised prompt/sche
 is frozen in [evaluation/m10/v2/](evaluation/m10/v2/README.md). Its
 [scored rerun](evaluation/m10/v2/results/report.md) improved conditional due phrasing but
 still failed conflicts and introduced unsupported task deadlines. M10 remains unbuilt.
+
+The [v3 candidate](evaluation/m10/v3/README.md) adds evidence references and validation.
+It has not been evaluated with models. The model proposes claims with exact source spans;
+code checks references, compiles known conflicts into neutral core references, and keeps
+both full accounts under Conflicts. Automatic deadlines require a complete trailing timing
+phrase from the same statement as that task. Other timing exchanges are quoted in review
+warnings without assigning a deadline. These conservative checks may withhold valid timing;
+real citations still do not prove correct meaning or detect every omitted conflict.
+
+Format and evidence failures share one correction request. Unresolved blocking errors
+leave the previous successful summary/evidence untouched. Drafts, requests, replies and
+validation findings are saved locally under the meeting's `attempts/` folder. The selected
+attempt and saved passages also accompany successful results in summary wrapper version 2.
+Older summaries and version 1 wrappers remain readable. Abrupt process termination can
+prevent the current audit from being finalized; it does not automatically retry generation.
+Numeric warnings now use each claim's cited spans and remain visible from the saved audit.
+The evaluator records every sent request/reply as well as the selected validation attempt.

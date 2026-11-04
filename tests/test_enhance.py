@@ -422,18 +422,18 @@ def test_conflicts_render_both_accounts_and_empty_sections_are_omitted(h: Harnes
     assert "## From your notes" not in path.read_text()
 
 
-@pytest.mark.parametrize("freeze", ["v1", "v2"])
+@pytest.mark.parametrize("freeze", ["v1", "v2", "v3"])
 def test_frozen_evaluation_materials_match_manifest_without_inference(freeze: str):
     import hashlib
 
     root = Path(__file__).resolve().parents[1] / "evaluation" / "m10"
-    if freeze == "v2":
-        root /= "v2"
+    if freeze != "v1":
+        root /= freeze
     manifest: dict[str, str] = json.loads((root / "sha256.json").read_text())
     for name, expected in manifest.items():
         assert hashlib.sha256((root / name).read_bytes()).hexdigest() == expected, name
     pairs: list[dict[str, object]] = json.loads((root / "pairs.json").read_text())
-    assert {pair["id"] for pair in pairs} == {
+    assert {pair["id"] for pair in pairs[:5]} == {
         "empty",
         "sparse",
         "additional",
@@ -462,23 +462,36 @@ def test_full_deadline_and_dispute_qualification_survive_saved_render(h: Harness
     path = directory.path / "writing.md"
     path.write_text("Estimate: 95 thousand.\n")
     directory.save_handwritten_path(path)
-    reply = {
-        "overview": "The estimate is disputed; see Conflicts. Sam will verify it.",
-        "key_points": ["The sources disagree about the estimate; see Conflicts."],
-        "decisions": [],
-        "action_items": [
-            {
-                "owner": "Sam",
-                "task": "Verify the estimate",
-                "due": "Tuesday, or Thursday if approval slips",
-            }
+    from meeting_notes.grounding import Claim, Dispute, Draft, Span, Task
+
+    spoken = Span(passage="T1", quote="The estimate is 80 thousand.")
+    written = Span(passage="N1", quote="Estimate: 95 thousand.")
+    commitment = Span(
+        passage="T2", quote="I will verify it Tuesday, or Thursday if approval slips."
+    )
+    reply = Draft(
+        claims=[
+            Claim(id="spoken", text="Estimate 80 thousand", evidence=[spoken]),
+            Claim(id="written", text="Estimate 95 thousand", evidence=[written]),
+            Claim(id="task", text="Verify it", evidence=[commitment]),
         ],
-        "conflicts": [
-            {"topic": "Estimate", "transcript": "80 thousand", "handwritten": "95 thousand"}
+        overview=["spoken"],
+        key_points=["spoken"],
+        decisions=[],
+        notes_context=["written"],
+        action_items=[
+            Task(
+                claim="task",
+                owner="Sam",
+                owner_evidence=None,
+                commitment=commitment,
+                timing=Span(passage="T2", quote="Tuesday, or Thursday if approval slips"),
+                timing_link=[],
+            )
         ],
-        "notes_context": [],
-    }
-    api = FakeOllama(json.dumps(reply))
+        conflicts=[Dispute(topic="Estimate", transcript_claim="spoken", notes_claim="written")],
+    )
+    api = FakeOllama(reply.model_dump_json())
     model = OllamaSummarizer("qwen3:30b", 32768, api, "Sam")
     pipeline.summarize(directory, pipeline.conversation(directory), model, "Sam")
     path.unlink()
@@ -490,6 +503,107 @@ def test_full_deadline_and_dispute_qualification_survive_saved_render(h: Harness
     assert "(due Tuesday, or Thursday if approval slips)" in body
     core, conflict = body.split("## Conflicts")
     assert "80 thousand" not in core and "95 thousand" not in core
-    assert "Transcript: 80 thousand Handwritten notes: 95 thousand" in conflict
+    assert (
+        "Transcript: The estimate is 80 thousand. Handwritten notes: Estimate: 95 thousand."
+        in conflict
+    )
     assert "Check number" not in body
     assert len(api.requests) == 1
+
+
+def test_failed_grounding_saves_diagnostics_and_preserves_previous_result(h: Harness):
+    from test_ollama import FakeOllama, reply
+
+    from meeting_notes.ollama import OllamaSummarizer
+
+    directory = h.ready()
+    directory.save_summary(SUMMARY)
+    before = directory.summary_file.read_bytes()
+    model = OllamaSummarizer(
+        "fake", 32768, FakeOllama(reply(quote="absent"), reply(passage="absent")), "Sam"
+    )
+    with pytest.raises(SummaryError, match="evidence validation"):
+        pipeline.summarize(directory, pipeline.conversation(directory), model, "Sam")
+    assert directory.summary_file.read_bytes() == before
+    [attempt] = list((directory.path / "attempts").glob("*.json"))
+    data = json.loads(attempt.read_text())
+    assert data["audit"]["selected"] is None
+    assert len(data["audit"]["attempts"]) == 2
+    assert data["evidence"]["transcript"].startswith("[00:00:00] Sam:")
+    assert all(a["blocking"] and a["reply"] for a in data["audit"]["attempts"])
+
+
+def test_audited_warnings_survive_render_and_source_deletion(h: Harness):
+    from test_ollama import FakeOllama, reply
+
+    from meeting_notes.ollama import OllamaSummarizer
+
+    directory = h.ready()
+    bad_number = reply("Cost 777 dollars", "Ship Friday for 120 dollars.")
+    model = OllamaSummarizer("fake", 32768, FakeOllama(bad_number, "not json"), "Sam")
+    pipeline.summarize(directory, pipeline.conversation(directory), model, "Sam")
+    saved = directory.load_generation()
+    assert isinstance(saved, Generation) and saved.version == 2 and saved.audit is not None
+    assert saved.audit.selected == 0
+    assert h.run("render", directory.id) == 0
+    note = h.config.notes_dir / f"{directory.load_meeting().note_stem}.md"
+    assert "numbers absent from cited evidence: 777" in note.read_text()
+    # The selected draft cannot be swapped for a different stored summary.
+    data = json.loads(directory.summary_file.read_text())
+    data["summary"]["overview"] = "Silently changed"
+    directory.summary_file.write_text(json.dumps(data))
+    with pytest.raises(SummaryError, match="does not match"):
+        directory.load_generation()
+
+
+@pytest.mark.parametrize("change", ["missing", "index", "passages", "blocked"])
+def test_malformed_v2_audit_never_falls_back_to_live_inputs(h: Harness, change: str):
+    from test_ollama import FakeOllama, reply
+
+    from meeting_notes.ollama import OllamaSummarizer
+
+    directory = h.ready()
+    model = OllamaSummarizer(
+        "fake", 32768, FakeOllama(reply("Spoken commitment", "Ship Friday for 120 dollars.")), "Sam"
+    )
+    pipeline.summarize(directory, pipeline.conversation(directory), model, "Sam")
+    data = json.loads(directory.summary_file.read_text())
+    if change == "missing":
+        del data["audit"]
+    elif change == "index":
+        data["audit"]["selected"] = -1
+    elif change == "passages":
+        data["audit"]["passages"][0]["text"] = "changed"
+    else:
+        data["audit"]["attempts"][0]["blocking"] = ["unresolved error"]
+    directory.summary_file.write_text(json.dumps(data))
+    with pytest.raises(SummaryError):
+        directory.load_generation()
+
+
+def test_failed_audit_save_prevents_publication_and_preserves_old_generation(
+    h: Harness,
+    monkeypatch: pytest.MonkeyPatch,
+):
+    from test_ollama import FakeOllama, reply
+
+    from meeting_notes.ollama import OllamaSummarizer
+
+    directory = h.ready()
+    directory.save_summary(SUMMARY)
+    before = directory.summary_file.read_bytes()
+    original = Path.replace
+
+    def fail(self: Path, target: str | Path) -> Path:
+        if self.parent.name == "attempts":
+            raise OSError("synthetic audit save failure")
+        return original(self, target)
+
+    monkeypatch.setattr(Path, "replace", fail)
+    model = OllamaSummarizer(
+        "fake", 32768, FakeOllama(reply("Spoken", "Ship Friday for 120 dollars.")), "Sam"
+    )
+    with pytest.raises(OSError, match="audit save failure"):
+        pipeline.summarize(directory, pipeline.conversation(directory), model, "Sam")
+    assert directory.summary_file.read_bytes() == before
+    assert list((directory.path / "attempts").iterdir()) == []
