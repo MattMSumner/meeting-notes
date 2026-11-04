@@ -163,4 +163,6 @@ The [v1 scored report](evaluation/m10/results/report.md) preserves the completed
 Agree on a budget and repetitions before running a new freeze.
 
 The first frozen comparison failed conflict qualification. A revised prompt/schema candidate
-is frozen in [evaluation/m10/v2/](evaluation/m10/v2/README.md); its quality rerun is pending.
+is frozen in [evaluation/m10/v2/](evaluation/m10/v2/README.md). Its
+[scored rerun](evaluation/m10/v2/results/report.md) improved conditional due phrasing but
+still failed conflicts and introduced unsupported task deadlines. M10 remains unbuilt.
