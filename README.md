@@ -167,10 +167,17 @@ The run used 36 requests across both arms. Quality acceptance failed; compilatio
 review warnings alone do not establish useful or complete output. New saves use wrapper version 3; existing version-2 saves retain their original
 validation rules.
 
+The [V5 candidate](evaluation/m10/v5/README.md) binds source-ID enums into each request,
+uses an explicit source for timing quotes, ignores redundant self-context, and neutralizes
+redundant known-conflict prose before source-kind rejection. Unassigned timing evidence
+survives in review when action prose is suppressed. Unknown or unrelated wrong-source
+references still fail. V5 has only offline replay and unit verification; no model run.
+New saves use wrapper version 4, while prior versions retain their original validators.
+
 Format and evidence failures share one correction request. Unresolved blocking errors
 leave the previous successful summary/evidence untouched. Drafts, requests, replies and
 validation findings are saved locally under the meeting's `attempts/` folder. The selected
-attempt and saved passages also accompany new successful results in summary wrapper version 3.
+attempt and saved passages also accompany new successful results in summary wrapper version 4.
 Older summaries and version 1 wrappers remain readable. Abrupt process termination can
 prevent the current audit from being finalized; it does not automatically retry generation.
 Numeric warnings now use each claim's cited spans and remain visible from the saved audit.

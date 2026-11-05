@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import Any
 from uuid import uuid4
 
-from meeting_notes.audit import Audit, CurrentAudit
+from meeting_notes.audit import Audit, CurrentAudit, ReferenceAudit
 from meeting_notes.evidence import Evidence, Generation
 from meeting_notes.meeting import Meeting
 from meeting_notes.summary import Summary, SummaryError
@@ -117,11 +117,17 @@ class MeetingDir:
         self,
         summary: Summary,
         evidence: Evidence | None = None,
-        audit: Audit | CurrentAudit | None = None,
+        audit: Audit | CurrentAudit | ReferenceAudit | None = None,
     ) -> None:
         result = (
             Generation(
-                version=3 if isinstance(audit, CurrentAudit) else 2 if audit else 1,
+                version=4
+                if isinstance(audit, ReferenceAudit)
+                else 3
+                if isinstance(audit, CurrentAudit)
+                else 2
+                if audit
+                else 1,
                 summary=summary,
                 evidence=evidence,
                 audit=audit,
@@ -136,7 +142,9 @@ class MeetingDir:
         finally:
             tmp.unlink(missing_ok=True)
 
-    def save_attempt(self, evidence: Evidence, audit: Audit | CurrentAudit) -> None:
+    def save_attempt(
+        self, evidence: Evidence, audit: Audit | CurrentAudit | ReferenceAudit
+    ) -> None:
         """Preserve failed drafts independently of the last successful generation."""
         folder = self.path / "attempts"
         folder.mkdir(exist_ok=True)

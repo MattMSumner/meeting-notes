@@ -5,8 +5,8 @@ import argparse
 import json
 from pathlib import Path
 
-from meeting_notes.compiler import passages, validate
-from meeting_notes.contract import Action, Dispute, Draft, SupportedText
+from meeting_notes.compiler_v4 import passages, validate
+from meeting_notes.contract_v4 import Action, Dispute, Draft, SupportedText
 from meeting_notes.grounding import Draft as LegacyDraft
 from meeting_notes.grounding import Span
 

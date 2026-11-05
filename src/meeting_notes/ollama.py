@@ -10,9 +10,9 @@ from importlib import resources
 from typing import Any, cast
 
 from meeting_notes.audit import Attempt
-from meeting_notes.audit import CurrentAudit as Audit
+from meeting_notes.audit import ReferenceAudit as Audit
 from meeting_notes.compiler import passages, validate
-from meeting_notes.contract import Draft
+from meeting_notes.contract import Draft, request_schema
 from meeting_notes.evidence import meeting_context
 from meeting_notes.meeting import Meeting
 from meeting_notes.summary import Summary, SummaryError
@@ -97,6 +97,8 @@ class OllamaSummarizer:
         self, meeting: Meeting, transcript: str, *, handwritten_text: str = ""
     ) -> Summary:
         self.audit = Audit(passages=passages(transcript, handwritten_text))
+        if not any(s.source == "transcript" for s in self.audit.passages):
+            raise SummaryError("No transcript sources available")
         messages = [
             {"role": "system", "content": self.prompt},
             {
@@ -129,13 +131,13 @@ class OllamaSummarizer:
                 if checked.summary is not None:
                     if best is None or (
                         len(checked.warnings) < best_warnings
-                        and best_actions <= {t.commitment for t in draft.action_items}
+                        and best_actions <= {t.commitment_id for t in draft.action_items}
                         and best_conflicts
                         <= {(tuple(c.transcript), tuple(c.notes)) for c in draft.conflicts}
                     ):
                         best, best_warnings = checked.summary, len(checked.warnings)
                         self.audit.selected = index
-                        best_actions = {t.commitment for t in draft.action_items}
+                        best_actions = {t.commitment_id for t in draft.action_items}
                         best_conflicts = {
                             (tuple(c.transcript), tuple(c.notes)) for c in draft.conflicts
                         }
@@ -163,7 +165,10 @@ class OllamaSummarizer:
             "messages": messages,
             "stream": False,
             "think": self.think,
-            "format": Draft.model_json_schema(),
+            "format": request_schema(
+                [s.id for s in self.audit.passages if s.source == "transcript"],
+                [s.id for s in self.audit.passages if s.source == "notes"],
+            ),
             "options": {"num_ctx": self.num_ctx, "temperature": 0},
         }
         attempt = Attempt(request=deepcopy(body))
