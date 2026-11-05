@@ -678,6 +678,16 @@ Re-running transcription also leaves generation to the explicit enhancement acti
   No new inference; agree a separate budget and test the new manual review workflow.
   [Replay details](evaluation/m10/v4/replay/README.md) preserve limitations. M10 remains unbuilt.
 
+- **V4 evaluation (2026-11-05; not Built):** approved one repetition across 13 cases and
+  both arms, capped at 78 requests. Completed with 36 requests (13 baseline, 23 proposed).
+  Baseline produced 13 summaries; V4 produced nine and blocked four. Later timing loses
+  its answer; sparse notes omit a spoken cost; unnecessary review obscures simple deadlines.
+  The original conflict case retains both accounts correctly in this single pass. Quality
+  acceptance failed. [Full scores and attempts](evaluation/m10/v4/results/report.md) are
+  preserved, with no tuning or extra inference. Frozen inputs and earlier results remain
+  unchanged. Source-ID confusion, context misuse and timing loss need a new revision;
+  agree its freeze/budget separately. M10 remains unbuilt, manual V4 acceptance pending.
+
 For both stages, run formatting, lint, strict types and unit tests before committing;
 run Swift tests only if capture code changes. Keep shipped model settings unchanged.
 Live transcription, in-place AI editing, custom Obsidian plugins and automatic tracking
