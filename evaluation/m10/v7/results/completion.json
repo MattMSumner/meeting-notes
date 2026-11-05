@@ -1,0 +1,331 @@
+{
+  "finished_at": "2026-11-05T16:31:26.931681-05:00",
+  "quality_scoring": "meets frozen single-run criteria: all 13 summaries, no observed proposed critical failures, no commitment completeness regression; manual acceptance pending",
+  "repetitions": 1,
+  "requests_used": 28,
+  "request_cap": 78,
+  "unused_requests": 50,
+  "arms": {
+    "baseline": {
+      "completed_cases": 13,
+      "published": 13,
+      "blocked": 0,
+      "requests": 13,
+      "correction_requests": 0,
+      "transport_errors": 0,
+      "review_items": 0,
+      "assigned_due_values": 11,
+      "outcomes": [
+        {
+          "case": "empty",
+          "repetition": 1,
+          "published": true,
+          "requests": 1,
+          "selected_attempt": null,
+          "numeric_warning_count": 0,
+          "review_items": 0,
+          "assigned_due_values": 1,
+          "error": null
+        },
+        {
+          "case": "sparse",
+          "repetition": 1,
+          "published": true,
+          "requests": 1,
+          "selected_attempt": null,
+          "numeric_warning_count": 0,
+          "review_items": 0,
+          "assigned_due_values": 1,
+          "error": null
+        },
+        {
+          "case": "additional",
+          "repetition": 1,
+          "published": true,
+          "requests": 1,
+          "selected_attempt": null,
+          "numeric_warning_count": 0,
+          "review_items": 0,
+          "assigned_due_values": 2,
+          "error": null
+        },
+        {
+          "case": "conflicting",
+          "repetition": 1,
+          "published": true,
+          "requests": 1,
+          "selected_attempt": null,
+          "numeric_warning_count": 0,
+          "review_items": 0,
+          "assigned_due_values": 0,
+          "error": null
+        },
+        {
+          "case": "ambiguous_dates",
+          "repetition": 1,
+          "published": true,
+          "requests": 1,
+          "selected_attempt": null,
+          "numeric_warning_count": 0,
+          "review_items": 0,
+          "assigned_due_values": 1,
+          "error": null
+        },
+        {
+          "case": "same_speaker_tasks",
+          "repetition": 1,
+          "published": true,
+          "requests": 1,
+          "selected_attempt": null,
+          "numeric_warning_count": 0,
+          "review_items": 0,
+          "assigned_due_values": 1,
+          "error": null
+        },
+        {
+          "case": "coordinated_tasks",
+          "repetition": 1,
+          "published": true,
+          "requests": 1,
+          "selected_attempt": null,
+          "numeric_warning_count": 0,
+          "review_items": 0,
+          "assigned_due_values": 1,
+          "error": null
+        },
+        {
+          "case": "later_timing",
+          "repetition": 1,
+          "published": true,
+          "requests": 1,
+          "selected_attempt": null,
+          "numeric_warning_count": 0,
+          "review_items": 0,
+          "assigned_due_values": 1,
+          "error": null
+        },
+        {
+          "case": "revised_timing",
+          "repetition": 1,
+          "published": true,
+          "requests": 1,
+          "selected_attempt": null,
+          "numeric_warning_count": 0,
+          "review_items": 0,
+          "assigned_due_values": 1,
+          "error": null
+        },
+        {
+          "case": "shared_numbers",
+          "repetition": 1,
+          "published": true,
+          "requests": 1,
+          "selected_attempt": null,
+          "numeric_warning_count": 0,
+          "review_items": 0,
+          "assigned_due_values": 0,
+          "error": null
+        },
+        {
+          "case": "status_conflict",
+          "repetition": 1,
+          "published": true,
+          "requests": 1,
+          "selected_attempt": null,
+          "numeric_warning_count": 0,
+          "review_items": 0,
+          "assigned_due_values": 0,
+          "error": null
+        },
+        {
+          "case": "tentative_task",
+          "repetition": 1,
+          "published": true,
+          "requests": 1,
+          "selected_attempt": null,
+          "numeric_warning_count": 0,
+          "review_items": 0,
+          "assigned_due_values": 1,
+          "error": null
+        },
+        {
+          "case": "front_loaded_timing",
+          "repetition": 1,
+          "published": true,
+          "requests": 1,
+          "selected_attempt": null,
+          "numeric_warning_count": 0,
+          "review_items": 0,
+          "assigned_due_values": 1,
+          "error": null
+        }
+      ],
+      "output_sha256": "4e302ea9a8338d35e6b373712d7a90c4e9a71f38ad0b79feb42717ffa470d985"
+    },
+    "proposed": {
+      "completed_cases": 13,
+      "published": 13,
+      "blocked": 0,
+      "requests": 15,
+      "correction_requests": 2,
+      "transport_errors": 0,
+      "review_items": 4,
+      "assigned_due_values": 7,
+      "outcomes": [
+        {
+          "case": "empty",
+          "repetition": 1,
+          "published": true,
+          "requests": 1,
+          "selected_attempt": 0,
+          "numeric_warning_count": 0,
+          "review_items": 0,
+          "assigned_due_values": 1,
+          "error": null
+        },
+        {
+          "case": "sparse",
+          "repetition": 1,
+          "published": true,
+          "requests": 2,
+          "selected_attempt": 1,
+          "numeric_warning_count": 0,
+          "review_items": 0,
+          "assigned_due_values": 1,
+          "error": null
+        },
+        {
+          "case": "additional",
+          "repetition": 1,
+          "published": true,
+          "requests": 2,
+          "selected_attempt": 1,
+          "numeric_warning_count": 0,
+          "review_items": 0,
+          "assigned_due_values": 2,
+          "error": null
+        },
+        {
+          "case": "conflicting",
+          "repetition": 1,
+          "published": true,
+          "requests": 1,
+          "selected_attempt": 0,
+          "numeric_warning_count": 0,
+          "review_items": 0,
+          "assigned_due_values": 0,
+          "error": null
+        },
+        {
+          "case": "ambiguous_dates",
+          "repetition": 1,
+          "published": true,
+          "requests": 1,
+          "selected_attempt": 0,
+          "numeric_warning_count": 0,
+          "review_items": 0,
+          "assigned_due_values": 1,
+          "error": null
+        },
+        {
+          "case": "same_speaker_tasks",
+          "repetition": 1,
+          "published": true,
+          "requests": 1,
+          "selected_attempt": 0,
+          "numeric_warning_count": 0,
+          "review_items": 0,
+          "assigned_due_values": 1,
+          "error": null
+        },
+        {
+          "case": "coordinated_tasks",
+          "repetition": 1,
+          "published": true,
+          "requests": 1,
+          "selected_attempt": 0,
+          "numeric_warning_count": 0,
+          "review_items": 1,
+          "assigned_due_values": 0,
+          "error": null
+        },
+        {
+          "case": "later_timing",
+          "repetition": 1,
+          "published": true,
+          "requests": 1,
+          "selected_attempt": 0,
+          "numeric_warning_count": 0,
+          "review_items": 1,
+          "assigned_due_values": 0,
+          "error": null
+        },
+        {
+          "case": "revised_timing",
+          "repetition": 1,
+          "published": true,
+          "requests": 1,
+          "selected_attempt": 0,
+          "numeric_warning_count": 0,
+          "review_items": 1,
+          "assigned_due_values": 0,
+          "error": null
+        },
+        {
+          "case": "shared_numbers",
+          "repetition": 1,
+          "published": true,
+          "requests": 1,
+          "selected_attempt": 0,
+          "numeric_warning_count": 0,
+          "review_items": 0,
+          "assigned_due_values": 0,
+          "error": null
+        },
+        {
+          "case": "status_conflict",
+          "repetition": 1,
+          "published": true,
+          "requests": 1,
+          "selected_attempt": 0,
+          "numeric_warning_count": 0,
+          "review_items": 0,
+          "assigned_due_values": 0,
+          "error": null
+        },
+        {
+          "case": "tentative_task",
+          "repetition": 1,
+          "published": true,
+          "requests": 1,
+          "selected_attempt": 0,
+          "numeric_warning_count": 0,
+          "review_items": 0,
+          "assigned_due_values": 1,
+          "error": null
+        },
+        {
+          "case": "front_loaded_timing",
+          "repetition": 1,
+          "published": true,
+          "requests": 1,
+          "selected_attempt": 0,
+          "numeric_warning_count": 0,
+          "review_items": 1,
+          "assigned_due_values": 0,
+          "error": null
+        }
+      ],
+      "output_sha256": "d59a44398600ab5e014a177d353a4706015d2cc85ae963777f679f9f90063f15"
+    }
+  },
+  "ollama_version": "0.40.9",
+  "model_digest": "ad815644918f0eaab341c12b67837cc6dd4562342cdaf118f83d5d554cb37226",
+  "environment_stable": true,
+  "frozen_inputs_and_previous_results_unchanged": true,
+  "baseline_summaries_identical_to_v6": true,
+  "proposed_attempts_with_matching_frozen_schema_and_allowed_reference_values": 15,
+  "manual_acceptance": "Original workflow previously reported complete; current review workflow remains pending",
+  "further_inference": "None; no tuning or extra repetitions",
+  "initial_proposed_drafts_identical_to_v6": 13
+}

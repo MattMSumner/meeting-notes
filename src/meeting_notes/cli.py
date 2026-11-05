@@ -8,6 +8,7 @@ import threading
 import time
 import traceback
 from collections.abc import Callable, Sequence
+from contextlib import ExitStack
 from datetime import datetime
 from types import FrameType
 
@@ -60,7 +61,7 @@ def _parser() -> argparse.ArgumentParser:
     commands.add_parser("status", help="show what's recording or being written")
 
     record = commands.add_parser(
-        "record", help="record the mic and system audio until Ctrl-C, then transcribe and summarize"
+        "record", help="record the mic and system audio until Ctrl-C, then transcribe"
     )
     record.add_argument("--title", help="meeting title (default: Untitled)")
     record.add_argument(
@@ -71,13 +72,17 @@ def _parser() -> argparse.ArgumentParser:
     record.add_argument("--background", action="store_true", help=argparse.SUPPRESS)
 
     transcribe = commands.add_parser(
-        "transcribe", help="re-run transcription (and the summary) for a meeting"
+        "transcribe", help="re-run transcription; mark the meeting ready to enhance"
     )
     transcribe.add_argument("meeting_id")
     # Used by `notes stop` to finish a recording orphaned by a crash.
     transcribe.add_argument("--background", action="store_true", help=argparse.SUPPRESS)
 
-    summarize = commands.add_parser("summarize", help="re-run the summary for a meeting")
+    enhance = commands.add_parser("enhance", help="enhance using a snapshot of your notes")
+    enhance.add_argument("meeting_id", nargs="?")
+    enhance.add_argument("--choose", action="store_true", help="choose a meeting in a dialog")
+    enhance.add_argument("--background", action="store_true", help=argparse.SUPPRESS)
+    summarize = commands.add_parser("summarize", help="alias for enhance <meeting-id>")
     summarize.add_argument("meeting_id")
 
     render = commands.add_parser(
@@ -182,7 +187,10 @@ class _Commands:
         background job) also shows it as a notification."""
         print(message, file=sys.stderr if error else sys.stdout, flush=True)
         if notify:
-            self.desktop.notify(message)
+            try:
+                self.desktop.notify(message)
+            except (OSError, DesktopError) as failure:
+                print(f"Couldn't show notification ({failure}).", file=sys.stderr)
 
     def _session(self, meeting_dir: MeetingDir, phase: Phase) -> Session:
         """This process's session for meeting_dir. Keeps the start time of the session the
@@ -219,33 +227,42 @@ class _Commands:
         """Deals with a meeting whose process died. A recording cut off: stops any capture
         still recording into it and writes its note in the background."""
         meeting_dir = orphan.meeting_dir
-        self.processes.stop_capture(meeting_dir.path)
-        session.session_file(meeting_dir).unlink(missing_ok=True)
-        session.stop_request_file(meeting_dir).unlink(missing_ok=True)
-        title = _title(meeting_dir)
-        if orphan.session.phase == Phase.PROCESSING:
-            # Its audio is complete; it was writing the note that died. Running it again
-            # automatically could crash the same way on every start and stop.
+        # Claim before stopping orphaned capture, which can take seconds. Other commands
+        # see a live recovery session while the global lock stays free.
+        with session.lock(self.store):
+            if session.read(meeting_dir) != orphan.session:
+                return
+            session.write(meeting_dir, self._session(meeting_dir, Phase.PROCESSING))
+        try:
+            title = _title(meeting_dir)
+            if orphan.session.phase in (Phase.ENHANCING, Phase.PROCESSING):
+                retry = "enhance" if orphan.session.phase == Phase.ENHANCING else "transcribe"
+                action = "Enhancing" if retry == "enhance" else "Writing the note for"
+                self._say(
+                    f"{action} “{title}” stopped unexpectedly. "
+                    f"To retry: notes {retry} {meeting_dir.id}",
+                    notify=True,
+                    error=True,
+                )
+                return
+            self.processes.stop_capture(meeting_dir.path)
+            session.stop_request_file(meeting_dir).unlink(missing_ok=True)
+            if not meeting_dir.captures():
+                self._say(f"“{title}” stopped before any audio was saved.", notify=True)
+                return
+            with session.lock(self.store):
+                self._spawn_job(
+                    meeting_dir,
+                    ["transcribe", meeting_dir.id, "--background"],
+                    Phase.PROCESSING,
+                    orphan.session.started_at,
+                )
             self._say(
-                f"Writing the note for “{title}” stopped unexpectedly. "
-                f"To retry: notes transcribe {meeting_dir.id}",
+                f"“{title}” stopped unexpectedly. Writing its note from what was recorded.",
                 notify=True,
-                error=True,
             )
-            return
-        if not meeting_dir.captures():
-            self._say(f"“{title}” stopped before any audio was saved.", notify=True)
-            return
-        self._spawn_job(
-            meeting_dir,
-            ["transcribe", meeting_dir.id, "--background"],
-            Phase.PROCESSING,
-            orphan.session.started_at,
-        )
-        self._say(
-            f"“{title}” stopped unexpectedly. Writing its note from what was recorded.",
-            notify=True,
-        )
+        finally:
+            session.clear(meeting_dir, os.getpid())
 
     def _recover_orphans(self) -> list[Active]:
         orphans = [a for a in session.find(self.store, self.processes) if not a.running]
@@ -285,8 +302,8 @@ class _Commands:
                 return 1
             if title is None:
                 return 0  # cancelled
+        self._recover_orphans()
         with session.lock(self.store):
-            self._recover_orphans()
             if self._already_recording():  # started while the dialog was open
                 return 1
             meeting_dir = self.store.create(self._new_meeting(title, event))
@@ -307,8 +324,8 @@ class _Commands:
         return False
 
     def stop(self, args: argparse.Namespace) -> int:
+        recovered = self._recover_orphans()
         with session.lock(self.store):
-            recovered = self._recover_orphans()
             recording = self._recording()
             if not recording:
                 if recovered:
@@ -318,7 +335,7 @@ class _Commands:
             for active in recording:
                 session.stop_request_file(active.meeting_dir).touch()
                 self.processes.interrupt(active.session.pid)
-            return max(self._wait_for_stop(active) for active in recording)
+        return max(self._wait_for_stop(active) for active in recording)
 
     def _wait_for_stop(self, active: Active) -> int:
         """Waits for a recording to save its audio, which it shows by moving on to writing
@@ -355,11 +372,18 @@ class _Commands:
         now = datetime.now().astimezone()
         for active in found:
             title = _title(active.meeting_dir)
-            if not active.running:
+            if not active.running and active.session.phase == Phase.ENHANCING:
+                print(
+                    "Enhancement stopped unexpectedly. "
+                    f"Run `notes enhance {active.meeting_dir.id}`."
+                )
+            elif not active.running:
                 print(f"“{title}” stopped unexpectedly. Run `notes stop` to recover it.")
             elif active.session.phase == Phase.RECORDING:
                 elapsed = (now - active.session.started_at).total_seconds()
                 print(f"Recording “{title}” for {timestamp(elapsed)} ({active.meeting_dir.id})")
+            elif active.session.phase == Phase.ENHANCING:
+                print(f"Enhancing “{title}” ({active.meeting_dir.id})")
             else:
                 print(f"Writing the note for “{title}” ({active.meeting_dir.id})")
         return 0
@@ -390,7 +414,9 @@ class _Commands:
                         error=True,
                     )
                     return 1
-                session.write(meeting_dir, self._session(meeting_dir, Phase.RECORDING))
+                # Wait for the launcher to publish its claim before updating it.
+                with session.lock(self.store):
+                    session.write(meeting_dir, self._session(meeting_dir, Phase.RECORDING))
             try:
                 return self._record_then_write_note(meeting_dir, args, signals)
             except Exception as error:
@@ -482,7 +508,8 @@ class _Commands:
             if background:
                 self.desktop.notify(f"Stopped recording “{title}”. Writing the note…")
         session.write(meeting_dir, self._session(meeting_dir, Phase.PROCESSING))
-        return self._write_note(meeting_dir, transcribe=True, background=background)
+        with session.processing_lock(meeting_dir):
+            return self._write_note(meeting_dir, transcribe=True, background=background)
 
     def _background_failed(self, meeting_dir: MeetingDir, error: Exception) -> None:
         """A background job failed unexpectedly. Its log gets the details; the user, who has
@@ -498,36 +525,59 @@ class _Commands:
     def _write_note(
         self, meeting_dir: MeetingDir, *, transcribe: bool, background: bool = False
     ) -> int:
-        """Transcribes (if asked), summarizes and renders. Returns the exit status."""
+        """Transcribes or explicitly enhances, then publishes protected vault files."""
         if transcribe:
             print("Transcribing...", flush=True)
             pipeline.transcribe(meeting_dir, self.make_transcriber(self.config))
         talk = pipeline.conversation(meeting_dir)
-        title = _title(meeting_dir)
-        print(f"Summarizing with {self.config.summary_model}...", flush=True)
-        try:
-            pipeline.summarize(
-                meeting_dir, talk, self.make_summarizer(self.config), self.config.my_name
+        if not transcribe:
+            try:
+                if not talk.transcribed:
+                    raise pipeline.NotTranscribed(
+                        f"Run `notes transcribe {meeting_dir.id}` before enhancement."
+                    )
+                if not talk.lines:
+                    raise SummaryError("No speech was detected. Your writing is unchanged.")
+                print(f"Enhancing with {self.config.summary_model}...", flush=True)
+                pipeline.summarize(
+                    meeting_dir, talk, self.make_summarizer(self.config), self.config.my_name
+                )
+            except SummaryError as error:
+                self._say(
+                    f"Couldn't enhance: {error} To retry: notes enhance {meeting_dir.id}",
+                    notify=background,
+                    error=True,
+                )
+                return 1
+        rendered = self._render(meeting_dir, talk)
+        if transcribe:
+            message = (
+                f"Ready to enhance: notes enhance {meeting_dir.id}"
+                if talk.lines
+                else "No speech was detected. Your writing is unchanged."
             )
-        except pipeline.NotTranscribed as error:
-            self._say(f"Couldn't summarize: {error}", notify=background, error=True)
-            return 1
-        except SummaryError as error:
-            # The transcript is still worth writing; the note says how to retry.
-            self._render(meeting_dir, talk)
-            self._say(
-                f"Wrote the transcript for “{title}”, but couldn't summarize it ({error}). "
-                f"To retry: notes summarize {meeting_dir.id}",
-                notify=background,
-                error=True,
+            if rendered.note in rendered.skipped:
+                message += " The edited summary was preserved instead of the status note."
+        elif rendered.note in rendered.skipped:
+            message = (
+                f"Enhanced result saved internally at {meeting_dir.summary_file}; "
+                "edited summary preserved."
             )
-            return 1
-        self._render(meeting_dir, talk)
-        if background:
-            self.desktop.notify(f"The note for “{title}” is ready.")
+        else:
+            message = f"Enhanced note ready: {rendered.note}"
+        self._say(message, notify=background)
+        if background and not transcribe and rendered.note not in rendered.skipped:
+            try:
+                self.desktop.open_note(rendered.note)
+            except (OSError, DesktopError) as error:
+                self._say(
+                    f"Enhancement saved, but couldn't open {rendered.note} ({error}).",
+                    notify=True,
+                    error=True,
+                )
         return 0
 
-    def _render(self, meeting_dir: MeetingDir, talk: pipeline.Conversation) -> None:
+    def _render(self, meeting_dir: MeetingDir, talk: pipeline.Conversation) -> pipeline.Rendered:
         rendered = pipeline.render(meeting_dir, talk, self.config)
         print(f"Note: {rendered.note}")
         print(f"Transcript: {rendered.transcript}")
@@ -538,31 +588,117 @@ class _Commands:
                 file=sys.stderr,
             )
 
+        return rendered
+
     def existing(self, args: argparse.Namespace) -> int:
-        """transcribe, summarize and render: re-run stages for a meeting."""
+        """Claim a meeting briefly, then process without holding the global lock."""
+        if args.command == "enhance" and getattr(args, "choose", False):
+            if args.meeting_id:
+                self._say("Use a meeting ID or --choose, not both.", notify=False, error=True)
+                return 1
+            return self.choose()
+        if not args.meeting_id:
+            self._say("Supply a meeting ID or --choose.", notify=False, error=True)
+            return 1
+        background: bool = getattr(args, "background", False)
         try:
             meeting_dir = self.store.get(args.meeting_id)
+            with ExitStack() as locks:
+                with session.lock(self.store):
+                    locks.enter_context(session.processing_lock(meeting_dir))
+                    current = session.read(meeting_dir)
+                    if current is not None and current.pid != os.getpid():
+                        retrying = (
+                            args.command in ("enhance", "summarize")
+                            and current.phase == Phase.ENHANCING
+                            and not session.is_running(current, self.processes)
+                        )
+                        if not retrying:
+                            raise session.MeetingBusy(
+                                f"Meeting {meeting_dir.id} has an active or unrecovered session. "
+                                "Run `notes status` or `notes stop`."
+                            )
+                    phase = (
+                        Phase.PROCESSING
+                        if args.command in ("transcribe", "render")
+                        else Phase.ENHANCING
+                    )
+                    session.write(meeting_dir, self._session(meeting_dir, phase))
+                try:
+                    if args.command == "render":
+                        self._render(meeting_dir, pipeline.conversation(meeting_dir))
+                        return 0
+                    return self._write_note(
+                        meeting_dir, transcribe=args.command == "transcribe", background=background
+                    )
+                finally:
+                    session.clear(meeting_dir, os.getpid())
         except MeetingNotFound as error:
-            print(f"No meeting with id {error}", file=sys.stderr)
-            return 1
-        if args.command == "render":
-            self._render(meeting_dir, pipeline.conversation(meeting_dir))
-            return 0
-        background: bool = getattr(args, "background", False)
-        if background:
-            session.write(meeting_dir, self._session(meeting_dir, Phase.PROCESSING))
-        try:
-            return self._write_note(
-                meeting_dir, transcribe=args.command == "transcribe", background=background
+            self._say(f"No meeting with id {error}", notify=background, error=True)
+        except (session.MeetingBusy, SummaryError, OSError, DesktopError) as error:
+            retry = "transcribe" if args.command == "transcribe" else "enhance"
+            self._say(
+                f"{error}. To retry: notes {retry} {args.meeting_id}", notify=background, error=True
             )
         except Exception as error:
             if not background:
                 raise
-            self._background_failed(meeting_dir, error)
+            traceback.print_exc()
+            self._say(
+                f"Job failed ({error}); see notes.log. "
+                f"Retry: notes {args.command} {args.meeting_id}",
+                notify=True,
+                error=True,
+            )
+        return 1
+
+    def _eligible(self, directory: MeetingDir) -> bool:
+        if session.read(directory) is not None:
+            return False
+        talk = pipeline.conversation(directory)
+        return talk.transcribed and bool(talk.lines)
+
+    def choose(self) -> int:
+        choices: list[tuple[str, str]] = []
+        directories = sorted(
+            self.store.all(), key=lambda d: d.load_meeting().started_at.timestamp(), reverse=True
+        )
+        for directory in directories:
+            if self._eligible(directory):
+                meeting = directory.load_meeting()
+                choices.append(
+                    (
+                        directory.id,
+                        f"{meeting.title} — {meeting.started_at.astimezone():%Y-%m-%d %H:%M}",
+                    )
+                )
+        if not choices:
+            self._say(
+                "No meetings are ready to enhance. Transcribe a recording first.", notify=True
+            )
+            return 0
+        try:
+            selected = self.desktop.choose_meeting(choices)
+            if selected is None:
+                return 0
+            if selected not in {identifier for identifier, _ in choices}:
+                raise DesktopError("Selection wasn't in the original meeting list.")
+            directory = self.store.get(selected)
+            with session.lock(self.store):
+                with session.processing_lock(directory):
+                    if not self._eligible(directory):
+                        raise session.MeetingBusy("That meeting is no longer ready to enhance.")
+                self._spawn_job(
+                    directory,
+                    ["enhance", selected, "--background"],
+                    Phase.ENHANCING,
+                    datetime.now().astimezone(),
+                )
+        except (DesktopError, OSError, session.MeetingBusy, MeetingNotFound) as error:
+            self._say(f"Couldn't start enhancement ({error}).", notify=True, error=True)
             return 1
-        finally:
-            if background:
-                session.clear(meeting_dir, os.getpid())
+        self._say("Enhancement started in the background.", notify=True)
+        return 0
 
 
 def main(

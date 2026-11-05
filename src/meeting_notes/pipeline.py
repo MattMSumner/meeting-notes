@@ -4,8 +4,10 @@ from collections.abc import Sequence
 from dataclasses import dataclass
 from pathlib import Path
 
+from meeting_notes.audit import AuditedSummarizer
 from meeting_notes.config import Config
-from meeting_notes.figures import unsaid_numbers
+from meeting_notes.evidence import Generation, snapshot
+from meeting_notes.figures import evidence_issues, unsaid_numbers
 from meeting_notes.merge import Line, SpeakerTrack, merge
 from meeting_notes.render import render_note, render_transcript, timestamp
 from meeting_notes.store import MeetingDir
@@ -105,11 +107,24 @@ def summarize(
             f"It hasn't been transcribed yet: run `notes transcribe {meeting_dir.id}`"
         )
     if not talk.lines:
-        meeting_dir.clear_summary()  # the note says no speech was detected
-        return
-    meeting_dir.save_summary(
-        summarizer.summarize(meeting_dir.load_meeting(), transcript_text(talk.lines, my_name))
-    )
+        raise SummaryError("No speech was detected. Your writing is unchanged; nothing to enhance.")
+    meeting = meeting_dir.load_meeting()
+    evidence = snapshot(meeting, transcript_text(talk.lines, my_name))
+    try:
+        result = summarizer.summarize(
+            meeting, evidence.transcript, handwritten_text=evidence.handwritten_text
+        )
+    except SummaryError as error:
+        if isinstance(summarizer, AuditedSummarizer):
+            raise SummaryError(
+                f"{error} Draft diagnostics: {meeting_dir.path / 'attempts'}"
+            ) from error
+        raise
+    finally:
+        if isinstance(summarizer, AuditedSummarizer):
+            meeting_dir.save_attempt(evidence, summarizer.audit)
+    audit = summarizer.audit if isinstance(summarizer, AuditedSummarizer) else None
+    meeting_dir.save_summary(result, evidence, audit)
 
 
 @dataclass(frozen=True)
@@ -127,11 +142,22 @@ def render(meeting_dir: MeetingDir, talk: Conversation, config: Config) -> Rende
     transcript = config.transcripts_dir / f"{meeting.transcript_stem}.md"
     note_warnings = list(talk.warnings)
     try:
-        summary = meeting_dir.load_summary()
+        saved = meeting_dir.load_generation()
+        summary = saved.summary if isinstance(saved, Generation) else saved
     except SummaryError as error:
         summary = None
-        note_warnings.append(f"{error}. To write a new one: `notes summarize {meeting_dir.id}`")
-    if summary is not None:
+        saved = None
+        note_warnings.append(f"{error}. To write a new one: `notes enhance {meeting_dir.id}`")
+    if isinstance(saved, Generation) and saved.audit is not None:
+        if saved.audit.selected is not None:
+            note_warnings.extend(saved.audit.attempts[saved.audit.selected].warnings)
+    elif isinstance(saved, Generation):
+        evidence = saved.evidence
+        issues = evidence_issues(
+            saved.summary, evidence.transcript, evidence.handwritten_text, evidence.context
+        )
+        note_warnings.extend(f"Check number against saved evidence: {issue}." for issue in issues)
+    elif summary is not None:
         said = "\n".join(
             [
                 meeting.title,

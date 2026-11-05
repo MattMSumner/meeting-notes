@@ -1,0 +1,129 @@
+{
+  "$defs": {
+    "ActionItem": {
+      "additionalProperties": false,
+      "properties": {
+        "owner": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Who will do it: a name, \"Them\" if no name was given, or null if unclear",
+          "title": "Owner"
+        },
+        "task": {
+          "title": "Task",
+          "type": "string"
+        },
+        "review": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Review",
+          "type": "array"
+        },
+        "due": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Complete spoken timing phrase, including every alternative, condition and uncertainty. Must stand on its own even if task repeats the timing. Preserve relative wording; null when no timing was spoken.",
+          "title": "Due"
+        }
+      },
+      "required": [
+        "owner",
+        "task",
+        "due"
+      ],
+      "title": "ActionItem",
+      "type": "object"
+    },
+    "Conflict": {
+      "additionalProperties": false,
+      "properties": {
+        "topic": {
+          "title": "Topic",
+          "type": "string"
+        },
+        "transcript": {
+          "description": "The spoken account, preserving uncertainty",
+          "title": "Transcript",
+          "type": "string"
+        },
+        "handwritten": {
+          "description": "The handwritten account, preserving uncertainty",
+          "title": "Handwritten",
+          "type": "string"
+        }
+      },
+      "required": [
+        "topic",
+        "transcript",
+        "handwritten"
+      ],
+      "title": "Conflict",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "overview": {
+      "description": "Two or three sentences about the meeting. Describe disputed topics as unresolved and refer to Conflicts; do not repeat a disputed value as settled.",
+      "title": "Overview",
+      "type": "string"
+    },
+    "key_points": {
+      "description": "Important spoken points. For disputed topics, state that the sources disagree and refer to Conflicts instead of repeating one disputed value as fact.",
+      "items": {
+        "type": "string"
+      },
+      "title": "Key Points",
+      "type": "array"
+    },
+    "decisions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Decisions",
+      "type": "array"
+    },
+    "action_items": {
+      "items": {
+        "$ref": "#/$defs/ActionItem"
+      },
+      "title": "Action Items",
+      "type": "array"
+    },
+    "notes_context": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Notes Context",
+      "type": "array"
+    },
+    "conflicts": {
+      "items": {
+        "$ref": "#/$defs/Conflict"
+      },
+      "title": "Conflicts",
+      "type": "array"
+    }
+  },
+  "required": [
+    "overview",
+    "key_points",
+    "decisions",
+    "action_items"
+  ],
+  "title": "Summary",
+  "type": "object"
+}

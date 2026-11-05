@@ -18,16 +18,37 @@ class ActionItem(BaseModel):
         description='Who will do it: a name, "Them" if no name was given, or null if unclear'
     )
     task: str
-    due: str | None = Field(description="When it's due, only if the transcript says")
+    review: list[str] = Field(default_factory=list)
+    due: str | None = Field(
+        description="Complete spoken timing phrase, including every alternative, condition "
+        "and uncertainty. Must stand on its own even if task repeats the timing. "
+        "Preserve relative wording; null when no timing was spoken."
+    )
+
+
+class Conflict(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    topic: str
+    transcript: str = Field(description="The spoken account, preserving uncertainty")
+    handwritten: str = Field(description="The handwritten account, preserving uncertainty")
 
 
 class Summary(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    overview: str = Field(description="Two or three sentences: what the meeting was about")
-    key_points: list[str]
+    overview: str = Field(
+        description="Two or three sentences about the meeting. Describe disputed topics as "
+        "unresolved and refer to Conflicts; do not repeat a disputed value as settled."
+    )
+    key_points: list[str] = Field(
+        description="Important spoken points. For disputed topics, state that the sources "
+        "disagree and refer to Conflicts instead of repeating one disputed value as fact."
+    )
     decisions: list[str]
     action_items: list[ActionItem]
+    notes_context: list[str] = Field(default_factory=list)
+    conflicts: list[Conflict] = Field(default_factory=lambda: list[Conflict]())
 
 
 def parse_summary(text: str) -> Summary:
@@ -45,4 +66,6 @@ def parse_summary(text: str) -> Summary:
 
 
 class Summarizer(Protocol):
-    def summarize(self, meeting: Meeting, transcript: str) -> Summary: ...
+    def summarize(
+        self, meeting: Meeting, transcript: str, *, handwritten_text: str = ""
+    ) -> Summary: ...

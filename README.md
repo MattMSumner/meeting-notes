@@ -6,8 +6,9 @@ the conversation with a local model served by [Ollama](https://ollama.com), and 
 note and its transcript into an Obsidian vault. No audio, transcripts or summaries leave
 the machine.
 
-Status: **M9 implementation**, handwritten notes open in Obsidian at recording start.
-Manual Obsidian acceptance is pending. See [plan.md](plan.md)
+Status: **M10 implementation**, explicit notes-guided enhancement.
+Quality evaluation has failed; M10 is not yet built. The original manual Obsidian workflow passed,
+but the new validation failure/review-warning workflow still needs acceptance. See [plan.md](plan.md)
 for the roadmap.
 
 ## Setup
@@ -39,13 +40,16 @@ Get consent from everyone in a meeting before recording it.
 uv run scripts/install-shortcuts.py
 ```
 
-This adds two shortcuts (confirm each import in Shortcuts, and allow them to run scripts
+This adds three shortcuts (confirm each import in Shortcuts, and allow them to run scripts
 when asked). Run them from Spotlight by typing their names:
 
 - **Start meeting notes** asks for a title, suggesting the meeting on your calendar now
   (empty means Untitled), and starts recording in the background. The orange and purple menu bar indicators show it's recording.
-- **Stop meeting notes** stops it. The transcript and summary are written in the
-  background, and a notification says when the note is ready.
+- **Stop meeting notes** stops capture and writes the transcript in the background,
+  then reports ready to enhance.
+- **Enhance meeting notes** lists ready meetings newest first, including previously
+  enhanced ones. Choose one to enhance in the background and open its summary in a new
+  Obsidian tab. Cancel does nothing. Reinstall shortcuts to add this action.
 
 ### From a terminal
 
@@ -54,8 +58,10 @@ uv run notes start --title "Weekly Sync"    # record in the background
 uv run notes status                         # what's recording or being written
 uv run notes stop                           # stop; the note is written in the background
 uv run notes record --title "Weekly Sync"   # or: record in the foreground until Ctrl-C
-uv run notes transcribe <meeting-id>        # re-run transcription (and the summary)
-uv run notes summarize <meeting-id>         # re-run the summary
+uv run notes transcribe <meeting-id>        # re-transcribe; clear generation; ready to enhance
+uv run notes enhance <meeting-id>           # snapshot writing and generate a summary
+uv run notes summarize <meeting-id>         # alias for enhance
+uv run notes enhance --choose               # chooser; detached enhancement
 uv run notes render <meeting-id>            # re-write the note and transcript
 uv run notes check                          # check the mic and system audio can be recorded
 ```
@@ -66,16 +72,37 @@ or prose below its title and links. The summary and transcript links become avai
 after processing; no placeholder files are created. The generated summary links back to
 your writing. The notes directory must belong to an existing Obsidian vault.
 
-Handwritten text is **not yet input to the summary model**. Stop still transcribes and
-summarizes automatically. Your writing is never rewritten by processing or rerunning a
-stage, even if capture fails or no speech is detected. Creation or opening problems warn
-without preventing recording; if opening fails, use the printed file path. Renamed or
-moved handwritten files are not tracked automatically. Older meetings gain no handwritten
-file when processed again.
+Enhancement reads your associated handwritten file once, preserving exact UTF-8 text,
+and saves both the original and the effective input (without recognized generated title
+and link lines). It builds the model transcript from stored segments, with your speaker
+name substituted; editing the vault transcript does not change that input. Missing,
+unreadable or invalid UTF-8 handwritten files must be restored before enhancement.
+Renamed or moved handwritten files are not tracked. Older meetings with no associated
+path, blank writing, and untouched templates use transcript-only enhancement.
+
+Your writing is never rewritten. Notes guide emphasis; Decisions and Action items remain
+spoken commitments. Written-only observations and tasks appear under **From your notes**.
+**Conflicts** identifies both sources without resolving them. Number warnings check each
+section against its assigned saved evidence, distinguishing other-source numbers and
+metadata; presence checks cannot establish correct attribution or meaning.
+
+Stop, foreground recording completion, recovery, and `transcribe` never invoke the summary
+model. Successful transcription clears the prior generated result and evidence and writes
+“ready to enhance” at the summary path. Edited vault files remain protected, with a warning
+that the status note was not published. No-speech meetings retain your writing and cannot
+be enhanced. Each meeting permits only one processing command at a time.
+
+Enhancement atomically saves the summary and evidence in a versioned `summary.json`.
+Failures preserve the previous result; re-enhancement takes a fresh snapshot. `render`
+uses saved evidence, so deleting or changing the original writing after enhancement does
+not change the result or its warnings. If an edited summary prevents publication, the
+result is saved internally and the shortcut does not open the old file as the new result.
+Move the protected file aside and run `notes render <meeting-id>` to publish it.
 
 If a recording's process dies (a crash, a restart), `notes status` says so and `notes stop`
 recovers it: it stops the orphaned capture and writes the note from what was recorded.
-Background jobs log to `notes.log` in the meeting's folder.
+A crashed enhancement does not automatically rerun or transcribe; retry with
+`notes enhance <meeting-id>`. Background jobs log to `notes.log` in the meeting's folder.
 
 Each meeting gets a folder of audio and intermediate files in
 `~/Library/Application Support/meeting-notes/meetings/<meeting-id>/`. The note goes to
@@ -97,7 +124,7 @@ Settings are environment variables:
 | `MEETING_NOTES_MODEL` | `mlx-community/parakeet-tdt-0.6b-v2` (speech to text) |
 | `MEETING_NOTES_MY_NAME` | first name on your macOS account (what the summary calls you) |
 | `MEETING_NOTES_SUMMARY_MODEL` | `qwen3:30b` (Ollama) |
-| `MEETING_NOTES_NUM_CTX` | `32768` (tokens; must fit the whole transcript) |
+| `MEETING_NOTES_NUM_CTX` | `32768` (tokens; must fit both sources, prompt, schema, corrections and reply) |
 | `MEETING_NOTES_SUMMARY_THINK` | `1` (let the model reason first; `0` for models that can't) |
 | `MEETING_NOTES_OLLAMA_URL` | `http://localhost:11434` |
 
@@ -111,3 +138,72 @@ uv run pytest -m integration   # real models and audio hardware; never runs in C
 uv run pyright                 # strict type checking
 uv run ruff check . && uv run ruff format --check .
 ```
+
+The frozen M10 comparison and manual rubric are in [evaluation/m10/README.md](evaluation/m10/README.md).
+The [v1 scored report](evaluation/m10/results/report.md) preserves the completed comparison.
+Agree on a budget and repetitions before running a new freeze.
+
+The first frozen comparison failed conflict qualification. A revised prompt/schema candidate
+is frozen in [evaluation/m10/v2/](evaluation/m10/v2/README.md). Its
+[scored rerun](evaluation/m10/v2/results/report.md) improved conditional due phrasing but
+still failed conflicts and introduced unsupported task deadlines. M10 remains unbuilt.
+
+The [v3 candidate](evaluation/m10/v3/README.md) adds evidence references and validation.
+Its [first-stage evaluation](evaluation/m10/v3/results/report.md) published only 5/13 summaries;
+eight cases remained blocked after correction. The staged run stopped after one repetition,
+using 38 requests across both arms. The model proposes claims with exact source spans;
+code checks references, compiles known conflicts into neutral core references, and keeps
+both full accounts under Conflicts. Automatic deadlines require a complete trailing timing
+phrase from the same statement as that task. Other timing exchanges are quoted in review
+warnings without assigning a deadline. These conservative checks may withhold valid timing;
+real citations still do not prove correct meaning or detect every omitted conflict.
+
+The [V4 candidate](evaluation/m10/v4/README.md) uses direct source references. Code assembles
+source-worded tasks and conservative owners; uncertain deadlines appear for review beside
+the action with no assigned due value. Task details are confined to Action items. V4 has
+completed its [one-repetition evaluation](evaluation/m10/v4/results/report.md): nine of
+13 proposed summaries were generated, four blocked, and the later-timing answer was lost.
+The run used 36 requests across both arms. Quality acceptance failed; compilation and
+review warnings alone do not establish useful or complete output. New saves use wrapper version 3; existing version-2 saves retain their original
+validation rules.
+
+The [V5 candidate](evaluation/m10/v5/README.md) binds source-ID enums into each request,
+uses an explicit source for timing quotes, ignores redundant self-context, and neutralizes
+redundant known-conflict prose before source-kind rejection. Unassigned timing evidence
+survives in review when action prose is suppressed. Unknown or unrelated wrong-source
+references still fail. Its [one-repetition evaluation](evaluation/m10/v5/results/report.md)
+produced 12/13 proposed summaries using 27 requests across both arms, but failed quality
+acceptance: a revised date becomes the task, a release decision moves into unrelated timing
+review, and conflict neutralization removes an undisputed price. Sparse notes still block.
+V5 saves use wrapper version 4, while prior versions retain their original validators.
+
+The [V6 candidate](evaluation/m10/v6/README.md) preserves unaffected facts from mixed prose
+as attributed source quotes and stops inferring timing links from shared prose. Original
+commitments and later timing updates are separate references; backwards updates fail.
+Updates remain unassigned with source evidence for review. Source coordinates stay in the
+audit rather than model input. [Offline replay](evaluation/m10/v6/replay/README.md) restores
+the release decision and monitoring cost. The [V6 evaluation](evaluation/m10/v6/results/report.md)
+used 28 requests and produced 12/13 summaries, but still failed quality: additional notes
+accompany a missing spoken commitment, and later timing blocks after correction. The targeted
+V5 losses improved in this pass; current manual acceptance remains pending. New saves use wrapper
+version 5, with the original V5 validator retained for version-4 saves.
+
+The [V7 candidate](evaluation/m10/v7/README.md) accepts a unique exact timing quote from a
+later transcript source as unverified review evidence, never an assigned deadline. A narrow
+first-person task-verb diagnostic flags missing actions for the existing bounded correction;
+it does not generate actions or prove completeness. [Offline replay](evaluation/m10/v7/replay/README.md)
+recovers the later-Friday review and detects the omitted task. The [V7 evaluation](evaluation/m10/v7/results/report.md)
+produced all 13 summaries using 28 requests across both arms. Correction restored the missing
+task, and no critical proposed failures or commitment regressions were observed. It meets the
+frozen single-run criteria; this is not a reliability estimate, and current manual acceptance
+remains pending.
+New saves use wrapper version 6; version-5 saves retain the original V6 rules.
+
+Format and evidence failures share one correction request. Unresolved blocking errors
+leave the previous successful summary/evidence untouched. Drafts, requests, replies and
+validation findings are saved locally under the meeting's `attempts/` folder. The selected
+attempt and saved passages also accompany new successful results in summary wrapper version 6.
+Older summaries and version 1 wrappers remain readable. Abrupt process termination can
+prevent the current audit from being finalized; it does not automatically retry generation.
+Numeric warnings now use each claim's cited spans and remain visible from the saved audit.
+The evaluator records every sent request/reply as well as the selected validation attempt.

@@ -4,9 +4,10 @@ A personal, local-first meeting notetaker for macOS. It's a CLI that records my 
 other side of a call, transcribes locally after the meeting, summarizes with a local model,
 and writes an Obsidian-friendly markdown note.
 
-Status: **M8 shipped** (fold backchannels). M1–M7 and the spike done. Proposed next:
-M9 creates handwritten notes in Obsidian; M10 adds explicit notes-guided enhancement.
-Neither is built. This roadmap update authorizes no feature implementation or model calls.
+Status: **M8 shipped**. M9 and M10 implementations are present; manual Obsidian
+acceptance was reported complete for M10. V7 meets its frozen single-run quality criteria;
+current review-workflow manual acceptance remains pending, so M10 remains unbuilt.
+No model calls are authorized as part of this implementation.
 Phase 0 (Handy) set up.
 
 ---
@@ -71,23 +72,29 @@ pipeline state with enums and dataclasses.
 
 ## Architecture
 
-**Shipped through M8:** recording ends with automatic transcript-only summarization.
-Handwritten notes are not created or used as model input today.
+**Implemented workflow (M10 quality/manual acceptance pending):**
 
 ```
-notes start [--title T]
-  ├─ notes-capture (Swift)  ── me.wav   (mic, 16 kHz mono)
-  │                         └─ them.wav (global tap: all system output, 16 kHz mono)
-  └─ writes PID + meeting.json (start time, calendar event from notes-capture)
-
-notes stop
-  ├─ signal capture to stop, wait for WAVs to finalize
-  ├─ transcribe me.wav, them.wav  → segments with timestamps (JSON)
-  ├─ merge by time                → transcript.md  ("**Me:** … / **Them:** …")
-  ├─ summarize (Ollama)           → summary.json (summary, key points, decisions, action items)
-  └─ render                       → ~/development/notes/meetings/2026-10-17_Weekly Sync_1400.md
-                                  → ~/development/notes/meetings/transcripts/2026-10-17_Weekly Sync_1400_transcript.md
+notes start / record
+  ├─ create and open handwritten note in Obsidian
+  └─ record me.wav + them.wav and capture offsets
+notes stop / foreground completion / recovery / transcribe
+  ├─ transcribe usable channels → segments.*.json
+  ├─ clear saved generation and evidence
+  └─ render transcript and ready-to-enhance status (preserve edited vault files)
+notes enhance <id> / summarize <id> / enhance --choose
+  ├─ claim meeting; reject incomplete, no-speech or busy meetings
+  ├─ snapshot handwritten bytes, effective text, segment transcript and context
+  ├─ generate with separately labelled sources → source-specific number checks
+  ├─ atomically replace versioned summary.json (summary + evidence)
+  └─ render; Spotlight notifies and opens a newly published summary in a new tab
+notes render <id>
+  └─ use saved generation/evidence; never reread original handwritten file
 ```
+
+A nonblocking per-meeting lock serializes processing; short global claims coordinate
+session ownership. An `enhancing` crash requires explicit `notes enhance <id>` retry.
+Legacy flat summaries and meetings with no handwritten-path metadata remain supported.
 
 **Each stage reads the previous stage's files and writes its own**, so any stage can be
 re-run on its own:
@@ -114,7 +121,9 @@ notes start [--title T]
 notes stop
 notes status
 notes record [--title T]        # foreground capture; Ctrl-C ends the meeting
-notes transcribe <meeting-id>   # re-run transcription and summarization
+notes transcribe <meeting-id>   # re-transcribe; ready to enhance
+notes enhance   <meeting-id>   # explicit generation
+notes enhance --choose         # chooser and detached worker
 notes summarize  <meeting-id>
 notes render     <meeting-id>
 ```
@@ -123,17 +132,13 @@ Configuration uses the environment variables documented in [README.md](README.md
 Keep the shipped models and settings: Parakeet TDT 0.6B v2, Ollama `qwen3:30b`,
 `num_ctx=32768` and thinking enabled. All processing stays local.
 
-**Proposed workflow:** M9 adds a separate `…_handwritten.md` file beside the generated
-summary, opens it at start, and keeps automatic transcript-only summaries on stop. The
-handwritten note and generated summary link to one another; the transcript retains its
-existing filename and link. M10 changes stop to transcribe and report ready to enhance;
-`notes enhance <meeting-id>` or the **Enhance meeting notes** Spotlight shortcut then
-generates the summary from a saved snapshot of the writing and the transcript.
-`notes summarize <meeting-id>` remains a compatible generation entry point. Rendering
-uses the saved evidence, never the current contents of a subsequently edited handwritten
-file. The enhancement command and workflow changes are planned, not available in M8.
+Handwritten notes remain separate files. Successful enhancement saves exact source inputs
+alongside its summary. Later rendering uses that evidence even if the handwritten file
+changes or disappears. A missing associated handwritten file prevents new inference.
+Summary/Decisions/Action items remain grounded in speech; optional From your notes and
+Conflicts sections separate written-only material and unresolved accounts.
 
-### Generated Obsidian note shape (M8)
+### Core generated Obsidian note shape (optional M10 sections follow Action items)
 
 ```markdown
 ---
@@ -609,6 +614,153 @@ Re-running transcription also leaves generation to the explicit enhancement acti
   notes, empty notes, additional written context, conflicting facts and ambiguous dates.
   Passing that evaluation is a separate prerequisite for declaring M10 built; implementing
   the workflow alone is insufficient. This roadmap update authorizes no model calls.
+
+- **Implementation (2026-11-03; not Built):** explicit enhancement, saved input wrappers,
+  source-aware number checks, chooser, per-meeting serialization and unit coverage are
+  implemented. Five synthetic comparison pairs, baseline source at `199dd62`, proposed
+  prompt/schema/settings, guarded runner and manual rubric are frozen in `evaluation/m10/`.
+  No model runs, quality scores or real-meeting evaluation were performed. Decide inference
+  budget/repetitions separately. Quality evaluation and manual acceptance remain required.
+
+- **Evaluation (2026-11-03; not Built):** user reported manual Obsidian acceptance
+  complete. The approved five-case comparison ran three repetitions per arm (30 summaries,
+  30 requests, no corrections/errors). Rubric review found critical conflict qualification
+  failures in all three proposed conflict outputs; spoken commitments were preserved.
+  Both arms weakened conditional due wording. Full synthetic evidence and per-repetition
+  scores: [evaluation report](evaluation/m10/results/report.md). Quality acceptance failed;
+  fixes require a new freeze and agreed rerun. No Built note or merge yet.
+
+- **Revision (2026-11-04; not Built):** revised prompt and schema descriptions require
+  unresolved conflict references in core sections and complete conditional due phrases.
+  Added request-contract and saved-render regression checks. The original scored freeze
+  is unchanged; `evaluation/m10/v2/` freezes the candidate with the same five pairs,
+  baseline, settings and rubric. Versioned runner selection is available. No v2 inference
+  has run; its rerun budget requires separate agreement. Quality acceptance remains failed
+  for v1 and pending for v2; manual workflow acceptance was previously reported complete.
+
+- **V2 evaluation (2026-11-04; not Built):** approved rerun produced 30 summaries
+  using 32 requests, with no execution errors. Conditional due phrasing passed in 3/3
+  proposed cases, but conflict qualification failed in 3/3 and unsupported task deadlines
+  appeared in 2/3 empty-note outputs. Five proposed outputs have critical failures; M10
+  remains unbuilt. [V2 scores and evidence](evaluation/m10/v2/results/report.md) preserve
+  the run, corrections/observability limits and per-repetition assessment. No further
+  prompt changes or inference were performed; any next candidate needs a new freeze.
+
+- **Evidence-backed candidate (2026-11-04; not Built):** shared claim IDs and exact source
+  spans replace freely repeated model prose. Code controls known-conflict placement,
+  checks task-local timing and spoken owner evidence, and retains uncertain timing in
+  review warnings. Blocking failures get one shared correction attempt, then preserve
+  the prior result. Requests, replies, validation findings and selection are saved with
+  successful generation or separately for failures; legacy wrappers still load.
+  V3 freezes 13 synthetic cases (five unchanged, eight new) with the same baseline,
+  model/settings and six-dimension rubric. Unit tests cover structural checks and saved
+  audit rendering; they do not establish entailment or completeness. No v3 model runs
+  have occurred. Choose a new inference budget before evaluation and check the new
+  failure/review-warning behavior manually. V1/v2 failures remain recorded and unmodified.
+
+- **V3 stage-one evaluation (2026-11-04; not Built):** approved three repetitions with
+  a 234-request cap and first-pass quality gate. One repetition across 13 cases and both
+  arms used 38 requests (13 baseline, 25 proposed). Baseline published 13/13; proposed
+  published 5/13 and blocked 8/13 after correction, regressing commitment completeness.
+  Stopped at the agreed gate; no remaining repetitions or candidate tuning. Task/timing
+  text coupling and full-line note citations repeatedly prevent valid output; shared-number
+  and status-conflict handling succeed in their single published cases. All attempts and
+  [scores](evaluation/m10/v3/results/report.md) are preserved; freezes remain unchanged.
+  A revised candidate needs a new freeze/budget and new failure/review-warning manual
+  acceptance. M10 remains unbuilt.
+
+- **V4 implementation (2026-11-05; not Built):** direct source IDs replace generated claim
+  IDs. Code assembles tasks, conservative owners, complete trailing timing and inline review
+  evidence. Task prose is suppressed elsewhere; handwritten facts receive sentence IDs.
+  Wrapper version 3 preserves original validation for legacy saves. Offline replay of 25
+  V3 attempts compiles 23, rejects two and produces review evidence in seven; these are
+  not quality scores. A revised-date selection still loses the original commitment and
+  leaves obsolete timing in prose. V4 freezes the same 13 cases and baseline/settings.
+  No new inference; agree a separate budget and test the new manual review workflow.
+  [Replay details](evaluation/m10/v4/replay/README.md) preserve limitations. M10 remains unbuilt.
+
+- **V4 evaluation (2026-11-05; not Built):** approved one repetition across 13 cases and
+  both arms, capped at 78 requests. Completed with 36 requests (13 baseline, 23 proposed).
+  Baseline produced 13 summaries; V4 produced nine and blocked four. Later timing loses
+  its answer; sparse notes omit a spoken cost; unnecessary review obscures simple deadlines.
+  The original conflict case retains both accounts correctly in this single pass. Quality
+  acceptance failed. [Full scores and attempts](evaluation/m10/v4/results/report.md) are
+  preserved, with no tuning or extra inference. Frozen inputs and earlier results remain
+  unchanged. Source-ID confusion, context misuse and timing loss need a new revision;
+  agree its freeze/budget separately. M10 remains unbuilt, manual V4 acceptance pending.
+
+- **V5 reference repair (2026-11-05; not Built):** explicit commitment IDs and source-bearing
+  timing quotes replace overloaded strings; request schemas enumerate available IDs.
+  Self-context no longer creates review, later timing evidence survives suppression when
+  timing is unassigned, and known conflicts neutralize redundant cross-source prose.
+  Unknown/unrelated references still block; valid IDs do not prove semantic selection.
+  Wrapper version 4 preserves validation of earlier saves. Offline replay of 23 V4 attempts
+  compiles 11, blocks nine and leaves three unmappable; four compiled attempts contain review.
+  Revised-date references and missing context remain unresolved. V5 freezes the same inputs,
+  baseline, settings and actual per-case schemas. No inference; budget and quality/manual
+  acceptance remain separate. [Replay evidence](evaluation/m10/v5/replay/README.md).
+
+- **V5 evaluation (2026-11-05; not Built):** requested one repetition across 13 cases and
+  both arms under the same 78-request cap. Completed using 27 requests (13 baseline,
+  14 proposed); proposed produced 12 summaries and one block. All proposed references
+  conform to the recorded allowed-ID enums. Quality still fails: revised timing selects
+  the correction as the task; compiler suppression moves a release decision into unrelated
+  review and removes an undisputed price. Sparse also omits a commitment before blocking.
+  Conditional timing, later-answer review and written context improve in this single pass.
+  [Scores and audit evidence](evaluation/m10/v5/results/report.md) are preserved; no tuning
+  or extra inference. Previous freezes/results are unchanged. M10 remains unbuilt; future
+  revisions require a new freeze/budget and current review-workflow manual acceptance.
+
+- **V6 compiler preservation (2026-11-05; not Built):** shared prose no longer creates
+  timing links. Mixed items preserve unaffected sources as attributed quotes; disputed
+  accounts remain unresolved. Original tasks and later timing updates have separate
+  references, with backwards links rejected. Model-facing sources omit coordinates;
+  saved audits retain them. Numeric correction cannot discard an existing update link.
+  Wrapper version 5 preserves original V5/version-4 validation. Offline replay compiles
+  11 of 14 saved responses: the release decision and monitoring cost survive, sparse stays
+  blocked twice, and reversed timing now blocks instead of becoming a misleading task.
+  [V6 freeze and replay](evaluation/m10/v6/README.md) retain the same 13 cases, baseline,
+  rubric and settings. All 365 unit tests pass; no inference ran. Budget/repetitions remain
+  unset. Semantic selection, completeness, quality and current manual acceptance still
+  require evaluation. M10 remains unbuilt.
+
+- **V6 evaluation (2026-11-05; not Built):** requested one repetition of all 13 cases in
+  both arms under the same announced 78-request cap. Used 28 requests (13 baseline,
+  15 proposed), producing 12 proposed summaries and one block. Release decision, monitoring
+  cost, sparse-note completeness and original revised-date task survive in this pass.
+  Quality still fails: additional context accompanies an omitted spoken review commitment;
+  later timing identifies the correct sources but blocks on cross-statement initial timing
+  after a failed correction. Budget conflict also includes an unrelated delivery source.
+  [Scores and audit evidence](evaluation/m10/v6/results/report.md) preserve all outputs;
+  all prior freezes/results remain unchanged. No tuning or extra inference. All 365 unit
+  tests pass. Next design work should examine conservative timing normalization and explicit
+  commitment coverage diagnostics offline. M10 remains unbuilt; future revisions need a
+  new freeze/budget and current manual review-workflow acceptance.
+
+- **V7 offline repair (2026-11-05; not Built):** exact unique timing quotes from later
+  transcript sources become unverified review evidence, never assigned deadlines. A narrow
+  first-person task-verb diagnostic flags omitted actions for the existing bounded correction,
+  without inventing tasks; negation, uncertainty, quotations and nearby retractions are
+  excluded. It does not establish completeness or classify all commitments. Numeric retries
+  retain normalized timing links. Wrapper version 6 preserves V6/version-5 validation.
+  [V7 freeze and replay](evaluation/m10/v7/README.md) compile 13 of 15 saved attempts:
+  both later-timing drafts now review Friday; additional now blocks on the missing task;
+  sparse's original invalid draft remains blocked. Same prompt/schema, 13 cases, baseline,
+  rubric and model settings. All 395 unit tests pass. No inference; budget/repetitions unset.
+  Quality and current manual acceptance remain pending. M10 remains unbuilt.
+
+- **V7 evaluation (2026-11-05; not Built):** requested one repetition of all 13 cases in
+  both arms under the announced 78-request cap; used 28 requests (13 baseline, 15 proposed).
+  All 13 proposed summaries complete. Omission correction restores the missing review task;
+  external Friday timing is preserved in unassigned review. All initial parsed drafts match
+  V6; the changed validator/compiler/correction behavior explains the targeted differences.
+  [Scores and evidence](evaluation/m10/v7/results/report.md) meet the frozen single-run
+  criteria: no observed proposed critical failures or commitment completeness regressions,
+  with useful written context. Conflict grouping and polish remain imperfect; conservative
+  timing earns partial credit. One repetition and reused synthetic fixtures do not establish
+  reliability. All prior artifacts remain unchanged; no tuning or extra inference. Current
+  manual review-workflow acceptance remains pending, so M10 stays unbuilt. Broader confidence
+  requires separately budgeted repeat/held-out checks. All 395 unit tests pass.
 
 For both stages, run formatting, lint, strict types and unit tests before committing;
 run Swift tests only if capture code changes. Keep shipped model settings unchanged.

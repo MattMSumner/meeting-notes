@@ -25,8 +25,9 @@ from meeting_notes.store import MeetingDir, MeetingStore
 
 class Phase(StrEnum):
     RECORDING = "recording"
+    ENHANCING = "enhancing"
     PROCESSING = "processing"
-    """Transcribing, summarizing and writing the note."""
+    """Transcribing and rendering the ready-to-enhance note."""
 
 
 @dataclass(frozen=True)
@@ -182,3 +183,21 @@ class SystemProcesses:
                 return
             time.sleep(0.2)
         subprocess.run(["pkill", "-KILL", "-f", pattern])
+
+
+class MeetingBusy(Exception):
+    pass
+
+
+@contextmanager
+def processing_lock(meeting_dir: MeetingDir) -> Generator[None]:
+    """Never wait behind another command operating on the same meeting."""
+    with (meeting_dir.path / ".processing.lock").open("a") as lock_file:
+        try:
+            fcntl.flock(lock_file, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            raise MeetingBusy(f"Meeting {meeting_dir.id} is already being processed.") from None
+        try:
+            yield
+        finally:
+            fcntl.flock(lock_file, fcntl.LOCK_UN)
