@@ -736,6 +736,18 @@ Re-running transcription also leaves generation to the explicit enhancement acti
   commitment coverage diagnostics offline. M10 remains unbuilt; future revisions need a
   new freeze/budget and current manual review-workflow acceptance.
 
+- **V7 offline repair (2026-11-05; not Built):** exact unique timing quotes from later
+  transcript sources become unverified review evidence, never assigned deadlines. A narrow
+  first-person task-verb diagnostic flags omitted actions for the existing bounded correction,
+  without inventing tasks; negation, uncertainty, quotations and nearby retractions are
+  excluded. It does not establish completeness or classify all commitments. Numeric retries
+  retain normalized timing links. Wrapper version 6 preserves V6/version-5 validation.
+  [V7 freeze and replay](evaluation/m10/v7/README.md) compile 13 of 15 saved attempts:
+  both later-timing drafts now review Friday; additional now blocks on the missing task;
+  sparse's original invalid draft remains blocked. Same prompt/schema, 13 cases, baseline,
+  rubric and model settings. All 395 unit tests pass. No inference; budget/repetitions unset.
+  Quality and current manual acceptance remain pending. M10 remains unbuilt.
+
 For both stages, run formatting, lint, strict types and unit tests before committing;
 run Swift tests only if capture code changes. Keep shipped model settings unchanged.
 Live transcription, in-place AI editing, custom Obsidian plugins and automatic tracking
