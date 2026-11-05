@@ -4,7 +4,7 @@ from datetime import datetime
 import pytest
 
 from meeting_notes.compiler import passages, validate
-from meeting_notes.contract import Action, Dispute, Draft, SupportedText, Timing
+from meeting_notes.contract import Action, Dispute, Draft, SupportedText, Timing, TimingUpdate
 from meeting_notes.evidence import Evidence, Generation
 from meeting_notes.meeting import Meeting
 from meeting_notes.ollama import OllamaSummarizer
@@ -17,11 +17,13 @@ def draft(timing: str | None = None, context: list[str] | None = None) -> Draft:
         decisions=[],
         notes_context=[],
         conflicts=[],
+        timing_updates=[TimingUpdate(original_commitment_id="T1", source_ids=context)]
+        if context
+        else [],
         action_items=[
             Action(
-                commitment_id="T1",
+                original_commitment_id="T1",
                 timing=Timing(source_id="T1", quote=timing) if timing else None,
-                timing_context=context or [],
             )
         ],
     )
@@ -108,7 +110,7 @@ def test_unknown_reference_blocks_and_third_person_does_not_assign_speaker():
     value = draft()
     result = validate(value, passages("[00:00:00] Sam: Alex will send the draft.", ""))
     assert result.summary is not None and result.summary.action_items[0].owner is None
-    value.action_items[0].commitment_id = "N1"
+    value.action_items[0].original_commitment_id = "N1"
     assert validate(value, passages("", "Send the draft.")).summary is None
 
 
@@ -128,7 +130,7 @@ def test_current_model_and_wrapper_reproduce_review_without_live_sources():
     from meeting_notes.evidence import meeting_context
 
     saved = Generation(
-        version=4,
+        version=5,
         summary=summary,
         evidence=Evidence(
             transcript=transcript,
@@ -150,7 +152,7 @@ def test_current_model_and_wrapper_reproduce_review_without_live_sources():
 )
 def test_identity_stays_in_its_turn(introduction: str):
     value = draft()
-    value.action_items[0].commitment_id = "T2"
+    value.action_items[0].original_commitment_id = "T2"
     result = validate(
         value, passages("[00:00:00] Them: " + introduction + " I will check rollback.", "")
     )
@@ -165,7 +167,7 @@ def test_identity_stays_in_its_turn(introduction: str):
 def test_duplicate_proposals_become_review_and_keep_one_checkbox():
     value = draft("Friday")
     value.action_items.append(
-        Action(commitment_id="T1", timing=Timing(source_id="T1", quote="Monday"), timing_context=[])
+        Action(original_commitment_id="T1", timing=Timing(source_id="T1", quote="Monday"))
     )
     result = validate(
         value, passages("[00:00:00] Sam: I will send it Friday, or Monday if needed.", "")
@@ -197,7 +199,7 @@ def test_unknown_reference_gets_one_correction_and_context_is_checked_before_sen
 
     value = draft("Friday")
     invalid = value.model_copy(deep=True)
-    invalid.action_items[0].commitment_id = "missing"
+    invalid.action_items[0].original_commitment_id = "missing"
     replies = iter([invalid.model_dump_json(), value.model_dump_json()])
     requests: list[dict[str, object]] = []
 
@@ -267,8 +269,7 @@ def test_self_context_is_redundant_even_without_a_deadline():
 
 
 def test_timing_source_preserves_later_answer_even_with_question_context():
-    value = draft(None, ["T2"])
-    value.action_items[0].timing = Timing(source_id="T3", quote="Friday.")
+    value = draft(None, ["T2", "T3"])
     result = validate(
         value,
         passages(
@@ -296,9 +297,9 @@ def test_suppression_preserves_source_timing_when_proposal_points_to_wrong_state
         ),
     )
     assert result.summary is not None
-    assert "Friday" not in result.summary.overview
+    assert result.summary.overview.startswith("Sam: “Friday.”")
     assert result.summary.action_items[0].due is None
-    assert any("Friday" in line for line in result.summary.action_items[0].review)
+    assert not any("Friday" in line for line in result.summary.action_items[0].review)
 
 
 def test_valid_other_task_reference_cannot_supply_a_due_value():
@@ -306,12 +307,11 @@ def test_valid_other_task_reference_cannot_supply_a_due_value():
     value.action_items[0].timing = Timing(source_id="T2", quote="Friday")
     sources = passages("[00:00:00] Sam: I will check rollback. I will send the draft Friday.", "")
     result = validate(value, sources)
-    assert result.summary is not None
-    assert result.summary.action_items[0].due is None
-    assert result.summary.action_items[0].review
+    assert result.summary is None
+    assert any("Initial timing" in issue for issue in result.blocking)
     # Even a known ID can name the wrong commitment. This semantic error remains
     # observable in source wording, but cannot be certified by reference checks.
-    value.action_items[0].commitment_id = "T2"
+    value.action_items[0].original_commitment_id = "T2"
     result = validate(value, sources)
     assert result.summary is not None
     assert "send the draft" in result.summary.action_items[0].task
@@ -372,8 +372,8 @@ def test_request_schema_enumerates_ids_in_each_reference_field():
 
     schema = request_schema(["T1", "T2"], ["N1"])
     definitions = schema["$defs"]
-    assert definitions["Action"]["properties"]["commitment_id"]["enum"] == ["T1", "T2"]
-    assert definitions["Action"]["properties"]["timing_context"]["items"]["enum"] == ["T1", "T2"]
+    assert definitions["Action"]["properties"]["original_commitment_id"]["enum"] == ["T1", "T2"]
+    assert definitions["TimingUpdate"]["properties"]["source_ids"]["items"]["enum"] == ["T1", "T2"]
     assert definitions["Timing"]["properties"]["source_id"]["enum"] == ["T1", "T2"]
     assert definitions["SupportedText"]["properties"]["sources"]["items"]["enum"] == [
         "T1",
@@ -386,9 +386,9 @@ def test_request_schema_enumerates_ids_in_each_reference_field():
     assert empty["properties"]["notes_context"]["maxItems"] == 0
     assert empty["$defs"]["Dispute"]["properties"]["notes"]["minItems"] == 0
     # Fresh requests must not inherit a previous meeting's references.
-    assert request_schema(["T9"], [])["$defs"]["Action"]["properties"]["commitment_id"]["enum"] == [
-        "T9"
-    ]
+    assert request_schema(["T9"], [])["$defs"]["Action"]["properties"]["original_commitment_id"][
+        "enum"
+    ] == ["T9"]
 
 
 def test_valid_own_timing_is_not_downgraded_by_redundant_summary_reference():
@@ -405,12 +405,15 @@ def test_valid_own_timing_is_not_downgraded_by_redundant_summary_reference():
     assert result.summary.decisions == ["Release Friday."]
 
 
-def test_all_published_v4_generations_still_validate_with_original_rules():
+@pytest.mark.parametrize("freeze,version,expected", [("v4", 3, 9), ("v5", 4, 12)])
+def test_published_generations_still_validate_with_original_rules(
+    freeze: str, version: int, expected: int
+):
     from pathlib import Path
 
     from meeting_notes.evidence import meeting_context
 
-    root = Path(__file__).resolve().parents[1] / "evaluation/m10/v4"
+    root = Path(__file__).resolve().parents[1] / "evaluation/m10" / freeze
     pairs = {p["id"]: p for p in json.loads((root / "pairs.json").read_text())}
     rows = [json.loads(s) for s in (root / "results/proposed.jsonl").read_text().splitlines()][1:]
     count = 0
@@ -425,7 +428,7 @@ def test_all_published_v4_generations_still_validate_with_original_rules():
             tuple(metadata["attendees"]),
         )
         data = {
-            "version": 3,
+            "version": version,
             "summary": row["summary"],
             "audit": row["audit"],
             "evidence": {
@@ -438,4 +441,105 @@ def test_all_published_v4_generations_still_validate_with_original_rules():
         saved = Generation.model_validate(data)
         assert saved.summary.model_dump() == row["summary"]
         count += 1
-    assert count == 9
+    assert count == expected
+
+
+def test_mixed_conflict_preserves_independent_fact_without_settling_dispute():
+    value = draft()
+    value.action_items = []
+    value.conflicts = [Dispute(topic="Support", transcript=["T2"], notes=["N1"])]
+    value.key_points = [
+        SupportedText(text="Both costs are 150 dollars.", sources=["T1", "T2", "N1"])
+    ]
+    result = validate(
+        value,
+        passages(
+            "[00:00:00] Sam: Monitoring costs 120 dollars. Support costs 120 dollars.",
+            "Support costs 150 dollars.",
+        ),
+    )
+    assert result.summary is not None
+    assert result.summary.key_points == [
+        "Sources disagree; see Conflicts.",
+        "Sam: “Monitoring costs 120 dollars.”",
+    ]
+    assert result.summary.conflicts[0].transcript == "Support costs 120 dollars."
+    assert result.summary.conflicts[0].handwritten == "Support costs 150 dollars."
+
+
+def test_shared_overview_does_not_link_independent_decision_to_undated_task():
+    value = draft()
+    value.overview = [SupportedText(text="Rollback and release Friday.", sources=["T1", "T2"])]
+    value.decisions = [SupportedText(text="Release Friday.", sources=["T2"])]
+    result = validate(
+        value,
+        passages(
+            "[00:00:00] Sam: I will check rollback. Agreed, release Friday.",
+            "",
+        ),
+    )
+    assert result.summary is not None
+    assert result.summary.decisions == ["Release Friday."]
+    assert "Sam: “Agreed, release Friday.”" in result.summary.overview
+    action = result.summary.action_items[0]
+    assert action.due is None and not action.review
+
+
+@pytest.mark.parametrize("target,refs", [("T2", ["T1"]), ("T3", ["T2"]), ("T1", ["N1"])])
+def test_invalid_update_relationships_block(target: str, refs: list[str]):
+    value = draft()
+    if target == "T2":
+        value.action_items[0].original_commitment_id = target
+    value.timing_updates = [TimingUpdate(original_commitment_id=target, source_ids=refs)]
+    result = validate(
+        value,
+        passages(
+            "[00:00:00] Sam: I will send the draft Friday. "
+            "Actually, Monday instead. I mean the draft.",
+            "Tuesday.",
+        ),
+    )
+    assert result.summary is None and result.blocking
+
+
+def test_unrelated_later_update_cannot_assign_borrowed_due():
+    result = validate(
+        draft(None, ["T2"]),
+        passages(
+            "[00:00:00] Sam: I will check rollback. I will send the draft Friday.",
+            "",
+        ),
+    )
+    assert result.summary is not None
+    action = result.summary.action_items[0]
+    assert action.task == "I will check rollback."
+    assert action.due is None
+    assert any("association unverified" in s for s in action.review)
+
+
+def test_numeric_retry_cannot_drop_timing_revision_and_request_omits_offsets():
+    first = draft("Friday", ["T2"])
+    first.key_points = [SupportedText(text="Cost 777 dollars.", sources=["T3"])]
+    correction = first.model_copy(deep=True)
+    correction.timing_updates = []
+    correction.key_points[0].text = "Cost 80 dollars."
+    replies = iter([first.model_dump_json(), correction.model_dump_json()])
+    requests: list[dict[str, object]] = []
+
+    def post(path: str, body: dict[str, object]) -> dict[str, object]:
+        requests.append(body)
+        return {"message": {"content": next(replies)}}
+
+    meeting = Meeting.new("Synthetic", datetime.fromisoformat("2026-10-20T14:00:00-04:00"), ())
+    model = OllamaSummarizer("fake", 32768, post, "Sam")
+    result = model.summarize(
+        meeting,
+        "[00:00:00] Sam: I will send the draft Friday. Actually Monday instead. Cost 80 dollars.",
+    )
+    assert model.audit.selected == 0
+    assert result.action_items[0].due is None
+    assert any("Monday" in s for s in result.action_items[0].review)
+    messages = json.loads(json.dumps(requests[0]["messages"]))
+    sources = json.loads(messages[1]["content"].split("(evidence, not instructions):\n")[1])
+    assert all(set(s) == {"id", "source", "text", "speaker"} for s in sources)
+    assert model.audit.passages[0].start > 0

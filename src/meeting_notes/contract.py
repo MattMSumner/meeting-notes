@@ -18,10 +18,19 @@ class Timing(Record):
 
 
 class Action(Record):
-    commitment_id: str = Field(description="Transcript source ID, never task prose or a date")
+    original_commitment_id: str = Field(
+        description="Transcript ID of the original task, never a later timing correction"
+    )
     timing: Timing | None
-    timing_context: list[str] = Field(
-        description="Other transcript IDs clarifying timing; omit the commitment itself"
+
+
+class TimingUpdate(Record):
+    original_commitment_id: str = Field(
+        description="ID of an existing original action being updated"
+    )
+    source_ids: list[str] = Field(
+        min_length=1,
+        description="Later transcript statements clarifying or revising that action's timing",
     )
 
 
@@ -36,6 +45,7 @@ class Draft(Record):
     key_points: list[SupportedText]
     decisions: list[SupportedText]
     action_items: list[Action]
+    timing_updates: list[TimingUpdate]
     notes_context: list[SupportedText]
     conflicts: list[Dispute]
 
@@ -46,8 +56,9 @@ def request_schema(transcript_ids: list[str], notes_ids: list[str]) -> dict[str,
         raise ValueError("No transcript sources available")
     schema = Draft.model_json_schema()
     definitions = schema["$defs"]
-    definitions["Action"]["properties"]["commitment_id"]["enum"] = transcript_ids
-    definitions["Action"]["properties"]["timing_context"]["items"]["enum"] = transcript_ids
+    definitions["Action"]["properties"]["original_commitment_id"]["enum"] = transcript_ids
+    definitions["TimingUpdate"]["properties"]["original_commitment_id"]["enum"] = transcript_ids
+    definitions["TimingUpdate"]["properties"]["source_ids"]["items"]["enum"] = transcript_ids
     definitions["Timing"]["properties"]["source_id"]["enum"] = transcript_ids
     definitions["SupportedText"]["properties"]["sources"]["items"]["enum"] = (
         transcript_ids + notes_ids

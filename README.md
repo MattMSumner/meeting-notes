@@ -195,12 +195,21 @@ references still fail. Its [one-repetition evaluation](evaluation/m10/v5/results
 produced 12/13 proposed summaries using 27 requests across both arms, but failed quality
 acceptance: a revised date becomes the task, a release decision moves into unrelated timing
 review, and conflict neutralization removes an undisputed price. Sparse notes still block.
-New saves use wrapper version 4, while prior versions retain their original validators.
+V5 saves use wrapper version 4, while prior versions retain their original validators.
+
+The [V6 candidate](evaluation/m10/v6/README.md) preserves unaffected facts from mixed prose
+as attributed source quotes and stops inferring timing links from shared prose. Original
+commitments and later timing updates are separate references; backwards updates fail.
+Updates remain unassigned with source evidence for review. Source coordinates stay in the
+audit rather than model input. [Offline replay](evaluation/m10/v6/replay/README.md) restores
+the release decision and monitoring cost, but does not establish model quality. No V6
+inference has run; quality and manual acceptance remain pending. New saves use wrapper
+version 5, with the original V5 validator retained for version-4 saves.
 
 Format and evidence failures share one correction request. Unresolved blocking errors
 leave the previous successful summary/evidence untouched. Drafts, requests, replies and
 validation findings are saved locally under the meeting's `attempts/` folder. The selected
-attempt and saved passages also accompany new successful results in summary wrapper version 4.
+attempt and saved passages also accompany new successful results in summary wrapper version 5.
 Older summaries and version 1 wrappers remain readable. Abrupt process termination can
 prevent the current audit from being finalized; it does not automatically retry generation.
 Numeric warnings now use each claim's cited spans and remain visible from the saved audit.

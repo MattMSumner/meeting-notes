@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[1] / "evaluation" / "m10"
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--freeze", choices=("v1", "v2", "v3", "v4", "v5"), default="v1")
+    parser.add_argument("--freeze", choices=("v1", "v2", "v3", "v4", "v5", "v6"), default="v1")
     parser.add_argument("--arm", choices=("baseline", "proposed"), required=True)
     parser.add_argument("--repetitions", type=int, required=True)
     parser.add_argument("--max-requests", type=int, required=True)

@@ -604,7 +604,7 @@ def test_failed_audit_save_prevents_publication_and_preserves_old_generation(
     assert list((directory.path / "attempts").iterdir()) == []
 
 
-def test_current_generation_is_saved_with_v4_and_survives_source_deletion(h: Harness):
+def test_current_generation_is_saved_with_v5_and_survives_source_deletion(h: Harness):
     from test_ollama import FakeOllama
 
     from meeting_notes.contract import Draft, SupportedText
@@ -619,13 +619,14 @@ def test_current_generation_is_saved_with_v4_and_survives_source_deletion(h: Har
         key_points=[],
         decisions=[],
         action_items=[],
+        timing_updates=[],
         notes_context=[],
         conflicts=[],
     )
     model = OllamaSummarizer("fake", 32768, FakeOllama(value.model_dump_json()), "Sam")
     pipeline.summarize(directory, pipeline.conversation(directory), model, "Sam")
     saved = directory.load_generation()
-    assert isinstance(saved, Generation) and saved.version == 4
+    assert isinstance(saved, Generation) and saved.version == 5
     path = directory.load_meeting().handwritten_path
     assert path is not None
     path.unlink()

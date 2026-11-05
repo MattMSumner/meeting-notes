@@ -8,7 +8,7 @@ from pathlib import Path
 import pytest
 
 
-@pytest.mark.parametrize("freeze", ["v1", "v2", "v3", "v4", "v5"])
+@pytest.mark.parametrize("freeze", ["v1", "v2", "v3", "v4", "v5", "v6"])
 def test_runner_checks_selected_freeze_before_creating_output(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
@@ -20,7 +20,7 @@ def test_runner_checks_selected_freeze_before_creating_output(
     assert spec is not None and spec.loader is not None
     runner = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(runner)
-    for version in ("v1", "v2", "v3", "v4", "v5"):
+    for version in ("v1", "v2", "v3", "v4", "v5", "v6"):
         folder = tmp_path if version == "v1" else tmp_path / version
         folder.mkdir(exist_ok=True)
         (folder / f"{version}_marker").write_text("changed")
@@ -79,6 +79,7 @@ def test_runner_preserves_each_reply_and_validation_failure_without_network(
         key_points=[],
         decisions=[],
         action_items=[],
+        timing_updates=[],
         notes_context=[],
         conflicts=[],
     ).model_dump_json()
