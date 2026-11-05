@@ -4,7 +4,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, model_validator
 
-from meeting_notes.audit import Audit, CurrentAudit
+from meeting_notes.audit import Audit, CurrentAudit, ReferenceAudit
 from meeting_notes.grounding import Draft, passages, validate
 from meeting_notes.meeting import Meeting
 from meeting_notes.summary import Summary, SummaryError
@@ -28,10 +28,10 @@ class Evidence(BaseModel):
 class Generation(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    version: Literal[1, 2, 3] = 1
+    version: Literal[1, 2, 3, 4] = 1
     summary: Summary
     evidence: Evidence
-    audit: Audit | CurrentAudit | None = None
+    audit: Audit | CurrentAudit | ReferenceAudit | None = None
 
     @model_validator(mode="after")
     def check_audit(self) -> "Generation":
@@ -44,7 +44,7 @@ class Generation(BaseModel):
             raise ValueError("Version 2 requires a selected, validated attempt")
         if not 0 <= audit.selected < len(audit.attempts):
             raise ValueError("Selected attempt is out of range")
-        if self.version == 3:
+        if self.version == 4:
             from meeting_notes.compiler import (
                 passages as current_passages,
             )
@@ -52,6 +52,32 @@ class Generation(BaseModel):
                 validate as current_validate,
             )
             from meeting_notes.contract import Draft as CurrentDraft
+
+            if not isinstance(audit, ReferenceAudit):
+                raise ValueError("Version 4 requires grounding-v3")
+            if audit.passages != current_passages(
+                self.evidence.transcript, self.evidence.handwritten_text
+            ):
+                raise ValueError("Saved passages differ from the saved evidence")
+            attempt = audit.attempts[audit.selected]
+            if attempt.error or attempt.blocking or attempt.reply is None:
+                raise ValueError("Selected attempt was not publishable")
+            checked = current_validate(
+                CurrentDraft.model_validate_json(attempt.reply),
+                audit.passages,
+                self.evidence.context,
+            )
+            if checked.summary != self.summary or checked.warnings != attempt.warnings:
+                raise ValueError("Saved summary does not match its validated draft")
+            return self
+        if self.version == 3:
+            from meeting_notes.compiler_v4 import (
+                passages as current_passages,
+            )
+            from meeting_notes.compiler_v4 import (
+                validate as current_validate,
+            )
+            from meeting_notes.contract_v4 import Draft as CurrentDraft
 
             if not isinstance(audit, CurrentAudit):
                 raise ValueError("Version 3 requires grounding-v2")

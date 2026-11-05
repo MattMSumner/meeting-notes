@@ -7,14 +7,14 @@ IDs. Use complete, concise sentences. Spoken sections require transcript sources
 notes_context requires handwritten sources. Written-only tasks stay in notes_context.
 Decisions require actual spoken agreement, not suggestions or individual tasks.
 
-In action_items, for each real spoken commitment, give its source ID in commitment. Do not rewrite the task
+In action_items, for each real spoken commitment, give its source ID in commitment_id. Choose from the allowed IDs; never put prose in this field. Do not rewrite the task
 or generate an owner. A coordinated statement can remain one action. Do not turn tentative
 suggestions, questions or explicit noncommitments into actions. Do not repeat action details
 in overview, key points or decisions; code assembles Action items from the sources.
 
-Timing is an exact quote from that commitment or null. Include every condition and alternative.
+Timing is null or {source_id, quote}: the transcript ID and exact timing phrase from that source. Include every condition and alternative.
 Use timing_context for related spoken timing statements, especially later revisions; include
-the original commitment as commitment, not just the later date correction. Code may leave
+the original commitment as commitment_id, not just the later date correction. Do not repeat commitment_id in timing_context; do not use unrelated tasks as timing context. Code may leave
 uncertain timing unassigned and display its source evidence for review. Never borrow timing
 from another task, metadata or handwritten writing. Preserve relative dates.
 

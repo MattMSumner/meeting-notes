@@ -2,65 +2,13 @@
 
 import re
 
+from meeting_notes.compiler_v4 import TIMING_PATTERN as _DATE
+from meeting_notes.compiler_v4 import Source as Source
+from meeting_notes.compiler_v4 import passages as passages
 from meeting_notes.contract import Draft
 from meeting_notes.figures import unsaid_numbers
-from meeting_notes.grounding import Checked, Passage
+from meeting_notes.grounding import Checked
 from meeting_notes.summary import ActionItem, Conflict, Summary
-
-
-class Source(Passage):
-    start: int
-    end: int
-    turn: int
-
-
-def passages(transcript: str, notes: str) -> list[Source]:
-    result: list[Source] = []
-    for kind, text, prefix in (("transcript", transcript, "T"), ("notes", notes, "N")):
-        offset = 0
-        index = 0
-        for turn, line in enumerate(text.splitlines(keepends=True)):
-            speaker = None
-            content = line.rstrip("\r\n")
-            base = offset
-            match = re.match(r"\[\d+:\d\d:\d\d\] ([^:]+): ", content)
-            if kind == "transcript" and match:
-                speaker = match[1]
-                base += match.end()
-                content = content[match.end() :]
-            cuts = [0]
-            for boundary in re.finditer(r"(?<=[.!?;])\s+", content):
-                preceding = content[: boundary.start()].split()[-1]
-                if re.fullmatch(
-                    r"(?:[A-Za-z]\.)+|(?:Mr|Mrs|Ms|Dr|Prof|Sr|Jr|etc)\.", preceding, re.I
-                ):
-                    continue
-                cuts.append(boundary.end())
-            cuts.append(len(content))
-            for a, b in zip(cuts, cuts[1:], strict=False):
-                piece = content[a:b].rstrip()
-                if not piece.strip():
-                    continue
-                index += 1
-                result.append(
-                    Source(
-                        id=f"{prefix}{index}",
-                        source="transcript" if kind == "transcript" else "notes",
-                        text=piece,
-                        speaker=speaker,
-                        start=base + a,
-                        end=base + a + len(piece),
-                        turn=turn,
-                    )
-                )
-            offset += len(line)
-    return result
-
-
-_DATE = re.compile(
-    r"\b(?:Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday|today|tomorrow|tonight|week|month|year|January|February|March|April|May|June|July|August|September|October|November|December)\b|\b\d{1,4}[-/]\d{1,2}",
-    re.I,
-)
 
 
 def validate(draft: Draft, sources: list[Source], context: str = "") -> Checked:
@@ -83,7 +31,10 @@ def validate(draft: Draft, sources: list[Source], context: str = "") -> Checked:
     for conflict in draft.conflicts:
         spoken = resolve(conflict.transcript, "transcript")
         written = resolve(conflict.notes, "notes")
-        disputed.update(conflict.transcript + conflict.notes)
+        if len(spoken) == len(set(conflict.transcript)) and len(written) == len(
+            set(conflict.notes)
+        ):
+            disputed.update(conflict.transcript + conflict.notes)
         conflicts.append(
             Conflict(
                 topic=conflict.topic,
@@ -106,10 +57,35 @@ def validate(draft: Draft, sources: list[Source], context: str = "") -> Checked:
             )
     task_sources: set[str] = set()
     actions: list[ActionItem] = []
-    for identifier in dict.fromkeys(t.commitment for t in draft.action_items):
-        group = [t for t in draft.action_items if t.commitment == identifier]
+    for identifier in dict.fromkeys(t.commitment_id for t in draft.action_items):
+        group = [t for t in draft.action_items if t.commitment_id == identifier]
         primary = resolve([identifier], "transcript")
-        related_ids = list(dict.fromkeys(i for t in group for i in t.timing_context))
+        related_ids = list(
+            dict.fromkeys(i for t in group for i in t.timing_context if i != identifier)
+        )
+        for task in group:
+            if task.timing is not None:
+                resolve([task.timing.source_id], "transcript")
+                if task.timing.source_id != identifier and task.timing.source_id not in related_ids:
+                    related_ids.append(task.timing.source_id)
+        # Preserve dated source evidence from prose that this action will suppress.
+        # Other selected commitments are not evidence for this task's deadline.
+        prose_ids: list[str] = []
+        other_commitments = {t.commitment_id for t in draft.action_items} - {identifier}
+        for item in draft.overview + draft.key_points + draft.decisions:
+            if identifier in item.sources:
+                for ref in item.sources:
+                    candidate = lookup.get(ref)
+                    if (
+                        ref != identifier
+                        and ref not in related_ids
+                        and ref not in other_commitments
+                        and candidate is not None
+                        and candidate.source == "transcript"
+                        and _DATE.search(candidate.text)
+                    ):
+                        if ref not in prose_ids:
+                            prose_ids.append(ref)
         related = resolve(related_ids, "transcript")
         task_sources.update([identifier, *related_ids])
         if not primary:
@@ -141,8 +117,9 @@ def validate(draft: Draft, sources: list[Source], context: str = "") -> Checked:
             ]
             if owner == "Them" and len(set(introductions)) == 1:
                 owner = introductions[0]
-        proposals = {t.timing for t in group if t.timing}
-        timing = next(iter(proposals)) if len(proposals) == 1 else None
+        proposals = {(t.timing.source_id, t.timing.quote) for t in group if t.timing}
+        proposal = next(iter(proposals)) if len(proposals) == 1 else None
+        timing = proposal[1] if proposal and proposal[0] == identifier else None
         due = None
         review: list[str] = []
         if timing and text.count(timing) == 1 and _DATE.search(timing):
@@ -170,13 +147,16 @@ def validate(draft: Draft, sources: list[Source], context: str = "") -> Checked:
             ):
                 due = text[start:].rstrip(".!?;")
                 text = before.rstrip(" ,;")
+        if due is None:
+            related.extend(resolve(prose_ids, "transcript"))
+            task_sources.update(prose_ids)
         if due is None and (
             proposals or related or _DATE.search(source.text) or identifier in disputed
         ):
             review = [
                 "Timing is unassigned; review the source evidence.",
                 f"Original commitment: {source.text}",
-                *[f"Other spoken timing: {s.text}" for s in related],
+                *[f"Other spoken timing (association unverified): {s.text}" for s in related],
             ]
             if identifier in disputed:
                 review.append("This source is disputed; see Conflicts.")
@@ -185,7 +165,13 @@ def validate(draft: Draft, sources: list[Source], context: str = "") -> Checked:
     def section(name: str, kind: str) -> list[str]:
         output: list[str] = []
         for item in getattr(draft, name):
-            evidence = resolve(item.sources, kind)
+            evidence: list[Source] = []
+            for ref in dict.fromkeys(item.sources):
+                candidate = lookup.get(ref)
+                if candidate is None or (candidate.source != kind and ref not in disputed):
+                    blocking.append(f"Invalid {kind} source: {ref}")
+                else:
+                    evidence.append(candidate)
             if set(item.sources) & task_sources:
                 continue
             if set(item.sources) & disputed:
