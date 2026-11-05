@@ -161,9 +161,10 @@ real citations still do not prove correct meaning or detect every omitted confli
 The [V4 candidate](evaluation/m10/v4/README.md) uses direct source references. Code assembles
 source-worded tasks and conservative owners; uncertain deadlines appear for review beside
 the action with no assigned due value. Task details are confined to Action items. V4 has
-only been replayed offline against saved V3 responses, not evaluated with new model runs.
-The replay still exposes a wrongly selected revised-date task; compilation is not quality
-acceptance. New saves use wrapper version 3; existing version-2 saves retain their original
+completed its [one-repetition evaluation](evaluation/m10/v4/results/report.md): nine of
+13 proposed summaries were generated, four blocked, and the later-timing answer was lost.
+The run used 36 requests across both arms. Quality acceptance failed; compilation and
+review warnings alone do not establish useful or complete output. New saves use wrapper version 3; existing version-2 saves retain their original
 validation rules.
 
 Format and evidence failures share one correction request. Unresolved blocking errors
