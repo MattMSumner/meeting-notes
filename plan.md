@@ -723,6 +723,19 @@ Re-running transcription also leaves generation to the explicit enhancement acti
   unset. Semantic selection, completeness, quality and current manual acceptance still
   require evaluation. M10 remains unbuilt.
 
+- **V6 evaluation (2026-11-05; not Built):** requested one repetition of all 13 cases in
+  both arms under the same announced 78-request cap. Used 28 requests (13 baseline,
+  15 proposed), producing 12 proposed summaries and one block. Release decision, monitoring
+  cost, sparse-note completeness and original revised-date task survive in this pass.
+  Quality still fails: additional context accompanies an omitted spoken review commitment;
+  later timing identifies the correct sources but blocks on cross-statement initial timing
+  after a failed correction. Budget conflict also includes an unrelated delivery source.
+  [Scores and audit evidence](evaluation/m10/v6/results/report.md) preserve all outputs;
+  all prior freezes/results remain unchanged. No tuning or extra inference. All 365 unit
+  tests pass. Next design work should examine conservative timing normalization and explicit
+  commitment coverage diagnostics offline. M10 remains unbuilt; future revisions need a
+  new freeze/budget and current manual review-workflow acceptance.
+
 For both stages, run formatting, lint, strict types and unit tests before committing;
 run Swift tests only if capture code changes. Keep shipped model settings unchanged.
 Live transcription, in-place AI editing, custom Obsidian plugins and automatic tracking
