@@ -140,7 +140,7 @@ class OllamaSummarizer:
                             (tuple(c.transcript), tuple(c.notes)) for c in draft.conflicts
                         }
                     if not checked.warnings:
-                        return best if best is not None else checked.summary
+                        return best
             except ValueError as error:
                 attempt.blocking = [f"Invalid draft: {error}"]
             issues = attempt.blocking + attempt.warnings
