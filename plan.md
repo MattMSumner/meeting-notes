@@ -5,7 +5,8 @@ other side of a call, transcribes locally after the meeting, summarizes with a l
 and writes an Obsidian-friendly markdown note.
 
 Status: **M8 shipped**. M9 and M10 implementations are present; manual Obsidian
-acceptance was reported complete for M10. Its frozen quality evaluation failed; M10 remains unbuilt.
+acceptance was reported complete for M10. V7 meets its frozen single-run quality criteria;
+current review-workflow manual acceptance remains pending, so M10 remains unbuilt.
 No model calls are authorized as part of this implementation.
 Phase 0 (Handy) set up.
 
@@ -783,6 +784,19 @@ Re-running transcription also leaves generation to the explicit enhancement acti
   sparse's original invalid draft remains blocked. Same prompt/schema, 13 cases, baseline,
   rubric and model settings. All 395 unit tests pass. No inference; budget/repetitions unset.
   Quality and current manual acceptance remain pending. M10 remains unbuilt.
+
+- **V7 evaluation (2026-11-05; not Built):** requested one repetition of all 13 cases in
+  both arms under the announced 78-request cap; used 28 requests (13 baseline, 15 proposed).
+  All 13 proposed summaries complete. Omission correction restores the missing review task;
+  external Friday timing is preserved in unassigned review. All initial parsed drafts match
+  V6; the changed validator/compiler/correction behavior explains the targeted differences.
+  [Scores and evidence](evaluation/m10/v7/results/report.md) meet the frozen single-run
+  criteria: no observed proposed critical failures or commitment completeness regressions,
+  with useful written context. Conflict grouping and polish remain imperfect; conservative
+  timing earns partial credit. One repetition and reused synthetic fixtures do not establish
+  reliability. All prior artifacts remain unchanged; no tuning or extra inference. Current
+  manual review-workflow acceptance remains pending, so M10 stays unbuilt. Broader confidence
+  requires separately budgeted repeat/held-out checks. All 395 unit tests pass.
 
 For both stages, run formatting, lint, strict types and unit tests before committing;
 run Swift tests only if capture code changes. Keep shipped model settings unchanged.
