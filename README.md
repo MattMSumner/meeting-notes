@@ -202,8 +202,10 @@ as attributed source quotes and stops inferring timing links from shared prose. 
 commitments and later timing updates are separate references; backwards updates fail.
 Updates remain unassigned with source evidence for review. Source coordinates stay in the
 audit rather than model input. [Offline replay](evaluation/m10/v6/replay/README.md) restores
-the release decision and monitoring cost, but does not establish model quality. No V6
-inference has run; quality and manual acceptance remain pending. New saves use wrapper
+the release decision and monitoring cost. The [V6 evaluation](evaluation/m10/v6/results/report.md)
+used 28 requests and produced 12/13 summaries, but still failed quality: additional notes
+accompany a missing spoken commitment, and later timing blocks after correction. The targeted
+V5 losses improved in this pass; current manual acceptance remains pending. New saves use wrapper
 version 5, with the original V5 validator retained for version-4 saves.
 
 Format and evidence failures share one correction request. Unresolved blocking errors
