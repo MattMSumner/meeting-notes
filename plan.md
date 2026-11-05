@@ -688,6 +688,17 @@ Re-running transcription also leaves generation to the explicit enhancement acti
   unchanged. Source-ID confusion, context misuse and timing loss need a new revision;
   agree its freeze/budget separately. M10 remains unbuilt, manual V4 acceptance pending.
 
+- **V5 reference repair (2026-11-05; not Built):** explicit commitment IDs and source-bearing
+  timing quotes replace overloaded strings; request schemas enumerate available IDs.
+  Self-context no longer creates review, later timing evidence survives suppression when
+  timing is unassigned, and known conflicts neutralize redundant cross-source prose.
+  Unknown/unrelated references still block; valid IDs do not prove semantic selection.
+  Wrapper version 4 preserves validation of earlier saves. Offline replay of 23 V4 attempts
+  compiles 11, blocks nine and leaves three unmappable; four compiled attempts contain review.
+  Revised-date references and missing context remain unresolved. V5 freezes the same inputs,
+  baseline, settings and actual per-case schemas. No inference; budget and quality/manual
+  acceptance remain separate. [Replay evidence](evaluation/m10/v5/replay/README.md).
+
 For both stages, run formatting, lint, strict types and unit tests before committing;
 run Swift tests only if capture code changes. Keep shipped model settings unchanged.
 Live transcription, in-place AI editing, custom Obsidian plugins and automatic tracking
