@@ -223,3 +223,23 @@ def test_review_render_qualifies_old_deadline_before_showing_it():
     assert note.index("Review required") < note.index("Friday")
     assert "(due Friday)" not in note
     assert "Monday" in note
+
+
+def test_numeric_correction_cannot_remove_a_publishable_commitment():
+    first = draft("Friday")
+    first.overview = [SupportedText(text="Cost 777 dollars.", sources=["T2"])]
+    correction = first.model_copy(deep=True)
+    correction.action_items = []
+    correction.overview[0].text = "Cost 80 dollars."
+    replies = iter([first.model_dump_json(), correction.model_dump_json()])
+
+    def post(path: str, body: dict[str, object]) -> dict[str, object]:
+        return {"message": {"content": next(replies)}}
+
+    meeting = Meeting.new("Synthetic", datetime.fromisoformat("2026-10-20T14:00:00-04:00"), ())
+    model = OllamaSummarizer("fake", 32768, post, "Sam")
+    result = model.summarize(
+        meeting, "[00:00:00] Sam: I will send the draft Friday. Cost 80 dollars."
+    )
+    assert len(result.action_items) == 1
+    assert model.audit.selected == 0
