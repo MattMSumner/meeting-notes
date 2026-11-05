@@ -1,0 +1,463 @@
+{
+  "dimension_order": [
+    "commitment_completeness",
+    "source_attribution",
+    "conflicts",
+    "numbers",
+    "dates_and_owners",
+    "useful_emphasis"
+  ],
+  "review": "Single Codex reviewer; shuffled arm labels withheld until judgments saved. Schema, notes and review fields reveal arm information; not independent or fully blinded.",
+  "results": [
+    {
+      "id": "R01",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        1,
+        1
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Original sending task and Sam retained; Friday qualified by review, Monday revision quoted, due null."
+      ]
+    },
+    {
+      "id": "R02",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        1
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Both named tasks and dates retained; individual tasks duplicated as decisions."
+      ]
+    },
+    {
+      "id": "R03",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Sam tags Friday; Alex rollback without deadline; independent Friday release agreement retained."
+      ]
+    },
+    {
+      "id": "R04",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        1,
+        1
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Sam rollback retained; Friday answer explicitly quoted as unverified timing evidence, due null. No silent loss of timing."
+      ]
+    },
+    {
+      "id": "R05",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        1,
+        1
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Both tasks retained in permitted grouped checkbox. Friday quoted for review, not assigned to rollback."
+      ]
+    },
+    {
+      "id": "R06",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Both tasks, Alex next week, monitoring $120 and no option chosen retained."
+      ]
+    },
+    {
+      "id": "R07",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Both spoken tasks retained despite sparse note; Alex next week, monitoring $120 and no option selected. Written focus separated."
+      ]
+    },
+    {
+      "id": "R08",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Both Sam tasks retained; Friday only for sending, rollback due null without unrelated review."
+      ]
+    },
+    {
+      "id": "R09",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        1
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Only Alex checklist assigned, due tomorrow. Sam noncommitment retained; internal T2 citation reduces polish."
+      ]
+    },
+    {
+      "id": "R10",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        1
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Monitoring 120 dollars survives; only support 120 versus 150 disputed. Invoice commitment retained. Repeated conflict pointers."
+      ]
+    },
+    {
+      "id": "R11",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        1
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Only Alex checklist tomorrow assigned, no Sam rollback commitment. Individual task duplicated as decision."
+      ]
+    },
+    {
+      "id": "R12",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        1
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Sam sending next Tuesday retained; unnecessary transcript-length commentary."
+      ]
+    },
+    {
+      "id": "R13",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        1
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Complete conditional due: next Friday, or the Friday after if review slips. No launch decision repeated in three sections. Written follow-up/Casey suggestion separated; Casey not assigned."
+      ]
+    },
+    {
+      "id": "R14",
+      "scores": [
+        2,
+        1,
+        2,
+        2,
+        1,
+        1
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Conditional wording in task but due truncates to next Friday; overview invents review document for unspecified it."
+      ]
+    },
+    {
+      "id": "R15",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Monitoring and support both $120, correctly attributed; invoice-check task retained. No notes supplied."
+      ]
+    },
+    {
+      "id": "R16",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        1
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Both named tasks; Friday only assigned to tagging. Independent release decision survives, rollback no review. T4 marker reduces polish."
+      ]
+    },
+    {
+      "id": "R17",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Unapproved 120k estimate, expected June, Sam verification retained. No notes supplied."
+      ]
+    },
+    {
+      "id": "R18",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        1
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Friday answer attached to Sam rollback; repeated throughout including Decisions."
+      ]
+    },
+    {
+      "id": "R19",
+      "scores": [
+        2,
+        1,
+        1,
+        2,
+        2,
+        1
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Both price and date accounts identified and unresolved, with I think retained; verify task and unapproved budget retained. Budget estimate conflict unnecessarily includes unrelated June delivery statement also repeated in its own conflict. No disputed fact treated as settled."
+      ]
+    },
+    {
+      "id": "R20",
+      "scores": [
+        2,
+        1,
+        2,
+        2,
+        0,
+        1
+      ],
+      "outcome": "published",
+      "critical_failures": [
+        "Unsupported rollback deadline in overview"
+      ],
+      "acceptance_blockers": [
+        "Unsupported rollback deadline in overview"
+      ],
+      "evidence": [
+        "Source assigns Friday only to sending. Overview says send a draft and check rollback by Friday. Correct null rollback due does not repair overview."
+      ]
+    },
+    {
+      "id": "R21",
+      "scores": [
+        2,
+        1,
+        2,
+        2,
+        2,
+        1
+      ],
+      "outcome": "published",
+      "critical_failures": [
+        "Tentative readiness presented as confirmed"
+      ],
+      "acceptance_blockers": [
+        "Tentative readiness presented as confirmed"
+      ],
+      "evidence": [
+        "Source says I think the staging environment is ready; overview says Sam confirmed it, key point asserts readiness as fact. Unseen notes not assessed."
+      ]
+    },
+    {
+      "id": "R22",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        1,
+        1
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Sam sending task and Next Tuesday visible as review evidence; due null."
+      ]
+    },
+    {
+      "id": "R23",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Sending task retained; Friday explicitly replaced by Monday throughout."
+      ]
+    },
+    {
+      "id": "R24",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Ready versus paused accounts unresolved, including spoken I think; health-check task retained."
+      ]
+    },
+    {
+      "id": "R25",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Both named tasks retained with Sam Friday and Alex next week. Forty seats and venue-access task exclusively in notes_context."
+      ]
+    },
+    {
+      "id": "R26",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        1
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Both tasks, Friday only for sending. Finalizing release process adds unsupported framing."
+      ]
+    }
+  ]
+}

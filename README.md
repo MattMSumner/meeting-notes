@@ -192,7 +192,11 @@ The [V7 candidate](evaluation/m10/v7/README.md) accepts a unique exact timing qu
 later transcript source as unverified review evidence, never an assigned deadline. A narrow
 first-person task-verb diagnostic flags missing actions for the existing bounded correction;
 it does not generate actions or prove completeness. [Offline replay](evaluation/m10/v7/replay/README.md)
-recovers the later-Friday review and detects the omitted task. No V7 inference has run.
+recovers the later-Friday review and detects the omitted task. The [V7 evaluation](evaluation/m10/v7/results/report.md)
+produced all 13 summaries using 28 requests across both arms. Correction restored the missing
+task, and no critical proposed failures or commitment regressions were observed. It meets the
+frozen single-run criteria; this is not a reliability estimate, and current manual acceptance
+remains pending.
 New saves use wrapper version 6; version-5 saves retain the original V6 rules.
 
 Format and evidence failures share one correction request. Unresolved blocking errors
