@@ -710,6 +710,19 @@ Re-running transcription also leaves generation to the explicit enhancement acti
   or extra inference. Previous freezes/results are unchanged. M10 remains unbuilt; future
   revisions require a new freeze/budget and current review-workflow manual acceptance.
 
+- **V6 compiler preservation (2026-11-05; not Built):** shared prose no longer creates
+  timing links. Mixed items preserve unaffected sources as attributed quotes; disputed
+  accounts remain unresolved. Original tasks and later timing updates have separate
+  references, with backwards links rejected. Model-facing sources omit coordinates;
+  saved audits retain them. Numeric correction cannot discard an existing update link.
+  Wrapper version 5 preserves original V5/version-4 validation. Offline replay compiles
+  11 of 14 saved responses: the release decision and monitoring cost survive, sparse stays
+  blocked twice, and reversed timing now blocks instead of becoming a misleading task.
+  [V6 freeze and replay](evaluation/m10/v6/README.md) retain the same 13 cases, baseline,
+  rubric and settings. All 365 unit tests pass; no inference ran. Budget/repetitions remain
+  unset. Semantic selection, completeness, quality and current manual acceptance still
+  require evaluation. M10 remains unbuilt.
+
 For both stages, run formatting, lint, strict types and unit tests before committing;
 run Swift tests only if capture code changes. Keep shipped model settings unchanged.
 Live transcription, in-place AI editing, custom Obsidian plugins and automatic tracking
