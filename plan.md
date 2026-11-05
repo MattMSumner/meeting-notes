@@ -699,6 +699,17 @@ Re-running transcription also leaves generation to the explicit enhancement acti
   baseline, settings and actual per-case schemas. No inference; budget and quality/manual
   acceptance remain separate. [Replay evidence](evaluation/m10/v5/replay/README.md).
 
+- **V5 evaluation (2026-11-05; not Built):** requested one repetition across 13 cases and
+  both arms under the same 78-request cap. Completed using 27 requests (13 baseline,
+  14 proposed); proposed produced 12 summaries and one block. All proposed references
+  conform to the recorded allowed-ID enums. Quality still fails: revised timing selects
+  the correction as the task; compiler suppression moves a release decision into unrelated
+  review and removes an undisputed price. Sparse also omits a commitment before blocking.
+  Conditional timing, later-answer review and written context improve in this single pass.
+  [Scores and audit evidence](evaluation/m10/v5/results/report.md) are preserved; no tuning
+  or extra inference. Previous freezes/results are unchanged. M10 remains unbuilt; future
+  revisions require a new freeze/budget and current review-workflow manual acceptance.
+
 For both stages, run formatting, lint, strict types and unit tests before committing;
 run Swift tests only if capture code changes. Keep shipped model settings unchanged.
 Live transcription, in-place AI editing, custom Obsidian plugins and automatic tracking
