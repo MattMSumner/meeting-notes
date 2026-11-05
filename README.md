@@ -171,7 +171,10 @@ The [V5 candidate](evaluation/m10/v5/README.md) binds source-ID enums into each 
 uses an explicit source for timing quotes, ignores redundant self-context, and neutralizes
 redundant known-conflict prose before source-kind rejection. Unassigned timing evidence
 survives in review when action prose is suppressed. Unknown or unrelated wrong-source
-references still fail. V5 has only offline replay and unit verification; no model run.
+references still fail. Its [one-repetition evaluation](evaluation/m10/v5/results/report.md)
+produced 12/13 proposed summaries using 27 requests across both arms, but failed quality
+acceptance: a revised date becomes the task, a release decision moves into unrelated timing
+review, and conflict neutralization removes an undisputed price. Sparse notes still block.
 New saves use wrapper version 4, while prior versions retain their original validators.
 
 Format and evidence failures share one correction request. Unresolved blocking errors
