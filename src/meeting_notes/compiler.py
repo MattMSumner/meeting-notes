@@ -57,37 +57,36 @@ def validate(draft: Draft, sources: list[Source], context: str = "") -> Checked:
             )
     task_sources: set[str] = set()
     actions: list[ActionItem] = []
-    for identifier in dict.fromkeys(t.commitment_id for t in draft.action_items):
-        group = [t for t in draft.action_items if t.commitment_id == identifier]
+    commitments = {t.original_commitment_id for t in draft.action_items}
+    updates: dict[str, list[str]] = {}
+    for update in draft.timing_updates:
+        target = update.original_commitment_id
+        primary = resolve([target], "transcript")
+        evidence = resolve(update.source_ids, "transcript")
+        if target not in commitments:
+            blocking.append(f"Timing update has no original action: {target}")
+        for source in evidence:
+            if source.id == target:
+                continue
+            if primary and source.start <= primary[0].start:
+                blocking.append(
+                    f"Timing update {source.id} must follow original commitment {target}"
+                )
+            updates.setdefault(target, []).append(source.id)
+    for identifier in dict.fromkeys(t.original_commitment_id for t in draft.action_items):
+        group = [t for t in draft.action_items if t.original_commitment_id == identifier]
         primary = resolve([identifier], "transcript")
-        related_ids = list(
-            dict.fromkeys(i for t in group for i in t.timing_context if i != identifier)
-        )
+        related = resolve(updates.get(identifier, []), "transcript")
+        related.sort(key=lambda source: source.start)
         for task in group:
             if task.timing is not None:
                 resolve([task.timing.source_id], "transcript")
-                if task.timing.source_id != identifier and task.timing.source_id not in related_ids:
-                    related_ids.append(task.timing.source_id)
-        # Preserve dated source evidence from prose that this action will suppress.
-        # Other selected commitments are not evidence for this task's deadline.
-        prose_ids: list[str] = []
-        other_commitments = {t.commitment_id for t in draft.action_items} - {identifier}
-        for item in draft.overview + draft.key_points + draft.decisions:
-            if identifier in item.sources:
-                for ref in item.sources:
-                    candidate = lookup.get(ref)
-                    if (
-                        ref != identifier
-                        and ref not in related_ids
-                        and ref not in other_commitments
-                        and candidate is not None
-                        and candidate.source == "transcript"
-                        and _DATE.search(candidate.text)
-                    ):
-                        if ref not in prose_ids:
-                            prose_ids.append(ref)
-        related = resolve(related_ids, "transcript")
-        task_sources.update([identifier, *related_ids])
+                if task.timing.source_id != identifier:
+                    blocking.append(
+                        f"Initial timing must cite original commitment {identifier}; "
+                        "put later evidence in timing_updates"
+                    )
+        task_sources.update([identifier, *(source.id for source in related)])
         if not primary:
             continue
         source = primary[0]
@@ -147,9 +146,6 @@ def validate(draft: Draft, sources: list[Source], context: str = "") -> Checked:
             ):
                 due = text[start:].rstrip(".!?;")
                 text = before.rstrip(" ,;")
-        if due is None:
-            related.extend(resolve(prose_ids, "transcript"))
-            task_sources.update(prose_ids)
         if due is None and (
             proposals or related or _DATE.search(source.text) or identifier in disputed
         ):
@@ -164,6 +160,7 @@ def validate(draft: Draft, sources: list[Source], context: str = "") -> Checked:
 
     def section(name: str, kind: str) -> list[str]:
         output: list[str] = []
+        quoted: set[str] = set()
         for item in getattr(draft, name):
             evidence: list[Source] = []
             for ref in dict.fromkeys(item.sources):
@@ -172,14 +169,21 @@ def validate(draft: Draft, sources: list[Source], context: str = "") -> Checked:
                     blocking.append(f"Invalid {kind} source: {ref}")
                 else:
                     evidence.append(candidate)
-            if set(item.sources) & task_sources:
-                continue
-            if set(item.sources) & disputed:
-                if (
-                    name in ("overview", "key_points")
-                    and "Sources disagree; see Conflicts." not in output
-                ):
-                    output.append("Sources disagree; see Conflicts.")
+            removed = set(item.sources) & (task_sources | disputed)
+            if removed:
+                if set(item.sources) & disputed and name in ("overview", "key_points"):
+                    neutral = "Sources disagree; see Conflicts."
+                    if neutral not in output:
+                        output.append(neutral)
+                # The model may combine independent facts in one prose item. Keep
+                # unaffected source text instead of guessing which prose clause remains.
+                for source in evidence:
+                    if source.id not in removed and source.id not in quoted:
+                        label = source.speaker or (
+                            "Handwritten notes" if kind == "notes" else "Transcript"
+                        )
+                        output.append(f"{label}: “{source.text}”")
+                        quoted.add(source.id)
                 continue
             probe = Summary(overview=item.text, key_points=[], decisions=[], action_items=[])
             for number in unsaid_numbers(probe, "\n".join(s.text for s in evidence)):

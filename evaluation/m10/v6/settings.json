@@ -1,0 +1,22 @@
+{
+  "baseline_commit": "199dd62858b6bda6c13dc749424f6bd9de03f8ba",
+  "model": "qwen3:30b",
+  "temperature": 0,
+  "think": true,
+  "num_ctx": 32768,
+  "repetitions": null,
+  "request_budget": null,
+  "status": "frozen compiler preservation and task updates; no inference performed",
+  "freeze": "v6",
+  "previous_freeze": "../v5/sha256.json",
+  "proposed_max_requests_per_case": 2,
+  "baseline_max_requests_per_case": 4,
+  "changes": [
+    "No timing links inferred from shared prose",
+    "Preserve unaffected sources as attributed quotes in mixed items",
+    "Separate original_commitment_id and later timing_updates; reject backwards links",
+    "Omit character offsets and turn coordinates from model-facing evidence",
+    "Numeric corrections must retain timing update references",
+    "Wrapper version 5; original version 4 validation retained"
+  ]
+}

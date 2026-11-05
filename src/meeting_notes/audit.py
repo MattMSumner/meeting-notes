@@ -42,7 +42,15 @@ class ReferenceAudit(BaseModel):
     selected: int | None = None
 
 
+class TaskAudit(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    validator_version: Literal["grounding-v4"] = "grounding-v4"
+    passages: list[Source] = Field(default_factory=lambda: list[Source]())
+    attempts: list[Attempt] = Field(default_factory=lambda: list[Attempt]())
+    selected: int | None = None
+
+
 @runtime_checkable
 class AuditedSummarizer(Protocol):
     @property
-    def audit(self) -> Audit | CurrentAudit | ReferenceAudit: ...
+    def audit(self) -> Audit | CurrentAudit | ReferenceAudit | TaskAudit: ...
