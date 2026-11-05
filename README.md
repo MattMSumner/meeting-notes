@@ -178,10 +178,18 @@ phrase from the same statement as that task. Other timing exchanges are quoted i
 warnings without assigning a deadline. These conservative checks may withhold valid timing;
 real citations still do not prove correct meaning or detect every omitted conflict.
 
+The [V4 candidate](evaluation/m10/v4/README.md) uses direct source references. Code assembles
+source-worded tasks and conservative owners; uncertain deadlines appear for review beside
+the action with no assigned due value. Task details are confined to Action items. V4 has
+only been replayed offline against saved V3 responses, not evaluated with new model runs.
+The replay still exposes a wrongly selected revised-date task; compilation is not quality
+acceptance. New saves use wrapper version 3; existing version-2 saves retain their original
+validation rules.
+
 Format and evidence failures share one correction request. Unresolved blocking errors
 leave the previous successful summary/evidence untouched. Drafts, requests, replies and
 validation findings are saved locally under the meeting's `attempts/` folder. The selected
-attempt and saved passages also accompany successful results in summary wrapper version 2.
+attempt and saved passages also accompany new successful results in summary wrapper version 3.
 Older summaries and version 1 wrappers remain readable. Abrupt process termination can
 prevent the current audit from being finalized; it does not automatically retry generation.
 Numeric warnings now use each claim's cited spans and remain visible from the saved audit.

@@ -1,0 +1,21 @@
+{
+  "baseline_commit": "199dd62858b6bda6c13dc749424f6bd9de03f8ba",
+  "model": "qwen3:30b",
+  "temperature": 0,
+  "think": true,
+  "num_ctx": 32768,
+  "repetitions": null,
+  "request_budget": null,
+  "status": "frozen direct-source candidate; no inference performed",
+  "freeze": "v4",
+  "previous_freeze": "../v3/sha256.json",
+  "proposed_max_requests_per_case": 2,
+  "baseline_max_requests_per_case": 4,
+  "changes": [
+    "Direct source references",
+    "Code-assembled tasks and conservative owners",
+    "Inline timing review without inference retry",
+    "Statement-level handwritten conflict accounts",
+    "Version 3 saved wrappers with original v2 validation preserved"
+  ]
+}

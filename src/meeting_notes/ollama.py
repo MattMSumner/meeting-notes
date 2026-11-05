@@ -9,9 +9,11 @@ from copy import deepcopy
 from importlib import resources
 from typing import Any, cast
 
-from meeting_notes.audit import Attempt, Audit
+from meeting_notes.audit import Attempt
+from meeting_notes.audit import CurrentAudit as Audit
+from meeting_notes.compiler import passages, validate
+from meeting_notes.contract import Draft
 from meeting_notes.evidence import meeting_context
-from meeting_notes.grounding import Draft, passages, validate
 from meeting_notes.meeting import Meeting
 from meeting_notes.summary import Summary, SummaryError
 
@@ -106,6 +108,8 @@ class OllamaSummarizer:
         ]
         best: Summary | None = None
         best_warnings = 0
+        best_actions: set[str] = set()
+        best_conflicts: set[tuple[tuple[str, ...], tuple[str, ...]]] = set()
         failure = "No valid draft"
         # One shared correction budget for format, grounding and numeric issues. A
         # malformed correction cannot replace a structurally valid first candidate.
@@ -123,9 +127,18 @@ class OllamaSummarizer:
                 attempt.blocking = checked.blocking
                 attempt.warnings = checked.warnings
                 if checked.summary is not None:
-                    if best is None or len(checked.warnings) < best_warnings:
+                    if best is None or (
+                        len(checked.warnings) < best_warnings
+                        and best_actions <= {t.commitment for t in draft.action_items}
+                        and best_conflicts
+                        <= {(tuple(c.transcript), tuple(c.notes)) for c in draft.conflicts}
+                    ):
                         best, best_warnings = checked.summary, len(checked.warnings)
                         self.audit.selected = index
+                        best_actions = {t.commitment for t in draft.action_items}
+                        best_conflicts = {
+                            (tuple(c.transcript), tuple(c.notes)) for c in draft.conflicts
+                        }
                     if not checked.warnings:
                         return checked.summary
             except ValueError as error:
