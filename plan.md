@@ -704,6 +704,16 @@ Re-running transcription also leaves generation to the explicit enhancement acti
   A revised candidate needs a new freeze/budget and new failure/review-warning manual
   acceptance. M10 remains unbuilt.
 
+- **V4 implementation (2026-11-05; not Built):** direct source IDs replace generated claim
+  IDs. Code assembles tasks, conservative owners, complete trailing timing and inline review
+  evidence. Task prose is suppressed elsewhere; handwritten facts receive sentence IDs.
+  Wrapper version 3 preserves original validation for legacy saves. Offline replay of 25
+  V3 attempts compiles 23, rejects two and produces review evidence in seven; these are
+  not quality scores. A revised-date selection still loses the original commitment and
+  leaves obsolete timing in prose. V4 freezes the same 13 cases and baseline/settings.
+  No new inference; agree a separate budget and test the new manual review workflow.
+  [Replay details](evaluation/m10/v4/replay/README.md) preserve limitations. M10 remains unbuilt.
+
 For both stages, run formatting, lint, strict types and unit tests before committing;
 run Swift tests only if capture code changes. Keep shipped model settings unchanged.
 Live transcription, in-place AI editing, custom Obsidian plugins and automatic tracking
