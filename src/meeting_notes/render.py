@@ -77,6 +77,10 @@ def render_transcript(meeting: Meeting, lines: Sequence[Line], warnings: Sequenc
 
 def _action_item(item: ActionItem) -> str:
     text = f"**{item.owner}**: {item.task}" if item.owner else item.task
+    if item.review:
+        return f"- [ ] Review required — source commitment: {text}\n" + "\n".join(
+            f"  - {entry}" for entry in item.review
+        )
     return f"- [ ] {text}" + (f" (due {item.due})" if item.due else "")
 
 

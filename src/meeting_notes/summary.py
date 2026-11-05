@@ -18,6 +18,7 @@ class ActionItem(BaseModel):
         description='Who will do it: a name, "Them" if no name was given, or null if unclear'
     )
     task: str
+    review: list[str] = Field(default_factory=list)
     due: str | None = Field(
         description="Complete spoken timing phrase, including every alternative, condition "
         "and uncertainty. Must stand on its own even if task repeats the timing. "

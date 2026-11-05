@@ -5,9 +5,9 @@ from datetime import datetime
 from typing import Any
 
 import pytest
+from legacy_ollama import OllamaError, OllamaSummarizer, default_prompt
 
 from meeting_notes.meeting import Meeting
-from meeting_notes.ollama import OllamaError, OllamaSummarizer, default_prompt
 from meeting_notes.summary import SummaryError
 
 MEETING = Meeting.new("Weekly Sync", datetime(2026, 10, 20, 14, 5))

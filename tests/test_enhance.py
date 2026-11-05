@@ -443,9 +443,8 @@ def test_frozen_evaluation_materials_match_manifest_without_inference(freeze: st
 
 
 def test_full_deadline_and_dispute_qualification_survive_saved_render(h: Harness):
+    from legacy_ollama import OllamaSummarizer
     from test_ollama import FakeOllama
-
-    from meeting_notes.ollama import OllamaSummarizer
 
     directory = h.ready()
     directory.save_segments(
@@ -512,9 +511,8 @@ def test_full_deadline_and_dispute_qualification_survive_saved_render(h: Harness
 
 
 def test_failed_grounding_saves_diagnostics_and_preserves_previous_result(h: Harness):
+    from legacy_ollama import OllamaSummarizer
     from test_ollama import FakeOllama, reply
-
-    from meeting_notes.ollama import OllamaSummarizer
 
     directory = h.ready()
     directory.save_summary(SUMMARY)
@@ -534,9 +532,8 @@ def test_failed_grounding_saves_diagnostics_and_preserves_previous_result(h: Har
 
 
 def test_audited_warnings_survive_render_and_source_deletion(h: Harness):
+    from legacy_ollama import OllamaSummarizer
     from test_ollama import FakeOllama, reply
-
-    from meeting_notes.ollama import OllamaSummarizer
 
     directory = h.ready()
     bad_number = reply("Cost 777 dollars", "Ship Friday for 120 dollars.")
@@ -558,9 +555,8 @@ def test_audited_warnings_survive_render_and_source_deletion(h: Harness):
 
 @pytest.mark.parametrize("change", ["missing", "index", "passages", "blocked"])
 def test_malformed_v2_audit_never_falls_back_to_live_inputs(h: Harness, change: str):
+    from legacy_ollama import OllamaSummarizer
     from test_ollama import FakeOllama, reply
-
-    from meeting_notes.ollama import OllamaSummarizer
 
     directory = h.ready()
     model = OllamaSummarizer(
@@ -585,9 +581,8 @@ def test_failed_audit_save_prevents_publication_and_preserves_old_generation(
     h: Harness,
     monkeypatch: pytest.MonkeyPatch,
 ):
+    from legacy_ollama import OllamaSummarizer
     from test_ollama import FakeOllama, reply
-
-    from meeting_notes.ollama import OllamaSummarizer
 
     directory = h.ready()
     directory.save_summary(SUMMARY)
@@ -607,3 +602,32 @@ def test_failed_audit_save_prevents_publication_and_preserves_old_generation(
         pipeline.summarize(directory, pipeline.conversation(directory), model, "Sam")
     assert directory.summary_file.read_bytes() == before
     assert list((directory.path / "attempts").iterdir()) == []
+
+
+def test_current_generation_is_saved_with_v3_and_survives_source_deletion(h: Harness):
+    from test_ollama import FakeOllama
+
+    from meeting_notes.contract import Draft, SupportedText
+    from meeting_notes.ollama import OllamaSummarizer
+
+    directory = h.ready()
+    original = directory.path / "synthetic-notes.md"
+    original.write_bytes(b"Synthetic context.\r\n")
+    directory.save_handwritten_path(original)
+    value = Draft(
+        overview=[SupportedText(text="Spoken context.", sources=["T1"])],
+        key_points=[],
+        decisions=[],
+        action_items=[],
+        notes_context=[],
+        conflicts=[],
+    )
+    model = OllamaSummarizer("fake", 32768, FakeOllama(value.model_dump_json()), "Sam")
+    pipeline.summarize(directory, pipeline.conversation(directory), model, "Sam")
+    saved = directory.load_generation()
+    assert isinstance(saved, Generation) and saved.version == 3
+    path = directory.load_meeting().handwritten_path
+    assert path is not None
+    path.unlink()
+    assert h.run("render", directory.id) == 0
+    assert directory.load_generation() == saved
