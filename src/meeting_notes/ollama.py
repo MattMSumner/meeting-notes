@@ -10,7 +10,7 @@ from importlib import resources
 from typing import Any, cast
 
 from meeting_notes.audit import Attempt
-from meeting_notes.audit import TaskAudit as Audit
+from meeting_notes.audit import CoverageAudit as Audit
 from meeting_notes.compiler import passages, validate
 from meeting_notes.contract import Draft, request_schema
 from meeting_notes.evidence import meeting_context
@@ -27,6 +27,16 @@ TIMEOUT_SECONDS = 600
 CHARS_PER_TOKEN = 3
 # Room left in the context for the model's thinking and its reply.
 REPLY_TOKENS = 4096
+
+
+def timing_links(draft: Draft) -> set[tuple[str, str]]:
+    return {
+        (u.original_commitment_id, ref) for u in draft.timing_updates for ref in u.source_ids
+    } | {
+        (a.original_commitment_id, a.timing.source_id)
+        for a in draft.action_items
+        if a.timing is not None and a.timing.source_id != a.original_commitment_id
+    }
 
 
 def default_prompt() -> str:
@@ -139,23 +149,14 @@ class OllamaSummarizer:
                     if best is None or (
                         len(checked.warnings) < best_warnings
                         and best_actions <= {t.original_commitment_id for t in draft.action_items}
-                        and best_updates
-                        <= {
-                            (u.original_commitment_id, ref)
-                            for u in draft.timing_updates
-                            for ref in u.source_ids
-                        }
+                        and best_updates <= timing_links(draft)
                         and best_conflicts
                         <= {(tuple(c.transcript), tuple(c.notes)) for c in draft.conflicts}
                     ):
                         best, best_warnings = checked.summary, len(checked.warnings)
                         self.audit.selected = index
                         best_actions = {t.original_commitment_id for t in draft.action_items}
-                        best_updates = {
-                            (u.original_commitment_id, ref)
-                            for u in draft.timing_updates
-                            for ref in u.source_ids
-                        }
+                        best_updates = timing_links(draft)
                         best_conflicts = {
                             (tuple(c.transcript), tuple(c.notes)) for c in draft.conflicts
                         }
