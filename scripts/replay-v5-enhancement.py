@@ -6,9 +6,9 @@ import hashlib
 import json
 from pathlib import Path
 
-from meeting_notes.compiler import Source, passages, validate
-from meeting_notes.contract import Action, Dispute, Draft, SupportedText, Timing, TimingUpdate
+from meeting_notes.compiler_v6 import Source, passages, validate
 from meeting_notes.contract_v5 import Draft as PriorDraft
+from meeting_notes.contract_v6 import Action, Dispute, Draft, SupportedText, Timing, TimingUpdate
 from meeting_notes.evidence import meeting_context
 from meeting_notes.meeting import Meeting
 

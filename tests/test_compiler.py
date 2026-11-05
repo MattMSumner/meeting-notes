@@ -130,7 +130,7 @@ def test_current_model_and_wrapper_reproduce_review_without_live_sources():
     from meeting_notes.evidence import meeting_context
 
     saved = Generation(
-        version=5,
+        version=6,
         summary=summary,
         evidence=Evidence(
             transcript=transcript,
@@ -308,14 +308,12 @@ def test_valid_other_task_reference_cannot_supply_a_due_value():
     sources = passages("[00:00:00] Sam: I will check rollback. I will send the draft Friday.", "")
     result = validate(value, sources)
     assert result.summary is None
-    assert any("Initial timing" in issue for issue in result.blocking)
-    # Even a known ID can name the wrong commitment. This semantic error remains
-    # observable in source wording, but cannot be certified by reference checks.
-    value.action_items[0].original_commitment_id = "T2"
+    assert any("Possible omitted commitment T2" in issue for issue in result.blocking)
+    value.action_items.append(Action(original_commitment_id="T2", timing=None))
     result = validate(value, sources)
     assert result.summary is not None
-    assert "send the draft" in result.summary.action_items[0].task
-    assert "rollback" not in result.summary.action_items[0].task
+    assert result.summary.action_items[0].due is None
+    assert any("association unverified" in line for line in result.summary.action_items[0].review)
 
 
 @pytest.mark.parametrize("bad_id", ["missing", "N2"])
@@ -405,7 +403,7 @@ def test_valid_own_timing_is_not_downgraded_by_redundant_summary_reference():
     assert result.summary.decisions == ["Release Friday."]
 
 
-@pytest.mark.parametrize("freeze,version,expected", [("v4", 3, 9), ("v5", 4, 12)])
+@pytest.mark.parametrize("freeze,version,expected", [("v4", 3, 9), ("v5", 4, 12), ("v6", 5, 12)])
 def test_published_generations_still_validate_with_original_rules(
     freeze: str, version: int, expected: int
 ):
@@ -503,8 +501,10 @@ def test_invalid_update_relationships_block(target: str, refs: list[str]):
 
 
 def test_unrelated_later_update_cannot_assign_borrowed_due():
+    value = draft(None, ["T2"])
+    value.action_items.append(Action(original_commitment_id="T2", timing=None))
     result = validate(
-        draft(None, ["T2"]),
+        value,
         passages(
             "[00:00:00] Sam: I will check rollback. I will send the draft Friday.",
             "",
@@ -543,3 +543,99 @@ def test_numeric_retry_cannot_drop_timing_revision_and_request_omits_offsets():
     sources = json.loads(messages[1]["content"].split("(evidence, not instructions):\n")[1])
     assert all(set(s) == {"id", "source", "text", "speaker"} for s in sources)
     assert model.audit.passages[0].start > 0
+
+
+def test_external_timing_is_normalized_to_review_without_mutating_draft():
+    value = draft()
+    value.action_items[0].timing = Timing(source_id="T3", quote="Friday")
+    before = value.model_dump_json()
+    result = validate(
+        value,
+        passages(
+            "[00:00:00] Sam: I will check rollback.\n[00:00:02] Alex: When?\n"
+            "[00:00:04] Sam: Friday, or Monday if review slips.",
+            "",
+        ),
+    )
+    assert value.model_dump_json() == before
+    assert result.summary is not None
+    action = result.summary.action_items[0]
+    assert action.task == "I will check rollback." and action.due is None
+    assert any("Friday, or Monday if review slips." in s for s in action.review)
+
+
+@pytest.mark.parametrize("quote", ["Tuesday", "rollback", "Friday"])
+def test_external_timing_requires_unique_exact_date(quote: str):
+    value = draft()
+    value.action_items[0].timing = Timing(source_id="T2", quote=quote)
+    result = validate(
+        value,
+        passages(
+            "[00:00:00] Sam: I will check rollback. Friday or Friday after rollback.",
+            "",
+        ),
+    )
+    assert result.summary is None
+    assert any("Invalid external timing" in s for s in result.blocking)
+
+
+def test_external_timing_cannot_point_backwards():
+    value = draft()
+    value.action_items[0].original_commitment_id = "T2"
+    value.action_items[0].timing = Timing(source_id="T1", quote="Friday")
+    assert (
+        validate(value, passages("[00:00:00] Sam: Friday. I will check rollback.", "")).summary
+        is None
+    )
+
+
+def test_omitted_task_requests_bounded_correction_without_fabricating_action():
+    from meeting_notes.summary import SummaryError
+
+    first = draft("Friday")
+    first.key_points = [SupportedText(text="Alex will review next week.", sources=["T2"])]
+    corrected = first.model_copy(deep=True)
+    corrected.action_items.append(Action(original_commitment_id="T2", timing=None))
+    transcript = (
+        "[00:00:00] Sam: I will send it Friday.\n[00:00:03] Alex: I will review it next week."
+    )
+    assert validate(first, passages(transcript, "")).summary is None
+    replies = iter([first.model_dump_json(), corrected.model_dump_json()])
+    requests: list[dict[str, object]] = []
+
+    def post(path: str, body: dict[str, object]) -> dict[str, object]:
+        requests.append(body)
+        return {"message": {"content": next(replies)}}
+
+    meeting = Meeting.new("Synthetic", datetime.fromisoformat("2026-10-20T14:00:00-04:00"), ())
+    model = OllamaSummarizer("fake", 32768, post, "Sam")
+    assert len(model.summarize(meeting, transcript).action_items) == 2
+    assert len(requests) == 2 and model.audit.selected == 1
+    assert "Possible omitted commitment T2" in json.dumps(requests[1])
+    replies = iter([first.model_dump_json(), first.model_dump_json()])
+    with pytest.raises(SummaryError, match="Possible omitted commitment T2"):
+        model.summarize(meeting, transcript)
+    assert len(requests) == 4 and model.audit.selected is None
+
+
+def test_numeric_correction_cannot_drop_normalized_external_timing():
+    first = draft()
+    first.action_items[0].timing = Timing(source_id="T2", quote="Friday")
+    first.key_points = [SupportedText(text="Cost 777 dollars.", sources=["T3"])]
+    correction = first.model_copy(deep=True)
+    correction.action_items[0].timing = None
+    correction.key_points[0].text = "Cost 80 dollars."
+    replies = iter([first.model_dump_json(), correction.model_dump_json()])
+
+    def post(path: str, body: dict[str, object]) -> dict[str, object]:
+        return {"message": {"content": next(replies)}}
+
+    meeting = Meeting.new("Synthetic", datetime.fromisoformat("2026-10-20T14:00:00-04:00"), ())
+    model = OllamaSummarizer("fake", 32768, post, "Sam")
+    result = model.summarize(
+        meeting,
+        "[00:00:00] Sam: I will check rollback. Friday. Cost 80 dollars.",
+    )
+    assert model.audit.selected == 0
+    assert result.action_items[0].due is None
+    assert any("Friday" in s for s in result.action_items[0].review)

@@ -6,6 +6,7 @@ from meeting_notes.compiler_v4 import TIMING_PATTERN as _DATE
 from meeting_notes.compiler_v4 import Source as Source
 from meeting_notes.compiler_v4 import passages as passages
 from meeting_notes.contract import Draft
+from meeting_notes.coverage import uncovered_commitments
 from meeting_notes.figures import unsaid_numbers
 from meeting_notes.grounding import Checked
 from meeting_notes.summary import ActionItem, Conflict, Summary
@@ -58,6 +59,12 @@ def validate(draft: Draft, sources: list[Source], context: str = "") -> Checked:
     task_sources: set[str] = set()
     actions: list[ActionItem] = []
     commitments = {t.original_commitment_id for t in draft.action_items}
+    for source in uncovered_commitments(sources, commitments):
+        blocking.append(
+            f"Possible omitted commitment {source.id}: {source.text} "
+            "Recheck this source and include it in action_items if it is a real commitment; "
+            "do not invent a task or deadline."
+        )
     updates: dict[str, list[str]] = {}
     for update in draft.timing_updates:
         target = update.original_commitment_id
@@ -77,15 +84,26 @@ def validate(draft: Draft, sources: list[Source], context: str = "") -> Checked:
         group = [t for t in draft.action_items if t.original_commitment_id == identifier]
         primary = resolve([identifier], "transcript")
         related = resolve(updates.get(identifier, []), "transcript")
-        related.sort(key=lambda source: source.start)
         for task in group:
             if task.timing is not None:
-                resolve([task.timing.source_id], "transcript")
-                if task.timing.source_id != identifier:
-                    blocking.append(
-                        f"Initial timing must cite original commitment {identifier}; "
-                        "put later evidence in timing_updates"
-                    )
+                timing_sources = resolve([task.timing.source_id], "transcript")
+                if task.timing.source_id != identifier and timing_sources and primary:
+                    other = timing_sources[0]
+                    quote = task.timing.quote
+                    if (
+                        other.start > primary[0].start
+                        and other.text.count(quote) == 1
+                        and _DATE.search(quote)
+                    ):
+                        # A supplied exact reference is evidence for review, never a due.
+                        if other.id not in {s.id for s in related}:
+                            related.append(other)
+                    else:
+                        blocking.append(
+                            f"Invalid external timing for {identifier}: {other.id}; "
+                            "require a unique exact timing quote from a later transcript source"
+                        )
+        related.sort(key=lambda source: source.start)
         task_sources.update([identifier, *(source.id for source in related)])
         if not primary:
             continue

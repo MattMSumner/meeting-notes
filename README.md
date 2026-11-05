@@ -188,10 +188,17 @@ accompany a missing spoken commitment, and later timing blocks after correction.
 V5 losses improved in this pass; current manual acceptance remains pending. New saves use wrapper
 version 5, with the original V5 validator retained for version-4 saves.
 
+The [V7 candidate](evaluation/m10/v7/README.md) accepts a unique exact timing quote from a
+later transcript source as unverified review evidence, never an assigned deadline. A narrow
+first-person task-verb diagnostic flags missing actions for the existing bounded correction;
+it does not generate actions or prove completeness. [Offline replay](evaluation/m10/v7/replay/README.md)
+recovers the later-Friday review and detects the omitted task. No V7 inference has run.
+New saves use wrapper version 6; version-5 saves retain the original V6 rules.
+
 Format and evidence failures share one correction request. Unresolved blocking errors
 leave the previous successful summary/evidence untouched. Drafts, requests, replies and
 validation findings are saved locally under the meeting's `attempts/` folder. The selected
-attempt and saved passages also accompany new successful results in summary wrapper version 5.
+attempt and saved passages also accompany new successful results in summary wrapper version 6.
 Older summaries and version 1 wrappers remain readable. Abrupt process termination can
 prevent the current audit from being finalized; it does not automatically retry generation.
 Numeric warnings now use each claim's cited spans and remain visible from the saved audit.
