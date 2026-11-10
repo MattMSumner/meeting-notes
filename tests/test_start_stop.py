@@ -848,10 +848,10 @@ def test_background_recording_limit_notifies_and_cleans_session(
         == 0
     )
     assert recorder.stopped and len(transcriber.calls) == 2
-    assert summarizer.transcripts
+    assert not summarizer.transcripts
     assert session.read(meeting_dir) is None
     assert any("Recording time limit reached" in message for message in desktop.notifications)
-    assert desktop.notifications[-1] == "The note for “Standup” is ready."
+    assert desktop.notifications[-1] == f"Ready to enhance: notes enhance {meeting_dir.id}"
 
 
 @pytest.mark.parametrize("failure", [KeyboardInterrupt, OSError])
@@ -1188,7 +1188,7 @@ def test_repeated_stop_waits_through_foreground_processing_handoff(
     assert failures == []
     assert results == [0, 0]
     assert processes.interrupted == [owner_pid]
-    assert len(transcriber.calls) == 2 and len(summarizer.transcripts) == 1
+    assert len(transcriber.calls) == 2 and not summarizer.transcripts
     assert not session.find(MeetingStore(config.data_dir), processes)
 
 

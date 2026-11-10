@@ -59,6 +59,13 @@ delete existing copies first to avoid duplicate shortcuts. Run them from Spotlig
   enhanced ones. Choose one to enhance in the background and open its summary in a new
   Obsidian tab. Cancel does nothing. Reinstall shortcuts to add this action.
 
+Recordings stop automatically after **one hour**, including those started from Spotlight.
+At the limit, capture closes cleanly, transcription runs, and a background recording reports
+that it reached the limit. Enhancement still requires an explicit action. To choose a different
+positive limit, set `MEETING_NOTES_MAX_RECORDING_SECONDS` before starting (for example, `5400`
+for 90 minutes). Reinstall shortcuts from that configured terminal to save an override.
+`notes record --duration SECONDS` can shorten a recording but cannot exceed the configured cap.
+
 ### From a terminal
 
 ```sh

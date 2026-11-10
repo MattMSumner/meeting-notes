@@ -597,7 +597,7 @@ class _Commands:
             if limit_reached:
                 self._say(
                     f"Recording time limit reached ({duration:g}s). Stopped “{title}”; "
-                    "writing the note…",
+                    "writing the transcript…",
                     notify=background,
                 )
             elif background:

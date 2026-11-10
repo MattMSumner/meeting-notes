@@ -630,7 +630,7 @@ def test_failed_capture_keeps_handwritten_note(config: Config):
 
 
 @pytest.mark.parametrize("requested", [[], ["--duration", "10000"]])
-def test_recording_cap_stops_capture_and_processes_the_note(
+def test_recording_cap_stops_capture_and_transcribes_without_enhancing(
     config: Config, capsys: pytest.CaptureFixture[str], requested: list[str]
 ):
     from dataclasses import replace
@@ -644,7 +644,7 @@ def test_recording_cap_stops_capture_and_processes_the_note(
         == 0
     )
     assert recorder.stopped and len(transcriber.calls) == 2
-    assert summarizer.transcripts
+    assert not summarizer.transcripts
     assert "Recording time limit reached (0.05s)" in capsys.readouterr().out
 
 
