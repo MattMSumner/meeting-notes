@@ -40,6 +40,11 @@ Get consent from everyone in a meeting before recording it.
 uv run scripts/install-shortcuts.py
 ```
 
+Run the installer from your configured terminal. It saves your supported `MEETING_NOTES_*`
+settings and PATH into the shortcuts; reinstall after changing them. Shortcuts use a plain
+shell and do not load interactive zsh setup, which requires a terminal. Remove old shortcuts
+before importing replacements to avoid copies named “... 2”.
+
 This adds three shortcuts (confirm each import in Shortcuts, and allow them to run scripts
 when asked). Run the installer from your configured terminal: it captures supported
 `MEETING_NOTES_*` settings and PATH, including Homebrew tools. The launchers use plain
