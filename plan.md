@@ -798,6 +798,13 @@ Re-running transcription also leaves generation to the explicit enhancement acti
   manual review-workflow acceptance remains pending, so M10 stays unbuilt. Broader confidence
   requires separately budgeted repeat/held-out checks. All 395 unit tests pass.
 
+- **Recording safeguard (2026-11-10):** foreground and background recordings now have
+  a default one-hour cap, configurable with a positive finite
+  `MEETING_NOTES_MAX_RECORDING_SECONDS`. Explicit duration can shorten but not exceed
+  the cap. Reaching the limit stops capture cleanly, reports the reason, and transcribes
+  without enhancing. Shortcuts inherit the code default and capture configured overrides
+  on reinstall. All 410 unit tests pass; no capture code or model contract changed.
+
 For both stages, run formatting, lint, strict types and unit tests before committing;
 run Swift tests only if capture code changes. Keep shipped model settings unchanged.
 Live transcription, in-place AI editing, custom Obsidian plugins and automatic tracking
