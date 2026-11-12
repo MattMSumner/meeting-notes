@@ -7,8 +7,9 @@ and writes an Obsidian-friendly markdown note.
 Status: **M8 shipped**. M9 and M10 implementations are present; manual Obsidian
 acceptance was reported complete for M10. V7 meets its frozen single-run quality criteria;
 V8 fails its single-run evaluation (11/13 summaries and a lost release agreement). A fresh
-review found two P1 recovery defects and a P2 timing defect; fixes and current review-workflow
-manual acceptance remain pending, so M10 remains unbuilt.
+review found two P1 recovery defects and a P2 timing defect; those reproduced bugs are now
+fixed. Evaluation failures and current review-workflow manual acceptance remain pending,
+so M10 remains unbuilt.
 No model calls are authorized as part of this implementation.
 Phase 0 (Handy) set up.
 
@@ -832,6 +833,18 @@ Re-running transcription also leaves generation to the explicit enhancement acti
   defect. These remain unfixed and block merging independently of quality. Formatting, lint,
   strict types and all 433 offline unit tests pass. Fixes, separately budgeted evaluation and
   current manual acceptance remain pending; M10 remains unbuilt.
+
+- **Independent review fixes (2026-11-12; not Built):** malformed session recovery uses
+  stable file-derived identity rather than a fresh timestamp per read. Session discovery
+  includes recordings whose metadata is missing, and title lookup falls back to the meeting
+  ID so damaged metadata cannot block capture shutdown. Partial timing quotes leaving temporal
+  qualifiers or duration units in the task remain unassigned with the full source for review;
+  complete timing quotes retain their qualifiers. New saves use wrapper version 7/grounding-v6,
+  while version-6 saves keep the original compiler. Synthetic regressions cover corrupt-session
+  claims, concurrent starts, interrupted recovery, damaged metadata with/without audio, timing
+  qualifiers and saved-summary compatibility. All 465 unit tests, formatting, lint and strict
+  types pass. Frozen evaluation artifacts are unchanged; no inference or new quality claim.
+  V8 timeout/omission failures and current manual acceptance remain pending. M10 remains unbuilt.
 
 For both stages, run formatting, lint, strict types and unit tests before committing;
 run Swift tests only if capture code changes. Keep shipped model settings unchanged.
