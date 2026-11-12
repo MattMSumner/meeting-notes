@@ -1,0 +1,132 @@
+{
+  "R01": {
+    "arm": "proposed",
+    "case": "empty",
+    "repetition": 1
+  },
+  "R02": {
+    "arm": "proposed",
+    "case": "revised_timing",
+    "repetition": 1
+  },
+  "R03": {
+    "arm": "baseline",
+    "case": "same_speaker_tasks",
+    "repetition": 1
+  },
+  "R04": {
+    "arm": "proposed",
+    "case": "shared_numbers",
+    "repetition": 1
+  },
+  "R05": {
+    "arm": "baseline",
+    "case": "empty",
+    "repetition": 1
+  },
+  "R06": {
+    "arm": "baseline",
+    "case": "revised_timing",
+    "repetition": 1
+  },
+  "R07": {
+    "arm": "proposed",
+    "case": "coordinated_tasks",
+    "repetition": 1
+  },
+  "R08": {
+    "arm": "proposed",
+    "case": "additional",
+    "repetition": 1
+  },
+  "R09": {
+    "arm": "baseline",
+    "case": "additional",
+    "repetition": 1
+  },
+  "R10": {
+    "arm": "baseline",
+    "case": "status_conflict",
+    "repetition": 1
+  },
+  "R11": {
+    "arm": "proposed",
+    "case": "tentative_task",
+    "repetition": 1
+  },
+  "R12": {
+    "arm": "baseline",
+    "case": "tentative_task",
+    "repetition": 1
+  },
+  "R13": {
+    "arm": "baseline",
+    "case": "shared_numbers",
+    "repetition": 1
+  },
+  "R14": {
+    "arm": "baseline",
+    "case": "sparse",
+    "repetition": 1
+  },
+  "R15": {
+    "arm": "proposed",
+    "case": "front_loaded_timing",
+    "repetition": 1
+  },
+  "R16": {
+    "arm": "proposed",
+    "case": "status_conflict",
+    "repetition": 1
+  },
+  "R17": {
+    "arm": "baseline",
+    "case": "later_timing",
+    "repetition": 1
+  },
+  "R18": {
+    "arm": "baseline",
+    "case": "front_loaded_timing",
+    "repetition": 1
+  },
+  "R19": {
+    "arm": "proposed",
+    "case": "conflicting",
+    "repetition": 1
+  },
+  "R20": {
+    "arm": "proposed",
+    "case": "later_timing",
+    "repetition": 1
+  },
+  "R21": {
+    "arm": "proposed",
+    "case": "ambiguous_dates",
+    "repetition": 1
+  },
+  "R22": {
+    "arm": "baseline",
+    "case": "conflicting",
+    "repetition": 1
+  },
+  "R23": {
+    "arm": "baseline",
+    "case": "ambiguous_dates",
+    "repetition": 1
+  },
+  "R24": {
+    "arm": "proposed",
+    "case": "sparse",
+    "repetition": 1
+  },
+  "R25": {
+    "arm": "proposed",
+    "case": "same_speaker_tasks",
+    "repetition": 1
+  },
+  "R26": {
+    "arm": "baseline",
+    "case": "coordinated_tasks",
+    "repetition": 1
+  }
+}

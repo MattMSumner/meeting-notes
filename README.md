@@ -235,7 +235,11 @@ The [V8 request representation](evaluation/m10/v8/README.md) shares source-ID en
 and uses compact, separately labelled source rows. It preserves every source while fitting
 larger transcripts at the unchanged context size. Full request-size checks still apply before
 initial and correction requests. The output contract and saved validators are unchanged;
-V8 model quality has not yet been evaluated.
+The [V8 evaluation](evaluation/m10/v8/results/report.md) used 29 requests across both arms
+and produced 11/13 proposed summaries. Two cases timed out, and another lost an independent
+release agreement: V8 fails its single-run criteria. A fresh [PR review](evaluation/m10/v8/results/pr-review.md)
+also found two recovery defects and a timing-qualifier defect; these remain unfixed.
+M10 remains unbuilt pending fixes, quality evaluation and current manual acceptance.
 
 Recovery retains a stopping session until the detached capture helper is confirmed stopped.
 Interrupted recovery remains retryable and blocks a concurrent recording start. The Enhance
