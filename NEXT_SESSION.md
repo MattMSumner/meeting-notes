@@ -1,4 +1,4 @@
-# M10 handoff — 2026-11-12, V10 offline candidate
+# M10 handoff — 2026-11-12, V10 evaluation failed
 
 ## Start here
 
@@ -7,19 +7,20 @@ Read AGENTS.md, this file, the M10 section of plan.md, the
 [V9 failure report](evaluation/m10/v9/results/report.md) and the
 [V10 freeze contract](evaluation/m10/v10/README.md).
 
-**The bounded conflict-completeness candidate is implemented and frozen offline. No new
-inference is authorized.** Agree added inference cost, cases, repetitions, per-arm ceilings
-and total budget separately before any model run. Do not merge or mark M10 Built.
+**The approved V10 evaluation is complete and failed quality. No further inference is
+authorized.** Read [the results report](evaluation/m10/v10/results/report.md) before designing
+an offline successor. Do not tune V10, reuse its unused request allowance, merge or mark M10 Built.
 
 ## Current state
 
-- Implementation commit `31323dc`; freeze commit `35f9787`. Source/settings provenance is
-  in evaluation/m10/v10/provenance.json. Neither commit has a live quality result.
+- Implementation commit `31323dc`; freeze commit `35f9787`; evaluation evidence commit
+  `9f6084d`. Source/settings provenance remains in evaluation/m10/v10/provenance.json.
+  V10 inputs retain their pre-authorization state; results/run.json records subsequent approval.
 - Formatting, lint, strict pyright and **539 offline tests** pass; six integration tests
   excluded. The offline suite needs access outside the sandbox for Metal imports and `ps`;
   it does not run model inference. No capture changes, so no Swift tests were needed.
-- All 340 V1–V9 manifest entries verify unchanged. V10 has 42 manifest entries. The original
-  13 pairs and baseline 199dd62 are byte-preserved. Historical revision hashes retain their
+- All 340 V1–V9 manifest entries verify unchanged. V10 has 42 input entries and 14 result
+  entries. The original 13 pairs and baseline 199dd62 are byte-preserved. Historical revision hashes retain their
   original meaning across the prior rebase; never rewrite frozen provenance.
 - Existing recording safeguards from main `8428868` remain intact. Completion/recovery do
   transcription only. Leave `/tmp/meeting-notes-safeguards` and the pre-rebase backup alone.
@@ -61,29 +62,68 @@ the previous successful generation/evidence. Rendering recompiles from saved evi
 reading original notes or invoking a model. Wrappers 1–8 keep original validators, including
 the V9 compiler and its known semantic failure. No unrelated recovery redesign was bundled.
 
-## Freeze and next gate
+## Completed evaluation and next gate
 
 V10 freezes 22 synthetic pairs: original 13 plus nine new unit/period/scope/status/additive/
 multi-claim cases. expected.json and rubric.md precede generated outputs. Both prompts,
 generic and per-case stage schemas, wrapper schema, source, settings and runner are hashed.
 The new cases were written by the implementing agent; they are not independently held out.
-No V10 generated output or quality score exists. Offline hand-authored comparisons exercise
-compilation and bounds; they do not establish model classification accuracy.
+The approved one-repetition run attempted all 22 cases per arm under ceilings of 88 baseline
+and 74 proposed (162 total). It used **65 requests: 22 baseline + 43 proposed**, leaving 97
+unused. No tuning, selective reruns or extra repetitions occurred. Baseline produced 22/22;
+proposed produced 17/22. All five failed cases and every attempt are retained. No timeout or
+transport error occurred. Model/settings/digest were stable; run wall time was 48m44s.
 
-Discuss and authorize scope BEFORE inference. A possible one-repetition run over all 22 pairs
-has ceilings **88 baseline + 74 proposed = 162 requests** (seven proposed cases skip comparison).
-These are cost calculations, not approved budgets. Do not reuse unused V9 requests.
-Any different case count/repetitions/held-out set needs explicit agreement and frozen expectations.
-The runner requires `--freeze v10`, `--arm`, `--repetitions`, `--max-requests`, `--output` and
-`--run`; merely having that CLI is not authorization. No tuning/selective reruns in scored runs.
+Proposed comparison used 15 initial + four correction requests; summary used 19 initial + five
+corrections. Three cases blocked comparison, two blocked summary. All 17 selected outputs
+replay exactly as wrapper 9. Offline verification is results/verify.py; scoring joins and
+diagnostics are results/analyze.py. The original 13 baseline summaries match V9 exactly.
 
-Score all outputs with the frozen rubric: commitment completeness, source separation, complete
-and accurate conflicts, numeric meaning, dates/owners and useful emphasis. Inspect semantic
-claim splitting and uncertain relations, not just text coverage. Any critical missed/invented
-conflict, false agreement over uncertainty, incomplete output or spoken-commitment regression
-fails the gate. Replay every selected result as wrapper 9 using saved comparison evidence;
-verify old manifests unchanged. Report stage-specific requests, corrections, failures and latency.
-One repetition of familiar/implementer-authored cases cannot establish reliability.
+The targeted shared_numbers conflict now appears with both support accounts while monitoring
+and invoice action remain independent. Original 13 spoken tasks and release agreement survive.
+Nevertheless the quality gate fails:
+
+- unit_disagreement publishes a factual price statement as an action (T1). Its correction
+  removes invalid notes references from core prose but preserves the invented action.
+  Source-ID membership and exact code assembly do not prove that an action was spoken.
+- scope_separate and tentative_confirmed call claims additional while retaining transcript
+  accounts on both attempts. The no-match contract blocks them. Scope differences are
+  recognized in the reasons; tentative versus confirmed should have received visible review.
+- multi_claim_notes finds the three semantic relations but drops separators/punctuation from
+  the exact partition on both attempts. Coverage fails and the independent invoice task is
+  unavailable. This is a commitment/completion regression against baseline.
+- periods_separate repairs additional/no-match structure, then both summary drafts still cite
+  handwritten N1 in spoken core. estimate_approval also blocks summary for N1 in core; its
+  selected comparison incorrectly avoids the frozen expected uncertain review relation.
+- Comparison quantity/unit fields can be null/empty despite explicit values; absent dimensions
+  can contain literal `null` strings. Zero selected comparisons use uncertain. Offline review
+  rendering tests do not establish live uncertainty classification or semantic completeness.
+
+There are 12 selected comparisons with 18 claims (ten additional, six conflicting, two
+consistent); two selected comparisons belong to blocked summaries. No published proposed
+output in this one run misses the targeted hard conflicts or invents a hard conflict, but
+that observation excludes blocked cases and does not satisfy acceptance.
+
+Scores were entered against shuffled opaque labels before joining the arm key. Output/source
+structure reveals arms; this was neither fully blinded nor independent review. One run on
+familiar/implementer-authored cases does not establish reliability. No current Obsidian
+acceptance was attempted because quality failed. M10 remains unbuilt.
+
+## Offline successor work only, if requested
+
+Design a fresh contract from the recorded failures before implementation. Keep task text and
+timing code-assembled; investigate how to reject factual IDs selected as commitments without
+inventing tasks or brittle subject/number matching. Reconsider requiring the model to assign
+punctuation/whitespace between semantic claim spans and whether related-but-distinct transcript
+accounts need an explicit representation separate from a matching account. Preserve semantic
+coverage and uncertainty requirements; do not weaken them just to publish blocked fixtures.
+Review repeated source-kind correction failures separately from claim classification.
+
+Add fake-transport regressions from saved V10 responses and retain every historical validator.
+Any successor needs a new freeze with expected outcomes before outputs, and separately agreed
+cases/repetitions/per-arm ceilings/total budget. The 97 unused V10 requests authorize nothing
+further. Do not edit V10 inputs/results to fit a repair. The runner's frozen copy resolves paths
+from its original scripts location; scripts/evaluate-enhancement.py was byte-identical at run.
 
 Only after a passing evaluation do current synthetic Obsidian acceptance: unchanged writing,
 links, enhancement/opening behavior, protected summaries, failure/review warnings and render

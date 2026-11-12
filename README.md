@@ -247,7 +247,8 @@ cannot prevent shutdown. Interrupted recovery remains retryable and blocks a con
 recording start. The Enhance
 chooser skips unreadable meetings with a warning, allowing healthy meetings to remain available.
 
-The next offline candidate adds a separate comparison before summary generation when notes
+The [V10 candidate](evaluation/m10/v10/README.md) adds a separate comparison before summary
+generation when notes
 are present. It partitions every note passage into claims and records consistent, additional,
 conflicting or uncertain outcomes against exact source quotes. Code checks text coverage and
 references, assembles conflicts and shows uncertainty in review warnings. Claim splitting,
@@ -259,8 +260,14 @@ notes (two initial, two correction), or two without notes. Transport failures do
 Every request includes the complete sources, schema, settings and stage correction history;
 the summary request also includes the comparison. Requests that exceed the existing conservative
 context estimate fail before sending; inputs are never truncated or chunked. The extra stage
-adds sequential inference latency. Its cost and evaluation budget require separate approval
-before live runs; the prior V9 budget does not authorize this candidate.
+adds sequential inference latency. The approved [V10 evaluation](evaluation/m10/v10/results/report.md)
+used 65 of 162 requests for one repetition of 22 pairs per arm. It finds the missed support-price
+conflict, but proposed produces only 17/22 summaries and turns a factual price statement into an
+action in one published case. Five validation blocks, including the multi-claim case's spoken
+task, fail completion; no selected comparison uses uncertain. The run took 48m44s with no
+transport errors/timeouts. All 17 selected results replay exactly, and the original frozen
+evidence remains unchanged. M10 remains unbuilt; current Obsidian acceptance is pending.
+Further inference requires a separately scoped budget; unused requests do not authorize reruns.
 
 Unresolved blocking errors leave the previous successful summary/evidence untouched. Drafts,
 requests, replies and validation findings are saved locally under the meeting's `attempts/`
