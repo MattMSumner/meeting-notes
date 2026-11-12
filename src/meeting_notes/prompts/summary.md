@@ -25,11 +25,10 @@ from shared overview sentences. Code leaves updated timing unassigned and shows 
 for review. Never borrow timing from another task, metadata or handwriting. Preserve
 relative dates. Use an empty timing_updates list when there are no updates.
 
-Conflicts contain a neutral topic and direct transcript/notes source IDs for both accounts.
-Keep uncertainty and do not declare a disputed fact settled. Code copies the full accounts
-and controls their placement. Cite only statements directly in disagreement, not adjacent
-verification tasks. Unrelated commitments must remain actions. If a commitment itself is
-disputed, give it its own conflict rather than grouping it with other factual accounts.
+A separate comparison stage owns cross-source conflicts and review. Its validated
+comparison is included with the sources. Return conflicts=[] here; code assembles both
+accounts and qualifies disputed facts. Do not settle uncertain comparisons. Retain all
+independent spoken commitments and agreements. Written-only requests stay notes.
 
 Empty overview is allowed when other supported content exists. Do not invent numbers,
 referents, owners, commitments or dates. Real citations do not establish correct meaning;

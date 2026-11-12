@@ -74,6 +74,16 @@ class CompletenessAudit(BaseModel):
     selected: int | None = None
 
 
+class ComparisonAudit(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    validator_version: Literal["grounding-v8"] = "grounding-v8"
+    passages: list[Source] = Field(default_factory=lambda: list[Source]())
+    comparison_attempts: list[Attempt] = Field(default_factory=lambda: list[Attempt]())
+    comparison_selected: int | None = None
+    attempts: list[Attempt] = Field(default_factory=lambda: list[Attempt]())
+    selected: int | None = None
+
+
 @runtime_checkable
 class AuditedSummarizer(Protocol):
     @property
@@ -87,4 +97,5 @@ class AuditedSummarizer(Protocol):
         | CoverageAudit
         | TimingAudit
         | CompletenessAudit
+        | ComparisonAudit
     ): ...

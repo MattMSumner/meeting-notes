@@ -247,10 +247,27 @@ cannot prevent shutdown. Interrupted recovery remains retryable and blocks a con
 recording start. The Enhance
 chooser skips unreadable meetings with a warning, allowing healthy meetings to remain available.
 
-Format and evidence failures share one correction request. Unresolved blocking errors
-leave the previous successful summary/evidence untouched. Drafts, requests, replies and
-validation findings are saved locally under the meeting's `attempts/` folder. The selected
-attempt and saved passages also accompany new successful results in summary wrapper version 8.
+The next offline candidate adds a separate comparison before summary generation when notes
+are present. It partitions every note passage into claims and records consistent, additional,
+conflicting or uncertain outcomes against exact source quotes. Code checks text coverage and
+references, assembles conflicts and shows uncertainty in review warnings. Claim splitting,
+subject identity and semantic classification still need quality evaluation; full text coverage
+alone does not prove all disagreements were recognized.
+
+Comparison and summary generation each allow one correction, for at most four requests with
+notes (two initial, two correction), or two without notes. Transport failures do not retry.
+Every request includes the complete sources, schema, settings and stage correction history;
+the summary request also includes the comparison. Requests that exceed the existing conservative
+context estimate fail before sending; inputs are never truncated or chunked. The extra stage
+adds sequential inference latency. Its cost and evaluation budget require separate approval
+before live runs; the prior V9 budget does not authorize this candidate.
+
+Unresolved blocking errors leave the previous successful summary/evidence untouched. Drafts,
+requests, replies and validation findings are saved locally under the meeting's `attempts/`
+folder. Both stages' attempts, selections and saved passages accompany successful results in
+summary wrapper version 9 / grounding-v8. Rendering replays comparison and compilation from
+saved evidence, with no model call or rereading of original notes. Versions 1–8 retain their
+original validators.
 Partial timing quotes that leave qualifiers or timing behind in the task retain the whole
 commitment under Review required, with no assigned deadline. Complete quotes preserve those
 qualifiers. Version-6 and version-7 saves retain their original compilers for reproducible rendering.

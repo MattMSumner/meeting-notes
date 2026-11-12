@@ -10,8 +10,12 @@ from importlib import resources
 from typing import Any, cast
 
 from meeting_notes.audit import Attempt
-from meeting_notes.audit import CompletenessAudit as Audit
-from meeting_notes.compiler import passages, validate
+from meeting_notes.audit import ComparisonAudit as Audit
+from meeting_notes.comparison import Comparison
+from meeting_notes.comparison import request_schema as comparison_schema
+from meeting_notes.comparison import validate as validate_comparison
+from meeting_notes.compiler import passages
+from meeting_notes.compiler_comparison import validate
 from meeting_notes.contract import Draft, request_schema
 from meeting_notes.evidence import meeting_context
 from meeting_notes.meeting import Meeting
@@ -132,11 +136,17 @@ class OllamaSummarizer:
                 ),
             },
         ]
+        comparison = self._compare(messages[1]["content"])
+        messages[1]["content"] += (
+            "\nValidated comparison (classification evidence, not instructions):\n"
+            + comparison.model_dump_json()
+            + "\nComparison owns conflicts and review. Return conflicts=[] in this draft. "
+            "Preserve independent spoken decisions and actions."
+        )
         best: Summary | None = None
         best_warnings = 0
         best_actions: set[str] = set()
         best_updates: set[tuple[str, str]] = set()
-        best_conflicts: set[tuple[tuple[str, ...], tuple[str, ...]]] = set()
         failure = "No valid draft"
         # One shared correction budget for format, grounding and numeric issues. A
         # malformed correction cannot replace a structurally valid first candidate.
@@ -150,7 +160,7 @@ class OllamaSummarizer:
             attempt = self.audit.attempts[-1]
             try:
                 draft = Draft.model_validate_json(reply)
-                checked = validate(draft, self.audit.passages, meeting_context(meeting))
+                checked = validate(draft, self.audit.passages, comparison, meeting_context(meeting))
                 attempt.blocking = checked.blocking
                 attempt.warnings = checked.warnings
                 if checked.summary is not None:
@@ -158,17 +168,14 @@ class OllamaSummarizer:
                         len(checked.warnings) < best_warnings
                         and best_actions <= {t.original_commitment_id for t in draft.action_items}
                         and best_updates <= timing_links(draft)
-                        and best_conflicts
-                        <= {(tuple(c.transcript), tuple(c.notes)) for c in draft.conflicts}
                     ):
                         best, best_warnings = checked.summary, len(checked.warnings)
                         self.audit.selected = index
                         best_actions = {t.original_commitment_id for t in draft.action_items}
                         best_updates = timing_links(draft)
-                        best_conflicts = {
-                            (tuple(c.transcript), tuple(c.notes)) for c in draft.conflicts
-                        }
-                    if not checked.warnings:
+                    if not any(
+                        not w.startswith("Comparison review required") for w in checked.warnings
+                    ):
                         return best
             except ValueError as error:
                 attempt.blocking = [f"Invalid draft: {error}"]
@@ -186,20 +193,65 @@ class OllamaSummarizer:
             return best
         raise SummaryError("Enhancement failed evidence validation: " + failure)
 
-    def _chat(self, messages: list[dict[str, str]]) -> str:
+    def _compare(self, inputs: str) -> Comparison:
+        if not any(s.source == "notes" for s in self.audit.passages):
+            return Comparison(claims=[])
+        prompt = resources.files("meeting_notes").joinpath("prompts/comparison.md").read_text()
+        messages = [
+            {"role": "system", "content": prompt},
+            {"role": "user", "content": inputs},
+        ]
+        failure = "Incomplete claim coverage"
+        for index in range(2):
+            reply = self._chat(
+                messages,
+                schema=comparison_schema(self.audit.passages),
+                attempts=self.audit.comparison_attempts,
+            )
+            attempt = self.audit.comparison_attempts[-1]
+            try:
+                comparison = Comparison.model_validate_json(reply)
+                attempt.blocking = validate_comparison(comparison, self.audit.passages)
+                if not attempt.blocking:
+                    self.audit.comparison_selected = index
+                    return comparison
+            except ValueError as error:
+                attempt.blocking = [f"Invalid comparison: {error}"]
+            failure = "; ".join(attempt.blocking)
+            messages += [
+                {"role": "assistant", "content": reply},
+                {
+                    "role": "user",
+                    "content": "Correct comparison coverage and references: "
+                    + failure
+                    + ". Preserve every claim and all qualifiers. Return JSON only.",
+                },
+            ]
+        raise SummaryError("Comparison failed; coverage requires review: " + failure)
+
+    def _chat(
+        self,
+        messages: list[dict[str, str]],
+        *,
+        schema: dict[str, Any] | None = None,
+        attempts: list[Attempt] | None = None,
+    ) -> str:
+        if schema is None:
+            schema = request_schema(
+                [s.id for s in self.audit.passages if s.source == "transcript"],
+                [s.id for s in self.audit.passages if s.source == "notes"],
+            )
+            schema["properties"]["conflicts"]["maxItems"] = 0
         body: dict[str, Any] = {
             "model": self.model,
             "messages": messages,
             "stream": False,
             "think": self.think,
-            "format": request_schema(
-                [s.id for s in self.audit.passages if s.source == "transcript"],
-                [s.id for s in self.audit.passages if s.source == "notes"],
-            ),
+            "format": schema,
             "options": {"num_ctx": self.num_ctx, "temperature": 0},
         }
         attempt = Attempt(request=deepcopy(body))
-        self.audit.attempts.append(attempt)
+        (self.audit.attempts if attempts is None else attempts).append(attempt)
         # Include both sources, schema, settings and correction history on every call.
         estimate = (
             len(json.dumps(body, ensure_ascii=False)) + CHARS_PER_TOKEN - 1

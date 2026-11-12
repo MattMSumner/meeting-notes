@@ -35,7 +35,30 @@ def test_observed_failure_requires_correction_and_preserves_unrelated_commitment
     else:
         assert any("groups commitments" in b for b in checked.blocking)
         corrected.conflicts[0].transcript = ["T1"]
-    responses = iter([reply, corrected.model_dump_json()])
+    responses_list = [reply, corrected.model_dump_json()]
+    if case == "status_conflict":
+        from comparison_helpers import account
+
+        from meeting_notes.comparison import Claim, Comparison
+
+        comparison = Comparison(
+            claims=[
+                Claim(
+                    note=account("N1", sources[-1].text),
+                    transcript=[account("T1", sources[0].text)],
+                    outcome="conflicting",
+                    reason="Different readiness accounts.",
+                )
+            ]
+        )
+        corrected.conflicts = []
+        corrected.key_points = [
+            item
+            for item in corrected.key_points
+            if all(ref.startswith("T") for ref in item.sources)
+        ]
+        responses_list = [comparison.model_dump_json(), reply, corrected.model_dump_json()]
+    responses = iter(responses_list)
     requests: list[dict[str, Any]] = []
 
     def post(path: str, body: dict[str, Any]) -> dict[str, Any]:
@@ -48,7 +71,7 @@ def test_observed_failure_requires_correction_and_preserves_unrelated_commitment
         pair["transcript"],
         handwritten_text=pair["handwritten_text"],
     )
-    assert len(requests) == 2 and engine.audit.selected == 1
+    assert len(requests) == (2 if case == "empty" else 3) and engine.audit.selected == 1
     if case == "empty":
         assert result.decisions == ["Release Friday."]
         assert len(result.action_items) == 2

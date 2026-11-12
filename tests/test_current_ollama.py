@@ -45,7 +45,9 @@ def model(transport: Transport, context: int = 32768) -> OllamaSummarizer:
 
 
 def test_labelled_compact_inputs_preserve_both_sources_and_request_settings():
-    transport = Transport(reply())
+    from comparison_helpers import additional
+
+    transport = Transport(additional("Personal café context."), reply())
     engine = model(transport)
     engine.summarize(
         MEETING, '[00:00:00] Sam: A "quoted" plan.', handwritten_text="Personal café context."
@@ -62,8 +64,9 @@ def test_labelled_compact_inputs_preserve_both_sources_and_request_settings():
     ]
     assert json.loads(notes) == [["N1", "Personal café context."]]
     assert "Others invited: Alex" in content
-    assert body["format"]["$defs"]["SourceID"]["enum"] == ["T1", "N1"]
-    assert engine.audit.attempts[0].request == body
+    assert body["format"]["$defs"]["Account"]["properties"]["source_id"]["enum"] == ["T1", "N1"]
+    assert engine.audit.comparison_attempts[0].request == body
+    assert engine.audit.attempts[0].request == transport.requests[1]
 
 
 @pytest.mark.parametrize("sentences", [400, 800])
@@ -122,7 +125,7 @@ def test_both_sources_and_reply_allowance_count_before_initial_request():
     with pytest.raises(OllamaError, match="too long"):
         engine.summarize(MEETING, "The plan was discussed.", handwritten_text="word " * 20000)
     assert not transport.requests
-    assert engine.audit.attempts[0].error == "Complete request exceeds context; not sent"
+    assert engine.audit.comparison_attempts[0].error == "Complete request exceeds context; not sent"
 
 
 def test_correction_history_is_counted_before_retry_request():

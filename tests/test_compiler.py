@@ -130,7 +130,7 @@ def test_current_model_and_wrapper_reproduce_review_without_live_sources():
     from meeting_notes.evidence import meeting_context
 
     saved = Generation(
-        version=8,
+        version=9,
         summary=summary,
         evidence=Evidence(
             transcript=transcript,

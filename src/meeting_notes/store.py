@@ -13,6 +13,7 @@ from uuid import uuid4
 
 from meeting_notes.audit import (
     Audit,
+    ComparisonAudit,
     CompletenessAudit,
     CoverageAudit,
     CurrentAudit,
@@ -131,12 +132,15 @@ class MeetingDir:
         | TaskAudit
         | CoverageAudit
         | CompletenessAudit
+        | ComparisonAudit
         | TimingAudit
         | None = None,
     ) -> None:
         result = (
             Generation(
-                version=8
+                version=9
+                if isinstance(audit, ComparisonAudit)
+                else 8
                 if isinstance(audit, CompletenessAudit)
                 else 7
                 if isinstance(audit, TimingAudit)
@@ -174,6 +178,7 @@ class MeetingDir:
         | TaskAudit
         | CoverageAudit
         | CompletenessAudit
+        | ComparisonAudit
         | TimingAudit,
     ) -> None:
         """Preserve failed drafts independently of the last successful generation."""

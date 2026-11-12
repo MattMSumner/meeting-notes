@@ -6,6 +6,7 @@ from pydantic import BaseModel, ConfigDict, model_validator
 
 from meeting_notes.audit import (
     Audit,
+    ComparisonAudit,
     CompletenessAudit,
     CoverageAudit,
     CurrentAudit,
@@ -36,7 +37,7 @@ class Evidence(BaseModel):
 class Generation(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    version: Literal[1, 2, 3, 4, 5, 6, 7, 8] = 1
+    version: Literal[1, 2, 3, 4, 5, 6, 7, 8, 9] = 1
     summary: Summary
     evidence: Evidence
     audit: (
@@ -46,6 +47,7 @@ class Generation(BaseModel):
         | TaskAudit
         | CoverageAudit
         | CompletenessAudit
+        | ComparisonAudit
         | TimingAudit
         | None
     ) = None
@@ -61,6 +63,40 @@ class Generation(BaseModel):
             raise ValueError("Version 2 requires a selected, validated attempt")
         if not 0 <= audit.selected < len(audit.attempts):
             raise ValueError("Selected attempt is out of range")
+        if self.version == 9:
+            from meeting_notes.comparison import Comparison
+            from meeting_notes.compiler import passages as current_passages
+            from meeting_notes.compiler_comparison import validate as current_validate
+            from meeting_notes.contract import Draft as CurrentDraft
+
+            if not isinstance(audit, ComparisonAudit):
+                raise ValueError("Version 9 requires grounding-v8")
+            if audit.passages != current_passages(
+                self.evidence.transcript, self.evidence.handwritten_text
+            ):
+                raise ValueError("Saved passages differ from the saved evidence")
+            comparison = Comparison(claims=[])
+            if audit.comparison_selected is not None:
+                if not 0 <= audit.comparison_selected < len(audit.comparison_attempts):
+                    raise ValueError("Selected comparison is out of range")
+                selected = audit.comparison_attempts[audit.comparison_selected]
+                if selected.error or selected.blocking or selected.reply is None:
+                    raise ValueError("Selected comparison was not publishable")
+                comparison = Comparison.model_validate_json(selected.reply)
+            elif audit.comparison_attempts or any(s.source == "notes" for s in audit.passages):
+                raise ValueError("Comparison coverage incomplete")
+            attempt = audit.attempts[audit.selected]
+            if attempt.error or attempt.blocking or attempt.reply is None:
+                raise ValueError("Selected attempt was not publishable")
+            checked = current_validate(
+                CurrentDraft.model_validate_json(attempt.reply),
+                audit.passages,
+                comparison,
+                self.evidence.context,
+            )
+            if checked.summary != self.summary or checked.warnings != attempt.warnings:
+                raise ValueError("Saved summary does not match its validated draft")
+            return self
         if self.version == 8:
             from meeting_notes.compiler import (
                 passages as current_passages,

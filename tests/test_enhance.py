@@ -604,7 +604,7 @@ def test_failed_audit_save_prevents_publication_and_preserves_old_generation(
     assert list((directory.path / "attempts").iterdir()) == []
 
 
-def test_current_generation_is_saved_with_v6_and_survives_source_deletion(h: Harness):
+def test_current_generation_is_saved_with_comparison_and_survives_source_deletion(h: Harness):
     from test_ollama import FakeOllama
 
     from meeting_notes.contract import Draft, SupportedText
@@ -623,10 +623,14 @@ def test_current_generation_is_saved_with_v6_and_survives_source_deletion(h: Har
         notes_context=[],
         conflicts=[],
     )
-    model = OllamaSummarizer("fake", 32768, FakeOllama(value.model_dump_json()), "Sam")
+    from comparison_helpers import additional
+
+    model = OllamaSummarizer(
+        "fake", 32768, FakeOllama(additional("Synthetic context."), value.model_dump_json()), "Sam"
+    )
     pipeline.summarize(directory, pipeline.conversation(directory), model, "Sam")
     saved = directory.load_generation()
-    assert isinstance(saved, Generation) and saved.version == 8
+    assert isinstance(saved, Generation) and saved.version == 9
     path = directory.load_meeting().handwritten_path
     assert path is not None
     path.unlink()
@@ -662,3 +666,91 @@ def test_chooser_reports_corruption_that_occurs_during_dialog(h: Harness):
     assert h.run("enhance", "--choose") == 1
     assert not h.processes.spawned
     assert any("Couldn't start enhancement" in m for m in h.desktop.notifications)
+
+
+@pytest.mark.parametrize("failure", ["coverage", "transport", "audit_save", "summary_save"])
+def test_comparison_failure_preserves_previous_generation_and_evidence(
+    h: Harness, monkeypatch: pytest.MonkeyPatch, failure: str
+):
+    from comparison_helpers import additional
+    from test_current_ollama import Transport, reply
+
+    from meeting_notes.ollama import OllamaError, OllamaSummarizer
+
+    directory = h.ready()
+    path = directory.path / "writing.md"
+    path.write_text("Synthetic context.")
+    directory.save_handwritten_path(path)
+    transport = Transport(additional("Synthetic context."), reply())
+    model = OllamaSummarizer("fake", 32768, transport, "Sam")
+    pipeline.summarize(directory, pipeline.conversation(directory), model, "Sam")
+    before = directory.summary_file.read_bytes()
+    assert isinstance(directory.load_generation(), Generation)
+    if failure == "coverage":
+        transport = Transport('{"claims":[]}', '{"claims":[]}')
+    elif failure == "transport":
+        transport = Transport(OllamaError("offline"))
+    else:
+        transport = Transport(additional("Synthetic context."), reply())
+        replace = Path.replace
+
+        def fail(self: Path, target: str | Path) -> Path:
+            if (failure == "audit_save" and self.parent.name == "attempts") or (
+                failure == "summary_save" and self.name == ".summary.tmp"
+            ):
+                raise OSError("synthetic save failure")
+            return replace(self, target)
+
+        monkeypatch.setattr(Path, "replace", fail)
+    model = OllamaSummarizer("fake", 32768, transport, "Sam")
+    with pytest.raises((SummaryError, OSError)):
+        pipeline.summarize(directory, pipeline.conversation(directory), model, "Sam")
+    assert directory.summary_file.read_bytes() == before
+    assert not (directory.path / ".summary.tmp").exists()
+    assert h.run("render", directory.id) == 0
+    if failure == "coverage":
+        attempts = [json.loads(p.read_text()) for p in (directory.path / "attempts").glob("*.json")]
+        assert any(len(a["audit"]["comparison_attempts"]) == 2 for a in attempts)
+
+
+def test_comparison_uses_snapshot_during_edits_and_replays_review_without_inference(h: Harness):
+    from comparison_helpers import account
+    from test_current_ollama import Transport, reply
+
+    from meeting_notes.comparison import Claim, Comparison
+    from meeting_notes.ollama import OllamaSummarizer
+
+    directory = h.ready()
+    path = directory.path / "writing.md"
+    path.write_bytes(b"Maybe support costs 150 dollars.\r\n")
+    directory.save_handwritten_path(path)
+    comparison = Comparison(
+        claims=[
+            Claim(
+                note=account("N1", "Maybe support costs 150 dollars."),
+                transcript=[],
+                outcome="uncertain",
+                reason="The service identity is unclear.",
+            )
+        ]
+    )
+
+    class EditingTransport(Transport):
+        def __call__(self, route: str, body: dict[str, object]) -> dict[str, object]:
+            path.write_text("Later edits must not enter either request.")
+            return super().__call__(route, body)
+
+    transport = EditingTransport(comparison.model_dump_json(), reply())
+    model = OllamaSummarizer("fake", 32768, transport, "Sam")
+    pipeline.summarize(directory, pipeline.conversation(directory), model, "Sam")
+    saved = directory.load_generation()
+    assert isinstance(saved, Generation)
+    assert saved.evidence.handwritten_original == "Maybe support costs 150 dollars.\r\n"
+    assert all("Later edits" not in json.dumps(request) for request in transport.requests)
+    path.unlink()
+    assert h.run("render", directory.id) == 0
+    note = h.config.notes_dir / f"{directory.load_meeting().note_stem}.md"
+    rendered = note.read_text()
+    assert "Comparison review required" in rendered
+    assert "Maybe support costs 150 dollars." in rendered
+    assert len(transport.requests) == 2 and h.factories == 0
