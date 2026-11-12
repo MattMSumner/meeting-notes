@@ -460,6 +460,8 @@ class _Commands:
             elif active.session.phase == Phase.RECORDING:
                 elapsed = (now - active.session.started_at).total_seconds()
                 print(f"Recording “{title}” for {timestamp(elapsed)} ({active.meeting_dir.id})")
+            elif active.session.phase == Phase.STOPPING:
+                print(f"Stopping recording “{title}” ({active.meeting_dir.id})")
             elif active.session.phase == Phase.ENHANCING:
                 print(f"Enhancing “{title}” ({active.meeting_dir.id})")
             else:
@@ -755,18 +757,26 @@ class _Commands:
 
     def choose(self) -> int:
         choices: list[tuple[str, str]] = []
-        directories = sorted(
-            self.store.all(), key=lambda d: d.load_meeting().started_at.timestamp(), reverse=True
-        )
-        for directory in directories:
-            if self._eligible(directory):
+        eligible: list[tuple[float, str, str]] = []
+        for directory in self.store.all():
+            try:
                 meeting = directory.load_meeting()
-                choices.append(
-                    (
-                        directory.id,
-                        f"{meeting.title} — {meeting.started_at.astimezone():%Y-%m-%d %H:%M}",
+                if self._eligible(directory):
+                    eligible.append(
+                        (
+                            meeting.started_at.timestamp(),
+                            directory.id,
+                            f"{meeting.title} — {meeting.started_at.astimezone():%Y-%m-%d %H:%M}",
+                        )
                     )
+            except (OSError, ValueError, KeyError, TypeError, AttributeError) as error:
+                self._say(
+                    f"Skipped unreadable meeting {directory.id} ({error}). "
+                    "Restore its metadata or re-transcribe its audio before enhancing.",
+                    notify=True,
+                    error=True,
                 )
+        choices = [(identifier, label) for _, identifier, label in sorted(eligible, reverse=True)]
         if not choices:
             self._say(
                 "No meetings are ready to enhance. Transcribe a recording first.", notify=True
@@ -789,7 +799,16 @@ class _Commands:
                     Phase.ENHANCING,
                     datetime.now().astimezone(),
                 )
-        except (DesktopError, OSError, session.MeetingBusy, MeetingNotFound) as error:
+        except (
+            DesktopError,
+            OSError,
+            ValueError,
+            KeyError,
+            TypeError,
+            AttributeError,
+            session.MeetingBusy,
+            MeetingNotFound,
+        ) as error:
             self._say(f"Couldn't start enhancement ({error}).", notify=True, error=True)
             return 1
         self._say("Enhancement started in the background.", notify=True)

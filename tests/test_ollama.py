@@ -1,4 +1,4 @@
-"""OllamaSummarizer against a fake Ollama API."""
+"""Legacy V3 transport compatibility; current transport tests are in test_current_ollama.py."""
 
 import json
 from datetime import datetime

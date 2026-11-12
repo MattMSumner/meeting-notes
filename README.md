@@ -231,6 +231,16 @@ frozen single-run criteria; this is not a reliability estimate, and current manu
 remains pending.
 New saves use wrapper version 6; version-5 saves retain the original V6 rules.
 
+The [V8 request representation](evaluation/m10/v8/README.md) shares source-ID enum definitions
+and uses compact, separately labelled source rows. It preserves every source while fitting
+larger transcripts at the unchanged context size. Full request-size checks still apply before
+initial and correction requests. The output contract and saved validators are unchanged;
+V8 model quality has not yet been evaluated.
+
+Recovery retains a stopping session until the detached capture helper is confirmed stopped.
+Interrupted recovery remains retryable and blocks a concurrent recording start. The Enhance
+chooser skips unreadable meetings with a warning, allowing healthy meetings to remain available.
+
 Format and evidence failures share one correction request. Unresolved blocking errors
 leave the previous successful summary/evidence untouched. Drafts, requests, replies and
 validation findings are saved locally under the meeting's `attempts/` folder. The selected

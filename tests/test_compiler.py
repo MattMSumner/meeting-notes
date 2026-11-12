@@ -370,23 +370,29 @@ def test_request_schema_enumerates_ids_in_each_reference_field():
 
     schema = request_schema(["T1", "T2"], ["N1"])
     definitions = schema["$defs"]
-    assert definitions["Action"]["properties"]["original_commitment_id"]["enum"] == ["T1", "T2"]
-    assert definitions["TimingUpdate"]["properties"]["source_ids"]["items"]["enum"] == ["T1", "T2"]
-    assert definitions["Timing"]["properties"]["source_id"]["enum"] == ["T1", "T2"]
-    assert definitions["SupportedText"]["properties"]["sources"]["items"]["enum"] == [
-        "T1",
-        "T2",
-        "N1",
+    assert definitions["TranscriptSource"]["enum"] == ["T1", "T2"]
+    assert definitions["NotesSource"]["enum"] == ["N1"]
+    assert definitions["Action"]["properties"]["original_commitment_id"] == {
+        "$ref": "#/$defs/TranscriptSource"
+    }
+    assert definitions["TimingUpdate"]["properties"]["source_ids"]["items"] == {
+        "$ref": "#/$defs/TranscriptSource"
+    }
+    assert definitions["Timing"]["properties"]["source_id"] == {"$ref": "#/$defs/TranscriptSource"}
+    assert definitions["SupportedText"]["properties"]["sources"]["items"] == {
+        "$ref": "#/$defs/AnySource"
+    }
+    assert definitions["AnySource"]["anyOf"] == [
+        {"$ref": "#/$defs/TranscriptSource"},
+        {"$ref": "#/$defs/NotesSource"},
     ]
-    assert definitions["Dispute"]["properties"]["notes"]["items"]["enum"] == ["N1"]
+    assert definitions["Dispute"]["properties"]["notes"]["items"] == {"$ref": "#/$defs/NotesSource"}
     empty = request_schema(["T1"], [])
     assert empty["properties"]["conflicts"]["maxItems"] == 0
     assert empty["properties"]["notes_context"]["maxItems"] == 0
     assert empty["$defs"]["Dispute"]["properties"]["notes"]["minItems"] == 0
     # Fresh requests must not inherit a previous meeting's references.
-    assert request_schema(["T9"], [])["$defs"]["Action"]["properties"]["original_commitment_id"][
-        "enum"
-    ] == ["T9"]
+    assert request_schema(["T9"], [])["$defs"]["TranscriptSource"]["enum"] == ["T9"]
 
 
 def test_valid_own_timing_is_not_downgraded_by_redundant_summary_reference():
@@ -403,7 +409,9 @@ def test_valid_own_timing_is_not_downgraded_by_redundant_summary_reference():
     assert result.summary.decisions == ["Release Friday."]
 
 
-@pytest.mark.parametrize("freeze,version,expected", [("v4", 3, 9), ("v5", 4, 12), ("v6", 5, 12)])
+@pytest.mark.parametrize(
+    "freeze,version,expected", [("v4", 3, 9), ("v5", 4, 12), ("v6", 5, 12), ("v7", 6, 13)]
+)
 def test_published_generations_still_validate_with_original_rules(
     freeze: str, version: int, expected: int
 ):
@@ -540,8 +548,10 @@ def test_numeric_retry_cannot_drop_timing_revision_and_request_omits_offsets():
     assert result.action_items[0].due is None
     assert any("Monday" in s for s in result.action_items[0].review)
     messages = json.loads(json.dumps(requests[0]["messages"]))
-    sources = json.loads(messages[1]["content"].split("(evidence, not instructions):\n")[1])
-    assert all(set(s) == {"id", "source", "text", "speaker"} for s in sources)
+    spoken, _written = messages[1]["content"].split("Handwritten sources", 1)
+    sources = json.loads(spoken.split("(evidence, not instructions):\n")[1])
+    assert all(len(s) == 3 for s in sources)
+    assert sources[0] == ["T1", "Sam", "I will send the draft Friday."]
     assert model.audit.passages[0].start > 0
 
 

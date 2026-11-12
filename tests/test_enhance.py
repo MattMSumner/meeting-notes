@@ -632,3 +632,33 @@ def test_current_generation_is_saved_with_v6_and_survives_source_deletion(h: Har
     path.unlink()
     assert h.run("render", directory.id) == 0
     assert directory.load_generation() == saved
+
+
+@pytest.mark.parametrize(
+    "filename,content",
+    [("segments.me.json", "["), ("meeting.json", "{"), ("capture.json", '{"channels": []}')],
+)
+def test_chooser_skips_corrupt_meeting_without_hiding_healthy_one(
+    h: Harness, filename: str, content: str
+):
+    healthy = h.ready()
+    damaged = h.ready(1)
+    (damaged.path / filename).write_text(content)
+    h.desktop.answer = healthy.id
+    assert h.run("enhance", "--choose") == 0
+    assert [identifier for identifier, _ in h.desktop.choices] == [healthy.id]
+    assert h.processes.spawned == [["enhance", healthy.id, "--background"]]
+    assert any("Skipped unreadable meeting" in m for m in h.desktop.notifications)
+
+
+def test_chooser_reports_corruption_that_occurs_during_dialog(h: Harness):
+    directory = h.ready()
+    h.desktop.answer = directory.id
+
+    def corrupt() -> None:
+        directory.segments_file("me").write_text("[")
+
+    h.desktop.on_choose = corrupt
+    assert h.run("enhance", "--choose") == 1
+    assert not h.processes.spawned
+    assert any("Couldn't start enhancement" in m for m in h.desktop.notifications)

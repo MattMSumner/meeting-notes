@@ -1,0 +1,20 @@
+{
+  "baseline_commit": "199dd62858b6bda6c13dc749424f6bd9de03f8ba",
+  "model": "qwen3:30b",
+  "temperature": 0,
+  "think": true,
+  "num_ctx": 32768,
+  "repetitions": null,
+  "request_budget": null,
+  "status": "frozen compact request representation; no inference performed",
+  "freeze": "v8",
+  "previous_freeze": "../v7/sha256.json",
+  "proposed_max_requests_per_case": 2,
+  "baseline_max_requests_per_case": 4,
+  "changes": [
+    "Shared source-ID enum definitions replace repeated arrays",
+    "Labelled compact source rows retain exact source text and speakers",
+    "Complete request and correction history remain bounded at unchanged context size",
+    "Output contract and validator unchanged; wrapper version 6 retained"
+  ]
+}
