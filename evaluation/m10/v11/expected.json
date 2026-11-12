@@ -84,7 +84,7 @@
     "id": "periods_separate",
     "expected": "Distinct explicit periods can coexist. Do not assert a price conflict.",
     "expected_outcomes": [
-      "related_distinct",
+      "related-distinct",
       "additional"
     ],
     "familiar": false,
@@ -94,7 +94,7 @@
     "id": "scope_separate",
     "expected": "Different office scope can explain the amounts. No false conflict.",
     "expected_outcomes": [
-      "related_distinct",
+      "related-distinct",
       "additional"
     ],
     "familiar": false,

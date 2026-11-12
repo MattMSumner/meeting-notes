@@ -28,7 +28,7 @@ authored cost-as-commitment candidate even when it has plausible new-contract me
 Do not count strict old-response schema incompatibility as the semantic repair.
 
 Judge the original cases against V11 expected.json: distinct periods/scopes may use
-related_distinct or truly unmatched additional, not agreement over unrelated values.
+related-distinct or truly unmatched additional, not agreement over unrelated values.
 Estimate/approval and tentative/confirmed need uncertainty review when unresolved.
 Support-price disputes must not dispute adjacent monitoring facts or invoice tasks.
 The multi-claim case retains its invoice undertaking and full not-before timing.
