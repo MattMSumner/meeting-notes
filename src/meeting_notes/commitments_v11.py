@@ -88,7 +88,8 @@ _REQUEST = re.compile(
 )
 _IMPLIED = re.compile(r"\b(?:is on me|leave .+ (?:with|to) me)\b", re.I)
 _RETRACTION = re.compile(
-    rf"^(?:(?:actually|sorry),?\s+)?{_AGENT}\s+(?:will not|won't|won’t|cannot|can't)\s+"
+    rf"^(?:(?:actually|sorry),?\s+)?{_AGENT}\s+"
+    rf"(?:will not|won't|won’t|shall not|cannot|can't|can’t|(?:am|are|is) not going to)\s+"
     rf"(?P<verb>{_VERBS})\b(?P<object>.*)",
     re.I,
 )

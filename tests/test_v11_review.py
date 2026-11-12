@@ -27,6 +27,46 @@ def draft(*actions: Action) -> Draft:
 
 
 @pytest.mark.parametrize(
+    ("promise", "retraction"),
+    [
+        ("I shall review the draft.", "I shall not review the draft."),
+        ("I will review the draft.", "I can’t review the draft."),
+        ("I am going to review the draft.", "I am not going to review the draft."),
+        ("We are going to review the draft.", "We are not going to review the draft."),
+        ("Ravi is going to send the invoice.", "Ravi is not going to send the invoice."),
+    ],
+)
+def test_supported_negative_modals_retract_the_matching_task(promise: str, retraction: str) -> None:
+    saved = snapshot(f"[0:00:01] Mira: {promise}\n[0:00:02] Mira: {retraction}")
+    value = action(saved.sources[0])
+    candidate = check(value, saved.sources)
+    assert candidate.disposition == "rejected"
+    assert [span.text for span in candidate.retractions] == [retraction]
+    previous = validate(draft(value), saved, Comparison(claims=[]))
+    assert previous.summary is None
+    corrected = draft()
+    corrected.overview = [SupportedText(text=retraction, sources=["T2"])]
+    current = validate(corrected, saved, Comparison(claims=[]))
+    assert current.summary is not None and not current.summary.action_items
+    assert not correction_errors(previous, current)
+
+
+@pytest.mark.parametrize(
+    "retraction",
+    [
+        "I shall not review the logs.",
+        "I can’t review the logs.",
+        "I am not going to review the logs.",
+        "Ravi shall not review the draft.",
+        "Ravi is not going to review the draft.",
+    ],
+)
+def test_negative_modals_do_not_retract_a_different_task_or_actor(retraction: str) -> None:
+    saved = snapshot(f"[0:00:01] Mira: I shall review the draft.\n[0:00:02] Mira: {retraction}")
+    assert check(action(saved.sources[0]), saved.sources).disposition == "admissible"
+
+
+@pytest.mark.parametrize(
     ("request_text", "admitted"),
     [
         ("Will you be away Friday?", False),
