@@ -8,15 +8,16 @@ Status: **M8 shipped**. M9 and M10 implementations are present; manual Obsidian
 acceptance was reported complete for M10. V7 meets its frozen single-run quality criteria;
 V9 completes 13/13 cases with no timeouts and retains the release agreement, but still fails
 quality on a missed cross-source price conflict. The three reproduced PR review bugs are fixed.
-Further quality work and current review-workflow manual acceptance remain pending, so M10
-remains unbuilt. The explicitly approved one-repetition V9 evaluation is complete; further
+V10 now freezes a separate bounded claim-comparison stage and 22 synthetic cases offline.
+Its additional inference cost and evaluation scope require separate approval. Quality and
+current review-workflow manual acceptance remain pending, so M10 remains unbuilt. The explicitly approved one-repetition V9 evaluation is complete; further
 model runs require separately agreed scope.
 Phase 0 (Handy) set up.
 
 **Fresh-session handoff (2026-11-12):** [NEXT_SESSION.md](NEXT_SESSION.md) records the
-rebase onto shipped safeguards, 495 passing offline tests, unchanged frozen evidence and
-the proposed conflict-completeness stage. The next candidate and its evaluation budget
-remain to be settled; no new inference was performed and M10 remains unbuilt.
+bounded comparison implementation, [V10 freeze](evaluation/m10/v10/README.md), 539 passing
+offline tests and unchanged prior evidence. No new inference ran; the next step is agreement
+on added inference cost and evaluation scope. M10 remains unbuilt.
 
 ---
 
@@ -93,7 +94,8 @@ notes stop / foreground completion / recovery / transcribe
 notes enhance <id> / summarize <id> / enhance --choose
   ├─ claim meeting; reject incomplete, no-speech or busy meetings
   ├─ snapshot handwritten bytes, effective text, segment transcript and context
-  ├─ generate with separately labelled sources → source-specific number checks
+  ├─ compare note claims against speech (bounded correction; skip empty notes)
+  ├─ generate with fixed comparison → code-assembled conflicts/review + number checks
   ├─ atomically replace versioned summary.json (summary + evidence)
   └─ render; Spotlight notifies and opens a newly published summary in a new tab
 notes render <id>
@@ -866,6 +868,24 @@ Re-running transcription also leaves generation to the explicit enhancement acti
   pass. All prior artifacts remain unchanged. No extra runs or tuning used the unused budget.
   Missed-conflict handling needs a new candidate and separately scoped evaluation. Current
   manual acceptance remains pending; M10 remains unbuilt.
+
+- **V10 offline comparison candidate (2026-11-12; not Built):** a separate pre-summary
+  pass partitions note passages into claims, recording subject, quantity/unit, period, scope,
+  epistemic status and consistent/additional/conflicting/uncertain outcomes with exact source
+  accounts. Code checks text coverage and references, assembles conflicts and retains uncertain
+  accounts in visible review. Semantic splitting and classification remain model work; text
+  coverage does not prove completeness. Independent tasks/agreements and relative timing retain
+  code assembly. Comparison and summary each allow one correction: at most four requests with
+  notes, two without; complete request bodies include stage history and selected comparison
+  in the unchanged context estimate. New wrapper 9/grounding-v8 atomically saves both stages
+  for replay; versions 1–8 retain historical validators. All 539 offline tests, formatting,
+  lint and strict types pass; all 340 prior manifest entries remain unchanged. The
+  [V10 freeze](evaluation/m10/v10/README.md) records exact source, both prompts, schemas,
+  settings, rubric and pre-output expectations for 13 original plus nine new synthetic pairs.
+  The new cases are implementer-authored, not independently held out. No inference ran. Added
+  cost, case/repetition counts and budgets need separate approval (one full repetition would
+  allow 88 baseline + 74 proposed = 162 requests). Quality and current Obsidian acceptance
+  remain pending; no Built note or merge.
 
 For both stages, run formatting, lint, strict types and unit tests before committing;
 run Swift tests only if capture code changes. Keep shipped model settings unchanged.
