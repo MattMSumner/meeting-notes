@@ -459,6 +459,14 @@ markdown.
   lint and strict types pass. No capture or model changes, inference, recording or shortcut
   installation performed for this extraction. M10 remains separate and is not marked built.
 
+- **Safeguard review fixes (2026-11-12; PR pending):** repeated Stop waits for a live
+  stopping owner without sending another signal or stop request. Start rechecks all unfinished
+  recording/stopping sessions under its final creation lock, including an orphan restored by
+  interrupted competing recovery. Foreground recording uses the same unfinished-capture guard.
+  Six synthetic regressions cover concurrent Stops during shutdown and before processing handoff,
+  lost recovery claims, and foreground refusal. All 282 offline unit tests, formatting, lint
+  and strict types pass. No capture/model changes or real recording used for verification.
+
 **M5 — Calendar titles.**
 - **Calendar source: Google Calendar, synced by macOS.** I use Google Calendar (personal
   Gmail) in the browser, not Apple's Calendar app. macOS can still keep a local copy:
