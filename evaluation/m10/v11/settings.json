@@ -1,0 +1,24 @@
+{
+  "baseline_commit": "199dd62858b6bda6c13dc749424f6bd9de03f8ba",
+  "model": "qwen3:30b",
+  "temperature": 0,
+  "think": true,
+  "num_ctx": 32768,
+  "timeout_seconds": 600,
+  "repetitions": null,
+  "request_budget": null,
+  "status": "offline candidate frozen; no inference authorized",
+  "freeze": "v11",
+  "previous_freeze": "../v10/sha256.json",
+  "wrapper_version": 10,
+  "validator_version": "grounding-v9",
+  "baseline_max_requests_per_case": 4,
+  "proposed_max_requests_per_case": 4,
+  "proposed_max_requests_empty_notes": 2,
+  "cases": 40,
+  "cases_with_notes": 18,
+  "one_repetition_request_ceilings": {
+    "baseline": 160,
+    "proposed": 116
+  }
+}
