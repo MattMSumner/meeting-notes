@@ -454,3 +454,318 @@ def test_v11_replay_needs_no_original_files_or_inference(monkeypatch: pytest.Mon
     monkeypatch.setattr(socket.socket, "connect", forbidden)
     monkeypatch.setattr(OllamaSummarizer, "summarize", forbidden)
     assert Generation.model_validate_json(serialized) == saved
+
+
+def protocol_generation(
+    *,
+    notes: bool = False,
+    comparison_first: str | None = None,
+    summary_first: str | None = None,
+    summary_last: str | dict[str, Any] | Exception | None = None,
+) -> Generation:
+    responses: list[str | dict[str, Any] | Exception] = []
+    if notes:
+        if comparison_first is not None:
+            responses.append(comparison_first)
+        responses.append(additional("Written café context."))
+    if summary_first is not None:
+        responses.append(summary_first)
+    responses.append(reply("Cost 120 dollars.") if summary_last is None else summary_last)
+    engine = model(Transport(*responses))
+    return generation(
+        engine,
+        engine.summarize(
+            MEETING,
+            "Cost 120 dollars.",
+            handwritten_text="Written café context." if notes else "",
+        ),
+    )
+
+
+def protocol_attempts(data: dict[str, Any]) -> list[dict[str, Any]]:
+    return [*data["audit"]["comparison_attempts"], *data["audit"]["attempts"]]
+
+
+def body_tokens(body: dict[str, Any]) -> int:
+    # Pin the established accounting, independently of the shared runtime/replay helper.
+    return (len(json.dumps(body, ensure_ascii=False)) + 2) // 3 + 4096
+
+
+@pytest.mark.parametrize("notes", [False, True])
+@pytest.mark.parametrize("corrections", [False, True])
+def test_replay_accepts_exact_full_body_budget_and_rejects_one_token_under(
+    notes: bool, corrections: bool
+):
+    saved = protocol_generation(
+        notes=notes,
+        comparison_first="bad comparison" if corrections else None,
+        summary_first="bad draft" if corrections else None,
+    )
+    data: dict[str, Any] = json.loads(saved.model_dump_json())
+    attempts = protocol_attempts(data)
+    # Account for the decimal context setting's own serialized size too.
+    context = 32768
+    for _ in range(3):
+        context = max(body_tokens(a["request"]) for a in attempts)
+        for attempt in attempts:
+            attempt["request"]["options"]["num_ctx"] = context
+    assert max(body_tokens(a["request"]) for a in attempts) == context
+    assert Generation.model_validate_json(Generation.model_validate(data).model_dump_json())
+    for attempt in attempts:
+        attempt["request"]["options"]["num_ctx"] = context - 1
+    with pytest.raises(ValueError, match="Oversized request"):
+        Generation.model_validate(data)
+
+
+@pytest.mark.parametrize(
+    "stage,index,notes",
+    [
+        ("summary", 0, False),
+        ("summary", 0, True),
+        ("summary", 1, False),
+        ("summary", 1, True),
+        ("comparison", 0, True),
+        ("comparison", 1, True),
+    ],
+)
+def test_replay_checks_budget_on_each_sent_stage_and_attempt(stage: str, index: int, notes: bool):
+    saved = protocol_generation(
+        notes=notes,
+        comparison_first="bad " * 4000 if stage == "comparison" and index else None,
+        summary_first=reply("Cost 999 dollars." + " x" * 8000)
+        if stage == "summary" and index
+        else None,
+    )
+    data: dict[str, Any] = json.loads(saved.model_dump_json())
+    attempts = protocol_attempts(data)
+    stage_attempts = data["audit"]["comparison_attempts" if stage == "comparison" else "attempts"]
+    target = stage_attempts[index]
+    if index:
+        first_size = body_tokens(stage_attempts[0]["request"])
+        context = (first_size + body_tokens(target["request"])) // 2
+    elif stage == "summary" and notes:
+        comparison_size = max(
+            body_tokens(a["request"]) for a in data["audit"]["comparison_attempts"]
+        )
+        context = (comparison_size + body_tokens(target["request"])) // 2
+    else:
+        context = 1
+    for attempt in attempts:
+        attempt["request"]["options"]["num_ctx"] = context
+    assert body_tokens(target["request"]) > context
+    if index:
+        assert body_tokens(stage_attempts[0]["request"]) <= context
+    if stage == "summary":
+        assert all(
+            body_tokens(a["request"]) <= context for a in data["audit"]["comparison_attempts"]
+        )
+    with pytest.raises(ValueError, match="Oversized request"):
+        Generation.model_validate(data)
+
+
+@pytest.mark.parametrize("notes", [False, True])
+@pytest.mark.parametrize(
+    "field,value",
+    [
+        ("num_ctx", "32768"),
+        ("num_ctx", True),
+        ("num_ctx", 32768.0),
+        ("num_ctx", None),
+        ("num_ctx", 0),
+        ("num_ctx", -1),
+        ("options", []),
+        ("options", None),
+        ("temperature", True),
+        ("temperature", "0"),
+        ("temperature", 1),
+        ("think", "true"),
+        ("think", 1),
+        ("stream", 0),
+        ("stream", True),
+        ("model", 1),
+    ],
+)
+def test_replay_rejects_malformed_settings_even_when_all_attempts_agree(
+    notes: bool, field: str, value: Any
+):
+    data: dict[str, Any] = json.loads(protocol_generation(notes=notes).model_dump_json())
+    for attempt in protocol_attempts(data):
+        if field in ("num_ctx", "temperature"):
+            attempt["request"]["options"][field] = value
+        else:
+            attempt["request"][field] = value
+    with pytest.raises(ValueError, match="Request"):
+        Generation.model_validate(data)
+
+
+@pytest.mark.parametrize("context", [True, 32768.0, "32768", None, 0, -1])
+def test_runtime_rejects_malformed_context_before_transport(context: Any):
+    transport = Transport(reply())
+    engine = model(transport, context=context)
+    with pytest.raises(OllamaError, match="positive integer"):
+        engine.summarize(MEETING, "The plan was discussed.")
+    assert not transport.requests and engine.audit.attempts[0].response is None
+
+
+@pytest.mark.parametrize(
+    "stage,index,notes",
+    [
+        ("summary", 0, False),
+        ("summary", 0, True),
+        ("summary", 1, False),
+        ("summary", 1, True),
+        ("comparison", 0, True),
+        ("comparison", 1, True),
+    ],
+)
+def test_replay_rejects_truncated_responses_masquerading_as_complete(
+    stage: str, index: int, notes: bool
+):
+    saved = protocol_generation(
+        notes=notes,
+        comparison_first="bad comparison" if stage == "comparison" and index else None,
+        summary_first="bad draft" if stage == "summary" and index else None,
+    )
+    data: dict[str, Any] = json.loads(saved.model_dump_json())
+    attempts = data["audit"]["comparison_attempts" if stage == "comparison" else "attempts"]
+    attempts[index]["response"]["done_reason"] = "length"
+    with pytest.raises(ValueError, match="response error differs"):
+        Generation.model_validate(data)
+
+
+FAILED_RESPONSES: list[dict[str, Any] | Exception] = [
+    {"message": {"content": reply()}, "done_reason": "length"},
+    {"done_reason": "length"},
+    {"error": "missing message"},
+    {"message": {}},
+    {"message": None},
+    {"message": []},
+    OllamaError("offline"),
+    OllamaError(""),
+]
+
+
+@pytest.mark.parametrize("notes", [False, True])
+@pytest.mark.parametrize("response", FAILED_RESPONSES)
+def test_failed_summary_correction_keeps_valid_fallback_and_replays_its_raw_failure(
+    notes: bool, response: dict[str, Any] | Exception
+):
+    saved = protocol_generation(
+        notes=notes, summary_first=reply("Cost 999 dollars."), summary_last=response
+    )
+    assert isinstance(saved.audit, V11Audit)
+    audit = saved.audit
+    failed = audit.attempts[1]
+    assert audit.selected == 0 and saved.summary.overview == "Cost 999 dollars."
+    assert failed.error is not None and failed.compilation is None
+    assert not failed.blocking and not failed.warnings
+    assert Generation.model_validate_json(saved.model_dump_json()) == saved
+
+
+@pytest.mark.parametrize("index", [0, 1])
+@pytest.mark.parametrize("response", FAILED_RESPONSES)
+def test_comparison_response_failure_never_advances_to_summary_or_replays_as_success(
+    index: int, response: dict[str, Any] | Exception
+):
+    responses: list[str | dict[str, Any] | Exception] = ["bad comparison"] if index else []
+    responses.append(response)
+    transport = Transport(*responses)
+    engine = model(transport)
+    with pytest.raises(SummaryError):
+        engine.summarize(MEETING, "Cost 120 dollars.", handwritten_text="Written café context.")
+    assert len(transport.requests) == index + 1
+    assert not engine.audit.attempts and engine.audit.comparison_selected is None
+    data: dict[str, Any] = json.loads(protocol_generation(notes=True).model_dump_json())
+    data["audit"]["comparison_attempts"] = [
+        a.model_dump() for a in engine.audit.comparison_attempts
+    ]
+    with pytest.raises(ValueError, match="Comparison failed before summary"):
+        Generation.model_validate(data)
+
+
+@pytest.mark.parametrize("notes", [False, True])
+def test_oversized_summary_correction_is_unsent_and_preserves_valid_fallback(notes: bool):
+    saved = protocol_generation(
+        notes=notes, summary_first=reply("Cost 999 dollars." + " x" * 50000)
+    )
+    assert isinstance(saved.audit, V11Audit)
+    failed = saved.audit.attempts[1]
+    assert failed.error == "Complete request exceeds context; not sent"
+    assert body_tokens(failed.request) > failed.request["options"]["num_ctx"]
+    assert failed.response is None and failed.reply is None and failed.compilation is None
+    assert saved.audit.selected == 0
+    assert Generation.model_validate_json(saved.model_dump_json()) == saved
+
+
+@pytest.mark.parametrize("notes", [False, True])
+@pytest.mark.parametrize("artifact", ["response", "reply", "compilation"])
+def test_unsent_oversized_correction_cannot_have_response_reply_or_compilation(
+    notes: bool, artifact: str
+):
+    saved = protocol_generation(
+        notes=notes, summary_first=reply("Cost 999 dollars." + " x" * 50000)
+    )
+    data: dict[str, Any] = json.loads(saved.model_dump_json())
+    failed = data["audit"]["attempts"][1]
+    if artifact == "response":
+        failed["response"] = {"error": "missing message"}
+    elif artifact == "reply":
+        failed["reply"] = "not json"
+    else:
+        failed["compilation"] = data["audit"]["attempts"][0]["compilation"]
+    with pytest.raises(ValueError):
+        Generation.model_validate(data)
+
+
+@pytest.mark.parametrize("notes", [False, True])
+def test_falsely_claimed_unsent_size_failure_cannot_hide_a_fitting_correction(notes: bool):
+    saved = protocol_generation(
+        notes=notes, summary_first=reply("Cost 999 dollars."), summary_last=OllamaError("offline")
+    )
+    data: dict[str, Any] = json.loads(saved.model_dump_json())
+    failed = data["audit"]["attempts"][1]
+    assert body_tokens(failed["request"]) < failed["request"]["options"]["num_ctx"]
+    failed["error"] = "Complete request exceeds context; not sent"
+    with pytest.raises(ValueError, match="request that fits"):
+        Generation.model_validate(data)
+
+
+@pytest.mark.parametrize("notes", [False, True])
+@pytest.mark.parametrize(
+    "error", ["offline", "Model ran out of context", "Ollama reply had no message", ""]
+)
+def test_complete_raw_response_cannot_be_hidden_as_a_failed_correction(notes: bool, error: str):
+    saved = protocol_generation(
+        notes=notes, summary_first=reply("Cost 999 dollars."), summary_last=OllamaError("offline")
+    )
+    data: dict[str, Any] = json.loads(saved.model_dump_json())
+    failed = data["audit"]["attempts"][1]
+    failed["response"] = {"message": {"content": reply("Cost 120 dollars.")}}
+    failed["reply"] = failed["response"]["message"]["content"]
+    failed["error"] = error
+    with pytest.raises(ValueError, match="response error differs"):
+        Generation.model_validate(data)
+
+
+@pytest.mark.parametrize("notes", [False, True])
+@pytest.mark.parametrize(
+    "artifact", ["missing_response", "missing_error", "wrong_error", "wrong_reply"]
+)
+def test_failed_response_requires_exact_raw_reply_and_error_bindings(notes: bool, artifact: str):
+    saved = protocol_generation(
+        notes=notes,
+        summary_first=reply("Cost 999 dollars."),
+        summary_last={"message": {"content": reply()}, "done_reason": "length"},
+    )
+    data: dict[str, Any] = json.loads(saved.model_dump_json())
+    failed = data["audit"]["attempts"][1]
+    if artifact == "missing_response":
+        failed["response"] = None
+    elif artifact == "missing_error":
+        failed["error"] = None
+    elif artifact == "wrong_error":
+        failed["error"] = "offline"
+    else:
+        failed["reply"] = "changed reply"
+    with pytest.raises(ValueError):
+        Generation.model_validate(data)

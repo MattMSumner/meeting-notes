@@ -18,6 +18,15 @@ from meeting_notes.compiler_v11 import Checked, validate
 from meeting_notes.contract_v11 import Draft, request_schema
 from meeting_notes.evidence import comparison_content, meeting_context, source_content
 from meeting_notes.meeting import Meeting
+from meeting_notes.request_v11 import CHARS_PER_TOKEN as CHARS_PER_TOKEN
+from meeting_notes.request_v11 import (
+    LENGTH_ERROR,
+    MISSING_MESSAGE_ERROR,
+    OVERSIZED_ERROR,
+    request_budget,
+    response_result,
+)
+from meeting_notes.request_v11 import REPLY_TOKENS as REPLY_TOKENS
 from meeting_notes.spans_v11 import snapshot
 from meeting_notes.summary import Summary, SummaryError
 
@@ -25,12 +34,6 @@ from meeting_notes.summary import Summary, SummaryError
 Post = Callable[[str, dict[str, Any]], dict[str, Any]]
 
 TIMEOUT_SECONDS = 600
-
-# English transcripts run about 3.5 characters per token with qwen3; 3 errs on the side of
-# saying a transcript won't fit.
-CHARS_PER_TOKEN = 3
-# Room left in the context for the model's thinking and its reply.
-REPLY_TOKENS = 4096
 
 
 def default_prompt() -> str:
@@ -219,12 +222,13 @@ class OllamaSummarizer:
         }
         attempt = V11Attempt(request=deepcopy(body))
         (self.audit.attempts if attempts is None else attempts).append(attempt)
-        # Include both sources, schema, settings and correction history on every call.
-        estimate = (
-            len(json.dumps(body, ensure_ascii=False)) + CHARS_PER_TOKEN - 1
-        ) // CHARS_PER_TOKEN + REPLY_TOKENS
-        if estimate > self.num_ctx:
-            attempt.error = "Complete request exceeds context; not sent"
+        try:
+            estimate, context = request_budget(body)
+        except ValueError as error:
+            attempt.error = f"Invalid request: {error}"
+            raise OllamaError(attempt.error) from error
+        if estimate > context:
+            attempt.error = OVERSIZED_ERROR
             raise OllamaError(
                 f"The complete request is too long for the model's context (about {estimate} "
                 f"tokens needed, {self.num_ctx} set). "
@@ -236,17 +240,13 @@ class OllamaSummarizer:
             attempt.error = str(error)
             raise
         attempt.response = deepcopy(response)
-        content = response.get("message", {})
-        if isinstance(content, dict) and "content" in content:
-            attempt.reply = str(cast(dict[str, Any], content)["content"])
-        if response.get("done_reason") == "length":
-            attempt.error = "Model ran out of context"
+        attempt.reply, attempt.error = response_result(response)
+        if attempt.error == LENGTH_ERROR:
             raise OllamaError(
                 f"The model ran out of context ({self.num_ctx} tokens) before finishing its "
                 "reply. Raise MEETING_NOTES_NUM_CTX."
             )
-        try:
-            return str(response["message"]["content"])
-        except (KeyError, TypeError):
-            attempt.error = "Ollama reply had no message"
+        if attempt.error == MISSING_MESSAGE_ERROR:
             raise OllamaError(f"Ollama's reply had no message: {response!r:.200}") from None
+        assert attempt.reply is not None
+        return attempt.reply

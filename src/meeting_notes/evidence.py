@@ -28,6 +28,7 @@ from meeting_notes.contract_v11 import Draft as V11Draft
 from meeting_notes.contract_v11 import request_schema as draft_schema
 from meeting_notes.grounding import Draft, passages, validate
 from meeting_notes.meeting import Meeting
+from meeting_notes.request_v11 import verify_exchange
 from meeting_notes.spans_v11 import Snapshot
 from meeting_notes.spans_v11 import snapshot as span_snapshot
 from meeting_notes.summary import Summary, SummaryError
@@ -368,17 +369,7 @@ def verify_v11(generation: Generation) -> None:
             for key in ("model", "options", "think", "stream")
         ):
             raise ValueError("Saved request schema/settings differ from the generation contract")
-        if attempt.reply is not None and attempt.response is None:
-            raise ValueError("Saved reply has no raw response")
-        if attempt.response is not None:
-            message: Any = attempt.response.get("message", {})
-            raw = (
-                str(cast(Any, message["content"]))
-                if isinstance(message, dict) and "content" in message
-                else None
-            )
-            if attempt.reply != raw:
-                raise ValueError("Saved reply differs from its raw response")
+        verify_exchange(attempt.request, attempt.response, attempt.reply, attempt.error)
 
     comparison = V11Comparison(claims=[])
     selected_comparison: int | None = None
@@ -388,7 +379,7 @@ def verify_v11(generation: Generation) -> None:
             raise ValueError("Comparison contains summary compilation findings")
         if selected_comparison is not None:
             raise ValueError("Comparison continued after a valid selection")
-        if attempt.error:
+        if attempt.error is not None:
             raise ValueError("Comparison failed before summary generation")
         try:
             value = V11Comparison.model_validate_json(attempt.reply or "")
@@ -426,7 +417,7 @@ def verify_v11(generation: Generation) -> None:
             raise ValueError("Summary contains comparison resolution findings")
         if finished:
             raise ValueError("Summary continued after completion")
-        if attempt.error:
+        if attempt.error is not None:
             if (
                 attempt.compilation is not None
                 or attempt.blocking
