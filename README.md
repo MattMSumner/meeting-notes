@@ -40,11 +40,6 @@ Get consent from everyone in a meeting before recording it.
 uv run scripts/install-shortcuts.py
 ```
 
-Run the installer from your configured terminal. It saves your supported `MEETING_NOTES_*`
-settings and PATH into the shortcuts; reinstall after changing them. Shortcuts use a plain
-shell and do not load interactive zsh setup, which requires a terminal. Remove old shortcuts
-before importing replacements to avoid copies named “... 2”.
-
 This adds three shortcuts (confirm each import in Shortcuts, and allow them to run scripts
 when asked). Run the installer from your configured terminal: it captures supported
 `MEETING_NOTES_*` settings and PATH, including Homebrew tools. The launchers use plain
@@ -62,7 +57,7 @@ delete existing copies first to avoid duplicate shortcuts. Run them from Spotlig
 Recordings stop automatically after **one hour**, including those started from Spotlight.
 At the limit, capture closes cleanly, transcription runs, and a background recording reports
 that it reached the limit. Enhancement still requires an explicit action. To choose a different
-positive limit, set `MEETING_NOTES_MAX_RECORDING_SECONDS` before starting (for example, `5400`
+positive, finite limit, set `MEETING_NOTES_MAX_RECORDING_SECONDS` before starting (for example, `5400`
 for 90 minutes). Reinstall shortcuts from that configured terminal to save an override.
 `notes record --duration SECONDS` can shorten a recording but cannot exceed the configured cap.
 
@@ -80,12 +75,6 @@ uv run notes enhance --choose               # chooser; detached enhancement
 uv run notes render <meeting-id>            # re-write the note and transcript
 uv run notes check                          # check the mic and system audio can be recorded
 ```
-
-Recordings stop automatically after **one hour** by default, then transcribe and summarize
-as usual. Set `MEETING_NOTES_MAX_RECORDING_SECONDS` to a positive, finite number of seconds
-for a different limit. `notes record --duration SECONDS` can shorten the recording but cannot
-exceed that cap. Manual stop still works, and reaching the limit is reported in the terminal
-and, for background recordings, by notification.
 
 Starting through Spotlight or `notes record` creates a separate `_handwritten.md` file
 beside the generated summary and opens it in a new Obsidian tab. Write ordinary bullets
@@ -131,7 +120,7 @@ sessions; foreground recording also refuses until they are recovered. Malformed
 sessions and missing or damaged meeting metadata do not prevent capture shutdown; notifications
 fall back to the meeting ID. Missing metadata may still need repair before processing audio.
 The automatic recording timer runs in Python; a surviving helper after a process crash is
-handled by this recovery path. Background jobs log to `notes.log` in the meeting's folder.
+handled by this recovery path.
 A crashed enhancement does not automatically rerun or transcribe; retry with
 `notes enhance <meeting-id>`. Background jobs log to `notes.log` in the meeting's folder.
 

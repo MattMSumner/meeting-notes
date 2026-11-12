@@ -460,8 +460,6 @@ class _Commands:
             elif active.session.phase == Phase.RECORDING:
                 elapsed = (now - active.session.started_at).total_seconds()
                 print(f"Recording “{title}” for {timestamp(elapsed)} ({active.meeting_dir.id})")
-            elif active.session.phase == Phase.STOPPING:
-                print(f"Stopping recording “{title}” ({active.meeting_dir.id})")
             elif active.session.phase == Phase.ENHANCING:
                 print(f"Enhancing “{title}” ({active.meeting_dir.id})")
             else:
