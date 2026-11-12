@@ -1187,3 +1187,55 @@ def test_repeated_stop_waits_through_foreground_processing_handoff(
     assert processes.interrupted == [owner_pid]
     assert len(transcriber.calls) == 2 and len(summarizer.transcripts) == 1
     assert not session.find(MeetingStore(config.data_dir), processes)
+
+
+@pytest.mark.parametrize("shutdown_fails", [False, True])
+def test_stop_retains_wait_target_when_competing_owner_dies_after_liveness_check(
+    config: Config, desktop: FakeDesktop, monkeypatch: pytest.MonkeyPatch, shutdown_fails: bool
+):
+    directory = meeting(config)
+    write_capture(directory.path)
+    orphaned(directory)
+    initial = session.read(directory)
+    assert initial is not None
+    claim = Session(8000, "competitor", Phase.STOPPING, initial.started_at)
+
+    class DyingOwner(FakeProcesses):
+        def started(self, pid: int) -> str | None:
+            started = super().started(pid)
+            if pid == claim.pid and started is not None:
+                # Return the live observation, but die before any subsequent query.
+                self.running.pop(pid)
+            return started
+
+        def stop_capture(self, out_dir: Path) -> None:
+            super().stop_capture(out_dir)
+            if shutdown_fails:
+                raise OSError("synthetic shutdown failure")
+
+    processes = DyingOwner()
+    original_recover = cli._Commands._recover  # pyright: ignore[reportPrivateUsage]
+    claim_taken = False
+
+    def recover(self: cli._Commands, active: session.Active) -> None:  # pyright: ignore[reportPrivateUsage]
+        nonlocal claim_taken
+        if not claim_taken:
+            claim_taken = True
+            with session.lock(MeetingStore(config.data_dir)):
+                processes.running[claim.pid] = claim.process_started
+                session.write(directory, claim)
+        original_recover(self, active)
+
+    monkeypatch.setattr(cli._Commands, "_recover", recover)  # pyright: ignore[reportPrivateUsage]
+    if shutdown_fails:
+        with pytest.raises(OSError, match="synthetic shutdown failure"):
+            run(config, processes, desktop, "stop")
+        assert session.read(directory) == claim
+        assert processes.spawned == []
+    else:
+        assert run(config, processes, desktop, "stop") == 0
+        assert processes.spawned == [["transcribe", directory.id, "--background"]]
+        current = session.read(directory)
+        assert current is not None and current.phase == Phase.PROCESSING
+    assert processes.stopped_captures == [directory.path]
+    assert processes.interrupted == []

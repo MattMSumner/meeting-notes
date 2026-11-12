@@ -370,7 +370,10 @@ class _Commands:
         with session.lock(self.store):
             # An observed orphan is not proof that this command recovered it: a
             # competing claimant may have failed and restored it in the meantime.
-            unresolved = [a for a in self._unfinished_recordings() if not a.running]
+            # Process death can happen while the lock is held. Keep owners from
+            # this snapshot as wait targets rather than dropping them in a rescan.
+            unfinished = self._unfinished_recordings()
+            unresolved = [a for a in unfinished if not a.running]
             if unresolved:
                 self._say(
                     f"Unfinished recording “{_title(unresolved[0].meeting_dir)}”. "
@@ -379,7 +382,11 @@ class _Commands:
                     error=True,
                 )
                 return 1
-            recording = self._recording()
+            recording = [
+                a
+                for a in unfinished
+                if a.session.pid != os.getpid() or a.session.phase == Phase.STOPPING
+            ]
             if not recording:
                 if recovered:
                     return 0
