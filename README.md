@@ -85,7 +85,9 @@ file when processed again.
 If a recording's process dies (a crash, a restart), `notes status` says so and `notes stop`
 recovers it: it stops the orphaned capture and writes the note from what was recorded.
 Recovery retains a stopping session until the capture helper is confirmed gone. Interrupted
-recovery stays retryable and blocks another recording while shutdown is active. Malformed
+recovery stays retryable. Repeated Stop commands wait for active recovery without interrupting
+it. Start rechecks for unfinished capture before creating a meeting, including orphaned
+sessions; foreground recording also refuses until they are recovered. Malformed
 sessions and missing or damaged meeting metadata do not prevent capture shutdown; notifications
 fall back to the meeting ID. Missing metadata may still need repair before processing audio.
 The automatic recording timer runs in Python; a surviving helper after a process crash is

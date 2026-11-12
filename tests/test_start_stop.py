@@ -960,3 +960,123 @@ def test_damaged_metadata_cannot_prevent_capture_shutdown(
     else:
         assert session.read(directory) is None
     assert directory.id in desktop.notifications[0]
+
+
+@pytest.mark.parametrize("pause_at", ["shutdown", "handoff"])
+def test_concurrent_stop_waits_for_recovery_and_starts_processing_once(
+    config: Config, desktop: FakeDesktop, monkeypatch: pytest.MonkeyPatch, pause_at: str
+):
+    directory = meeting(config)
+    write_capture(directory.path)
+    orphaned(directory)
+    paused, release, waiting = threading.Event(), threading.Event(), threading.Event()
+    results: list[int] = []
+    failures: list[BaseException] = []
+
+    def pause() -> None:
+        paused.set()
+        assert release.wait(5), "recovery was not released"
+
+    class Recovering(FakeProcesses):
+        def stop_capture(self, out_dir: Path) -> None:
+            super().stop_capture(out_dir)
+            if pause_at == "shutdown":
+                pause()
+
+        def interrupt(self, pid: int) -> None:
+            super().interrupt(pid)
+            raise AssertionError("second Stop signalled the recovery owner")
+
+    processes = Recovering()
+    original_captures = MeetingDir.captures
+
+    def captures(self: MeetingDir):
+        if pause_at == "handoff" and self.path == directory.path:
+            pause()
+        return original_captures(self)
+
+    original_wait = cli._Commands._wait_for_stop  # pyright: ignore[reportPrivateUsage]
+
+    def wait(self: cli._Commands, active: session.Active) -> int:  # pyright: ignore[reportPrivateUsage]
+        waiting.set()
+        return original_wait(self, active)
+
+    monkeypatch.setattr(MeetingDir, "captures", captures)
+    monkeypatch.setattr(cli._Commands, "_wait_for_stop", wait)  # pyright: ignore[reportPrivateUsage]
+
+    def stop() -> None:
+        try:
+            results.append(run(config, processes, desktop, "stop"))
+        except BaseException as error:
+            failures.append(error)
+
+    first = threading.Thread(target=stop, daemon=True)
+    second = threading.Thread(target=stop, daemon=True)
+    first.start()
+    try:
+        assert paused.wait(5)
+        second.start()
+        assert waiting.wait(5), failures
+        assert not session.stop_request_file(directory).exists()
+        assert processes.spawned == []
+    finally:
+        release.set()
+        first.join(5)
+        if second.ident is not None:
+            second.join(5)
+    assert not first.is_alive() and not second.is_alive()
+    assert failures == []
+    assert results == [0, 0]
+    assert processes.interrupted == []
+    assert processes.stopped_captures == [directory.path]
+    assert processes.spawned == [["transcribe", directory.id, "--background"]]
+    current = session.read(directory)
+    assert current is not None and current.phase == Phase.PROCESSING
+
+
+@pytest.mark.parametrize("phase", [Phase.RECORDING, Phase.STOPPING])
+def test_start_rechecks_orphan_when_competing_recovery_loses_its_claim(
+    config: Config,
+    processes: FakeProcesses,
+    desktop: FakeDesktop,
+    monkeypatch: pytest.MonkeyPatch,
+    phase: Phase,
+):
+    directory = meeting(config)
+    orphaned(directory, phase)
+    orphan = session.read(directory)
+    assert orphan is not None
+    original_recover = cli._Commands._recover  # pyright: ignore[reportPrivateUsage]
+
+    def recover(self: cli._Commands, active: session.Active) -> None:  # pyright: ignore[reportPrivateUsage]
+        # Another command claims the snapshot before this Start can claim it.
+        claim = Session(8000, "competitor", Phase.STOPPING, orphan.started_at)
+        processes.running[8000] = "competitor"
+        with session.lock(MeetingStore(config.data_dir)):
+            session.write(directory, claim)
+        original_recover(self, active)
+        assert session.read(directory) == claim
+        # The competing command fails before Start's final creation lock.
+        with session.lock(MeetingStore(config.data_dir)):
+            processes.running.pop(8000)
+            session.write(directory, orphan)
+
+    monkeypatch.setattr(cli._Commands, "_recover", recover)  # pyright: ignore[reportPrivateUsage]
+    assert run(config, processes, desktop, "start", "--title", "Next") == 1
+    assert session.read(directory) == orphan
+    assert processes.spawned == []
+    assert processes.stopped_captures == []
+    assert len(MeetingStore(config.data_dir).all()) == 1
+    assert "Run `notes stop`" in desktop.notifications[-1]
+
+
+@pytest.mark.parametrize("phase", [Phase.RECORDING, Phase.STOPPING])
+def test_foreground_record_does_not_bypass_unrecovered_capture(
+    config: Config, processes: FakeProcesses, desktop: FakeDesktop, phase: Phase
+):
+    directory = meeting(config)
+    orphaned(directory, phase)
+    before = session.read(directory)
+    assert run(config, processes, desktop, "record", "--title", "Next") == 1
+    assert session.read(directory) == before
+    assert len(MeetingStore(config.data_dir).all()) == 1

@@ -229,13 +229,20 @@ class _Commands:
         started = self.processes.started(pid) or ""
         session.write(meeting_dir, Session(pid, started, phase, started_at))
 
+    def _unfinished_recordings(self) -> list[Active]:
+        """Capture is unresolved even when the owning process has died."""
+        return [
+            active
+            for active in session.find(self.store, self.processes)
+            if active.session.phase in (Phase.RECORDING, Phase.STOPPING)
+        ]
+
     def _recording(self) -> list[Active]:
         """Recordings in progress in other processes."""
         return [
             active
-            for active in session.find(self.store, self.processes)
+            for active in self._unfinished_recordings()
             if active.running
-            and active.session.phase in (Phase.RECORDING, Phase.STOPPING)
             and (active.session.pid != os.getpid() or active.session.phase == Phase.STOPPING)
         ]
 
@@ -330,7 +337,7 @@ class _Commands:
                 return 0  # cancelled
         self._recover_orphans()
         with session.lock(self.store):
-            if self._already_recording():  # started while the dialog was open
+            if self._already_recording(include_orphans=True):  # revalidate after recovery
                 return 1
             meeting_dir = self.store.create(self._new_meeting(title, event))
             self._spawn_job(
@@ -345,10 +352,16 @@ class _Commands:
         )
         return 0
 
-    def _already_recording(self) -> bool:
-        if recording := self._recording():
+    def _already_recording(self, *, include_orphans: bool = False) -> bool:
+        recording = self._unfinished_recordings() if include_orphans else self._recording()
+        if recording:
             title = _title(recording[0].meeting_dir)
-            self._say(f"Already recording “{title}”.", notify=True, error=True)
+            message = (
+                f"Already recording “{title}”."
+                if recording[0].running
+                else f"Unfinished recording “{title}”. Run `notes stop` to recover it."
+            )
+            self._say(message, notify=True, error=True)
             return True
         return False
 
@@ -362,6 +375,10 @@ class _Commands:
                 self._say("Nothing is recording.", notify=True, error=True)
                 return 1
             for active in recording:
+                # A recovery owner is already stopping capture. Interrupting it can
+                # discard the pending handoff to transcription.
+                if active.session.phase == Phase.STOPPING:
+                    continue
                 session.stop_request_file(active.meeting_dir).touch()
                 self.processes.interrupt(active.session.pid)
         return max(self._wait_for_stop(active) for active in recording)
@@ -419,7 +436,7 @@ class _Commands:
                 # Outside the lock: reading the calendar can wait on a permission prompt.
                 event = self._calendar_event()
                 with session.lock(self.store):
-                    if recording := self._recording():
+                    if recording := self._unfinished_recordings():
                         print(
                             f"Already recording {recording[0].meeting_dir.id}. "
                             "Stop it with `notes stop`.",
