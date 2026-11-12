@@ -8,16 +8,16 @@ Status: **M8 shipped**. M9 and M10 implementations are present; manual Obsidian
 acceptance was reported complete for M10. V7 meets its frozen single-run quality criteria;
 V9 completes 13/13 cases with no timeouts and retains the release agreement, but still fails
 quality on a missed cross-source price conflict. The three reproduced PR review bugs are fixed.
-V10 now freezes a separate bounded claim-comparison stage and 22 synthetic cases offline.
-Its additional inference cost and evaluation scope require separate approval. Quality and
-current review-workflow manual acceptance remain pending, so M10 remains unbuilt. The explicitly approved one-repetition V9 evaluation is complete; further
+The approved one-repetition V10 run finds the shared-number conflict but produces only 17/22
+proposed summaries and invents an action from a factual price statement. V10 fails quality;
+current review-workflow manual acceptance remains pending, so M10 remains unbuilt. Further
 model runs require separately agreed scope.
 Phase 0 (Handy) set up.
 
 **Fresh-session handoff (2026-11-12):** [NEXT_SESSION.md](NEXT_SESSION.md) records the
-bounded comparison implementation, [V10 freeze](evaluation/m10/v10/README.md), 539 passing
-offline tests and unchanged prior evidence. No new inference ran; the next step is agreement
-on added inference cost and evaluation scope. M10 remains unbuilt.
+bounded comparison implementation, [V10 results](evaluation/m10/v10/results/report.md), 539
+passing offline tests and unchanged frozen evidence. The approved evaluation is complete;
+V10 fails quality and any successor needs a new freeze/budget. M10 remains unbuilt.
 
 ---
 
@@ -886,6 +886,24 @@ Re-running transcription also leaves generation to the explicit enhancement acti
   cost, case/repetition counts and budgets need separate approval (one full repetition would
   allow 88 baseline + 74 proposed = 162 requests). Quality and current Obsidian acceptance
   remain pending; no Built note or merge.
+
+- **V10 evaluation (2026-11-12; not Built):** the approved one-repetition evaluation of all
+  22 pairs per arm used 65 of the 162-request cap (22 baseline, 43 proposed), with no tuning,
+  selective reruns or transport errors/timeouts. Baseline publishes 22/22; proposed 17/22.
+  The missed support-price conflict now appears with unrelated monitoring and invoice task
+  intact; original 13 commitments and the release agreement survive. Quality still fails:
+  five new cases block, and unit_disagreement publishes a factual price statement as an
+  action. The blocked multi-claim case leaves a spoken invoice commitment unavailable.
+  Additional/no-match structure and exact quote separators repeatedly fail; two summary
+  cases persistently cite notes in spoken core. Estimate/status uncertainty expectations
+  are unmet and no selected comparison uses uncertain. All 17 selected summaries replay
+  exactly in wrapper 9; all 340 prior and 42 V10 input manifest entries remain unchanged.
+  [Report, scores and attempts](evaluation/m10/v10/results/report.md) preserve stage counts,
+  failure evidence and latency (48m44s total). One familiar/implementer-authored repetition
+  is not independent reliability evidence. All 539 offline tests, formatting, lint and
+  strict types pass. No further inference used the 97 unused requests. Current Obsidian
+  acceptance was not advanced because quality failed; M10 remains unbuilt. An offline
+  successor needs a fresh contract/freeze and separately scoped evaluation.
 
 For both stages, run formatting, lint, strict types and unit tests before committing;
 run Swift tests only if capture code changes. Keep shipped model settings unchanged.
