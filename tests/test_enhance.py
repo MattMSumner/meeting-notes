@@ -607,12 +607,18 @@ def test_failed_audit_save_prevents_publication_and_preserves_old_generation(
 def test_current_generation_is_saved_with_comparison_and_survives_source_deletion(h: Harness):
     from test_ollama import FakeOllama
 
-    from meeting_notes.contract import Draft, SupportedText
+    from meeting_notes.contract_v11 import Draft, SupportedText
     from meeting_notes.ollama import OllamaSummarizer
 
     directory = h.ready()
     original = directory.path / "synthetic-notes.md"
-    original.write_bytes(b"Synthetic context.\r\n")
+    meeting = directory.load_meeting()
+    header = (
+        f"# {meeting.title}\r\n"
+        f"Available after processing: [[{meeting.note_stem}|Summary]] · "
+        f"[[{meeting.transcript_stem}|Transcript]]\r\n"
+    )
+    original.write_bytes((header + "Synthetic context.\r\n").encode())
     directory.save_handwritten_path(original)
     value = Draft(
         overview=[SupportedText(text="Spoken context.", sources=["T1"])],
@@ -620,8 +626,6 @@ def test_current_generation_is_saved_with_comparison_and_survives_source_deletio
         decisions=[],
         action_items=[],
         timing_updates=[],
-        notes_context=[],
-        conflicts=[],
     )
     from comparison_helpers import additional
 
@@ -630,7 +634,9 @@ def test_current_generation_is_saved_with_comparison_and_survives_source_deletio
     )
     pipeline.summarize(directory, pipeline.conversation(directory), model, "Sam")
     saved = directory.load_generation()
-    assert isinstance(saved, Generation) and saved.version == 9
+    assert isinstance(saved, Generation) and saved.version == 10
+    assert saved.evidence.handwritten_original == header + "Synthetic context.\r\n"
+    assert saved.evidence.handwritten_text == "Synthetic context.\r\n"
     path = directory.load_meeting().handwritten_path
     assert path is not None
     path.unlink()
@@ -668,7 +674,9 @@ def test_chooser_reports_corruption_that_occurs_during_dialog(h: Harness):
     assert any("Couldn't start enhancement" in m for m in h.desktop.notifications)
 
 
-@pytest.mark.parametrize("failure", ["coverage", "transport", "audit_save", "summary_save"])
+@pytest.mark.parametrize(
+    "failure", ["coverage", "transport", "generation", "audit_save", "summary_save"]
+)
 def test_comparison_failure_preserves_previous_generation_and_evidence(
     h: Harness, monkeypatch: pytest.MonkeyPatch, failure: str
 ):
@@ -690,6 +698,8 @@ def test_comparison_failure_preserves_previous_generation_and_evidence(
         transport = Transport('{"claims":[]}', '{"claims":[]}')
     elif failure == "transport":
         transport = Transport(OllamaError("offline"))
+    elif failure == "generation":
+        transport = Transport(additional("Synthetic context."), "bad draft", "bad correction")
     else:
         transport = Transport(additional("Synthetic context."), reply())
         replace = Path.replace
@@ -717,7 +727,7 @@ def test_comparison_uses_snapshot_during_edits_and_replays_review_without_infere
     from comparison_helpers import account
     from test_current_ollama import Transport, reply
 
-    from meeting_notes.comparison import Claim, Comparison
+    from meeting_notes.comparison_v11 import Claim, Comparison
     from meeting_notes.ollama import OllamaSummarizer
 
     directory = h.ready()

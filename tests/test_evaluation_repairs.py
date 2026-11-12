@@ -6,11 +6,11 @@ from pathlib import Path
 from typing import Any
 
 import pytest
+from legacy_comparison_ollama import OllamaSummarizer
 
 from meeting_notes.compiler import passages, validate
 from meeting_notes.contract import Action, Dispute, Draft, SupportedText
 from meeting_notes.meeting import Meeting
-from meeting_notes.ollama import OllamaSummarizer
 
 ROOT = Path(__file__).resolve().parents[1] / "evaluation/m10/v8"
 
@@ -37,7 +37,7 @@ def test_observed_failure_requires_correction_and_preserves_unrelated_commitment
         corrected.conflicts[0].transcript = ["T1"]
     responses_list = [reply, corrected.model_dump_json()]
     if case == "status_conflict":
-        from comparison_helpers import account
+        from legacy_comparison_helpers import account
 
         from meeting_notes.comparison import Claim, Comparison
 

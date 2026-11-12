@@ -6,7 +6,7 @@ from typing import Any
 
 import pytest
 
-from meeting_notes.contract import Draft, SupportedText
+from meeting_notes.contract_v11 import Draft, SupportedText
 from meeting_notes.meeting import Meeting
 from meeting_notes.ollama import CHARS_PER_TOKEN, REPLY_TOKENS, OllamaError, OllamaSummarizer
 from meeting_notes.summary import SummaryError
@@ -21,8 +21,6 @@ def reply(text: str = "The plan was discussed.") -> str:
         decisions=[],
         action_items=[],
         timing_updates=[],
-        notes_context=[],
-        conflicts=[],
     ).model_dump_json()
 
 

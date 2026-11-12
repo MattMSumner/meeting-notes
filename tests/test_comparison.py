@@ -7,12 +7,13 @@ import pytest
 from comparison_helpers import account
 from test_current_ollama import MEETING, Transport, model, reply
 
-from meeting_notes.comparison import Claim, Comparison, claim_ids, validate
+from meeting_notes.comparison_v11 import Claim, Comparison, claim_ids, validate
 from meeting_notes.compiler import passages
-from meeting_notes.compiler_comparison import validate as compile_draft
-from meeting_notes.contract import Action, Draft, SupportedText
+from meeting_notes.compiler_v11 import validate as compile_draft
+from meeting_notes.contract_v11 import Action, Draft, SupportedText
 from meeting_notes.evidence import Evidence, Generation, meeting_context
 from meeting_notes.ollama import CHARS_PER_TOKEN, REPLY_TOKENS, OllamaError
+from meeting_notes.spans_v11 import Anchor
 from meeting_notes.summary import SummaryError
 
 TRANSCRIPT = (
@@ -40,10 +41,17 @@ def summary_draft() -> Draft:
         overview=[],
         key_points=[SupportedText(text="Both services cost 120 dollars.", sources=["T1", "T2"])],
         decisions=[SupportedText(text="Release Friday.", sources=["T4"])],
-        action_items=[Action(original_commitment_id="T3", timing=None)],
+        action_items=[
+            Action(
+                original_commitment_id="T3",
+                undertaking=Anchor(source_id="T3", quote="I will check the invoice."),
+                context=[],
+                basis="explicit",
+                disposition="committed",
+                timing=None,
+            )
+        ],
         timing_updates=[],
-        notes_context=[],
-        conflicts=[],
     )
 
 
@@ -60,10 +68,12 @@ def test_shared_number_conflict_is_compiled_without_disputing_monitoring_or_comm
     assert result.action_items[0].task == "I will check the invoice."
     assert not result.action_items[0].review
     assert engine.audit.comparison_selected == 0 and engine.audit.selected == 0
-    assert transport.requests[1]["format"]["properties"]["conflicts"]["maxItems"] == 0
+    assert "conflicts" not in transport.requests[1]["format"]["properties"]
 
 
-@pytest.mark.parametrize("outcome", ["uncertain", "consistent", "conflicting", "additional"])
+@pytest.mark.parametrize(
+    "outcome", ["uncertain", "consistent", "conflicting", "additional", "related-distinct"]
+)
 def test_explicit_comparison_outcomes_control_publication_and_review(outcome: str):
     comparison = conflict()
     comparison.claims[0].outcome = outcome  # type: ignore[assignment]
@@ -80,7 +90,7 @@ def test_explicit_comparison_outcomes_control_publication_and_review(outcome: st
         assert "review required" in warning and NOTES in warning
         assert "Support costs 120 dollars." in warning
         assert "Both services cost 120 dollars." not in result.key_points
-    elif outcome in ("consistent", "additional"):
+    elif outcome in ("consistent", "additional", "related-distinct"):
         assert result.notes_context == [NOTES]
 
 
@@ -95,7 +105,7 @@ def test_multiclaim_passage_preserves_unmatched_request_separately():
     )
     sources = passages(TRANSCRIPT, notes)
     assert not validate(comparison, sources)
-    assert claim_ids(comparison) == ["N1.C1", "N1.C2"]
+    assert claim_ids(comparison, sources) == ["N1.C1", "N1.C2"]
     result = compile_draft(summary_draft(), sources, comparison)
     assert result.summary is not None
     assert result.summary.notes_context == ["and please book a venue."]
@@ -210,7 +220,7 @@ def test_new_wrapper_replays_comparison_and_rejects_changed_classification():
     engine = model(transport)
     result = engine.summarize(MEETING, TRANSCRIPT, handwritten_text=NOTES)
     saved = Generation(
-        version=9,
+        version=10,
         summary=result,
         audit=engine.audit,
         evidence=Evidence(
@@ -227,7 +237,7 @@ def test_new_wrapper_replays_comparison_and_rejects_changed_classification():
     selected = json.loads(data["audit"]["comparison_attempts"][0]["reply"])
     selected["claims"][0]["outcome"] = "consistent"
     data["audit"]["comparison_attempts"][0]["reply"] = json.dumps(selected)
-    with pytest.raises(ValueError, match="does not match"):
+    with pytest.raises(ValueError, match="differs from its raw response"):
         Generation.model_validate(data)
 
 
@@ -264,7 +274,7 @@ def test_uncertain_unmatched_note_is_visible_even_without_selected_prose():
     checked = compile_draft(draft, passages("Discussion.", NOTES), comparison)
     assert checked.summary is not None
     assert "review" in checked.summary.overview
-    assert "No transcript match established" in checked.warnings[0]
+    assert "No match established" in checked.warnings[0]
 
 
 def test_factual_dispute_within_a_commitment_does_not_dispute_its_task():
@@ -273,6 +283,7 @@ def test_factual_dispute_within_a_commitment_does_not_dispute_its_task():
     comparison.claims[0].transcript[0] = account("T1", "support costs 120 dollars.")
     draft = summary_draft()
     draft.action_items[0].original_commitment_id = "T1"
+    draft.action_items[0].undertaking = Anchor(source_id="T1", quote=transcript.split("Sam: ")[1])
     draft.decisions = []
     draft.key_points = []
     checked = compile_draft(draft, passages(transcript, NOTES), comparison)
@@ -285,11 +296,12 @@ def test_factual_dispute_within_a_commitment_does_not_dispute_its_task():
 def test_disputed_commitment_retains_full_timing_for_review():
     text = "I will send the draft not before next Friday."
     comparison = conflict()
-    comparison.claims[0].note.quote = "Do not send the draft."
+    comparison.claims[0].note = account("N1", "Do not send the draft.")
     comparison.claims[0].transcript[0] = account("T1", text)
     comparison.claims[0].transcript[0].kind = "commitment"
     draft = summary_draft()
     draft.action_items[0].original_commitment_id = "T1"
+    draft.action_items[0].undertaking = Anchor(source_id="T1", quote=text)
     draft.decisions = []
     draft.key_points = []
     checked = compile_draft(
@@ -323,7 +335,7 @@ def test_partial_claim_partition_cannot_drop_a_note_qualifier():
     comparison = conflict()
     comparison.claims[0].note.quote = "Support costs 150 dollars."
     sources = passages(TRANSCRIPT, "Perhaps Support costs 150 dollars.")
-    assert any("coverage" in problem for problem in validate(comparison, sources))
+    assert any("Uncovered semantic text" in problem for problem in validate(comparison, sources))
 
 
 def test_summary_correction_history_includes_complete_comparison_before_send():
@@ -338,13 +350,10 @@ def test_summary_correction_history_includes_complete_comparison_before_send():
 
 
 def test_model_cannot_introduce_a_summary_conflict_outside_comparison():
-    from meeting_notes.contract import Dispute
-
-    value = summary_draft()
-    value.conflicts = [Dispute(topic="Invented", transcript=["T1"], notes=["N1"])]
-    checked = compile_draft(value, passages(TRANSCRIPT, NOTES), conflict())
-    assert checked.summary is None
-    assert "Summary conflicts must be empty" in checked.blocking[0]
+    value = summary_draft().model_dump()
+    value["conflicts"] = [{"topic": "Invented", "transcript": ["T1"], "notes": ["N1"]}]
+    with pytest.raises(ValueError, match="Extra inputs"):
+        Draft.model_validate(value)
 
 
 @pytest.mark.parametrize(
@@ -352,8 +361,8 @@ def test_model_cannot_introduce_a_summary_conflict_outside_comparison():
     [
         ("unit_equivalence", "consistent"),
         ("unit_disagreement", "conflicting"),
-        ("periods_separate", "consistent"),
-        ("scope_separate", "consistent"),
+        ("periods_separate", "related-distinct"),
+        ("scope_separate", "related-distinct"),
         ("estimate_approval", "uncertain"),
         ("proposal_rejected", "conflicting"),
         ("tentative_confirmed", "uncertain"),

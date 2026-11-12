@@ -1,7 +1,10 @@
+"""Historical compiler regressions and explicitly authored current-runtime replies."""
+
 import json
 from datetime import datetime
 
 import pytest
+from comparison_helpers import authored_reply
 
 from meeting_notes.compiler import passages, validate
 from meeting_notes.contract import Action, Dispute, Draft, SupportedText, Timing, TimingUpdate
@@ -120,7 +123,7 @@ def test_current_model_and_wrapper_reproduce_review_without_live_sources():
 
     def post(path: str, body: dict[str, object]) -> dict[str, object]:
         calls.append(body)
-        return {"message": {"content": value.model_dump_json()}}
+        return {"message": {"content": authored_reply(value, body)}}
 
     model = OllamaSummarizer("fake", 32768, post, "Sam")
     meeting = Meeting.new("Synthetic", datetime.fromisoformat("2026-10-20T14:00:00-04:00"), ())
@@ -130,7 +133,7 @@ def test_current_model_and_wrapper_reproduce_review_without_live_sources():
     from meeting_notes.evidence import meeting_context
 
     saved = Generation(
-        version=9,
+        version=10,
         summary=summary,
         evidence=Evidence(
             transcript=transcript,
@@ -205,7 +208,9 @@ def test_unknown_reference_gets_one_correction_and_context_is_checked_before_sen
 
     def post(path: str, body: dict[str, object]) -> dict[str, object]:
         requests.append(body)
-        return {"message": {"content": next(replies)}}
+        return {
+            "message": {"content": authored_reply(Draft.model_validate_json(next(replies)), body)}
+        }
 
     meeting = Meeting.new("Synthetic", datetime.fromisoformat("2026-10-20T14:00:00-04:00"), ())
     model = OllamaSummarizer("fake", 32768, post, "Sam")
@@ -244,7 +249,9 @@ def test_numeric_correction_cannot_remove_a_publishable_commitment():
     replies = iter([first.model_dump_json(), correction.model_dump_json()])
 
     def post(path: str, body: dict[str, object]) -> dict[str, object]:
-        return {"message": {"content": next(replies)}}
+        return {
+            "message": {"content": authored_reply(Draft.model_validate_json(next(replies)), body)}
+        }
 
     meeting = Meeting.new("Synthetic", datetime.fromisoformat("2026-10-20T14:00:00-04:00"), ())
     model = OllamaSummarizer("fake", 32768, post, "Sam")
@@ -533,7 +540,9 @@ def test_numeric_retry_cannot_drop_timing_revision_and_request_omits_offsets():
 
     def post(path: str, body: dict[str, object]) -> dict[str, object]:
         requests.append(body)
-        return {"message": {"content": next(replies)}}
+        return {
+            "message": {"content": authored_reply(Draft.model_validate_json(next(replies)), body)}
+        }
 
     meeting = Meeting.new("Synthetic", datetime.fromisoformat("2026-10-20T14:00:00-04:00"), ())
     model = OllamaSummarizer("fake", 32768, post, "Sam")
@@ -612,15 +621,17 @@ def test_omitted_task_requests_bounded_correction_without_fabricating_action():
 
     def post(path: str, body: dict[str, object]) -> dict[str, object]:
         requests.append(body)
-        return {"message": {"content": next(replies)}}
+        return {
+            "message": {"content": authored_reply(Draft.model_validate_json(next(replies)), body)}
+        }
 
     meeting = Meeting.new("Synthetic", datetime.fromisoformat("2026-10-20T14:00:00-04:00"), ())
     model = OllamaSummarizer("fake", 32768, post, "Sam")
     assert len(model.summarize(meeting, transcript).action_items) == 2
     assert len(requests) == 2 and model.audit.selected == 1
-    assert "Possible omitted commitment T2" in json.dumps(requests[1])
+    assert "Possible omitted commitment: T2" in json.dumps(requests[1])
     replies = iter([first.model_dump_json(), first.model_dump_json()])
-    with pytest.raises(SummaryError, match="Possible omitted commitment T2"):
+    with pytest.raises(SummaryError, match="Possible omitted commitment: T2"):
         model.summarize(meeting, transcript)
     assert len(requests) == 4 and model.audit.selected is None
 
@@ -635,7 +646,9 @@ def test_numeric_correction_cannot_drop_normalized_external_timing():
     replies = iter([first.model_dump_json(), correction.model_dump_json()])
 
     def post(path: str, body: dict[str, object]) -> dict[str, object]:
-        return {"message": {"content": next(replies)}}
+        return {
+            "message": {"content": authored_reply(Draft.model_validate_json(next(replies)), body)}
+        }
 
     meeting = Meeting.new("Synthetic", datetime.fromisoformat("2026-10-20T14:00:00-04:00"), ())
     model = OllamaSummarizer("fake", 32768, post, "Sam")

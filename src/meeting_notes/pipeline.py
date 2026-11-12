@@ -4,7 +4,7 @@ from collections.abc import Sequence
 from dataclasses import dataclass
 from pathlib import Path
 
-from meeting_notes.audit import AuditedSummarizer
+from meeting_notes.audit import AuditedSummarizer, V11Audit
 from meeting_notes.config import Config
 from meeting_notes.evidence import Generation, snapshot
 from meeting_notes.figures import evidence_issues, unsaid_numbers
@@ -122,6 +122,8 @@ def summarize(
         raise
     finally:
         if isinstance(summarizer, AuditedSummarizer):
+            if isinstance(summarizer.audit, V11Audit):
+                summarizer.audit.handwritten_original = evidence.handwritten_original
             meeting_dir.save_attempt(evidence, summarizer.audit)
     audit = summarizer.audit if isinstance(summarizer, AuditedSummarizer) else None
     meeting_dir.save_summary(result, evidence, audit)

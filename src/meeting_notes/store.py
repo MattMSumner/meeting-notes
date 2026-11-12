@@ -20,6 +20,7 @@ from meeting_notes.audit import (
     ReferenceAudit,
     TaskAudit,
     TimingAudit,
+    V11Audit,
 )
 from meeting_notes.evidence import Evidence, Generation
 from meeting_notes.meeting import Meeting
@@ -134,11 +135,14 @@ class MeetingDir:
         | CompletenessAudit
         | ComparisonAudit
         | TimingAudit
+        | V11Audit
         | None = None,
     ) -> None:
         result = (
             Generation(
-                version=9
+                version=10
+                if isinstance(audit, V11Audit)
+                else 9
                 if isinstance(audit, ComparisonAudit)
                 else 8
                 if isinstance(audit, CompletenessAudit)
@@ -179,7 +183,8 @@ class MeetingDir:
         | CoverageAudit
         | CompletenessAudit
         | ComparisonAudit
-        | TimingAudit,
+        | TimingAudit
+        | V11Audit,
     ) -> None:
         """Preserve failed drafts independently of the last successful generation."""
         folder = self.path / "attempts"

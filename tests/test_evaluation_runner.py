@@ -74,7 +74,7 @@ def test_runner_preserves_each_reply_and_validation_failure_without_network(
 ):
     from typing import Any
 
-    from meeting_notes.contract import Draft, SupportedText
+    from meeting_notes.contract_v11 import Draft, SupportedText
 
     good = Draft(
         overview=[SupportedText(text="transcript", sources=["T1"])],
@@ -82,8 +82,6 @@ def test_runner_preserves_each_reply_and_validation_failure_without_network(
         decisions=[],
         action_items=[],
         timing_updates=[],
-        notes_context=[],
-        conflicts=[],
     ).model_dump_json()
 
     from meeting_notes import ollama
