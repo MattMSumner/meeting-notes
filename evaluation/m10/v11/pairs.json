@@ -490,7 +490,7 @@
       "my_name": "Sam"
     },
     "transcript": "[00:00:00] Sam: Support costs 120 dollars. I will check the invoice.",
-    "handwritten_text": "Support costs 150 dollars; support costs 150 dollars.",
+    "handwritten_text": "Support costs 150 dollars, Support costs 150 dollars.",
     "criteria": [
       "Sam tags Friday",
       "Alex checks rollback, no deadline",

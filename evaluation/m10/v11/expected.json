@@ -84,19 +84,21 @@
     "id": "periods_separate",
     "expected": "Distinct explicit periods can coexist. Do not assert a price conflict.",
     "expected_outcomes": [
-      "consistent",
+      "related_distinct",
       "additional"
     ],
-    "familiar": false
+    "familiar": false,
+    "v11_contract_change": "Distinct accounts may retain related transcript context; unmatched additional still has no transcript accounts. Do not call distinct values corroborating."
   },
   {
     "id": "scope_separate",
     "expected": "Different office scope can explain the amounts. No false conflict.",
     "expected_outcomes": [
-      "consistent",
+      "related_distinct",
       "additional"
     ],
-    "familiar": false
+    "familiar": false,
+    "v11_contract_change": "Distinct accounts may retain related transcript context; unmatched additional still has no transcript accounts. Do not call distinct values corroborating."
   },
   {
     "id": "estimate_approval",
@@ -178,7 +180,7 @@
   },
   {
     "id": "repeated_note_anchors",
-    "expected": "Cover both repeated note claims without ambiguous span assignment, silent deduplication or loss of separators; retain the invoice task.",
+    "expected": "Cover the full repeated note text without loss of separators or silent deduplication. If split into repeated literal anchors, disambiguate their occurrences. Preserve the independent invoice task.",
     "authorship": "Chief-authored before V11 implementation; not held out or independent quality evidence"
   },
   {
