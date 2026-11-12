@@ -17,7 +17,8 @@ Phase 0 (Handy) set up.
 **Fresh-session handoff (2026-11-12):** [NEXT_SESSION.md](NEXT_SESSION.md) records the
 bounded comparison implementation, [V10 results](evaluation/m10/v10/results/report.md), 539
 passing offline tests and unchanged frozen evidence. The approved evaluation is complete;
-V10 fails quality and any successor needs a new freeze/budget. M10 remains unbuilt.
+V10 fails quality. The V11 offline sequence below and NEXT_SESSION.md define the next work;
+a new freeze and evaluation budget remain required. M10 remains unbuilt.
 
 ---
 
@@ -904,6 +905,101 @@ Re-running transcription also leaves generation to the explicit enhancement acti
   strict types pass. No further inference used the 97 unused requests. Current Obsidian
   acceptance was not advanced because quality failed; M10 remains unbuilt. An offline
   successor needs a fresh contract/freeze and separately scoped evaluation.
+
+
+### Next: M10 V11 candidate — offline work, then a separate evaluation decision
+
+Planned 2026-11-12 after V10 failed quality. This is an evaluation candidate within M10,
+not milestone M11. Continue on `m10/notes-guided-enhancement` and existing PR #16. This
+planning session does not implement or run V11. On resuming, work through the offline
+steps below; no further model inference, merge or Built note is authorized. Preserve V1–V10
+inputs/results, baseline `199dd62` and the shipped recording safeguards.
+
+1. **Reproduce and specify before changing behavior.** Read V10's report, raw responses and
+   expected outcomes. Add regressions from `unit_disagreement`, `multi_claim_notes`,
+   `scope_separate`, `periods_separate`, `estimate_approval` and `tentative_confirmed`.
+   Record the proposed action-admissibility, claim-span, related-account, uncertainty and
+   failure contracts before implementation. Treat the choices below as design direction,
+   not a proven algorithm. Keep the two-stage workflow; do not add a model pass to solve
+   commitment classification without a separately agreed cost decision.
+
+2. **Reject facts selected as actions first.** Reproduce V10 selecting factual T1 as a task
+   before and after summary correction. Specify what source evidence permits a spoken
+   commitment and what triggers correction or visible unassigned review. Keep task/owner/
+   timing assembly in code; never generate replacement task prose. A model-supplied kind or
+   status is not independent proof, and exact quotes/valid IDs alone are insufficient.
+   Use a narrowly justified diagnostic or structured commitment evidence with explicit
+   limits; do not blacklist fixture strings or require every legitimate promise to start
+   with “I will.” Test genuine first/third-person commitments, coordinated and implied
+   tasks, factual costs/status, negation, proposals, quotations and retractions. Uncertain
+   candidates must not become executable checklist items merely because a source exists.
+   Preserve unrelated real tasks and independent agreements during correction.
+
+3. **Move claim span bookkeeping into code.** Prefer exact claim anchors resolved to saved
+   source spans, with code retaining separators and original text, over asking the model
+   to reproduce an entire punctuation/whitespace partition. Define uniqueness, order,
+   overlap, repeated-anchor and uncovered-text rules first. Explicitly define any permitted
+   separator/connective gaps and retain them in compiled evidence; never silently discard
+   words or treat gaps containing negation, uncertainty or conditions as harmless formatting.
+   Test commas, conjunctions, headings, repeated phrases and multiple facts/requests in one
+   passage. Coverage must still account for all meaningful note content. A valid span map
+   cannot prove atomic semantic splitting or entailment; keep that limitation explicit.
+
+4. **Separate comparison relationships from matching evidence.** Represent related accounts
+   with distinct periods/scopes/status without forcing “additional” to erase useful comparison
+   context or pretend the accounts agree. Distinguish matching/corroborating, conflicting,
+   related-but-distinct and uncertain relations in the contract before choosing fields.
+   Written-only material stays notes. Preserve subject, quantity/unit, period, scope and
+   epistemic qualifiers; do not infer identity from shared numbers or keywords. Estimate
+   versus approval and tentative versus confirmed need visible review where the relation
+   is unresolved. Validate blank/literal-null dimensions without inventing absent facts;
+   distinguish true absence from missing extraction. Semantic correctness remains an
+   evaluation question, even with well-formed dimensions.
+
+5. **Constrain source kinds before summary correction.** Keep conflicts and written context
+   code-assembled from comparison evidence. Prefer a simple transcript-only reference
+   vocabulary for generated spoken core/actions/timing; remove redundant model-written note
+   prose if it serves no purpose. If separate note fields remain, give them their own source
+   kind. Avoid rebuilding the nested reference unions previously removed for request size.
+   Keep runtime kind/quote/number validation and full-body context accounting on every call.
+   Grammar restrictions do not prevent prose from misrepresenting a valid transcript source;
+   test that failure too. Preserve source separation through both correction and fallback.
+
+6. **Version, integrate and verify offline.** Preserve wrapper 9 / grounding-v8 and all its
+   transitive validation behavior; use new contract/comparison/compiler modules as needed.
+   New semantics should use wrapper 10 / grounding-v9, retaining versions 1–9. Do not change
+   shared historical model schemas in place. Save selected spans, relations, commitment
+   evidence, requests/replies and compilation findings atomically with each new generation.
+   Failures preserve the prior successful result; rendering uses saved evidence without
+   inference or original-note reads. Keep at most four requests with notes and two without,
+   unless a different policy is explicitly agreed before live runs. No transport retries,
+   truncation or silent chunking. Exercise context limits on every initial/correction request.
+   Update the V10 freeze test that equates frozen source with the current working tree:
+   verify manifest/recorded-commit integrity instead, while replaying all 17 historical V10
+   results under their original wrapper. Never update a frozen manifest to make tests pass.
+   Replays of old replies may compile, block or be unmappable under a new contract; report
+   those counts only. Keep authored new-contract fake responses distinct from faithful replay.
+
+7. **Check and freeze a reviewable V11 candidate; stop before inference.** Run formatting,
+   lint, strict types and the full offline suite; Swift tests only if capture changes.
+   Verify all 396 existing manifest entries unchanged. Freeze source revision, both prompts,
+   generic/per-case schemas, settings, fixture hashes, provenance and manual rubric. Retain
+   the original 22 pairs and predeclare any additional discriminating cases/expectations.
+   Reserve separately authored unseen cases where practical; do not call implementer-authored
+   fixtures held out or independent. Freeze expectations before seeing generated outputs.
+   Report offline replay limits, maximum calls and context/cost implications. Commit roadmap
+   changes separately as `Plan: ...`; keep the handoff current.
+
+8. **Agree and run evaluation separately, then consider manual acceptance.** Choose cases,
+   repetitions, per-arm ceilings, total request budget and stopping rules with the user.
+   V10's 97 unused requests provide no authorization. Its run took 48m44s, so account for
+   latency as well as request count. No tuning/selective reruns inside a scored run. Require
+   every agreed output complete, no invented task, no lost spoken commitment/agreement,
+   correct source separation, no critical missed/invented conflict and correct uncertainty/
+   numeric/date meaning. Inspect both stage evidence and final notes; valid IDs or nonempty
+   fields are not success. Replay every selected result and preserve old manifests. Only a
+   passing quality gate advances current synthetic Obsidian acceptance; merging still needs
+   the owner's authorization and `git shipit`.
 
 For both stages, run formatting, lint, strict types and unit tests before committing;
 run Swift tests only if capture code changes. Keep shipped model settings unchanged.
