@@ -1,0 +1,346 @@
+[
+  {
+    "id": "R01",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Both spoken tasks and Friday/next week retained. Written-only 40 seats and venue request separate; internal N1/N2 markers leak into prose."
+  },
+  {
+    "id": "R02",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Full conditional next Friday/or Friday after if review slips retained. Written suggestions separate; no-launch-decision repeated and T4 marker leaks."
+  },
+  {
+    "id": "R03",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Rollback Friday retained; task repeated in Decisions and filler overview."
+  },
+  {
+    "id": "R04",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 1,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 0,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [
+      "unsupported deadline"
+    ],
+    "evidence": "Overview extends Friday to rollback: \u201csend a draft and check rollback by Friday\u201d. Source only dates sending."
+  },
+  {
+    "id": "R05",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Only Alex checklist tomorrow assigned; Sam noncommitment omitted from prose, not turned into an action."
+  },
+  {
+    "id": "R06",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 1,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Both coordinated tasks and Friday retained in full source under unassigned timing review. No rollback due invented."
+  },
+  {
+    "id": "R07",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Sam sending next Tuesday retained; unnecessary description of short transcript."
+  },
+  {
+    "id": "R08",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Both tasks and independent \u201cAgreed, release Friday.\u201d retained. Agreement repeated in three sections; rollback has unnecessary timing review but due stays null."
+  },
+  {
+    "id": "R09",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 1,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [
+      "tentative statement presented as confirmed"
+    ],
+    "evidence": "\u201cI think ... ready\u201d becomes \u201cSam confirmed ... ready\u201d and unqualified ready key point. Health-check task retained."
+  },
+  {
+    "id": "R10",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 1,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Original sending task and \u201cActually, Monday instead.\u201d preserved under review; Friday not assigned unqualified."
+  },
+  {
+    "id": "R11",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 2
+    },
+    "critical_failures": [],
+    "evidence": "Spoken monitoring/support 120 each correctly attributed; monitoring invoice task retained."
+  },
+  {
+    "id": "R12",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 1,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 1,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "\u201cit\u201d becomes invented \u201creview document\u201d; conditional timing retained in task/prose but due field only says next Friday."
+  },
+  {
+    "id": "R13",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 2
+    },
+    "critical_failures": [],
+    "evidence": "Both staging accounts identified unresolved, \u201cI think\u201d preserved. Health-check action remains independent with no review."
+  },
+  {
+    "id": "R14",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 1,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Original sending task and Next Tuesday retained under timing review, due null."
+  },
+  {
+    "id": "R15",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 2
+    },
+    "critical_failures": [],
+    "evidence": "Compare two options, recovery next week, 120-dollar monitoring, no option selected all retained."
+  },
+  {
+    "id": "R16",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Separate estimate 120/150 thousand and June/July conflicts preserve uncertainty; budget unapproved and verification retained. T5 marker leaks."
+  },
+  {
+    "id": "R17",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Both commitments, recovery next week, monitoring 120 and no option chosen retained; note focus separate. Redundancy and ID markers reduce polish."
+  },
+  {
+    "id": "R18",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 2
+    },
+    "critical_failures": [],
+    "evidence": "Monday correction replaces Friday for Sam sending the draft."
+  },
+  {
+    "id": "R19",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 2
+    },
+    "critical_failures": [],
+    "evidence": "Tag Friday, Alex rollback without date, and independent Friday release agreement retained."
+  },
+  {
+    "id": "R20",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Both tasks and correct dates/owners retained; personal tasks duplicated in Decisions."
+  },
+  {
+    "id": "R21",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Both tasks with Friday only on sending; filler \u201cfinalizing the release process\u201d."
+  },
+  {
+    "id": "R22",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 1,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Original rollback and later Friday answer preserved in association-unverified review; no due assigned."
+  },
+  {
+    "id": "R23",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 0,
+      "numbers": 1,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [
+      "unflagged disputed cost presented without qualification"
+    ],
+    "evidence": "Spoken \u201cSupport costs 120 dollars too\u201d appears unqualified in key points, while notes say support 150. Both values and sources present but no explicit unresolved disagreement; conflicts empty. Monitoring 120 and its task retained."
+  },
+  {
+    "id": "R24",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Sam explicit noncommitment and Alex tomorrow checklist retained; personal task duplicated in Decisions."
+  },
+  {
+    "id": "R25",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 2
+    },
+    "critical_failures": [],
+    "evidence": "Both Sam tasks retained; Friday only sending, rollback due null."
+  },
+  {
+    "id": "R26",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 2
+    },
+    "critical_failures": [],
+    "evidence": "Unapproved 120,000 estimate, attributed June expectation and verification task retained."
+  }
+]

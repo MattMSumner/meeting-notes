@@ -240,7 +240,16 @@ and produced 11/13 proposed summaries. Two cases timed out, and another lost an 
 release agreement: V8 fails its single-run criteria. A fresh [PR review](evaluation/m10/v8/results/pr-review.md)
 also found two recovery defects and a timing-qualifier defect; the follow-up fixes below
 address these reproduced bugs.
-M10 remains unbuilt pending the remaining evaluation failures and current manual acceptance.
+M10 remains unbuilt pending quality evaluation and current manual acceptance.
+
+The [V9 candidate](evaluation/m10/v9/README.md) uses one flat source-ID vocabulary, retaining
+runtime source-kind checks. Narrow diagnostics flag uncited explicit agreements and conflicts
+that mix tasks with other statements; correction must resolve them without inventing content.
+The [V9 evaluation](evaluation/m10/v9/results/report.md) produced all 13 summaries using 26
+requests across both arms, with no timeouts or corrections. The release agreement survives and
+the status conflict excludes the verification task. It still fails quality: the shared-numbers
+case presents both support prices without identifying their disagreement. This one run does
+not establish the cause of the prior timeouts or reliability on new inputs. M10 remains unbuilt.
 
 Recovery retains a stopping session until the detached capture helper is confirmed stopped.
 Malformed session files have a stable recovery identity, and session discovery works even
@@ -252,10 +261,10 @@ chooser skips unreadable meetings with a warning, allowing healthy meetings to r
 Format and evidence failures share one correction request. Unresolved blocking errors
 leave the previous successful summary/evidence untouched. Drafts, requests, replies and
 validation findings are saved locally under the meeting's `attempts/` folder. The selected
-attempt and saved passages also accompany new successful results in summary wrapper version 7.
+attempt and saved passages also accompany new successful results in summary wrapper version 8.
 Partial timing quotes that leave qualifiers or timing behind in the task retain the whole
 commitment under Review required, with no assigned deadline. Complete quotes preserve those
-qualifiers. Version-6 saves retain their original compiler for reproducible rendering.
+qualifiers. Version-6 and version-7 saves retain their original compilers for reproducible rendering.
 Older summaries and version 1 wrappers remain readable. Abrupt process termination can
 prevent the current audit from being finalized; it does not automatically retry generation.
 Numeric warnings now use each claim's cited spans and remain visible from the saved audit.
