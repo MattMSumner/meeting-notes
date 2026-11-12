@@ -7,9 +7,10 @@ note and its transcript into an Obsidian vault. No audio, transcripts or summari
 the machine.
 
 Status: **M10 implementation**, explicit notes-guided enhancement.
-Quality evaluation has failed; M10 is not yet built. The original manual Obsidian workflow passed,
-but the new validation failure/review-warning workflow still needs acceptance. See [plan.md](plan.md)
-for the roadmap.
+V10 failed quality; the [V11 offline candidate](evaluation/m10/v11/README.md) is frozen
+but unevaluated. M10 is not yet built. The original manual Obsidian workflow passed,
+but the current failure/review-warning workflow still needs acceptance after a passing
+quality evaluation. See [plan.md](plan.md) for the roadmap.
 
 ## Setup
 
@@ -154,6 +155,11 @@ The summary prompt is in [`src/meeting_notes/prompts/summary.md`](src/meeting_no
 ## Development
 
 For coordinating Codex workers through Herdr, see the [Chief workflow](.chief/README.md).
+
+V11 adds anchored commitment evidence, code-resolved claim spans, related-account review
+and wrapper-10 replay while preserving historical saves. Its [freeze](evaluation/m10/v11/README.md),
+[source review](evaluation/m10/v11/review.md) and [offline checks](evaluation/m10/v11/verification.json)
+do not establish model quality. New inference requires separately agreed scope and budget.
 
 ```sh
 uv run pytest                  # unit tests (fast, no model or audio needed)

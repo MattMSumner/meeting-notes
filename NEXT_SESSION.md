@@ -1,198 +1,110 @@
-# M10 handoff — 2026-11-12, V11 offline plan ready
+# M10 handoff — 2026-11-12, V11 offline candidate frozen
 
 ## Start here
 
 Continue on `m10/notes-guided-enhancement`, [PR #16](https://github.com/MattMSumner/meeting-notes/pull/16).
-Read AGENTS.md, this file, the M10 section of plan.md, the
-[V9 failure report](evaluation/m10/v9/results/report.md) and the
-[V10 freeze contract](evaluation/m10/v10/README.md).
+Read AGENTS.md, this handoff, the V11 section of plan.md and the
+[V11 freeze contract](evaluation/m10/v11/README.md). Use `.chief/CHIEF.md` and the Herdr
+skill when coordinating workers; small work can stay in the main session.
 
-**The approved V10 evaluation is complete and failed quality. No further inference is
-authorized.** Read [the results report](evaluation/m10/v10/results/report.md) before designing
-an offline successor. The user asked for the next steps to be planned before a fresh session.
-This session changes documentation only. On a request to continue, follow the V11 offline plan
-in plan.md through implementation, verification and a fresh freeze; stop before inference.
-Do not tune V10, reuse its unused request allowance, merge or mark M10 Built.
+The owner authorized “Proceed with V11 offline work.” Investigation, implementation,
+offline verification and a fresh freeze are complete. **No V11 inference, model quality
+evaluation, current manual Obsidian acceptance, Built note or merge is authorized.**
+V10's failed evaluation and its 97 unused requests provide no new allowance.
 
-## Current state
+## Current source and evidence
 
-- Implementation commit `31323dc`; freeze commit `35f9787`; evaluation evidence commit
-  `9f6084d`. Source/settings provenance remains in evaluation/m10/v10/provenance.json.
-  V10 inputs retain their pre-authorization state; results/run.json records subsequent approval.
-- Formatting, lint, strict pyright and **539 offline tests** pass; six integration tests
-  excluded. The offline suite needs access outside the sandbox for Metal imports and `ps`;
-  it does not run model inference. No capture changes, so no Swift tests were needed.
-- All 340 V1–V9 manifest entries verify unchanged. V10 has 42 input entries and 14 result
-  entries (396 total). The original 13 pairs and baseline 199dd62 are byte-preserved.
-  Historical revision hashes retain their original meaning across the prior rebase; never
-  rewrite frozen provenance.
-- Existing recording safeguards from main `8428868` remain intact. Completion/recovery do
-  transcription only. Leave `/tmp/meeting-notes-safeguards` and the pre-rebase backup alone.
-- Existing PR #16 remains open; this work is committed locally, not pushed or posted to GitHub.
+- Reviewed implementation: `fb3b130fb0d6a48859b96c7e9e74ffbd6152c878`.
+  Freeze: `e866b10e23ebf4c359c0c7e643f92cb8a3640c37`.
+- Formatting, Ruff lint, strict pyright and **978 offline tests** pass; six model/hardware
+  integration tests excluded. Full tests needed broader local access for Metal imports
+  and process inspection, not inference. Capture is unchanged; no local Swift rerun.
+- All **396 V1–V10 entries** remain unchanged. All **67 V11 entries** verify. All 43 copied
+  runtime/prompt files match the recorded source commit; frozen baseline bytes match V10.
+  Generic and all 40 per-case schemas match frozen imports. The original 22 pair values
+  and baseline `199dd62` are preserved. Never rewrite frozen manifests/provenance.
+- All 17 selected V10 summaries/warnings replay exactly under wrapper 9, including known
+  mistakes. Strict unchanged-V10-response compatibility under V11: 0 compiled, 0 blocked,
+  43 unmappable replies (19 comparison, 24 summary; 22 cases). Schema incompatibility is
+  not a semantic repair. Authored V11 fake responses are separate from fresh model evidence.
+- Independent source review passed at `fb3b130`: eight reported findings resolved,
+  555 selected tests and twelve production fake-transport/wrapper-10 scenarios passed.
+  Read [review.md](evaluation/m10/v11/review.md) and
+  [verification.json](evaluation/m10/v11/verification.json) for scope and limitations.
+- Independent package audit passed at `e866b10`: all 67 entries, source/baseline bytes,
+  generic/per-case schemas, approval-null settings and fresh-process frozen imports verify.
+- Main's recording safeguards remain intact. Leave the separate
+  `/tmp/meeting-notes-safeguards` worktree and unrelated processing-spawn recovery issue alone.
 
 ## Implemented contract
 
-Comparison runs first only when note passages exist, using every saved note/transcript
-passage and meeting context. Each note passage is partitioned into exact ordered quotes;
-these must concatenate to its full text. Claims receive code-assigned N1.C1, N1.C2 IDs.
-Every claim has structured meaning dimensions, account kind, exact source references and
-one outcome: consistent, additional, conflicting or uncertain. Additional is unmatched;
-consistent/conflicting require transcript accounts. Uncertain may have no established match.
-Nonfactual notes still receive coverage; requests/context cannot assert factual conflict.
+New modules: `contract_v11`, `spans_v11`, `comparison_v11`, `commitments_v11`,
+`compiler_v11` and `request_v11`. Historical definitions/transitive helpers are unchanged.
+New saves use wrapper 10 / grounding-v9; wrappers 1–9 retain original validators/outcomes.
 
-`comparison.py` validates coverage and references. **These checks cannot prove atomic semantic
-splitting, correct subject identity, qualifier preservation or classification.** A model can
-still misclassify support 120 versus 150 as agreement; evaluation must test that. Shared
-numbers or keywords are never used by code as proof of identity or disagreement.
+The summary stage supplies task IDs, exact undertaking/context anchors, basis and
+committed/uncertain disposition. Narrow English diagnostics inspect actual evidence
+for noncommitments/retractions; code assembles task, owner and timing. Unknown candidates
+remain attributed, non-executable review. Partial cancellations retain full original and
+retraction context even when omitted or selected with incomplete acceptance context.
+Recognized mixed actors and negative modal forms participate. This is not a general
+semantic classifier or a proof that every genuine undertaking is detected.
 
-`compiler_comparison.py` owns compilation for new saves. It copies conflict accounts from
-comparison quotes, qualifies disputed core references, preserves independent sources in mixed
-items and shows uncertain relations as persistent review warnings. It copies consistent and
-additional note claims into From your notes. Draft conflicts must be empty; comparison owns
-them. Written requests never become spoken tasks. Original commitment/timing assembly and
-agreement/commitment omission diagnostics remain. Factual disputes do not automatically dispute
-adjacent tasks; comparison commitment accounts can retain a disputed task with review.
+Code resolves claim anchors, occurrence, order/overlap and retained gaps. Meaningful
+uncovered words are not formatting. Comparison separates consistent/conflicting,
+related-distinct, uncertain and unmatched additional accounts. Absent/unresolved extraction
+differ; lexical quantity overlap proves no identity. Spoken draft references are
+transcript-only; comparison owns code-assembled written context/conflicts.
 
-`ollama.py` allows one comparison correction plus one summary correction: at most four calls
-with notes (two initial/two correction), two without notes. No transport retries or silent
-chunking/truncation. Coverage failure blocks summary generation; uncertainty is visible review,
-not a correction request. Full body context estimates count schema/settings/sources/history,
-and summary requests also count the selected comparison. Model/settings remain qwen3:30b,
-temperature zero, thinking enabled, context 32768, timeout 600 seconds.
+Original/effective inputs, raw attempts, resolutions, compilation and selection evidence
+save atomically. Replay verifies source/context/raw-selection bindings, request budgets
+and raw failure state. Failed comparisons stay closed; failed corrections can use only
+a fully valid prior fallback. Prior generations/evidence survive failed generation/writes.
+Rendering reads neither original notes nor inference. Fake filesystem tests cover these
+mechanics, not current manual Obsidian acceptance.
 
-Wrapper 9 / grounding-v8 saves exact snapshot inputs, both stages' attempts/selections,
-summary and warnings atomically. Failed comparison/generation/audit-save/summary-save preserves
-the previous successful generation/evidence. Rendering recompiles from saved evidence without
-reading original notes or invoking a model. Wrappers 1–8 keep original validators, including
-the V9 compiler and its known semantic failure. No unrelated recovery redesign was bundled.
+Unchanged settings: qwen3:30b, temperature zero, thinking enabled, context 32768, timeout
+600 seconds; four requests with note passages, two without. No extra model pass, transport
+retry, silent truncation, chunking or partial publication.
 
-## Completed evaluation and next gate
+## Next gate: agree evaluation before inference
 
-V10 freezes 22 synthetic pairs: original 13 plus nine new unit/period/scope/status/additive/
-multi-claim cases. expected.json and rubric.md precede generated outputs. Both prompts,
-generic and per-case stage schemas, wrapper schema, source, settings and runner are hashed.
-The new cases were written by the implementing agent; they are not independently held out.
-The approved one-repetition run attempted all 22 cases per arm under ceilings of 88 baseline
-and 74 proposed (162 total). It used **65 requests: 22 baseline + 43 proposed**, leaving 97
-unused. No tuning, selective reruns or extra repetitions occurred. Baseline produced 22/22;
-proposed produced 17/22. All five failed cases and every attempt are retained. No timeout or
-transport error occurred. Model/settings/digest were stable; run wall time was 48m44s.
+V11 has **40 predeclared synthetic pairs**: 22 familiar V10 pairs and 18 authored additions.
+Criteria/expectations match every case. None is independently held out. The
+[rubric](evaluation/m10/v11/rubric.md) scores semantic commitment admission, splitting,
+relations, source meaning, quantities/qualifiers, agreements and completion, not just IDs.
 
-Proposed comparison used 15 initial + four correction requests; summary used 19 initial + five
-corrections. Three cases blocked comparison, two blocked summary. All 17 selected outputs
-replay exactly as wrapper 9. Offline verification is results/verify.py; scoring joins and
-diagnostics are results/analyze.py. The original 13 baseline summaries match V9 exactly.
+Proposed scope, not approval: one repetition of all 40 pairs in both arms, 80 slots,
+ceiling **160 baseline + 116 proposed = 276 requests**. Eighteen cases have note passages;
+22 do not. Repetitions/budget stay null in frozen settings. V10 took 48m44s for 65 requests;
+agree latency expectations as well as request ceilings and stopping rules.
 
-The targeted shared_numbers conflict now appears with both support accounts while monitoring
-and invoice action remain independent. Original 13 spoken tasks and release agreement survive.
-Nevertheless the quality gate fails:
+Before an approved run:
 
-- unit_disagreement publishes a factual price statement as an action (T1). Its correction
-  removes invalid notes references from core prose but preserves the invented action.
-  Source-ID membership and exact code assembly do not prove that an action was spoken.
-- scope_separate and tentative_confirmed call claims additional while retaining transcript
-  accounts on both attempts. The no-match contract blocks them. Scope differences are
-  recognized in the reasons; tentative versus confirmed should have received visible review.
-- multi_claim_notes finds the three semantic relations but drops separators/punctuation from
-  the exact partition on both attempts. Coverage fails and the independent invoice task is
-  unavailable. This is a commitment/completion regression against baseline.
-- periods_separate repairs additional/no-match structure, then both summary drafts still cite
-  handwritten N1 in spoken core. estimate_approval also blocks summary for N1 in core; its
-  selected comparison incorrectly avoids the frozen expected uncertain review relation.
-- Comparison quantity/unit fields can be null/empty despite explicit values; absent dimensions
-  can contain literal `null` strings. Zero selected comparisons use uncertain. Offline review
-  rendering tests do not establish live uncertainty classification or semantic completeness.
+1. Agree exact cases/repetitions, per-arm and total budgets, stopping rules and output
+   locations. Preserve source/prompts/settings/expectations; no tuning or selective reruns.
+   Record new approval and actual run ceilings separately; never edit frozen settings.
+2. Run `.venv/bin/python -B evaluation/m10/v11/check_offline.py`. It selects frozen
+   imports and reads only saved evidence. Never run historical `results/verify.py` or
+   `analyze.py` directly; they rewrite frozen results.
+3. Run `cmp scripts/evaluate-enhancement.py evaluation/m10/v11/runner.py` before using
+   the scripts entry point. The frozen copy preserves scripts-relative layout; do not
+   execute a changed working runner or silently repair frozen code. Verify all frozen
+   inputs/settings and model identity before each arm. Stop on integrity/settings changes
+   or budget exhaustion. Old unused allowances provide no authorization.
+4. Preserve every attempt/error and account for every slot, including missing/blocked
+   ones. All agreed outputs must complete; invented/lost commitments, critical missed/
+   invented conflicts, wrong source meaning or lost qualifiers fail quality.
+5. Replay every selected result as wrapper 10 and verify historical manifests unchanged.
+   Report actual latency and limitations; one run on these cases establishes no reliability.
 
-There are 12 selected comparisons with 18 claims (ten additional, six conflicting, two
-consistent); two selected comparisons belong to blocked summaries. No published proposed
-output in this one run misses the targeted hard conflicts or invents a hard conflict, but
-that observation excludes blocked cases and does not satisfy acceptance.
-
-Scores were entered against shuffled opaque labels before joining the arm key. Output/source
-structure reveals arms; this was neither fully blinded nor independent review. One run on
-familiar/implementer-authored cases does not establish reliability. No current Obsidian
-acceptance was attempted because quality failed. M10 remains unbuilt.
-
-## Fresh-session objective: V11 offline candidate
-
-Follow **“Next: M10 V11 candidate — offline work, then a separate evaluation decision”**
-in plan.md. V11 is a candidate version inside M10, not the separate M11 milestone. Stay on
-the existing M10 branch/PR. The working tree is clean before this handoff's documentation
-commits; nothing has been pushed. No V11 source, fixtures or freeze exist yet.
-
-The recommended order and deliverables are:
-
-1. Reproduce the six V10 failure cases from saved replies. Specify commitment admissibility,
-   claim-span coverage, comparison relations, uncertainty and stage failure/fallback behavior
-   before implementation. No additional model pass is planned.
-2. Repair fact-as-action selection first. Exact source IDs and model-supplied status cannot
-   prove commitment. Preserve code assembly and legitimate third-person/implied/coordinated
-   commitments; test noncommitments, facts, retractions and independent decisions too.
-   Record the scope and semantic limits of any new diagnostic or evidence requirement.
-3. Have code resolve exact claim anchors to saved spans and retain separators. Settle unique
-   matching, order, overlaps, repeated anchors and uncovered semantic words. Never silently
-   drop negation/uncertainty/conditions to make a partition pass. Semantic splitting remains
-   model work even when every source character is retained.
-4. Represent related-but-distinct accounts separately from matching evidence. Preserve
-   periods, units, scope and epistemic status. Make uncertain relations visible, and handle
-   blank/literal-null meaning fields without inventing values. Written-only facts/requests
-   remain notes. Do not infer identity/conflict from number or keyword overlap.
-5. Keep conflicts/written context code-assembled and constrain generated spoken fields to
-   transcript references in a compact schema. Preserve runtime validation; test wrong-source
-   prose with valid transcript IDs as well as forbidden N references. Avoid another nested
-   reference-union redesign. Restricting ID enums alone does not prove semantic grounding.
-6. Introduce wrapper 10 / grounding-v9 for changed semantics, preserving wrappers 1–9 and
-   their transitive compilers/contracts. Save all new evidence atomically, replay without
-   original reads/inference, preserve successful generations on failure. Keep the existing
-   four-request-with-notes/two-without ceiling and full request-size checks unless a policy
-   change is separately agreed. No hidden retry, truncation or chunking.
-7. Run required offline checks, replay historical saves, verify all 396 manifest entries,
-   and freeze V11 source/prompts/schemas/settings/fixtures/provenance/rubric/expectations.
-   Retain the 22 V10 pairs, predeclare additions and report familiar-case limitations.
-   End the offline phase with a concrete candidate and separately proposed evaluation scope;
-   do not run models from the old approval.
-
-Important implementation traps:
-
-- `compiler_comparison.py`, `comparison.py` and the shared `contract.py` participate in
-  wrapper-9 replay. A new action field or comparison rule cannot silently change old saves.
-  Preserve historical schemas/validators in versioned modules before introducing new ones.
-  Inspect transitive helpers (`coverage.py`, figure checks, source splitting) too.
-- `tests/test_comparison.py::test_frozen_candidate_inputs_schemas_and_sources_match_runtime`
-  currently requires V10 frozen source to equal the working implementation. Replace that
-  current-tree assumption with manifest/recorded-commit checks plus all 17 V10 saved-generation
-  replays. The current implementation is allowed to advance; frozen evidence is not.
-- Old V10 replies will not automatically fit a new contract. Keep unchanged-response replay
-  (compile/block/unmappable counts) separate from explicitly authored V11 fake responses.
-  Neither is a fresh model quality evaluation.
-- Model output grammar can prevent N IDs in spoken fields, but a T ID can still cite the
-  wrong meaning. Do not label structural compliance a semantic completeness guarantee.
-- V10's frozen runner copy resolves paths from its original scripts location;
-  scripts/evaluate-enhancement.py was byte-identical at run. Do not rewrite the old freeze
-  to repair invocation convenience.
-
-Start with `src/meeting_notes/{comparison,compiler_comparison,contract,ollama,audit,evidence,
-store,pipeline}.py`, prompts, `tests/test_comparison.py`, `tests/test_current_ollama.py`,
-`tests/test_enhance.py`, and the six failed V10 cases in results/proposed.jsonl. Read AGENTS.md
-and the plan before editing. Use synthetic material only; leave the unrelated recovery issue
-below and the safeguards worktree alone.
-
-## Later gates — not authorized by the old evaluation
-
-After V11 is frozen, agree cases, repetitions, per-arm ceilings, total budget and stopping
-rules before inference. The V10 run's 97 unused requests are not available for new experiments.
-Account for its 48m44s latency. No tuning or selective reruns during a scored run. Require all
-outputs complete; no invented tasks, lost commitments/agreements, critical missed/invented
-conflicts or incorrect source separation; explicit uncertainty must be reviewed. Score semantic
-splits and dimensions as well as rendered text, then replay every selected result from evidence.
-
-Only a passing quality evaluation advances current synthetic Obsidian acceptance: unchanged
-writing, links, opening behavior, protected summaries, failure/review warnings and later render
-after originals change/disappear. Earlier acceptance does not cover this workflow. Only then
-consider a Built note and the owner's merge approval. No merge is authorized now.
+Only passing quality advances current synthetic Obsidian acceptance: unchanged writing,
+links, opening behavior, protected summaries, failure/review warnings and rendering after
+originals change/disappear. Only then consider M10 Built and the owner's merge approval.
+No merge now; `git shipit` remains the sole merge path.
 
 ## Separate follow-up
 
 The processing-spawn failure after confirmed orphan shutdown can clear a pending session.
-It was reproduced on main as well. Track/repair separately with a synthetic regression;
-this comparison work does not fix it or recording behavior.
+It was reproduced on main. Track/repair separately with a synthetic regression; V11 does
+not change capture/recovery behavior.
