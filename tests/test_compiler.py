@@ -130,7 +130,7 @@ def test_current_model_and_wrapper_reproduce_review_without_live_sources():
     from meeting_notes.evidence import meeting_context
 
     saved = Generation(
-        version=6,
+        version=7,
         summary=summary,
         evidence=Evidence(
             transcript=transcript,
@@ -410,7 +410,8 @@ def test_valid_own_timing_is_not_downgraded_by_redundant_summary_reference():
 
 
 @pytest.mark.parametrize(
-    "freeze,version,expected", [("v4", 3, 9), ("v5", 4, 12), ("v6", 5, 12), ("v7", 6, 13)]
+    "freeze,version,expected",
+    [("v4", 3, 9), ("v5", 4, 12), ("v6", 5, 12), ("v7", 6, 13), ("v8", 6, 11)],
 )
 def test_published_generations_still_validate_with_original_rules(
     freeze: str, version: int, expected: int
@@ -649,3 +650,75 @@ def test_numeric_correction_cannot_drop_normalized_external_timing():
     assert model.audit.selected == 0
     assert result.action_items[0].due is None
     assert any("Friday" in s for s in result.action_items[0].review)
+
+
+@pytest.mark.parametrize(
+    "phrase,quote",
+    [
+        ("after Friday", "Friday"),
+        ("not before Friday", "Friday"),
+        ("not before Friday", "before Friday"),
+        ("at least one week after Friday", "Friday"),
+        ("at least one week after Friday", "after Friday"),
+        ("at least one week after Friday", "one week after Friday"),
+        ("no later than Friday", "Friday"),
+        ("only on Friday", "Friday"),
+        ("around next Friday", "Friday"),
+        ("two weeks before Friday", "before Friday"),
+    ],
+)
+def test_partial_timing_qualifiers_keep_full_commitment_for_review(phrase: str, quote: str):
+    text = f"I will send the draft {phrase}."
+    result = validate(draft(quote), passages("[00:00:00] Sam: " + text, ""))
+    assert result.summary is not None
+    action = result.summary.action_items[0]
+    assert action.due is None
+    assert action.task == text
+    assert f"Original commitment: {text}" in action.review
+
+
+@pytest.mark.parametrize(
+    "phrase", ["after Friday", "not before Friday", "at least one week after Friday"]
+)
+def test_complete_timing_quote_retains_qualifiers(phrase: str):
+    result = validate(
+        draft(phrase), passages(f"[00:00:00] Sam: I will send the draft {phrase}.", "")
+    )
+    assert result.summary is not None
+    action = result.summary.action_items[0]
+    assert action.due == phrase
+    assert action.task == "I will send the draft"
+    assert not action.review
+
+
+def test_saved_partial_timing_uses_its_original_validator():
+    from meeting_notes.audit import Attempt, CoverageAudit, TimingAudit
+    from meeting_notes.compiler_v7 import validate as original_validate
+
+    transcript = "[00:00:00] Sam: I will send the draft after Friday."
+    sources = passages(transcript, "")
+    value = draft("Friday")
+    old = original_validate(value, sources)
+    new = validate(value, sources)
+    assert old.summary is not None and new.summary is not None
+    assert old.summary != new.summary
+    evidence = Evidence(
+        transcript=transcript, context="", handwritten_original="", handwritten_text=""
+    )
+    attempt = Attempt(request={}, reply=value.model_dump_json())
+    saved = Generation(
+        version=6,
+        summary=old.summary,
+        evidence=evidence,
+        audit=CoverageAudit(passages=sources, attempts=[attempt], selected=0),
+    )
+    assert Generation.model_validate_json(saved.model_dump_json()) == saved
+    current = Generation(
+        version=7,
+        summary=new.summary,
+        evidence=evidence,
+        audit=TimingAudit(passages=sources, attempts=[attempt], selected=0),
+    )
+    assert Generation.model_validate_json(current.model_dump_json()) == current
+    with pytest.raises(ValueError, match="does not match"):
+        Generation(version=7, summary=old.summary, evidence=evidence, audit=current.audit)

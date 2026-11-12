@@ -10,7 +10,7 @@ from importlib import resources
 from typing import Any, cast
 
 from meeting_notes.audit import Attempt
-from meeting_notes.audit import CoverageAudit as Audit
+from meeting_notes.audit import TimingAudit as Audit
 from meeting_notes.compiler import passages, validate
 from meeting_notes.contract import Draft, request_schema
 from meeting_notes.evidence import meeting_context

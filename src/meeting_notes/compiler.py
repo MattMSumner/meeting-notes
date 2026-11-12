@@ -152,6 +152,15 @@ def validate(draft: Draft, sources: list[Source], context: str = "") -> Checked:
             before = text[:start]
             if (
                 before.strip()
+                # A suffix quote must not leave timing or its qualifiers in the task.
+                # Keep uncertain boundaries intact for review instead of guessing them.
+                and not _DATE.search(before)
+                and not re.search(
+                    r"\b(after|before|until|since|not|no|only|earlier|later|least|most|within|around|about|"
+                    r"approximately|roughly|over|under|seconds?|minutes?|hours?|days?|weeks?|months?|years?)\b",
+                    before,
+                    re.I,
+                )
                 and owner is not None
                 and not related
                 and identifier not in disputed

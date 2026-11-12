@@ -626,7 +626,7 @@ def test_current_generation_is_saved_with_v6_and_survives_source_deletion(h: Har
     model = OllamaSummarizer("fake", 32768, FakeOllama(value.model_dump_json()), "Sam")
     pipeline.summarize(directory, pipeline.conversation(directory), model, "Sam")
     saved = directory.load_generation()
-    assert isinstance(saved, Generation) and saved.version == 6
+    assert isinstance(saved, Generation) and saved.version == 7
     path = directory.load_meeting().handwritten_path
     assert path is not None
     path.unlink()
