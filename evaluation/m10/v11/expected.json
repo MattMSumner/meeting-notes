@@ -276,5 +276,19 @@
     "familiar": false,
     "independent": false,
     "authorship": "Chief-authored from independent code-review probes before any V11 inference; development material, not held-out quality evidence"
+  },
+  {
+    "id": "mixed_owner_cancellation",
+    "expected": "Do not execute the withdrawn sending task or assign both tasks to Sam. Preserve the independent review undertaking and complete mixed-owner coordination/retraction as non-executable review if scope cannot safely be isolated.",
+    "familiar": false,
+    "independent": false,
+    "authorship": "Chief-authored from the focused independent core recheck before V11 inference; not held-out quality evidence"
+  },
+  {
+    "id": "accepted_coordination_retracted",
+    "expected": "Preserve the complete request, acceptance and partial retraction, including the still-relevant review work, in visible review. Do not publish cancelled sending or a bare Yes that hides task/retraction context.",
+    "familiar": false,
+    "independent": false,
+    "authorship": "Chief-authored from the focused independent core recheck before V11 inference; not held-out quality evidence"
   }
 ]

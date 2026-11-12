@@ -608,5 +608,37 @@
     "criteria": [
       "Preserve all three undertakings and each complete approximate/not-before timing qualifier, in supported due wording or full-source timing review; never assign bare Friday, Monday or after Tuesday with qualifiers removed."
     ]
+  },
+  {
+    "id": "mixed_owner_cancellation",
+    "meeting": {
+      "title": "Synthetic commitment review",
+      "started_at": "2026-10-20T14:00:00-04:00",
+      "attendees": [
+        "Ravi"
+      ],
+      "my_name": "Sam"
+    },
+    "transcript": "[00:00:00] Sam: I will review the draft and Ravi will send the invoice.\n[00:00:05] Sam: Ravi will not send the invoice.",
+    "handwritten_text": "",
+    "criteria": [
+      "Do not execute the withdrawn sending task or assign both tasks to Sam. Preserve the independent review undertaking and complete mixed-owner coordination/retraction as non-executable review if scope cannot safely be isolated."
+    ]
+  },
+  {
+    "id": "accepted_coordination_retracted",
+    "meeting": {
+      "title": "Synthetic commitment review",
+      "started_at": "2026-10-20T14:00:00-04:00",
+      "attendees": [
+        "Ravi"
+      ],
+      "my_name": "Sam"
+    },
+    "transcript": "[00:00:00] Sam: Could you review the draft and send the invoice?\n[00:00:05] Ravi: Yes.\n[00:00:10] Ravi: I will not send the invoice.",
+    "handwritten_text": "",
+    "criteria": [
+      "Preserve the complete request, acceptance and partial retraction, including the still-relevant review work, in visible review. Do not publish cancelled sending or a bare Yes that hides task/retraction context."
+    ]
   }
 ]

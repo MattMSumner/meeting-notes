@@ -127,3 +127,9 @@ omission of remaining work. Do not generate replacement task prose or claim a ge
 clause parser. Accepted requests need actual task evidence, not a factual yes/no answer.
 External timing review must show complete source context alongside the exact selected
 span; a partial timing anchor cannot erase a qualifier in an assigned due or review.
+
+The focused core recheck adds mixed-owner cancellation and incomplete selected acceptance
+controls, for 40 cases total (22 retained, 18 authored additions). All explicitly
+recognized undertaking actors must be considered for partial cancellation, and mandatory
+review context must survive both selection and omission. These additions precede V11
+inference and are not held out.

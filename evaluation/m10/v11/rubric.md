@@ -2,8 +2,8 @@
 
 No evaluation is authorized by this file. Agree cases, repetitions, per-arm ceilings,
 total request budget and stopping rules after the final source/schema freeze.
-Retain all 38 pairs; failures are outcomes, not cases to omit or silently rerun.
-The original 22 are familiar. Sixteen Chief-authored additions and implementation-authored
+Retain all 40 pairs; failures are outcomes, not cases to omit or silently rerun.
+The original 22 are familiar. Eighteen Chief-authored additions and implementation-authored
 unit responses are development/evaluation material, not independent held-out evidence.
 
 Score each case/repetition with exact source spans: 0 wrong/missing, 1 partial, 2 correct.
@@ -56,3 +56,8 @@ quality. No tuning, selective reruns or dropping failed cases during scoring. Re
 every selected new generation from saved evidence; verify historical hashes unchanged.
 Only passing quality advances current synthetic Obsidian manual acceptance; neither
 offline checks nor a freeze authorize Built or merging.
+
+Two focused-recheck additions cover mixed-owner cancellation and selected accepted
+coordination with incomplete context. An explicit retraction cannot remain inside an
+executable mixed-owner task; selecting a bare acceptance cannot suppress mandatory
+request/retraction review that omission would have retained.
