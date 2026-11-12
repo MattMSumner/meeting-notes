@@ -1,6 +1,7 @@
 """Command-line entry point: `notes`."""
 
 import argparse
+import math
 import os
 import signal
 import sys
@@ -45,6 +46,13 @@ def _default_summarizer(config: Config) -> Summarizer:
     )
 
 
+def _positive_seconds(value: str) -> float:
+    seconds = float(value)
+    if not math.isfinite(seconds) or seconds <= 0:
+        raise argparse.ArgumentTypeError("duration must be positive and finite")
+    return seconds
+
+
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="notes", description="Local-first meeting notetaker.")
     commands = parser.add_subparsers(dest="command", required=True)
@@ -64,7 +72,10 @@ def _parser() -> argparse.ArgumentParser:
     )
     record.add_argument("--title", help="meeting title (default: Untitled)")
     record.add_argument(
-        "--duration", type=float, metavar="SECONDS", help="stop automatically after SECONDS"
+        "--duration",
+        type=_positive_seconds,
+        metavar="SECONDS",
+        help="stop after SECONDS, up to the configured recording cap",
     )
     # Used by `notes start`: record into a meeting it created, reporting by notification.
     record.add_argument("--meeting-id", help=argparse.SUPPRESS)
@@ -119,10 +130,10 @@ class _StopSignals:
 
 def _record(
     meeting_dir: MeetingDir,
-    duration: float | None,
+    duration: float,
     recorder: Recorder,
     stop: threading.Event,
-) -> None:
+) -> bool:
     stop_file = session.stop_request_file(meeting_dir)
 
     def watch_for_stop_request() -> None:
@@ -135,26 +146,36 @@ def _record(
     watcher.start()
     # Flushed explicitly: notes-capture writes to the same terminal, and Python buffers
     # stdout when it isn't a TTY (e.g. under Claude Code), which put our lines after its.
-    timer = threading.Timer(duration, stop.set) if duration else None
+    limit_reached = threading.Event()
+
+    def stop_at_limit() -> None:
+        if not stop.is_set():
+            limit_reached.set()
+            stop.set()
+
+    timer = threading.Timer(duration, stop_at_limit)
     try:
-        if timer:
-            timer.start()
-            print(
-                f"Recording {meeting_dir.id} for {duration:g}s. Press Ctrl-C to stop early.",
-                flush=True,
-            )
-        else:
-            print(f"Recording {meeting_dir.id}. Press Ctrl-C to stop.", flush=True)
+        timer.start()
+        print(
+            f"Recording {meeting_dir.id}; automatic stop after {duration:g}s. "
+            "Press Ctrl-C to stop early.",
+            flush=True,
+        )
         recorder.record(meeting_dir.path, stop)
     finally:
-        if timer:
-            timer.cancel()
-        stop.set()  # ends the watcher
+        stop.set()  # ends the watcher and prevents a late timeout report
+        timer.cancel()
+        timer.join()
     print("Stopped.", flush=True)
+    return limit_reached.is_set()
 
 
 def _title(meeting_dir: MeetingDir) -> str:
-    return meeting_dir.load_meeting().title
+    try:
+        return meeting_dir.load_meeting().title
+    except (OSError, ValueError, KeyError, TypeError, AttributeError):
+        # Notifications must not prevent capture shutdown when metadata is damaged.
+        return meeting_dir.id
 
 
 class _Commands:
@@ -182,7 +203,10 @@ class _Commands:
         background job) also shows it as a notification."""
         print(message, file=sys.stderr if error else sys.stdout, flush=True)
         if notify:
-            self.desktop.notify(message)
+            try:
+                self.desktop.notify(message)
+            except (OSError, DesktopError) as failure:
+                print(f"Couldn't show notification ({failure}).", file=sys.stderr)
 
     def _session(self, meeting_dir: MeetingDir, phase: Phase) -> Session:
         """This process's session for meeting_dir. Keeps the start time of the session the
@@ -211,41 +235,60 @@ class _Commands:
             active
             for active in session.find(self.store, self.processes)
             if active.running
-            and active.session.phase == Phase.RECORDING
-            and active.session.pid != os.getpid()
+            and active.session.phase in (Phase.RECORDING, Phase.STOPPING)
+            and (active.session.pid != os.getpid() or active.session.phase == Phase.STOPPING)
         ]
 
     def _recover(self, orphan: Active) -> None:
         """Deals with a meeting whose process died. A recording cut off: stops any capture
         still recording into it and writes its note in the background."""
         meeting_dir = orphan.meeting_dir
-        self.processes.stop_capture(meeting_dir.path)
-        session.session_file(meeting_dir).unlink(missing_ok=True)
-        session.stop_request_file(meeting_dir).unlink(missing_ok=True)
-        title = _title(meeting_dir)
-        if orphan.session.phase == Phase.PROCESSING:
-            # Its audio is complete; it was writing the note that died. Running it again
-            # automatically could crash the same way on every start and stop.
-            self._say(
-                f"Writing the note for “{title}” stopped unexpectedly. "
-                f"To retry: notes transcribe {meeting_dir.id}",
-                notify=True,
-                error=True,
+        # Claim before stopping orphaned capture, which can take seconds. Other commands
+        # see a live recovery session while the global lock stays free.
+        capture_pending = orphan.session.phase in (Phase.RECORDING, Phase.STOPPING)
+        with session.lock(self.store):
+            if session.read(meeting_dir) != orphan.session:
+                return
+            claim = self._session(
+                meeting_dir, Phase.STOPPING if capture_pending else orphan.session.phase
             )
-            return
-        if not meeting_dir.captures():
-            self._say(f"“{title}” stopped before any audio was saved.", notify=True)
-            return
-        self._spawn_job(
-            meeting_dir,
-            ["transcribe", meeting_dir.id, "--background"],
-            Phase.PROCESSING,
-            orphan.session.started_at,
-        )
-        self._say(
-            f"“{title}” stopped unexpectedly. Writing its note from what was recorded.",
-            notify=True,
-        )
+            session.write(meeting_dir, claim)
+        try:
+            title = _title(meeting_dir)
+            if orphan.session.phase == Phase.PROCESSING:
+                self._say(
+                    f"Writing the note for “{title}” stopped unexpectedly. "
+                    f"To retry: notes transcribe {meeting_dir.id}",
+                    notify=True,
+                    error=True,
+                )
+                return
+            self.processes.stop_capture(meeting_dir.path)
+            capture_pending = False
+            session.stop_request_file(meeting_dir).unlink(missing_ok=True)
+            if not meeting_dir.captures():
+                self._say(f"“{title}” stopped before any audio was saved.", notify=True)
+                return
+            with session.lock(self.store):
+                self._spawn_job(
+                    meeting_dir,
+                    ["transcribe", meeting_dir.id, "--background"],
+                    Phase.PROCESSING,
+                    orphan.session.started_at,
+                )
+            self._say(
+                f"“{title}” stopped unexpectedly. Writing its note from what was recorded.",
+                notify=True,
+            )
+        finally:
+            with session.lock(self.store):
+                if session.read(meeting_dir) == claim:
+                    if capture_pending:
+                        # Leave a retryable orphan if shutdown was interrupted, including
+                        # Ctrl-C. A hard crash leaves STOPPING, which is also recoverable.
+                        session.write(meeting_dir, orphan.session)
+                    else:
+                        session.clear(meeting_dir, os.getpid())
 
     def _recover_orphans(self) -> list[Active]:
         orphans = [a for a in session.find(self.store, self.processes) if not a.running]
@@ -285,8 +328,8 @@ class _Commands:
                 return 1
             if title is None:
                 return 0  # cancelled
+        self._recover_orphans()
         with session.lock(self.store):
-            self._recover_orphans()
             if self._already_recording():  # started while the dialog was open
                 return 1
             meeting_dir = self.store.create(self._new_meeting(title, event))
@@ -296,7 +339,10 @@ class _Commands:
                 Phase.RECORDING,
                 meeting_dir.load_meeting().started_at,
             )
-        print(f"Recording {meeting_dir.id} in the background. Stop it with `notes stop`.")
+        print(
+            f"Recording {meeting_dir.id} in the background; automatic stop after "
+            f"{self.config.max_recording_seconds:g}s. Stop early with `notes stop`."
+        )
         return 0
 
     def _already_recording(self) -> bool:
@@ -307,8 +353,8 @@ class _Commands:
         return False
 
     def stop(self, args: argparse.Namespace) -> int:
+        recovered = self._recover_orphans()
         with session.lock(self.store):
-            recovered = self._recover_orphans()
             recording = self._recording()
             if not recording:
                 if recovered:
@@ -318,7 +364,7 @@ class _Commands:
             for active in recording:
                 session.stop_request_file(active.meeting_dir).touch()
                 self.processes.interrupt(active.session.pid)
-            return max(self._wait_for_stop(active) for active in recording)
+        return max(self._wait_for_stop(active) for active in recording)
 
     def _wait_for_stop(self, active: Active) -> int:
         """Waits for a recording to save its audio, which it shows by moving on to writing
@@ -327,12 +373,12 @@ class _Commands:
         deadline = time.monotonic() + STOP_WAIT_SECONDS
         while (
             (current := session.read(meeting_dir)) is not None
-            and current.phase == Phase.RECORDING
+            and current.phase in (Phase.RECORDING, Phase.STOPPING)
             and session.is_running(current, self.processes)
             and time.monotonic() < deadline
         ):
             time.sleep(0.2)
-        if current is None or current.phase != Phase.RECORDING:
+        if current is None or current.phase not in (Phase.RECORDING, Phase.STOPPING):
             # If it failed instead, the job itself says so by notification.
             print(f"Stopped {meeting_dir.id}.")
             return 0
@@ -357,6 +403,8 @@ class _Commands:
             title = _title(active.meeting_dir)
             if not active.running:
                 print(f"“{title}” stopped unexpectedly. Run `notes stop` to recover it.")
+            elif active.session.phase == Phase.STOPPING:
+                print(f"Stopping “{title}” ({active.meeting_dir.id})")
             elif active.session.phase == Phase.RECORDING:
                 elapsed = (now - active.session.started_at).total_seconds()
                 print(f"Recording “{title}” for {timestamp(elapsed)} ({active.meeting_dir.id})")
@@ -453,11 +501,18 @@ class _Commands:
         title = _title(meeting_dir)
         background: bool = args.background
         self._prepare_handwritten(meeting_dir, background)
+        duration = (
+            min(args.duration, self.config.max_recording_seconds)
+            if args.duration is not None
+            else self.config.max_recording_seconds
+        )
         if background:
-            self.desktop.notify(f"Recording “{title}”.")
+            self.desktop.notify(f"Recording “{title}”. Automatic stop after {duration:g}s.")
         try:
             try:
-                _record(meeting_dir, args.duration, self.make_recorder(self.config), signals.stop)
+                limit_reached = _record(
+                    meeting_dir, duration, self.make_recorder(self.config), signals.stop
+                )
             finally:
                 signals.end()
         except CaptureNotInstalled as error:
@@ -479,7 +534,13 @@ class _Commands:
                 error=True,
             )
         else:
-            if background:
+            if limit_reached:
+                self._say(
+                    f"Recording time limit reached ({duration:g}s). Stopped “{title}”; "
+                    "writing the note…",
+                    notify=background,
+                )
+            elif background:
                 self.desktop.notify(f"Stopped recording “{title}”. Writing the note…")
         session.write(meeting_dir, self._session(meeting_dir, Phase.PROCESSING))
         return self._write_note(meeting_dir, transcribe=True, background=background)

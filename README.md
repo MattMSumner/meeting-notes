@@ -40,7 +40,10 @@ uv run scripts/install-shortcuts.py
 ```
 
 This adds two shortcuts (confirm each import in Shortcuts, and allow them to run scripts
-when asked). Run them from Spotlight by typing their names:
+when asked). Run the installer from your configured terminal: it captures supported
+`MEETING_NOTES_*` settings and PATH, including Homebrew tools. The launchers use plain
+`/bin/sh` without reading interactive shell startup files. Reinstall after changing settings;
+delete existing copies first to avoid duplicate shortcuts. Run them from Spotlight by name:
 
 - **Start meeting notes** asks for a title, suggesting the meeting on your calendar now
   (empty means Untitled), and starts recording in the background. The orange and purple menu bar indicators show it's recording.
@@ -53,12 +56,18 @@ when asked). Run them from Spotlight by typing their names:
 uv run notes start --title "Weekly Sync"    # record in the background
 uv run notes status                         # what's recording or being written
 uv run notes stop                           # stop; the note is written in the background
-uv run notes record --title "Weekly Sync"   # or: record in the foreground until Ctrl-C
+uv run notes record --title "Weekly Sync"   # or: record in the foreground
 uv run notes transcribe <meeting-id>        # re-run transcription (and the summary)
 uv run notes summarize <meeting-id>         # re-run the summary
 uv run notes render <meeting-id>            # re-write the note and transcript
 uv run notes check                          # check the mic and system audio can be recorded
 ```
+
+Recordings stop automatically after **one hour** by default, then transcribe and summarize
+as usual. Set `MEETING_NOTES_MAX_RECORDING_SECONDS` to a positive, finite number of seconds
+for a different limit. `notes record --duration SECONDS` can shorten the recording but cannot
+exceed that cap. Manual stop still works, and reaching the limit is reported in the terminal
+and, for background recordings, by notification.
 
 Starting through Spotlight or `notes record` creates a separate `_handwritten.md` file
 beside the generated summary and opens it in a new Obsidian tab. Write ordinary bullets
@@ -75,7 +84,12 @@ file when processed again.
 
 If a recording's process dies (a crash, a restart), `notes status` says so and `notes stop`
 recovers it: it stops the orphaned capture and writes the note from what was recorded.
-Background jobs log to `notes.log` in the meeting's folder.
+Recovery retains a stopping session until the capture helper is confirmed gone. Interrupted
+recovery stays retryable and blocks another recording while shutdown is active. Malformed
+sessions and missing or damaged meeting metadata do not prevent capture shutdown; notifications
+fall back to the meeting ID. Missing metadata may still need repair before processing audio.
+The automatic recording timer runs in Python; a surviving helper after a process crash is
+handled by this recovery path. Background jobs log to `notes.log` in the meeting's folder.
 
 Each meeting gets a folder of audio and intermediate files in
 `~/Library/Application Support/meeting-notes/meetings/<meeting-id>/`. The note goes to
@@ -92,6 +106,7 @@ Settings are environment variables:
 
 | Variable | Default |
 |---|---|
+| `MEETING_NOTES_MAX_RECORDING_SECONDS` | `3600` (one-hour recording cap) |
 | `MEETING_NOTES_DATA_DIR` | `~/Library/Application Support/meeting-notes/meetings` |
 | `MEETING_NOTES_NOTES_DIR` | `~/development/notes/meetings` |
 | `MEETING_NOTES_MODEL` | `mlx-community/parakeet-tdt-0.6b-v2` (speech to text) |

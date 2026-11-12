@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Builds the "Start meeting notes" and "Stop meeting notes" shortcuts and opens them for import.
+"""Builds the Start and Stop meeting notes shortcuts and opens them for import.
 
 Run them from Spotlight by typing their names (or give them Quick Keys in Spotlight's
 settings). Each is a single "Run Shell Script" step that calls `notes`.
@@ -9,13 +9,19 @@ Shortcuts asks to confirm each import. Running shell scripts needs Shortcuts →
 Advanced → Allow Running Scripts.
 
 Re-running replaces the shortcuts only if you delete the old ones first; otherwise
-Shortcuts adds copies named "... 2"."""
+Shortcuts adds copies named "... 2".
 
+Run from your configured terminal: supported MEETING_NOTES_* settings and PATH are
+captured at installation. Reinstall after changing them; interactive shell files are
+never sourced when running a shortcut."""
+
+import os
 import plistlib
 import shlex
 import subprocess
 import sys
 import tempfile
+from collections.abc import Mapping
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
@@ -27,19 +33,38 @@ SHORTCUTS = {
 }
 
 
-def workflow(notes_args: str) -> dict[str, object]:
-    # Through an interactive zsh so the command sees what a terminal would: Homebrew's PATH
-    # (ffmpeg) and settings like MEETING_NOTES_MY_NAME from ~/.zshrc. Shortcuts runs
-    # scripts with a bare environment otherwise.
-    command = f"{shlex.quote(str(NOTES))} {notes_args}"
-    script = f"exec /bin/zsh -lic {shlex.quote(command)}"
+SETTINGS = (
+    "MEETING_NOTES_DATA_DIR",
+    "MEETING_NOTES_NOTES_DIR",
+    "MEETING_NOTES_MODEL",
+    "MEETING_NOTES_CAPTURE",
+    "MEETING_NOTES_OLLAMA_URL",
+    "MEETING_NOTES_SUMMARY_MODEL",
+    "MEETING_NOTES_NUM_CTX",
+    "MEETING_NOTES_MY_NAME",
+    "MEETING_NOTES_SUMMARY_THINK",
+    "MEETING_NOTES_MAX_RECORDING_SECONDS",
+)
+
+
+def workflow(notes_args: str, environment: Mapping[str, str] | None = None) -> dict[str, object]:
+    environment = os.environ if environment is None else environment
+    # Shortcuts has no terminal. Capture only application settings, not shell startup
+    # code or unrelated credentials. Reinstall after changing these settings.
+    path = "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+    if environment.get("PATH"):
+        path = environment["PATH"] + ":" + path
+    arguments = ["/usr/bin/env", "PATH=" + path]
+    arguments += [f"{name}={environment[name]}" for name in SETTINGS if name in environment]
+    arguments += [str(NOTES), *shlex.split(notes_args)]
+    script = "exec " + shlex.join(arguments)
     return {
         "WFWorkflowActions": [
             {
                 "WFWorkflowActionIdentifier": "is.workflow.actions.runshellscript",
                 "WFWorkflowActionParameters": {
                     "Script": script,
-                    "Shell": "/bin/zsh",
+                    "Shell": "/bin/sh",
                     "WFInputMode": "to stdin",
                 },
             }

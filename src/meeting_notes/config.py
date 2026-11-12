@@ -1,5 +1,6 @@
 """Where things live. Override with environment variables (tests do)."""
 
+import math
 import os
 import pwd
 from dataclasses import dataclass
@@ -16,6 +17,7 @@ DEFAULT_OLLAMA_URL = "http://localhost:11434"
 DEFAULT_SUMMARY_MODEL = "qwen3:30b"
 # Tokens. An hour-long meeting is about 10-15k, plus the prompt and the reply.
 DEFAULT_NUM_CTX = 32768
+DEFAULT_MAX_RECORDING_SECONDS = 3600
 
 
 @dataclass(frozen=True)
@@ -38,6 +40,13 @@ class Config:
     """Let the summary model reason before answering. Slower, but noticeably more accurate
     (decisions and who owns which action item). Turn off for models that can't think."""
 
+    max_recording_seconds: float = DEFAULT_MAX_RECORDING_SECONDS
+    """Positive, finite recording cap; applies to foreground and background capture."""
+
+    def __post_init__(self) -> None:
+        if not math.isfinite(self.max_recording_seconds) or self.max_recording_seconds <= 0:
+            raise ValueError("MEETING_NOTES_MAX_RECORDING_SECONDS must be positive and finite")
+
     @property
     def transcripts_dir(self) -> Path:
         return self.notes_dir / "transcripts"
@@ -53,6 +62,9 @@ class Config:
             summary_model=os.environ.get("MEETING_NOTES_SUMMARY_MODEL", DEFAULT_SUMMARY_MODEL),
             num_ctx=int(os.environ.get("MEETING_NOTES_NUM_CTX", DEFAULT_NUM_CTX)),
             my_name=os.environ.get("MEETING_NOTES_MY_NAME") or _first_name(),
+            max_recording_seconds=float(
+                os.environ.get("MEETING_NOTES_MAX_RECORDING_SECONDS", DEFAULT_MAX_RECORDING_SECONDS)
+            ),
             summary_think=os.environ.get("MEETING_NOTES_SUMMARY_THINK", "1") != "0",
         )
 

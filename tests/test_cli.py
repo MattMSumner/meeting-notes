@@ -592,3 +592,34 @@ def test_failed_capture_keeps_handwritten_note(config: Config):
     path = only_meeting_dir(config).load_meeting().handwritten_path
     assert path is not None and path.is_file()
     assert "Available after processing" in path.read_text()
+
+
+@pytest.mark.parametrize("requested", [[], ["--duration", "10000"]])
+def test_recording_cap_stops_capture_and_processes_the_note(
+    config: Config, capsys: pytest.CaptureFixture[str], requested: list[str]
+):
+    from dataclasses import replace
+
+    config = replace(config, max_recording_seconds=0.05)
+    recorder = WaitingRecorder()
+    transcriber = FakeTranscriber({"me": [Segment(0.0, 1.0, "Synthetic speech.")]})
+    summarizer = FakeSummarizer()
+    assert (
+        run(config, transcriber, "record", *requested, recorder=recorder, summarizer=summarizer)
+        == 0
+    )
+    assert recorder.stopped and len(transcriber.calls) == 2
+    assert summarizer.transcripts
+    assert "Recording time limit reached (0.05s)" in capsys.readouterr().out
+
+
+@pytest.mark.parametrize("duration", ["0", "-1", "nan", "inf"])
+def test_invalid_duration_is_rejected_before_creating_a_meeting(config: Config, duration: str):
+    with pytest.raises(SystemExit):
+        run(config, FakeTranscriber(), "record", f"--duration={duration}")
+    assert MeetingStore(config.data_dir).all() == []
+
+
+def test_manual_stop_does_not_report_time_limit(config: Config, capsys: pytest.CaptureFixture[str]):
+    assert run(config, FakeTranscriber(), "record", recorder=WaitingRecorder(signal.SIGINT)) == 0
+    assert "time limit reached" not in capsys.readouterr().out

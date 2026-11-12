@@ -5,6 +5,7 @@ and what it's doing. The process removes it when it finishes. One left behind by
 that's gone (a crash, a reboot) marks an orphaned meeting that `notes stop` recovers."""
 
 import fcntl
+import hashlib
 import json
 import os
 import re
@@ -15,7 +16,7 @@ import time
 from collections.abc import Generator
 from contextlib import contextmanager
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import UTC, datetime
 from enum import StrEnum
 from pathlib import Path
 from typing import Protocol
@@ -25,6 +26,8 @@ from meeting_notes.store import MeetingDir, MeetingStore
 
 class Phase(StrEnum):
     RECORDING = "recording"
+    STOPPING = "stopping"
+    """Recovering capture; the helper may still be recording until shutdown is confirmed."""
     PROCESSING = "processing"
     """Transcribing, summarizing and writing the note."""
 
@@ -63,11 +66,13 @@ def session_file(meeting_dir: MeetingDir) -> Path:
 
 def read(meeting_dir: MeetingDir) -> Session | None:
     try:
-        text = session_file(meeting_dir).read_text()
+        with session_file(meeting_dir).open("rb") as stream:
+            raw = stream.read()
+            modified = os.fstat(stream.fileno()).st_mtime
     except FileNotFoundError:  # including removed by its process just now
         return None
     try:
-        data = json.loads(text)
+        data = json.loads(raw.decode("utf-8"))
         return Session(
             pid=int(data["pid"]),
             process_started=str(data["process_started"]),
@@ -76,7 +81,13 @@ def read(meeting_dir: MeetingDir) -> Session | None:
         )
     except (ValueError, KeyError, TypeError):
         # Half-written by a crash. Treat it as orphaned so it gets recovered.
-        return Session(0, "", Phase.RECORDING, datetime.now().astimezone())
+        # Identity must survive the second read when recovery claims this file.
+        return Session(
+            0,
+            hashlib.sha256(raw).hexdigest(),
+            Phase.RECORDING,
+            datetime.fromtimestamp(modified, UTC),
+        )
 
 
 def write(meeting_dir: MeetingDir, session: Session) -> None:
@@ -134,7 +145,9 @@ class Active:
 def find(store: MeetingStore, processes: Processes) -> list[Active]:
     """Every meeting with a session, oldest first."""
     found: list[Active] = []
-    for meeting_dir in store.all():
+    # Shutdown must still find capture when meeting.json is missing.
+    for path in sorted(store.root.glob("*/session.json")):
+        meeting_dir = MeetingDir(path.parent)
         session = read(meeting_dir)
         if session is not None:
             found.append(Active(meeting_dir, session, is_running(session, processes)))
@@ -176,9 +189,21 @@ class SystemProcesses:
 
     def stop_capture(self, out_dir: Path) -> None:
         pattern = f"notes-capture record --out {re.escape(str(out_dir))}$"
+
+        def capture_exists() -> bool:
+            result = subprocess.run(["pgrep", "-f", pattern], capture_output=True)
+            if result.returncode not in (0, 1):
+                raise OSError("Couldn't check whether capture is still running")
+            return result.returncode == 0
+
         subprocess.run(["pkill", "-INT", "-f", pattern])
         for _ in range(150):  # notes-capture finishes its files within a few seconds
-            if subprocess.run(["pgrep", "-f", pattern], capture_output=True).returncode != 0:
+            if not capture_exists():
                 return
             time.sleep(0.2)
         subprocess.run(["pkill", "-KILL", "-f", pattern])
+        for _ in range(25):
+            if not capture_exists():
+                return
+            time.sleep(0.2)
+        raise OSError("Capture is still running after shutdown; retry notes stop")

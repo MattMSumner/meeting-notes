@@ -350,7 +350,7 @@ def test_a_background_recording_reports_by_notification_and_cleans_up(
     assert set(phases) == {Phase.PROCESSING}
     assert session.read(meeting_dir) is None
     assert desktop.notifications == [
-        "Recording “Standup”.",
+        "Recording “Standup”. Automatic stop after 3600s.",
         "Stopped recording “Standup”. Writing the note…",
         "The note for “Standup” is ready.",
     ]
@@ -531,10 +531,10 @@ def test_a_session_removed_while_reading_is_no_session(
     meeting_dir = meeting(config)
     orphaned(meeting_dir)
 
-    def vanished(self: Path) -> str:
+    def vanished(self: Path, *args: object, **kwargs: object) -> None:
         raise FileNotFoundError(self)
 
-    monkeypatch.setattr(Path, "read_text", vanished)
+    monkeypatch.setattr(Path, "open", vanished)
 
     assert session.read(meeting_dir) is None
 
@@ -818,3 +818,145 @@ def test_record_reads_the_calendar_before_taking_the_lock(
     run_with_calendar(config, processes, desktop, LockCheckingCalendar(), "record")
 
     assert lock_was_free == [True]
+
+
+def test_background_recording_limit_notifies_and_cleans_session(
+    config: Config, processes: FakeProcesses, desktop: FakeDesktop
+):
+    from dataclasses import replace
+
+    from test_cli import WaitingRecorder
+
+    config = replace(config, max_recording_seconds=0.05)
+    meeting_dir = meeting(config)
+    recorder = WaitingRecorder()
+    transcriber = FakeTranscriber({"me": [Segment(0, 1, "Synthetic speech.")]})
+    summarizer = FakeSummarizer()
+    assert (
+        main(
+            ["record", "--meeting-id", meeting_dir.id, "--background"],
+            config=config,
+            make_recorder=lambda _: recorder,
+            make_transcriber=lambda _: transcriber,
+            make_summarizer=lambda _: summarizer,
+            processes=processes,
+            desktop=desktop,
+        )
+        == 0
+    )
+    assert recorder.stopped and len(transcriber.calls) == 2
+    assert summarizer.transcripts
+    assert session.read(meeting_dir) is None
+    assert any("Recording time limit reached" in message for message in desktop.notifications)
+    assert desktop.notifications[-1] == "The note for “Standup” is ready."
+
+
+@pytest.mark.parametrize("failure", [KeyboardInterrupt, OSError])
+@pytest.mark.parametrize("corrupt", [False, True])
+def test_interrupted_recovery_keeps_capture_retryable(
+    config: Config, desktop: FakeDesktop, failure: type[BaseException], corrupt: bool
+):
+    class Interrupted(FakeProcesses):
+        attempts = 0
+
+        def stop_capture(self, out_dir: Path) -> None:
+            self.attempts += 1
+            current = session.read(MeetingDir(out_dir))
+            assert current is not None and current.phase == Phase.STOPPING
+            if self.attempts == 1:
+                raise failure("shutdown interrupted")
+
+    processes = Interrupted()
+    directory = meeting(config)
+    write_capture(directory.path)
+    orphaned(directory)
+    if corrupt:
+        session.session_file(directory).write_text('{"pid":')
+    previous = session.read(directory)
+    with pytest.raises(failure):
+        run(config, processes, desktop, "stop")
+    assert session.read(directory) == previous
+    assert run(config, processes, desktop, "stop") == 0
+    assert processes.attempts == 2
+    assert processes.spawned == [["transcribe", directory.id, "--background"]]
+
+
+def test_crashed_stopping_claim_retries_shutdown(
+    config: Config, processes: FakeProcesses, desktop: FakeDesktop
+):
+    directory = meeting(config)
+    write_capture(directory.path)
+    orphaned(directory, Phase.STOPPING)
+    assert run(config, processes, desktop, "stop") == 0
+    assert processes.stopped_captures == [directory.path]
+
+
+def test_start_is_blocked_while_capture_is_stopping(
+    config: Config, processes: FakeProcesses, desktop: FakeDesktop
+):
+    directory = meeting(config)
+    recording_by(processes, directory)
+    current = session.read(directory)
+    assert current is not None
+    session.write(
+        directory, Session(current.pid, current.process_started, Phase.STOPPING, current.started_at)
+    )
+    assert run(config, processes, desktop, "start", "--title", "Second") == 1
+    assert not processes.spawned
+    assert len(MeetingStore(config.data_dir).all()) == 1
+
+
+@pytest.mark.parametrize("payload", [b'{"pid":', b"null", b"\xff"])
+def test_corrupt_session_is_stable_and_recovered_before_new_recording(
+    config: Config, desktop: FakeDesktop, payload: bytes
+):
+    directory = meeting(config)
+    write_capture(directory.path)
+    session.session_file(directory).write_bytes(payload)
+    assert session.read(directory) == session.read(directory)
+
+    class CheckedProcesses(FakeProcesses):
+        def stop_capture(self, out_dir: Path) -> None:
+            # A concurrent start must observe the recovery claim even for corrupt JSON.
+            assert run(config, self, desktop, "start", "--title", "Concurrent") == 1
+            super().stop_capture(out_dir)
+
+        def spawn(self, args: list[str], log: Path) -> int:
+            assert self.stopped_captures == [directory.path]
+            return super().spawn(args, log)
+
+    processes = CheckedProcesses()
+    assert run(config, processes, desktop, "stop") == 0
+    assert processes.stopped_captures == [directory.path]
+    assert processes.spawned == [["transcribe", directory.id, "--background"]]
+    assert run(config, processes, desktop, "start", "--title", "Next") == 0
+    assert processes.spawned[-1][0] == "record"
+
+
+@pytest.mark.parametrize("phase", [Phase.RECORDING, Phase.STOPPING])
+@pytest.mark.parametrize("damage", ["missing", "invalid", "wrong_shape"])
+@pytest.mark.parametrize("audio", [False, True])
+def test_damaged_metadata_cannot_prevent_capture_shutdown(
+    config: Config,
+    processes: FakeProcesses,
+    desktop: FakeDesktop,
+    phase: Phase,
+    damage: str,
+    audio: bool,
+):
+    directory = meeting(config)
+    orphaned(directory, phase)
+    if audio:
+        write_capture(directory.path)
+    path = directory.path / "meeting.json"
+    if damage == "missing":
+        path.unlink()
+    else:
+        path.write_text("{" if damage == "invalid" else "null")
+    assert run(config, processes, desktop, "stop") == 0
+    assert processes.stopped_captures == [directory.path]
+    if audio:
+        assert processes.spawned == [["transcribe", directory.id, "--background"]]
+    else:
+        assert session.read(directory) is None
+    assert directory.id in desktop.notifications[0]
