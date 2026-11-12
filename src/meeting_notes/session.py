@@ -27,7 +27,7 @@ from meeting_notes.store import MeetingDir, MeetingStore
 class Phase(StrEnum):
     RECORDING = "recording"
     STOPPING = "stopping"
-    """Recovering capture; the helper may still be recording until shutdown is confirmed."""
+    """Stopping capture or handing its saved audio to processing."""
     PROCESSING = "processing"
     """Transcribing, summarizing and writing the note."""
 

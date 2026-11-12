@@ -368,6 +368,17 @@ class _Commands:
     def stop(self, args: argparse.Namespace) -> int:
         recovered = self._recover_orphans()
         with session.lock(self.store):
+            # An observed orphan is not proof that this command recovered it: a
+            # competing claimant may have failed and restored it in the meantime.
+            unresolved = [a for a in self._unfinished_recordings() if not a.running]
+            if unresolved:
+                self._say(
+                    f"Unfinished recording “{_title(unresolved[0].meeting_dir)}”. "
+                    "Run `notes stop` to recover it.",
+                    notify=True,
+                    error=True,
+                )
+                return 1
             recording = self._recording()
             if not recording:
                 if recovered:
@@ -400,14 +411,19 @@ class _Commands:
             print(f"Stopped {meeting_dir.id}.")
             return 0
         if not session.is_running(current, self.processes):
-            if session.read(meeting_dir) != current:
-                # It finished on its own after all (a failure it reported itself), clearing
-                # its session as it exited.
+            # Claiming can lose to another recovery command. Only the resulting
+            # state, not an attempted recovery, establishes that stopping finished.
+            self._recover(Active(meeting_dir, current, running=False))
+            remaining = session.read(meeting_dir)
+            if remaining is None or remaining.phase not in (Phase.RECORDING, Phase.STOPPING):
                 print(f"Stopped {meeting_dir.id}.")
                 return 0
-            # It died while saving its audio.
-            self._recover(Active(meeting_dir, current, running=False))
-            return 0
+            self._say(
+                f"Unfinished recording “{_title(meeting_dir)}”. Run `notes stop` to recover it.",
+                notify=True,
+                error=True,
+            )
+            return 1
         self._say(f"“{_title(meeting_dir)}” didn't stop.", notify=True, error=True)
         return 1
 
@@ -531,7 +547,11 @@ class _Commands:
                     meeting_dir, duration, self.make_recorder(self.config), signals.stop
                 )
             finally:
-                signals.end()
+                # Stop sends signals while holding this same lock. Publish the
+                # handoff before restoring SIGINT, so later Stops only wait.
+                with session.lock(self.store):
+                    session.write(meeting_dir, self._session(meeting_dir, Phase.STOPPING))
+                    signals.end()
         except CaptureNotInstalled as error:
             self._say(str(error), notify=background, error=True)
             return 1

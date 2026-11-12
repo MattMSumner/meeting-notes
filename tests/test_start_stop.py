@@ -1035,17 +1035,35 @@ def test_concurrent_stop_waits_for_recovery_and_starts_processing_once(
 
 
 @pytest.mark.parametrize("phase", [Phase.RECORDING, Phase.STOPPING])
-def test_start_rechecks_orphan_when_competing_recovery_loses_its_claim(
+@pytest.mark.parametrize("command", ["start", "stop", "stop_after_signal"])
+def test_command_rechecks_orphan_when_competing_recovery_loses_its_claim(
     config: Config,
     processes: FakeProcesses,
     desktop: FakeDesktop,
     monkeypatch: pytest.MonkeyPatch,
     phase: Phase,
+    command: str,
 ):
     directory = meeting(config)
     orphaned(directory, phase)
     orphan = session.read(directory)
     assert orphan is not None
+    if command == "stop_after_signal":
+        processes.running[orphan.pid] = orphan.process_started
+        if phase == Phase.RECORDING:
+
+            def exit_on_interrupt(pid: int) -> None:
+                processes.running.pop(pid)
+
+            processes.on_interrupt = exit_on_interrupt
+        else:
+            original_wait = cli._Commands._wait_for_stop  # pyright: ignore[reportPrivateUsage]
+
+            def owner_dies(self: cli._Commands, active: session.Active) -> int:  # pyright: ignore[reportPrivateUsage]
+                processes.running.pop(orphan.pid)
+                return original_wait(self, active)
+
+            monkeypatch.setattr(cli._Commands, "_wait_for_stop", owner_dies)  # pyright: ignore[reportPrivateUsage]
     original_recover = cli._Commands._recover  # pyright: ignore[reportPrivateUsage]
 
     def recover(self: cli._Commands, active: session.Active) -> None:  # pyright: ignore[reportPrivateUsage]
@@ -1062,7 +1080,8 @@ def test_start_rechecks_orphan_when_competing_recovery_loses_its_claim(
             session.write(directory, orphan)
 
     monkeypatch.setattr(cli._Commands, "_recover", recover)  # pyright: ignore[reportPrivateUsage]
-    assert run(config, processes, desktop, "start", "--title", "Next") == 1
+    args = ["start", "--title", "Next"] if command == "start" else ["stop"]
+    assert run(config, processes, desktop, *args) == 1
     assert session.read(directory) == orphan
     assert processes.spawned == []
     assert processes.stopped_captures == []
@@ -1080,3 +1099,91 @@ def test_foreground_record_does_not_bypass_unrecovered_capture(
     assert run(config, processes, desktop, "record", "--title", "Next") == 1
     assert session.read(directory) == before
     assert len(MeetingStore(config.data_dir).all()) == 1
+
+
+def test_repeated_stop_waits_through_foreground_processing_handoff(
+    config: Config, desktop: FakeDesktop, monkeypatch: pytest.MonkeyPatch
+):
+    recording, handoff, release = threading.Event(), threading.Event(), threading.Event()
+    results: list[int] = []
+    failures: list[BaseException] = []
+    owner_thread = threading.current_thread()
+    owner_pid = os.getpid()
+    processes = FakeProcesses()
+    processes.running[owner_pid + 10000] = "stop commands"
+    # Model separate CLI processes without sending signals to unrelated real PIDs.
+    monkeypatch.setattr(
+        os,
+        "getpid",
+        lambda: owner_pid if threading.current_thread() is owner_thread else owner_pid + 10000,
+    )
+
+    class Recorder:
+        def record(self, directory: Path, stop: threading.Event) -> None:
+            write_capture(directory)
+            recording.set()
+            assert stop.wait(5)
+
+    def interrupt(pid: int) -> None:
+        assert pid == owner_pid
+        handler = signal.getsignal(signal.SIGINT)
+        assert callable(handler)
+        handler(signal.SIGINT, None)
+
+    processes.on_interrupt = interrupt
+    original_session = cli._Commands._session  # pyright: ignore[reportPrivateUsage]
+
+    def next_session(self: cli._Commands, directory: MeetingDir, phase: Phase) -> Session:  # pyright: ignore[reportPrivateUsage]
+        if phase == Phase.PROCESSING:
+            assert signal.getsignal(signal.SIGINT) == signal.default_int_handler
+            handoff.set()
+            assert release.wait(5), failures
+        return original_session(self, directory, phase)
+
+    original_wait = cli._Commands._wait_for_stop  # pyright: ignore[reportPrivateUsage]
+
+    def wait(self: cli._Commands, active: session.Active) -> int:  # pyright: ignore[reportPrivateUsage]
+        if threading.current_thread().name == "second-stop":
+            release.set()
+        return original_wait(self, active)
+
+    monkeypatch.setattr(cli._Commands, "_session", next_session)  # pyright: ignore[reportPrivateUsage]
+    monkeypatch.setattr(cli._Commands, "_wait_for_stop", wait)  # pyright: ignore[reportPrivateUsage]
+
+    def stop(ready: threading.Event) -> None:
+        try:
+            assert ready.wait(5)
+            results.append(run(config, processes, desktop, "stop"))
+        except BaseException as error:
+            failures.append(error)
+            release.set()
+
+    first = threading.Thread(target=stop, args=(recording,), daemon=True)
+    second = threading.Thread(target=stop, args=(handoff,), name="second-stop", daemon=True)
+    transcriber = FakeTranscriber({"me": [Segment(0, 1, "Synthetic speech.")]})
+    summarizer = FakeSummarizer()
+    first.start()
+    second.start()
+    try:
+        assert (
+            main(
+                ["record", "--title", "Synthetic"],
+                config=config,
+                processes=processes,
+                desktop=desktop,
+                make_recorder=lambda _: Recorder(),
+                make_transcriber=lambda _: transcriber,
+                make_summarizer=lambda _: summarizer,
+            )
+            == 0
+        )
+    finally:
+        release.set()
+        first.join(5)
+        second.join(5)
+    assert not first.is_alive() and not second.is_alive()
+    assert failures == []
+    assert results == [0, 0]
+    assert processes.interrupted == [owner_pid]
+    assert len(transcriber.calls) == 2 and len(summarizer.transcripts) == 1
+    assert not session.find(MeetingStore(config.data_dir), processes)
