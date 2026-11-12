@@ -2,8 +2,8 @@
 
 No evaluation is authorized by this file. Agree cases, repetitions, per-arm ceilings,
 total request budget and stopping rules after the final source/schema freeze.
-Retain all 32 pairs; failures are outcomes, not cases to omit or silently rerun.
-The original 22 are familiar. Ten Chief-authored additions and implementation-authored
+Retain all 38 pairs; failures are outcomes, not cases to omit or silently rerun.
+The original 22 are familiar. Sixteen Chief-authored additions and implementation-authored
 unit responses are development/evaluation material, not independent held-out evidence.
 
 Score each case/repetition with exact source spans: 0 wrong/missing, 1 partial, 2 correct.
@@ -37,6 +37,11 @@ Assess the added controls independently: third-person/implied/conditional commit
 remain available; proposals, factual status, examples and explicit retractions cannot
 become executable checklists. Gap negation stays inside evidence; repeated literal
 selection is unambiguous. A condition's negation must not erase a real undertaking.
+The six review-derived additions check factual answers versus accepted tasks, accepted
+request retraction, a new promise after cancellation, partially retracted coordination,
+complete external timing context and approximate/not-before timing qualifiers. If partial
+cancellation cannot safely isolate an action, the complete original and retraction stay
+visible in non-executable review; silently losing the remaining work fails acceptance.
 
 Acceptance requires every agreed output complete, no critical invented/lost spoken
 commitment or agreement, no critical missed/invented conflict, correct source separation

@@ -111,3 +111,19 @@ Keep faithful unchanged-V10-response replay separate from authored V11 fake resp
 Report compile/block/unmappable counts under the new contract without silently converting
 old replies into newly generated evidence. Only a separately approved fresh model run can
 assess semantic selection, splitting, relations, completeness and useful output.
+
+## Independent review additions before inference
+
+Phase-1 code review found accepted factual answers admitted as tasks, accepted-request
+retraction not applied, cancellation erasing independent/coordinated work, and stripped
+timing qualifiers/context. V11 adds six predeclared cases for these findings, bringing
+the candidate to 38 pairs: 22 retained V10 pairs and 16 authored additions. Corrected
+case-specific criteria replace inherited release criteria in the new cases; all 22
+previously evaluated cases are marked familiar. No V11 model output informed these changes.
+
+When cancellation partially affects a coordination that cannot safely be isolated,
+retain the full original and retraction as non-executable review and prevent silent
+omission of remaining work. Do not generate replacement task prose or claim a general
+clause parser. Accepted requests need actual task evidence, not a factual yes/no answer.
+External timing review must show complete source context alongside the exact selected
+span; a partial timing anchor cannot erase a qualifier in an assigned due or review.
