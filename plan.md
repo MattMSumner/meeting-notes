@@ -1006,6 +1006,31 @@ run Swift tests only if capture code changes. Keep shipped model settings unchan
 Live transcription, in-place AI editing, custom Obsidian plugins and automatic tracking
 of renamed or moved notes are outside this roadmap replacement.
 
+**Offline checkpoint (2026-11-12; M10 remains unbuilt).** V11 source `fb3b130` is
+frozen at `e866b10` in [evaluation/m10/v11/](evaluation/m10/v11/README.md). The two-stage
+candidate adds source-anchored commitment evidence and narrow retraction/admissibility
+diagnostics, code-resolved claim spans/gaps, related-distinct accounts and source-separated
+drafts. Wrapper 10 / grounding-v9 binds snapshots, raw attempts, compilation and selection;
+runtime/replay share full request accounting and raw failure checks. Independent code
+review findings have regression coverage; uncertain partial work stays visible outside
+executable checklists. These checks cannot prove semantic correctness or completeness.
+
+Formatting, lint, strict types and 978 offline tests pass; six integration tests excluded.
+Capture is unchanged. All 396 historical entries and 17 V10 saved generations verify;
+67 new freeze entries include 43 exact runtime/prompt files and 40 per-case schemas.
+The original 22 pairs and baseline remain unchanged; 18 authored additions bring V11
+to 40 cases. Strict unchanged V10 replies are 0 compiled, 0 blocked, 43 unmappable under
+the new wire contract; authored new-contract regressions are separate evidence. No case
+is independently held out, and no V11 inference, quality scoring or current manual
+Obsidian acceptance ran. Source review and offline success are not a model quality pass.
+
+Next is a separately agreed evaluation: proposed one repetition of all 40 pairs per arm,
+with ceilings 160 baseline plus 116 proposed (276 total), unchanged settings, declared
+stopping rules and no tuning/selective reruns. This is not approval; account for V10's
+48m44s latency and do not reuse its 97 unused requests. Quality, current manual acceptance
+and the owner's `shipit` remain required before Built/merge. The current handoff is
+[NEXT_SESSION.md](NEXT_SESSION.md).
+
 **M11 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
 compared on tests rather than by eye on real meetings: stance (a "maybe" turned into a
