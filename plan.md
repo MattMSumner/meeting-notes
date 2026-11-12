@@ -467,6 +467,14 @@ markdown.
   lost recovery claims, and foreground refusal. All 282 offline unit tests, formatting, lint
   and strict types pass. No capture/model changes or real recording used for verification.
 
+- **Safeguard handoff review fixes (2026-11-12; PR pending):** ordinary recordings publish
+  stopping state under the Stop signalling lock before restoring normal signal handlers.
+  Repeated Stop therefore waits through the foreground processing handoff without another
+  SIGINT. Stop rechecks unresolved orphan state after its recovery pass and after recovering
+  an owner that died during the wait; a lost claim cannot imply success. Five new regression
+  cases fail on the prior CLI and pass with the fixes. All 287 offline unit tests, formatting,
+  lint and strict types pass. Synthetic fakes only; no capture or model changes.
+
 **M5 — Calendar titles.**
 - **Calendar source: Google Calendar, synced by macOS.** I use Google Calendar (personal
   Gmail) in the browser, not Apple's Calendar app. macOS can still keep a local copy:
