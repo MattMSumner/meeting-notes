@@ -6,7 +6,8 @@ and writes an Obsidian-friendly markdown note.
 
 Status: **M8 shipped**. M9 and M10 implementations are present; manual Obsidian
 acceptance was reported complete for M10. V7 meets its frozen single-run quality criteria;
-current review-workflow manual acceptance remains pending, so M10 remains unbuilt.
+V8 request compaction is implemented but unevaluated; current review-workflow manual
+acceptance remains pending, so M10 remains unbuilt.
 No model calls are authorized as part of this implementation.
 Phase 0 (Handy) set up.
 
@@ -804,6 +805,18 @@ Re-running transcription also leaves generation to the explicit enhancement acti
   the cap. Reaching the limit stops capture cleanly, reports the reason, and transcribes
   without enhancing. Shortcuts inherit the code default and capture configured overrides
   on reinstall. All 410 unit tests pass; no capture code or model contract changed.
+
+- **PR review fixes (2026-11-12; not Built):** orphan capture stays in a durable stopping
+  phase until helper exit is confirmed; interrupted or crashed shutdown remains retryable
+  and blocks concurrent recording starts. The chooser skips corrupt metadata/transcripts
+  individually, warns, and handles corruption during selection. Shared schema enums and
+  compact labelled source rows reduce request overhead without dropping source material or
+  raising context size. The review's 5,202-word case now fits; a 10,402-word regression
+  fixture also fits, but size remains wording/notes/retry dependent. Current transport tests
+  cover request limits and malformed responses, separately from legacy compatibility tests.
+  All 433 offline unit tests pass. [V8 freeze](evaluation/m10/v8/README.md) preserves the
+  output contract and saved validators. No model inference; V7 evidence stays unchanged,
+  and V8 quality/manual acceptance remain pending. M10 remains unbuilt.
 
 For both stages, run formatting, lint, strict types and unit tests before committing;
 run Swift tests only if capture code changes. Keep shipped model settings unchanged.
