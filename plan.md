@@ -6,8 +6,9 @@ and writes an Obsidian-friendly markdown note.
 
 Status: **M8 shipped**. M9 and M10 implementations are present; manual Obsidian
 acceptance was reported complete for M10. V7 meets its frozen single-run quality criteria;
-V8 request compaction is implemented but unevaluated; current review-workflow manual
-acceptance remains pending, so M10 remains unbuilt.
+V8 fails its single-run evaluation (11/13 summaries and a lost release agreement). A fresh
+review found two P1 recovery defects and a P2 timing defect; fixes and current review-workflow
+manual acceptance remain pending, so M10 remains unbuilt.
 No model calls are authorized as part of this implementation.
 Phase 0 (Handy) set up.
 
@@ -817,6 +818,20 @@ Re-running transcription also leaves generation to the explicit enhancement acti
   All 433 offline unit tests pass. [V8 freeze](evaluation/m10/v8/README.md) preserves the
   output contract and saved validators. No model inference; V7 evidence stays unchanged,
   and V8 quality/manual acceptance remain pending. M10 remains unbuilt.
+
+- **V8 evaluation and independent review (2026-11-12; not Built):** one repetition of 13
+  synthetic cases per arm used 29 of the announced 78 requests (13 baseline, 16 proposed).
+  Baseline produces 13/13 summaries; V8 produces 11/13, with two initial-request transport
+  timeouts. V8 also loses the independent release agreement in the empty-notes case and
+  unnecessarily disputes an unrelated task in the status-conflict case. Written-only context
+  remains separate in successful cases. [Scores and evidence](evaluation/m10/v8/results/report.md)
+  fail completion and no-completeness-regression criteria. All 11 selected summaries replay
+  exactly; prior frozen artifacts remain unchanged. No tuning or selective reruns occurred.
+  A fresh maximum-effort [review](evaluation/m10/v8/results/pr-review.md) reproduces two P1
+  recovery defects involving malformed session/meeting metadata and a P2 partial timing quote
+  defect. These remain unfixed and block merging independently of quality. Formatting, lint,
+  strict types and all 433 offline unit tests pass. Fixes, separately budgeted evaluation and
+  current manual acceptance remain pending; M10 remains unbuilt.
 
 For both stages, run formatting, lint, strict types and unit tests before committing;
 run Swift tests only if capture code changes. Keep shipped model settings unchanged.
