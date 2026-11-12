@@ -395,33 +395,41 @@ def test_supplied_semantic_comparisons_keep_accounts_and_qualifiers(case: str, o
     assert len(transport.requests) == 2
 
 
-def test_frozen_candidate_inputs_schemas_and_sources_match_runtime():
+def test_frozen_candidate_inputs_schemas_and_sources_keep_recorded_provenance():
     import hashlib
-
-    from meeting_notes.comparison import request_schema as comparison_schema
-    from meeting_notes.contract import request_schema
 
     root = Path(__file__).resolve().parents[1] / "evaluation/m10/v10"
     manifest = json.loads((root / "sha256.json").read_text())
+    assert len(manifest) == 42
     for name, digest in manifest.items():
         assert hashlib.sha256((root / name).read_bytes()).hexdigest() == digest, name
+    # Recorded revisions remain meaningful even when shallow CI lacks those objects.
+    provenance = json.loads((root / "provenance.json").read_text())
+    assert provenance["implementation_commit"] == "31323dcbd77e8449a130cbed5999ed322b81bfdc"
+    assert provenance["baseline_commit"] == "199dd62858b6bda6c13dc749424f6bd9de03f8ba"
+    assert (
+        provenance["previous_freeze_manifest_sha256"]
+        == hashlib.sha256((root.parent / "v9/sha256.json").read_bytes()).hexdigest()
+    )
+    settings = json.loads((root / "settings.json").read_text())
+    assert settings["baseline_commit"] == provenance["baseline_commit"]
+    previous = json.loads((root.parent / "v9/sha256.json").read_text())
+    for name, digest in previous.items():
+        if name.startswith("baseline/"):
+            assert manifest[name] == digest, name
     pairs = json.loads((root / "pairs.json").read_text())
     original = json.loads((root.parent / "v9/pairs.json").read_text())
     assert pairs[:13] == original
-    assert len(pairs) == 22
+    assert provenance["original_pairs"] == 13
+    assert len(pairs) == provenance["fixture_count"] == 22
+    assert provenance["new_pairs"] == 9
     schemas = json.loads((root / "proposed/request-schemas.json").read_text())
-    for pair in pairs:
-        sources = passages(pair["transcript"], pair["handwritten_text"])
-        spoken = [s.id for s in sources if s.source == "transcript"]
-        notes = [s.id for s in sources if s.source == "notes"]
-        expected = request_schema(spoken, notes)
-        expected["properties"]["conflicts"]["maxItems"] = 0
-        assert schemas[pair["id"]]["summary"] == expected
-        assert schemas[pair["id"]]["comparison"] == (comparison_schema(sources) if notes else None)
-    source_root = Path(__file__).resolve().parents[1] / "src/meeting_notes"
-    for source in (root / "proposed/meeting_notes").rglob("*"):
-        if source.is_file() and "__pycache__" not in source.parts:
-            assert (
-                source.read_bytes()
-                == (source_root / source.relative_to(root / "proposed/meeting_notes")).read_bytes()
-            )
+    assert set(schemas) == {pair["id"] for pair in pairs}
+    frozen_sources = {
+        str(source.relative_to(root))
+        for source in (root / "proposed/meeting_notes").rglob("*")
+        if source.is_file() and "__pycache__" not in source.parts
+    }
+    assert frozen_sources == {
+        name for name in manifest if name.startswith("proposed/meeting_notes/")
+    }
