@@ -8,6 +8,11 @@ effective snapshot. Evidence is JSON serializable and recomputed by replay().
 Only narrow source-grounding errors are diagnosed in generated prose: wrong kinds,
 invalid literal quotations, verbatim notes leakage and uncited numbers. Supported
 paraphrase still needs semantic evaluation. CommitmentCheck documents its own limits.
+Partial retractions discovered during omission checking are also saved as uncertain
+commitment checks with full source/retraction warnings. Timing spans remain the exact
+model selections; complete source context comes from the saved snapshot. Automatic due
+suffixes are narrow: recognized approximation/comparative/adverb boundaries stay
+full-source review. These lexical checks cannot prove qualifier scope in arbitrary English.
 """
 
 import re
@@ -57,6 +62,12 @@ _DUE = re.compile(
     r"(?:Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday|today|tomorrow|tonight)\b",
     re.I,
 )
+_TIMING_MODIFIER = re.compile(
+    r"\b(?:around|about|approximately|roughly|no|sooner|later|than|almost|just|right|"
+    r"very|quite|rather|too|well|long|much|late|earliest|latest|at least|at most|"
+    r"a little|a bit|sometime|some time|\w+ly)\b",
+    re.I,
+)
 
 
 def _probe(text: str) -> Summary:
@@ -83,8 +94,11 @@ def _due(
     if (
         not before.strip()
         or has_timing(before)
+        or _TIMING_MODIFIER.search(before)
         or re.search(
-            r"\b(?:if|unless|when|once|provided|depending|whether|and|but|not|only)\b", before, re.I
+            r"\b(?:if|unless|when|once|provided|depending|whether|and|or|but|not|only)\b",
+            before,
+            re.I,
         )
         or re.search(r"\b(?:and|but|whether)\b", source.text, re.I)
         or timing.start < match.start()
@@ -109,11 +123,8 @@ def validate(
     blocking = list(dict.fromkeys([*source_errors(saved), *resolution.errors]))
     warnings: list[str] = []
     checks = [check(action, source_list) for action in draft.action_items]
-    selected: set[str] = set()
-    for candidate in checks:
-        if candidate.source_id in selected:
-            blocking.append(f"Duplicate original commitment: {candidate.source_id}")
-        selected.add(candidate.source_id)
+
+    def findings(candidate: CommitmentCheck) -> None:
         if candidate.disposition == "rejected":
             blocking.append(f"Noncommitment {candidate.source_id}: {'; '.join(candidate.reasons)}")
         elif candidate.disposition == "uncertain":
@@ -122,18 +133,33 @@ def validate(
                 f"Commitment review required ({candidate.source_id}), "
                 f"{source.speaker if source else 'Unknown speaker'}: “{candidate.task}” "
                 + "; ".join(candidate.reasons)
+                + "".join(f" Context ({s.source_id}): “{s.text}”" for s in candidate.context)
+                + "".join(f" Retraction ({s.source_id}): “{s.text}”" for s in candidate.retractions)
             )
+
+    selected: set[str] = set()
+    for candidate in checks:
+        if candidate.source_id in selected:
+            blocking.append(f"Duplicate original commitment: {candidate.source_id}")
+        selected.add(candidate.source_id)
+        findings(candidate)
 
     # Omission checking uses exactly the same admissibility rules. Rejected selections
     # can't protect invented tasks during a correction, and never become fallback actions.
-    for source in source_list:
-        if source.source != "transcript" or source.id in selected:
+    spoken = [s for s in source_list if s.source == "transcript"]
+    for index, source in enumerate(spoken):
+        if source.id in selected:
             continue
+        # An immediately preceding direct request can diagnose an omitted acceptance.
+        # This synthetic check never creates an executable action from inferred context.
+        prior_context = (
+            [Anchor(source_id=spoken[index - 1].id, quote=spoken[index - 1].text)] if index else []
+        )
         possible = check(
             Action(
                 original_commitment_id=source.id,
                 undertaking=Anchor(source_id=source.id, quote=source.text),
-                context=[],
+                context=prior_context,
                 basis="explicit",
                 disposition="committed",
                 timing=None,
@@ -142,6 +168,11 @@ def validate(
         )
         if possible.disposition == "admissible":
             blocking.append(f"Possible omitted commitment: {source.id}; recheck source undertaking")
+        elif possible.disposition == "uncertain" and possible.retractions:
+            # A partially cancelled coordination cannot silently vanish with the draft.
+            # Keep the complete source and retraction outside the executable checklist.
+            checks.append(possible)
+            findings(possible)
 
     conflicts: list[Conflict] = []
     notes: list[str] = []
@@ -221,7 +252,11 @@ def validate(
         if due is None and (candidate.timing or later or has_timing(source.text)):
             review.append(f"Timing is unassigned; review original commitment: {source.text}")
         if later:
-            review.extend(f"Other spoken timing (association unverified): {s.text}" for s in later)
+            review.extend(
+                f"Other spoken timing (association unverified), selected ({s.source_id}): "
+                f"“{s.text}” Full source: “{lookup[s.source_id].text}”"
+                for s in later
+            )
         if source.id in disputed_tasks:
             review.append("Commitment needs cross-source review; see Conflicts and warnings.")
         actions.append(

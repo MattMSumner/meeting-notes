@@ -1,7 +1,9 @@
 """Narrow, English-language commitment diagnostics, not a semantic classifier.
 
 Recognized undertakings use agent + future/accepted-task verbs, 'on me'/'leave ...
-to/with me', or a short acceptance of an anchored earlier request. Known descriptive
+to/with me', or a short acceptance of an anchored earlier direct task request
+('can/could/will/would you [please] <task verb>', or 'please <task verb>'). Factual
+questions and indirect/unrecognized requests stay review, even with a 'Yes'. Known descriptive
 cost/status/prediction, questions/proposals, quoted examples, negated undertakings
 and same-speaker retractions are rejected. Other forms stay attributed review.
 
@@ -9,9 +11,14 @@ The task-verb vocabulary limits automatic admission, not what can be retained fo
 review. Names/agency, sarcasm, reported speech without markers, distant anaphora,
 entailment and completeness remain evaluation concerns. Retractions recognize an
 immediately following same-speaker 'scratch/cancel that', or later explicit negatives
-repeating the same task predicate and object after removal of articles/timing.
-Shared verbs or dates alone never establish retraction. This is a narrow diagnostic,
-never evidence of cross-source claim identity. Conditions aren't negation of a task.
+repeating the same task predicate and object after removal of articles/timing. Accepted
+requests use the requested task and the accepting speaker, not the bare acceptance.
+A leading cancellation applies to the previous source, not a new undertaking after it.
+Literal partial coordination cancellations retain the full original and retraction for
+review; no replacement clauses are synthesized. Ellipsis, paraphrased cancellations and
+general clause scope remain semantic evaluation concerns. Shared verbs or dates alone
+never establish retraction or cross-source claim identity. Conditions aren't negation
+of a task.
 """
 
 import re
@@ -66,7 +73,11 @@ _DISCLAIMER = re.compile(
     re.I,
 )
 _ACCEPT = re.compile(r"^(?:yes|agreed|on it|consider it done|will do)[.! ,]*$", re.I)
-_REQUEST = re.compile(r"\b(?:can|could|will|would) you\b|\bplease\b", re.I)
+_REQUEST = re.compile(
+    rf"^(?:(?:can|could|will|would) you\s+(?:please\s+)?|please\s+)"
+    rf"(?P<verb>{_VERBS})\b(?P<object>.*)",
+    re.I,
+)
 _IMPLIED = re.compile(r"\b(?:is on me|leave .+ (?:with|to) me)\b", re.I)
 _RETRACTION = re.compile(
     rf"^(?:(?:actually|sorry),?\s+)?{_AGENT}\s+(?:will not|won't|won’t|cannot|can't)\s+"
@@ -95,22 +106,59 @@ class CommitmentCheck(Record):
     task: str | None
 
 
-def _retractions(source: Source, sources: list[Source]) -> list[Span]:
+def _task_words(text: str, agent: str) -> tuple[str, ...]:
+    # Keep coordination intact. Normalizing a repeated same-agent future only permits
+    # literal task matching; it does not split or rewrite the source for publication.
+    text = _POSITIVE.sub(
+        lambda match: match["verb"] if match["agent"].casefold() == agent else match[0], text
+    )
+    text = re.split(r"\b(?:if|unless|when|once|provided)\b", text, flags=re.I)[0]
+    text = _TIMING.sub(" ", text)
+    return tuple(
+        word
+        for word in re.findall(r"[a-z]+", text.lower())
+        if word not in {"the", "a", "an", "by", "on", "at", "this", "next"}
+    )
+
+
+def _partial_task(original: tuple[str, ...], negative: tuple[str, ...]) -> bool:
+    """Recognize an exact conjunct only; never manufacture the surviving task."""
+    conjunctions = {"and", "but", "or"}
+    if not negative or not conjunctions.intersection(original):
+        return False
+    for start in range(len(original) - len(negative) + 1):
+        end = start + len(negative)
+        if (
+            original[start:end] == negative
+            and (start == 0 or original[start - 1] in conjunctions)
+            and (end == len(original) or original[end] in conjunctions)
+            and original != negative
+        ):
+            return True
+    return False
+
+
+def _retractions(
+    source: Source, sources: list[Source], request: re.Match[str] | None
+) -> tuple[list[Span], bool]:
     spoken = [s for s in sources if s.source == "transcript"]
     index = next(i for i, s in enumerate(spoken) if s.id == source.id)
     positive = _POSITIVE.search(source.text)
 
-    def objects(text: str) -> tuple[str, ...]:
-        text = re.split(r"\b(?:if|unless|when|once|provided|and|but)\b", text, flags=re.I)[0]
-        text = _TIMING.sub(" ", text)
-        return tuple(
-            word
-            for word in re.findall(r"[a-z]+", text.lower())
-            if word not in {"the", "a", "an", "by", "on", "at", "this", "next"}
-        )
-
+    agent = positive["agent"].casefold() if positive else "i"
+    task = (
+        source.text[positive.start() :]
+        if positive
+        else request["verb"] + request["object"]
+        if request
+        else ""
+    )
+    original = _task_words(task, agent)
     result: list[Span] = []
-    if _CANCEL.search(source.text):
+    whole = False
+    cancel = _CANCEL.search(source.text)
+    if cancel and positive and cancel.start() > positive.start():
+        # Within-source revisions cannot safely be split into replacement task prose.
         result.append(span(source, 0, len(source.text)))
     for position, later in enumerate(spoken[index + 1 :], start=index + 1):
         # Anonymous passages cannot establish same-speaker identity.
@@ -118,19 +166,16 @@ def _retractions(source: Source, sources: list[Source]) -> list[Span]:
             continue
         adjacent = position == index + 1
         negative = _RETRACTION.search(later.text)
-        same_task = bool(
-            positive
-            and negative
-            and positive["agent"].casefold() == negative["agent"].casefold()
-            and positive["verb"].casefold() == negative["verb"].casefold()
-            and objects(source.text[positive.end() :]) == objects(negative["object"])
-            and (objects(negative["object"]) or adjacent)
-        )
-        if (adjacent and (_CANCEL.search(later.text) or _DISCLAIMER.fullmatch(later.text))) or (
-            same_task
-        ):
+        if adjacent and (_CANCEL.match(later.text) or _DISCLAIMER.fullmatch(later.text)):
             result.append(span(later, 0, len(later.text)))
-    return result
+            whole = True
+        elif negative and original and agent == negative["agent"].casefold():
+            words = _task_words(negative["verb"] + negative["object"], agent)
+            same_task = original == words and (len(words) > 1 or adjacent)
+            if same_task or _partial_task(original, words):
+                result.append(span(later, 0, len(later.text)))
+                whole = whole or same_task
+    return result, bool(result) and not whole
 
 
 def check(action: Action, sources: list[Source]) -> CommitmentCheck:
@@ -189,11 +234,25 @@ def check(action: Action, sources: list[Source]) -> CommitmentCheck:
     if reasons or primary is None:
         return result
     text = primary.text
-    result.retractions = _retractions(primary, sources)
     positive = _POSITIVE.search(text)
+    accepted: list[Source] = []
+    if _ACCEPT.fullmatch(text):
+        accepted = [
+            s
+            for s in sources
+            if s.source == "transcript"
+            and any(a.source_id == s.id and a.text == s.text for a in context)
+            and s.start < primary.start
+            and _REQUEST.match(s.text)
+            and not _EXAMPLE.search(s.text)
+        ]
+    request = _REQUEST.match(accepted[0].text) if len(accepted) == 1 else None
+    if request:
+        result.task = f"Request: {accepted[0].text} Acceptance: {primary.text}"
+    result.retractions, partial = _retractions(primary, sources, request)
     rejection = (
         "Same-speaker retraction or example disclaimer"
-        if result.retractions
+        if result.retractions and not partial
         else "Quoted or hypothetical example"
         if _EXAMPLE.search(text)
         else "Question or unanswered proposal"
@@ -208,20 +267,13 @@ def check(action: Action, sources: list[Source]) -> CommitmentCheck:
         result.disposition = "rejected"
         result.reasons.append(rejection)
         return result
-    accepted: list[Source] = []
-    if _ACCEPT.fullmatch(text):
-        accepted = [
-            s
-            for s in sources
-            if any(a.source_id == s.id and a.text == s.text for a in context)
-            and s.start < primary.start
-            and _REQUEST.search(s.text)
-        ]
-    recognized = bool(positive or _IMPLIED.search(text) or len(accepted) == 1)
+    recognized = bool(positive or _IMPLIED.search(text) or request)
     # A hedge before the undertaking leaves it for review. Negated/conditional
     # prerequisites (if not/unless) don't negate the positive task predicate.
     hedge = bool(re.search(r"\b(?:maybe|perhaps|might|could)\b", text, re.I))
-    if action.disposition == "committed" and recognized and not hedge:
+    if partial:
+        result.reasons.append("Retraction scope unresolved; retain full undertaking and retraction")
+    if action.disposition == "committed" and recognized and not hedge and not partial:
         result.disposition = "admissible"
         result.reasons.append("Recognized source undertaking; semantic evaluation still required")
     else:
@@ -232,7 +284,7 @@ def check(action: Action, sources: list[Source]) -> CommitmentCheck:
         agents = {m["agent"].casefold() for m in _POSITIVE.finditer(text)}
         if agent.casefold() == "we" or len(agents) > 1:
             result.owner = None
-    elif _IMPLIED.search(text) or accepted:
+    elif _IMPLIED.search(text) or request:
         result.owner = primary.speaker
     if result.owner == "Them":
         introductions: list[tuple[str, Span]] = []
@@ -253,8 +305,6 @@ def check(action: Action, sources: list[Source]) -> CommitmentCheck:
         result.owner_evidence = [evidence for _, evidence in introductions]
         if len({name for name, _ in introductions}) == 1:
             result.owner = introductions[0][0]
-    if accepted:
-        result.task = f"Request: {accepted[0].text} Acceptance: {primary.text}"
     return result
 
 
