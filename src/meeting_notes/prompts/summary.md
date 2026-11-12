@@ -6,6 +6,8 @@ Overview sentences, key points, decisions and notes_context contain text and dir
 IDs. Use complete, concise sentences. Spoken sections require transcript sources;
 notes_context requires handwritten sources. Written-only tasks stay in notes_context.
 Decisions require actual spoken agreement, not suggestions or individual tasks.
+Retain independent explicit agreements even when a related task has the same date.
+Cite the agreement itself; a task reference does not stand in for an agreed decision.
 
 In action_items, for each real spoken commitment, give its source ID in original_commitment_id. Choose from the allowed IDs; never put prose in this field. Do not rewrite the task
 or generate an owner. A coordinated statement can remain one action. Do not turn tentative
@@ -25,7 +27,9 @@ relative dates. Use an empty timing_updates list when there are no updates.
 
 Conflicts contain a neutral topic and direct transcript/notes source IDs for both accounts.
 Keep uncertainty and do not declare a disputed fact settled. Code copies the full accounts
-and controls their placement. Unrelated commitments must remain actions.
+and controls their placement. Cite only statements directly in disagreement, not adjacent
+verification tasks. Unrelated commitments must remain actions. If a commitment itself is
+disputed, give it its own conflict rather than grouping it with other factual accounts.
 
 Empty overview is allowed when other supported content exists. Do not invent numbers,
 referents, owners, commitments or dates. Real citations do not establish correct meaning;

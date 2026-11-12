@@ -39,3 +39,22 @@ def uncovered_commitments(sources: list[Source], selected: set[str]) -> list[Sou
             continue
         missing.append(source)
     return missing
+
+
+_AGREEMENT = re.compile(r"^(?:Agreed\s*[,.:]|We (?:agreed|decided)\b)", re.I)
+
+
+def uncovered_agreements(sources: list[Source], selected: set[str]) -> list[Source]:
+    """Flag explicit agreement markers for correction, never generate decisions."""
+    spoken = [s for s in sources if s.source == "transcript"]
+    missing: list[Source] = []
+    for index, source in enumerate(spoken):
+        if source.id in selected or not _AGREEMENT.search(source.text):
+            continue
+        if _UNCERTAIN.search(source.text):
+            continue
+        neighbors = spoken[max(0, index - 1) : index] + spoken[index + 1 : index + 2]
+        if any(s.speaker == source.speaker and _RETRACTED.search(s.text) for s in neighbors):
+            continue
+        missing.append(source)
+    return missing

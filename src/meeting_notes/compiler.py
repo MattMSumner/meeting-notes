@@ -6,7 +6,7 @@ from meeting_notes.compiler_v4 import TIMING_PATTERN as _DATE
 from meeting_notes.compiler_v4 import Source as Source
 from meeting_notes.compiler_v4 import passages as passages
 from meeting_notes.contract import Draft
-from meeting_notes.coverage import uncovered_commitments
+from meeting_notes.coverage import uncovered_agreements, uncovered_commitments
 from meeting_notes.figures import unsaid_numbers
 from meeting_notes.grounding import Checked
 from meeting_notes.summary import ActionItem, Conflict, Summary
@@ -27,9 +27,17 @@ def validate(draft: Draft, sources: list[Source], context: str = "") -> Checked:
                 found.append(source)
         return found
 
+    commitments = {t.original_commitment_id for t in draft.action_items}
     disputed: set[str] = set()
     conflicts: list[Conflict] = []
     for conflict in draft.conflicts:
+        mixed = set(conflict.transcript) & commitments
+        if mixed and set(conflict.transcript) - commitments:
+            blocking.append(
+                f"Conflict {conflict.topic!r} groups commitments {sorted(mixed)} with other "
+                "statements. Cite only the directly disputed accounts; if a commitment "
+                "itself is disputed, give it a separate conflict. Keep its action."
+            )
         spoken = resolve(conflict.transcript, "transcript")
         written = resolve(conflict.notes, "notes")
         if len(spoken) == len(set(conflict.transcript)) and len(written) == len(
@@ -58,7 +66,19 @@ def validate(draft: Draft, sources: list[Source], context: str = "") -> Checked:
             )
     task_sources: set[str] = set()
     actions: list[ActionItem] = []
-    commitments = {t.original_commitment_id for t in draft.action_items}
+    # Prose referring only to an action is suppressed; it cannot retain an agreement.
+    retained = {
+        ref
+        for item in [*draft.overview, *draft.key_points, *draft.decisions]
+        for ref in item.sources
+        if ref not in commitments
+    } | disputed
+    for source in uncovered_agreements(sources, retained):
+        blocking.append(
+            f"Possible omitted agreement {source.id}: {source.text} "
+            "Recheck this source and cite the independent spoken agreement in Decisions "
+            "if confirmed. Do not substitute an individual task or invent agreement."
+        )
     for source in uncovered_commitments(sources, commitments):
         blocking.append(
             f"Possible omitted commitment {source.id}: {source.text} "

@@ -13,6 +13,7 @@ from uuid import uuid4
 
 from meeting_notes.audit import (
     Audit,
+    CompletenessAudit,
     CoverageAudit,
     CurrentAudit,
     ReferenceAudit,
@@ -129,12 +130,15 @@ class MeetingDir:
         | ReferenceAudit
         | TaskAudit
         | CoverageAudit
+        | CompletenessAudit
         | TimingAudit
         | None = None,
     ) -> None:
         result = (
             Generation(
-                version=7
+                version=8
+                if isinstance(audit, CompletenessAudit)
+                else 7
                 if isinstance(audit, TimingAudit)
                 else 6
                 if isinstance(audit, CoverageAudit)
@@ -164,7 +168,13 @@ class MeetingDir:
     def save_attempt(
         self,
         evidence: Evidence,
-        audit: Audit | CurrentAudit | ReferenceAudit | TaskAudit | CoverageAudit | TimingAudit,
+        audit: Audit
+        | CurrentAudit
+        | ReferenceAudit
+        | TaskAudit
+        | CoverageAudit
+        | CompletenessAudit
+        | TimingAudit,
     ) -> None:
         """Preserve failed drafts independently of the last successful generation."""
         folder = self.path / "attempts"

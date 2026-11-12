@@ -52,3 +52,37 @@ def test_other_speaker_disclaimer_does_not_erase_explicit_task():
 
 def test_diagnostic_does_not_claim_to_cover_paraphrases():
     assert not uncovered_commitments(passages("[00:00:00] Sam: Leave the review to me.", ""), set())
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "Agreed, ship Wednesday.",
+        "We decided to postpone the migration.",
+        "We agreed on the smaller venue.",
+    ],
+)
+def test_explicit_agreement_is_flagged_when_uncited(text: str):
+    from meeting_notes.coverage import uncovered_agreements
+
+    sources = passages("[00:00:00] Alex: " + text, "Agreed, buy supplies.")
+    assert [s.id for s in uncovered_agreements(sources, set())] == ["T1"]
+    assert uncovered_agreements(sources, {"T1"}) == []
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "Maybe we agreed to ship Wednesday.",
+        "We agreed not to ship yet.",
+        "“Agreed, ship Wednesday.”",
+        "Agreed, ship Wednesday?",
+        "Agreed, ship Wednesday. Scratch that.",
+        "I will ship Wednesday.",
+        "We could agree on Wednesday.",
+    ],
+)
+def test_agreement_diagnostic_does_not_promote_uncertain_or_quoted_text(text: str):
+    from meeting_notes.coverage import uncovered_agreements
+
+    assert not uncovered_agreements(passages("[00:00:00] Sam: " + text, ""), set())

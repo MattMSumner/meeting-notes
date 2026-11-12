@@ -62,7 +62,7 @@ def test_labelled_compact_inputs_preserve_both_sources_and_request_settings():
     ]
     assert json.loads(notes) == [["N1", "Personal café context."]]
     assert "Others invited: Alex" in content
-    assert body["format"]["$defs"]["TranscriptSource"]["enum"] == ["T1"]
+    assert body["format"]["$defs"]["SourceID"]["enum"] == ["T1", "N1"]
     assert engine.audit.attempts[0].request == body
 
 
@@ -78,7 +78,7 @@ def test_realistic_transcripts_fit_default_context_without_losing_sources(senten
     assert len(transport.requests) == 1
     assert len(engine.audit.passages) == sentences
     body = transport.requests[0]
-    assert len(body["format"]["$defs"]["TranscriptSource"]["enum"]) == sentences
+    assert len(body["format"]["$defs"]["SourceID"]["enum"]) == sentences
     assert f'"T{sentences}"' in body["messages"][1]["content"]
     assert len(json.dumps(body, ensure_ascii=False)) / CHARS_PER_TOKEN + REPLY_TOKENS < 32768
 

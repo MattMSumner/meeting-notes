@@ -56,24 +56,24 @@ def request_schema(transcript_ids: list[str], notes_ids: list[str]) -> dict[str,
         raise ValueError("No transcript sources available")
     schema = Draft.model_json_schema()
     definitions = schema["$defs"]
-    definitions["TranscriptSource"] = {"type": "string", "enum": transcript_ids}
-    definitions["AnySource"] = {
-        "anyOf": [{"$ref": "#/$defs/TranscriptSource"}]
-        + ([{"$ref": "#/$defs/NotesSource"}] if notes_ids else [])
-    }
+    # One flat vocabulary avoids nested reference unions in the model grammar.
+    # Source kind is checked by the compiler, including every correction response.
+    definitions["SourceID"] = {"type": "string", "enum": transcript_ids + notes_ids}
+    reference = {"$ref": "#/$defs/SourceID"}
     for owner, field in [
         ("Action", "original_commitment_id"),
         ("TimingUpdate", "original_commitment_id"),
         ("Timing", "source_id"),
     ]:
-        definitions[owner]["properties"][field] = {"$ref": "#/$defs/TranscriptSource"}
-    for owner, field in [("TimingUpdate", "source_ids"), ("Dispute", "transcript")]:
-        definitions[owner]["properties"][field]["items"] = {"$ref": "#/$defs/TranscriptSource"}
-    definitions["SupportedText"]["properties"]["sources"]["items"] = {"$ref": "#/$defs/AnySource"}
-    if notes_ids:
-        definitions["NotesSource"] = {"type": "string", "enum": notes_ids}
-        definitions["Dispute"]["properties"]["notes"]["items"] = {"$ref": "#/$defs/NotesSource"}
-    else:
+        definitions[owner]["properties"][field] = dict(reference)
+    for owner, field in [
+        ("TimingUpdate", "source_ids"),
+        ("Dispute", "transcript"),
+        ("Dispute", "notes"),
+        ("SupportedText", "sources"),
+    ]:
+        definitions[owner]["properties"][field]["items"] = dict(reference)
+    if not notes_ids:
         # There is no valid notes reference; disable the containing arrays rather
         # than inventing a sentinel ID or emitting an invalid empty enum.
         schema["properties"]["notes_context"]["maxItems"] = 0

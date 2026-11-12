@@ -130,7 +130,7 @@ def test_current_model_and_wrapper_reproduce_review_without_live_sources():
     from meeting_notes.evidence import meeting_context
 
     saved = Generation(
-        version=7,
+        version=8,
         summary=summary,
         evidence=Evidence(
             transcript=transcript,
@@ -370,29 +370,25 @@ def test_request_schema_enumerates_ids_in_each_reference_field():
 
     schema = request_schema(["T1", "T2"], ["N1"])
     definitions = schema["$defs"]
-    assert definitions["TranscriptSource"]["enum"] == ["T1", "T2"]
-    assert definitions["NotesSource"]["enum"] == ["N1"]
-    assert definitions["Action"]["properties"]["original_commitment_id"] == {
-        "$ref": "#/$defs/TranscriptSource"
-    }
-    assert definitions["TimingUpdate"]["properties"]["source_ids"]["items"] == {
-        "$ref": "#/$defs/TranscriptSource"
-    }
-    assert definitions["Timing"]["properties"]["source_id"] == {"$ref": "#/$defs/TranscriptSource"}
-    assert definitions["SupportedText"]["properties"]["sources"]["items"] == {
-        "$ref": "#/$defs/AnySource"
-    }
-    assert definitions["AnySource"]["anyOf"] == [
-        {"$ref": "#/$defs/TranscriptSource"},
-        {"$ref": "#/$defs/NotesSource"},
-    ]
-    assert definitions["Dispute"]["properties"]["notes"]["items"] == {"$ref": "#/$defs/NotesSource"}
+    assert definitions["SourceID"]["enum"] == ["T1", "T2", "N1"]
+    assert "AnySource" not in definitions
+    for owner, field in [
+        ("Action", "original_commitment_id"),
+        ("Timing", "source_id"),
+        ("TimingUpdate", "original_commitment_id"),
+    ]:
+        assert definitions[owner]["properties"][field] == {"$ref": "#/$defs/SourceID"}
+    for owner, field in [
+        ("SupportedText", "sources"),
+        ("Dispute", "notes"),
+        ("Dispute", "transcript"),
+        ("TimingUpdate", "source_ids"),
+    ]:
+        assert definitions[owner]["properties"][field]["items"] == {"$ref": "#/$defs/SourceID"}
     empty = request_schema(["T1"], [])
     assert empty["properties"]["conflicts"]["maxItems"] == 0
     assert empty["properties"]["notes_context"]["maxItems"] == 0
-    assert empty["$defs"]["Dispute"]["properties"]["notes"]["minItems"] == 0
-    # Fresh requests must not inherit a previous meeting's references.
-    assert request_schema(["T9"], [])["$defs"]["TranscriptSource"]["enum"] == ["T9"]
+    assert request_schema(["T9"], [])["$defs"]["SourceID"]["enum"] == ["T9"]
 
 
 def test_valid_own_timing_is_not_downgraded_by_redundant_summary_reference():
