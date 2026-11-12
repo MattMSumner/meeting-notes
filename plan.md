@@ -13,6 +13,11 @@ remains unbuilt. The explicitly approved one-repetition V9 evaluation is complet
 model runs require separately agreed scope.
 Phase 0 (Handy) set up.
 
+**Fresh-session handoff (2026-11-12):** [NEXT_SESSION.md](NEXT_SESSION.md) records the
+rebase onto shipped safeguards, 495 passing offline tests, unchanged frozen evidence and
+the proposed conflict-completeness stage. The next candidate and its evaluation budget
+remain to be settled; no new inference was performed and M10 remains unbuilt.
+
 ---
 
 ## Decisions so far
