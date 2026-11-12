@@ -1,0 +1,162 @@
+{
+  "$defs": {
+    "Account": {
+      "additionalProperties": false,
+      "properties": {
+        "source_id": {
+          "title": "Source Id",
+          "type": "string"
+        },
+        "quote": {
+          "minLength": 1,
+          "title": "Quote",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "fact",
+            "commitment",
+            "context",
+            "request"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "meaning": {
+          "$ref": "#/$defs/Meaning"
+        }
+      },
+      "required": [
+        "source_id",
+        "quote",
+        "kind",
+        "meaning"
+      ],
+      "title": "Account",
+      "type": "object"
+    },
+    "Claim": {
+      "additionalProperties": false,
+      "properties": {
+        "note": {
+          "$ref": "#/$defs/Account"
+        },
+        "transcript": {
+          "items": {
+            "$ref": "#/$defs/Account"
+          },
+          "title": "Transcript",
+          "type": "array"
+        },
+        "outcome": {
+          "enum": [
+            "consistent",
+            "additional",
+            "conflicting",
+            "uncertain"
+          ],
+          "title": "Outcome",
+          "type": "string"
+        },
+        "reason": {
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "note",
+        "transcript",
+        "outcome",
+        "reason"
+      ],
+      "title": "Claim",
+      "type": "object"
+    },
+    "Meaning": {
+      "additionalProperties": false,
+      "properties": {
+        "subject": {
+          "minLength": 1,
+          "title": "Subject",
+          "type": "string"
+        },
+        "quantity": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Quantity"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Unit"
+        },
+        "period": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Period"
+        },
+        "scope": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Scope"
+        },
+        "status": {
+          "description": "Preserve estimate/proposal/approval/uncertainty",
+          "minLength": 1,
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "subject",
+        "quantity",
+        "unit",
+        "period",
+        "scope",
+        "status"
+      ],
+      "title": "Meaning",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "claims": {
+      "items": {
+        "$ref": "#/$defs/Claim"
+      },
+      "title": "Claims",
+      "type": "array"
+    }
+  },
+  "required": [
+    "claims"
+  ],
+  "title": "Comparison",
+  "type": "object"
+}

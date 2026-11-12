@@ -345,3 +345,83 @@ def test_model_cannot_introduce_a_summary_conflict_outside_comparison():
     checked = compile_draft(value, passages(TRANSCRIPT, NOTES), conflict())
     assert checked.summary is None
     assert "Summary conflicts must be empty" in checked.blocking[0]
+
+
+@pytest.mark.parametrize(
+    "case,outcome",
+    [
+        ("unit_equivalence", "consistent"),
+        ("unit_disagreement", "conflicting"),
+        ("periods_separate", "consistent"),
+        ("scope_separate", "consistent"),
+        ("estimate_approval", "uncertain"),
+        ("proposal_rejected", "conflicting"),
+        ("tentative_confirmed", "uncertain"),
+    ],
+)
+def test_supplied_semantic_comparisons_keep_accounts_and_qualifiers(case: str, outcome: str):
+    # These hand-authored outcomes test compilation, not model classification accuracy.
+    root = Path(__file__).resolve().parents[1] / "evaluation/m10/v10"
+    pair = next(p for p in json.loads((root / "pairs.json").read_text()) if p["id"] == case)
+    sources = passages(pair["transcript"], pair["handwritten_text"])
+    comparison = Comparison.model_validate(
+        {
+            "claims": [
+                {
+                    "note": account("N1", sources[-1].text).model_dump(),
+                    "transcript": [account("T1", sources[0].text).model_dump()],
+                    "outcome": outcome,
+                    "reason": "Hand-authored expected relationship for the synthetic fixture.",
+                }
+            ]
+        }
+    )
+    transport = Transport(comparison.model_dump_json(), reply(sources[0].text))
+    engine = model(transport)
+    result = engine.summarize(
+        MEETING, pair["transcript"], handwritten_text=pair["handwritten_text"]
+    )
+    assert bool(result.conflicts) == (outcome == "conflicting")
+    if result.conflicts:
+        assert result.conflicts[0].transcript == sources[0].text
+        assert result.conflicts[0].handwritten == sources[-1].text
+        assert result.overview != sources[0].text
+    elif outcome == "uncertain":
+        warning = engine.audit.attempts[0].warnings[0]
+        assert sources[0].text in warning and sources[-1].text in warning
+    else:
+        assert result.overview == sources[0].text
+        assert result.notes_context == [sources[-1].text]
+    assert len(transport.requests) == 2
+
+
+def test_frozen_candidate_inputs_schemas_and_sources_match_runtime():
+    import hashlib
+
+    from meeting_notes.comparison import request_schema as comparison_schema
+    from meeting_notes.contract import request_schema
+
+    root = Path(__file__).resolve().parents[1] / "evaluation/m10/v10"
+    manifest = json.loads((root / "sha256.json").read_text())
+    for name, digest in manifest.items():
+        assert hashlib.sha256((root / name).read_bytes()).hexdigest() == digest, name
+    pairs = json.loads((root / "pairs.json").read_text())
+    original = json.loads((root.parent / "v9/pairs.json").read_text())
+    assert pairs[:13] == original
+    assert len(pairs) == 22
+    schemas = json.loads((root / "proposed/request-schemas.json").read_text())
+    for pair in pairs:
+        sources = passages(pair["transcript"], pair["handwritten_text"])
+        spoken = [s.id for s in sources if s.source == "transcript"]
+        notes = [s.id for s in sources if s.source == "notes"]
+        expected = request_schema(spoken, notes)
+        expected["properties"]["conflicts"]["maxItems"] = 0
+        assert schemas[pair["id"]]["summary"] == expected
+        assert schemas[pair["id"]]["comparison"] == (comparison_schema(sources) if notes else None)
+    source_root = Path(__file__).resolve().parents[1] / "src/meeting_notes"
+    for source in (root / "proposed/meeting_notes").rglob("*"):
+        if source.is_file() and "__pycache__" not in source.parts:
+            assert (
+                source.read_bytes()
+                == (source_root / source.relative_to(root / "proposed/meeting_notes")).read_bytes()
+            )
