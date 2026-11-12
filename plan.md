@@ -475,6 +475,14 @@ markdown.
   cases fail on the prior CLI and pass with the fixes. All 287 offline unit tests, formatting,
   lint and strict types pass. Synthetic fakes only; no capture or model changes.
 
+- **Stop snapshot review fix (2026-11-12; PR pending):** Stop uses one unfinished-session
+  snapshot for its orphan check and wait targets under the global lock. A recovery owner that
+  dies after the liveness observation remains a wait target, so shutdown/handoff is attempted
+  rather than reporting success from a second empty scan. Both new synthetic regression cases
+  fail on the prior CLI and pass with the fix, covering successful recovery and retryable
+  shutdown failure. All 289 offline unit tests, formatting, lint and strict types pass.
+  The separate preexisting transcription-spawn failure gap remains outside this extraction.
+
 **M5 — Calendar titles.**
 - **Calendar source: Google Calendar, synced by macOS.** I use Google Calendar (personal
   Gmail) in the browser, not Apple's Calendar app. macOS can still keep a local copy:
