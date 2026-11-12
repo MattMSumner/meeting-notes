@@ -447,6 +447,18 @@ markdown.
   - **The title dialog is the CLI's own** (`osascript display dialog`), not a Shortcuts
     step, so M5 can pre-fill it from the calendar.
 
+- **Safeguard extraction (2026-11-12; PR pending):** extracted independently from the
+  enhancement branch. Foreground/background capture gets a positive finite one-hour default
+  cap; explicit duration can shorten but not exceed it. Automatic stop reports its reason and
+  continues main's existing transcription and summary flow. Start/Stop shortcuts use a plain
+  shell with installation-time settings and PATH, avoiding interactive startup errors.
+  Recovery holds a durable stopping claim until helper exit is confirmed, including after
+  forced shutdown; failures remain retryable. Stable corrupt-session identity, session-based
+  discovery and fallback titles permit shutdown with damaged or missing metadata. Global
+  locking covers only short claims, not shutdown waits. All 276 offline unit tests, formatting,
+  lint and strict types pass. No capture or model changes, inference, recording or shortcut
+  installation performed for this extraction. M10 remains separate and is not marked built.
+
 **M5 — Calendar titles.**
 - **Calendar source: Google Calendar, synced by macOS.** I use Google Calendar (personal
   Gmail) in the browser, not Apple's Calendar app. macOS can still keep a local copy:
