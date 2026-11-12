@@ -153,6 +153,8 @@ The summary prompt is in [`src/meeting_notes/prompts/summary.md`](src/meeting_no
 
 ## Development
 
+For coordinating Codex workers through Herdr, see the [Chief workflow](.chief/README.md).
+
 ```sh
 uv run pytest                  # unit tests (fast, no model or audio needed)
 uv run pytest -m integration   # real models and audio hardware; never runs in CI
