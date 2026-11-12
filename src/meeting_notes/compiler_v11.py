@@ -8,8 +8,10 @@ effective snapshot. Evidence is JSON serializable and recomputed by replay().
 Only narrow source-grounding errors are diagnosed in generated prose: wrong kinds,
 invalid literal quotations, verbatim notes leakage and uncited numbers. Supported
 paraphrase still needs semantic evaluation. CommitmentCheck documents its own limits.
-Partial retractions discovered during omission checking are also saved as uncertain
-commitment checks with full source/retraction warnings. Timing spans remain the exact
+Partial retractions are diagnosed for selected and omitted sources alike and saved as
+uncertain commitment checks with full source/retraction warnings. Automatic acceptance
+context is diagnostic evidence; exact supplied anchors remain in the saved draft and
+among the resolved context spans. Timing spans remain the exact
 model selections; complete source context comes from the saved snapshot. Automatic due
 suffixes are narrow: recognized approximation/comparative/adverb boundaries stay
 full-source review. These lexical checks cannot prove qualifier scope in arbitrary English.

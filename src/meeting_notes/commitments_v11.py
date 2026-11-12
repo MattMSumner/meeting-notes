@@ -13,9 +13,17 @@ entailment and completeness remain evaluation concerns. Retractions recognize an
 immediately following same-speaker 'scratch/cancel that', or later explicit negatives
 repeating the same task predicate and object after removal of articles/timing. Accepted
 requests use the requested task and the accepting speaker, not the bare acceptance.
+Every explicit agent + future/task-verb match participates in retraction diagnostics;
+literal conjuncts are compared only within that actor's undertaking. 'I' resolves to
+the saved speaker, while 'we' stays collective. Retractions still require the same
+speaker. Named actors are not inferred from pronouns or shared task words.
 A leading cancellation applies to the previous source, not a new undertaking after it.
 Literal partial coordination cancellations retain the full original and retraction for
-review; no replacement clauses are synthesized. Ellipsis, paraphrased cancellations and
+review; no replacement clauses are synthesized. An adjacent direct request is checked
+for cancellation even with incomplete supplied acceptance context. Its full span is
+added to diagnostic context only when retraction evidence exists; this discovery never
+admits an unsupported acceptance. Supplied spans remain intact, with the exact model
+selection retained in the draft. Ellipsis, paraphrased cancellations and
 general clause scope remain semantic evaluation concerns. Shared verbs or dates alone
 never establish retraction or cross-source claim identity. Conditions aren't negation
 of a task.
@@ -106,11 +114,18 @@ class CommitmentCheck(Record):
     task: str | None
 
 
-def _task_words(text: str, agent: str) -> tuple[str, ...]:
+def _actor(agent: str, speaker: str | None) -> str:
+    return speaker.casefold() if agent.casefold() == "i" and speaker else agent.casefold()
+
+
+def _task_words(text: str, agent: str, speaker: str | None) -> tuple[str, ...]:
     # Keep coordination intact. Normalizing a repeated same-agent future only permits
     # literal task matching; it does not split or rewrite the source for publication.
     text = _POSITIVE.sub(
-        lambda match: match["verb"] if match["agent"].casefold() == agent else match[0], text
+        lambda match: (
+            match["verb"] if _actor(match["agent"], speaker) == _actor(agent, speaker) else match[0]
+        ),
+        text,
     )
     text = re.split(r"\b(?:if|unless|when|once|provided)\b", text, flags=re.I)[0]
     text = _TIMING.sub(" ", text)
@@ -119,6 +134,23 @@ def _task_words(text: str, agent: str) -> tuple[str, ...]:
         for word in re.findall(r"[a-z]+", text.lower())
         if word not in {"the", "a", "an", "by", "on", "at", "this", "next"}
     )
+
+
+def _task_groups(
+    source: Source, request: re.Match[str] | None
+) -> list[tuple[str, tuple[str, ...]]]:
+    """Bound literal diagnostics at explicit undertaking matches, not arbitrary clauses."""
+    if request:
+        return [("i", _task_words(request["verb"] + request["object"], "i", source.speaker))]
+    positives = list(_POSITIVE.finditer(source.text))
+    result: list[tuple[str, tuple[str, ...]]] = []
+    for index, positive in enumerate(positives):
+        end = positives[index + 1].start() if index + 1 < len(positives) else len(source.text)
+        words = _task_words(source.text[positive.start() : end], positive["agent"], source.speaker)
+        if index + 1 < len(positives) and words and words[-1] in {"and", "but", "or"}:
+            words = words[:-1]
+        result.append((positive["agent"], words))
+    return result
 
 
 def _partial_task(original: tuple[str, ...], negative: tuple[str, ...]) -> bool:
@@ -145,7 +177,6 @@ def _retractions(
     index = next(i for i, s in enumerate(spoken) if s.id == source.id)
     positive = _POSITIVE.search(source.text)
 
-    agent = positive["agent"].casefold() if positive else "i"
     task = (
         source.text[positive.start() :]
         if positive
@@ -153,7 +184,7 @@ def _retractions(
         if request
         else ""
     )
-    original = _task_words(task, agent)
+    groups = _task_groups(source, request)
     result: list[Span] = []
     whole = False
     cancel = _CANCEL.search(source.text)
@@ -169,10 +200,25 @@ def _retractions(
         if adjacent and (_CANCEL.match(later.text) or _DISCLAIMER.fullmatch(later.text)):
             result.append(span(later, 0, len(later.text)))
             whole = True
-        elif negative and original and agent == negative["agent"].casefold():
-            words = _task_words(negative["verb"] + negative["object"], agent)
-            same_task = original == words and (len(words) > 1 or adjacent)
-            if same_task or _partial_task(original, words):
+        elif negative and groups:
+            actor = _actor(negative["agent"], later.speaker)
+            if not adjacent and not _task_words(
+                negative["object"], negative["agent"], later.speaker
+            ):
+                continue
+            words = _task_words(
+                negative["verb"] + negative["object"], negative["agent"], later.speaker
+            )
+            same_task = (
+                all(_actor(agent, source.speaker) == actor for agent, _ in groups)
+                and _task_words(task, negative["agent"], source.speaker) == words
+            )
+            part = any(
+                _actor(agent, source.speaker) == actor
+                and (original == words or _partial_task(original, words))
+                for agent, original in groups
+            )
+            if same_task or part:
                 result.append(span(later, 0, len(later.text)))
                 whole = whole or same_task
     return result, bool(result) and not whole
@@ -250,6 +296,24 @@ def check(action: Action, sources: list[Source]) -> CommitmentCheck:
     if request:
         result.task = f"Request: {accepted[0].text} Acceptance: {primary.text}"
     result.retractions, partial = _retractions(primary, sources, request)
+    if _ACCEPT.fullmatch(text):
+        # Mandatory cancellation diagnostics cannot depend on model-supplied context.
+        # Only the supplied complete request above may establish admissibility.
+        spoken = [s for s in sources if s.source == "transcript"]
+        index = next(i for i, s in enumerate(spoken) if s.id == primary.id)
+        prior = spoken[index - 1] if index else None
+        prior_request = (
+            _REQUEST.match(prior.text) if prior and not _EXAMPLE.search(prior.text) else None
+        )
+        if prior and prior_request:
+            retractions, prior_partial = _retractions(primary, sources, prior_request)
+            if retractions:
+                full = span(prior, 0, len(prior.text))
+                if full not in result.context:
+                    result.context.append(full)
+                result.retractions.extend(s for s in retractions if s not in result.retractions)
+                result.task = f"Request: {prior.text} Acceptance: {primary.text}"
+                partial = partial or prior_partial
     rejection = (
         "Same-speaker retraction or example disclaimer"
         if result.retractions and not partial

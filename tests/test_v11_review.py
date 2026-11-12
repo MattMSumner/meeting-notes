@@ -6,7 +6,7 @@ from meeting_notes.commitments_v11 import check
 from meeting_notes.comparison_v11 import Comparison
 from meeting_notes.compiler_v11 import Evidence, correction_errors, replay, validate
 from meeting_notes.contract_v11 import Action, Draft, SupportedText, TimingUpdate
-from meeting_notes.spans_v11 import Anchor, Source, snapshot
+from meeting_notes.spans_v11 import Anchor, Source, resolve, snapshot
 
 
 def action(source: Source, request: Source | None = None) -> Action:
@@ -330,3 +330,257 @@ def test_correction_cannot_drop_external_timing_to_remove_its_review() -> None:
     current = validate(draft(action(saved.sources[0])), saved, Comparison(claims=[]))
     assert previous.summary and current.summary
     assert "Correction lost timing evidence: T2" in correction_errors(previous, current)
+
+
+@pytest.mark.parametrize(
+    ("original", "retraction", "cancelled"),
+    [
+        (
+            "I will review the draft and Ravi will send the invoice.",
+            "Ravi will not send the invoice.",
+            True,
+        ),
+        (
+            "I will review the draft and Ravi will send the invoice.",
+            "I will not review the draft.",
+            True,
+        ),
+        (
+            "Ravi will review the draft and Dana will send the invoice.",
+            "Dana will not send the invoice.",
+            True,
+        ),
+        (
+            "Ravi will review the draft and Dana will send the invoice.",
+            "Ravi will not review the draft.",
+            True,
+        ),
+        (
+            "Ravi will review the draft and Dana will send the invoice "
+            "and Noor will test the release.",
+            "Noor will not test the release.",
+            True,
+        ),
+        (
+            "I will review the draft and send the invoice and Ravi will test the release.",
+            "I will not send the invoice.",
+            True,
+        ),
+        (
+            "I will review the draft and I will send the invoice.",
+            "I will not send the invoice.",
+            True,
+        ),
+        (
+            "Ravi will review the draft and Ravi will send the invoice.",
+            "Ravi will not send the invoice.",
+            True,
+        ),
+        (
+            "Mira will review the draft and Ravi will send the invoice.",
+            "I will not review the draft.",
+            True,
+        ),
+        (
+            "We will review the draft and Ravi will send the invoice.",
+            "We will not review the draft.",
+            True,
+        ),
+        (
+            "We will review the draft and Ravi will send the invoice.",
+            "I will not review the draft.",
+            False,
+        ),
+        (
+            "I will review the draft and Ravi will send the invoice.",
+            "Ravi will not review the draft.",
+            False,
+        ),
+        (
+            "I will review the draft and Ravi will send the invoice.",
+            "I will not send the invoice.",
+            False,
+        ),
+        (
+            "I will review the draft and Ravi will send the invoice.",
+            "Ravi will not send the report.",
+            False,
+        ),
+        (
+            "I will review the draft and Ravi will send the invoice.",
+            "Dana will not send the invoice.",
+            False,
+        ),
+        (
+            "Ravi will review the draft and Dana will send the invoice.",
+            "Dana will not review the draft.",
+            False,
+        ),
+    ],
+)
+def test_coordination_retractions_match_each_explicit_actor_and_task(
+    original: str, retraction: str, cancelled: bool
+) -> None:
+    saved = snapshot(
+        f"[0:00:01] Mira: {original}\n[0:00:02] Mira: {retraction}\n"
+        "[0:00:03] Mira: I will check the logs."
+    )
+    response = draft(action(saved.sources[0]), action(saved.sources[2]))
+    result = validate(response, saved, Comparison(claims=[]))
+    assert result.summary and not result.blocking
+    candidate = result.evidence.commitments[0]
+    assert candidate.disposition == ("uncertain" if cancelled else "admissible")
+    assert bool(candidate.retractions) == cancelled
+    tasks = [item.task for item in result.summary.action_items]
+    assert saved.sources[2].text in tasks
+    assert (original in tasks) != cancelled
+    if cancelled:
+        assert original in " ".join(result.warnings)
+        assert retraction in " ".join(result.warnings)
+        assert candidate.undertaking and candidate.undertaking.text == original
+        assert candidate.retractions[0].text == retraction
+
+
+@pytest.mark.parametrize(
+    ("original", "owner"),
+    [
+        ("I will review the draft and Ravi will send the invoice.", None),
+        ("Ravi will review the draft and Dana will send the invoice.", None),
+        ("I will review the draft and I will send the invoice.", "Mira"),
+        ("Ravi will review the draft and Ravi will send the invoice.", "Ravi"),
+    ],
+)
+def test_coordination_owner_is_not_assigned_wholly_to_its_first_actor(
+    original: str, owner: str | None
+) -> None:
+    saved = snapshot(f"[0:00:01] Mira: {original}")
+    result = validate(draft(action(saved.sources[0])), saved, Comparison(claims=[]))
+    assert result.summary
+    assert result.summary.action_items[0].owner == owner
+    assert result.summary.action_items[0].task == original
+
+
+def test_whole_repeated_actor_coordination_can_still_be_retracted() -> None:
+    saved = snapshot(
+        "[0:00:01] Mira: Ravi will review the draft and Ravi will send the invoice.\n"
+        "[0:00:02] Mira: Ravi will not review the draft and send the invoice.\n"
+        "[0:00:03] Mira: I will check the logs."
+    )
+    previous = validate(
+        draft(action(saved.sources[0]), action(saved.sources[2])), saved, Comparison(claims=[])
+    )
+    assert previous.evidence.commitments[0].disposition == "rejected"
+    current = validate(draft(action(saved.sources[2])), saved, Comparison(claims=[]))
+    assert current.summary and len(current.summary.action_items) == 1
+    assert correction_errors(previous, current) == []
+
+
+@pytest.mark.parametrize("supplied", ["full", "empty", "partial"])
+@pytest.mark.parametrize("selected", [True, False])
+def test_acceptance_partial_cancellation_review_does_not_depend_on_supplied_context(
+    supplied: str, selected: bool
+) -> None:
+    saved = snapshot(
+        "[0:00:01] Mira: Could you review the draft and send the invoice?\n"
+        "[0:00:02] Ravi: Yes.\n[0:00:03] Ravi: I will not send the invoice.\n"
+        "[0:00:04] Ravi: I will check the logs."
+    )
+    accepted = action(saved.sources[1], saved.sources[0])
+    if supplied == "empty":
+        accepted.context = []
+    elif supplied == "partial":
+        accepted.context[0].quote = "review the draft"
+    response = (
+        draft(accepted, action(saved.sources[3])) if selected else draft(action(saved.sources[3]))
+    )
+    before = response.model_dump_json()
+    result = validate(response, saved, Comparison(claims=[]))
+    assert result.summary and not result.blocking
+    assert [item.task for item in result.summary.action_items] == [saved.sources[3].text]
+    warnings = " ".join(result.warnings)
+    for source in saved.sources[:3]:
+        assert source.text in warnings
+    candidate = next(c for c in result.evidence.commitments if c.source_id == "T2")
+    assert candidate.disposition == "uncertain"
+    assert candidate.undertaking == resolve(accepted.undertaking, saved.sources, "transcript")
+    assert candidate.retractions[0].text == saved.sources[2].text
+    assert any(s.text == saved.sources[0].text for s in candidate.context)
+    if selected:
+        for anchor in accepted.context:
+            assert resolve(anchor, saved.sources, "transcript") in candidate.context
+    assert response.model_dump_json() == before
+    restored = Evidence.model_validate_json(result.evidence.model_dump_json())
+    assert restored.draft == response
+    assert replay(restored) == result
+    restored.commitments = [c for c in restored.commitments if c.source_id != "T2"]
+    assert replay(restored).summary is None
+
+
+@pytest.mark.parametrize("supplied", ["empty", "partial"])
+def test_automatic_request_discovery_never_promotes_an_unsupported_acceptance(
+    supplied: str,
+) -> None:
+    saved = snapshot(
+        "[0:00:01] Mira: Could you review the draft and send the invoice?\n[0:00:02] Ravi: Yes."
+    )
+    accepted = action(saved.sources[1])
+    if supplied == "partial":
+        accepted.context = [Anchor(source_id="T1", quote="review the draft")]
+    result = validate(draft(accepted), saved, Comparison(claims=[]))
+    assert result.summary and not result.summary.action_items
+    assert result.evidence.commitments[0].disposition == "uncertain"
+
+
+@pytest.mark.parametrize("supplied", ["empty", "partial", "omitted"])
+def test_correction_cannot_suppress_acceptance_cancellation_review(supplied: str) -> None:
+    saved = snapshot(
+        "[0:00:01] Mira: Could you review the draft and send the invoice?\n"
+        "[0:00:02] Ravi: Yes.\n[0:00:03] Ravi: I will not send the invoice.\n"
+        "[0:00:04] Ravi: I will check the logs."
+    )
+    accepted = action(saved.sources[1], saved.sources[0])
+    independent = action(saved.sources[3])
+    previous = validate(draft(accepted, independent), saved, Comparison(claims=[]))
+    accepted.context = (
+        [] if supplied == "empty" else [Anchor(source_id="T1", quote="send the invoice")]
+    )
+    response = draft(independent) if supplied == "omitted" else draft(accepted, independent)
+    current = validate(response, saved, Comparison(claims=[]))
+    assert previous.summary and current.summary
+    assert [item.task for item in current.summary.action_items] == [saved.sources[3].text]
+    assert correction_errors(previous, current) == []
+    for source in saved.sources[:3]:
+        assert source.text in " ".join(current.warnings)
+
+
+def test_correction_omitting_mixed_actor_cancellation_keeps_review_and_independent_work() -> None:
+    saved = snapshot(
+        "[0:00:01] Mira: I will review the draft and Ravi will send the invoice.\n"
+        "[0:00:02] Mira: Ravi will not send the invoice.\n"
+        "[0:00:03] Mira: I will check the logs."
+    )
+    previous = validate(
+        draft(action(saved.sources[0]), action(saved.sources[2])), saved, Comparison(claims=[])
+    )
+    current = validate(draft(action(saved.sources[2])), saved, Comparison(claims=[]))
+    assert current.summary and previous.summary
+    assert [item.task for item in current.summary.action_items] == [saved.sources[2].text]
+    assert current.warnings == previous.warnings
+    assert correction_errors(previous, current) == []
+    dropped = validate(draft(), saved, Comparison(claims=[]))
+    assert any(
+        "lost admissible commitment/timing: T3" in e for e in correction_errors(current, dropped)
+    )
+
+
+@pytest.mark.parametrize(
+    "original", ["I will review.", "I will review and Ravi will send the invoice."]
+)
+def test_nonadjacent_bare_verb_does_not_establish_retraction(original: str) -> None:
+    saved = snapshot(
+        f"[0:00:01] Mira: {original}\n[0:00:02] Ravi: The room is ready.\n"
+        "[0:00:03] Mira: I will not review."
+    )
+    candidate = check(action(saved.sources[0]), saved.sources)
+    assert candidate.disposition == "admissible"
+    assert not candidate.retractions
