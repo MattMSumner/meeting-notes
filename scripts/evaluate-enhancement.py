@@ -17,7 +17,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--freeze",
-        choices=("v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9", "v10"),
+        choices=("v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9", "v10", "v11"),
         default="v1",
     )
     parser.add_argument("--arm", choices=("baseline", "proposed"), required=True)
