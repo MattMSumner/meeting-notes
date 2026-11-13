@@ -1167,7 +1167,8 @@ Formatting, lint, strict types and 1016 offline tests pass (38 prototype checks;
 integration tests excluded). All 396 historical + 67 V11 + 23 sealed result entries and
 seventeen old wrapper-9 replays remain unchanged. All forty original regression inputs
 are retained. Authored responses and rendering tests are engineering evidence, not a
-model-quality pass; the owner has not yet accepted this format or tested it in Obsidian.
+model-quality pass; at this checkpoint the owner had not yet accepted the format or tested
+it in Obsidian.
 
 Next, review whether the previews would save editing time, then bound and review the
 smallest model-facing contract/isolated generator and declare a separate diagnostic
@@ -1175,6 +1176,28 @@ experiment before any inference. The prototype README records prospective accept
 and production snapshot/section/prior-output/atomicity/edit-protection requirements;
 those integration safeguards have not been implemented by this prototype. No new
 request/time budget, numerical review-effort target, Built note or merge is implied.
+
+**Preview feedback and next diagnostic (2026-11-13).** The owner reviewed the normal and
+incomplete examples and replied “Yeah these look good!” Record the authored preview
+format as approved; generated quality, measured editing effort and current synthetic
+Obsidian acceptance remain untested.
+
+The isolated generator preparation uses one response in the small draft contract,
+host-bound snapshot/generation identity, code-copied writing and literal source references.
+It has no default transport or production integration. Offline fake responses test shape
+and failure behavior only; no new semantic compiler or correction pass is added.
+The [diagnostic proposal](prototypes/reviewable_draft/EXPERIMENT.md) names six familiar
+cases in fixed order: additional, unit_equivalence, accepted_status_answer,
+cancellation_with_new_task, partial_coordination_retracted and qualified_external_timing.
+Proposed scope is one candidate, one request per case, six total and fifteen minutes,
+with unchanged qwen3:30b settings and no baseline, corrections, retries or selective reruns.
+Criteria and stopping rules precede outputs. These are proposed limits, not inference
+authorization. Review the timed capture driver and freeze exact source/requests/inputs/
+identity before seeking execution approval; preparation alone implements no timed run.
+Formatting, lint, strict types and 1046 offline tests pass, including 30 new generator
+checks. Six integration tests remain excluded; no model request has been sent.
+All forty historical inputs and failed verdicts remain unchanged, with the existing
+quality, usefulness, persistence and owner `shipit` gates.
 
 **M11 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
