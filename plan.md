@@ -9,16 +9,18 @@ acceptance was reported complete for M10. V7 meets its frozen single-run quality
 V9 completes 13/13 cases with no timeouts and retains the release agreement, but still fails
 quality on a missed cross-source price conflict. The three reproduced PR review bugs are fixed.
 The approved one-repetition V10 run finds the shared-number conflict but produces only 17/22
-proposed summaries and invents an action from a factual price statement. V10 fails quality;
-current review-workflow manual acceptance remains pending, so M10 remains unbuilt. Further
-model runs require separately agreed scope.
+proposed summaries and invents an action from a factual price statement. V10 fails quality.
+The approved V11 run publishes 34/40 proposed outputs, blocks six and invents one
+unit-conversion conflict; it also fails quality. Current review-workflow manual acceptance
+remains pending, so M10 remains unbuilt. Further model runs require separately agreed scope.
 Phase 0 (Handy) set up.
 
-**Fresh-session handoff (2026-11-12):** [NEXT_SESSION.md](NEXT_SESSION.md) records the
-bounded comparison implementation, [V10 results](evaluation/m10/v10/results/report.md), 539
-passing offline tests and unchanged frozen evidence. The approved evaluation is complete;
-V10 fails quality. The V11 offline sequence below and NEXT_SESSION.md define the next work;
-a new freeze and evaluation budget remain required. M10 remains unbuilt.
+**Fresh-session handoff (2026-11-12):** [NEXT_SESSION.md](NEXT_SESSION.md) and the
+[V11 report](evaluation/m10/v11/results/report.md) record the completed approved run:
+80 slots, 109/276 requests, 98m46s, six incomplete proposed outputs and one published
+false conflict. All 34 selected V11 generations replay exactly, all 463 frozen entries
+verify and 978 offline tests pass. No tuning/reruns, current manual acceptance, Built
+note or merge followed. Agree any successor scope separately; preserve this evidence.
 
 ---
 
@@ -1030,6 +1032,37 @@ stopping rules and no tuning/selective reruns. This is not approval; account for
 48m44s latency and do not reuse its 97 unused requests. Quality, current manual acceptance
 and the owner's `shipit` remain required before Built/merge. The current handoff is
 [NEXT_SESSION.md](NEXT_SESSION.md).
+
+
+**Evaluation checkpoint (2026-11-12; M10 remains unbuilt).** The owner approved all forty
+frozen synthetic pairs once per arm, capped at 160 baseline + 116 proposed = 276 requests.
+The serial run used 40 baseline + 69 proposed = **109 requests** in **98m46s**, with unchanged
+model/settings/identity and no tuning or selective reruns. Baseline completed 40/40; V11
+published **34/40**, with three comparison blocks and three summary blocks. All eighty slots
+and every attempt are retained in [V11 results](evaluation/m10/v11/results/report.md).
+
+Quality failed independently of faithful mechanical replay. One published V11 output calls
+12000 cents and 120 dollars conflicting. Three comparison failures make independent invoice
+work unavailable in two cases; three summary failures include a partial retraction whose
+remaining sending work never reaches publication. The thirty-four published outputs have no
+identified invented executable task, but misleading unaccepted-task prose, dimension extraction
+and conservative review still have partial findings. Baseline has eight critical semantic
+failure cases; a weaker baseline does not relax acceptance.
+
+Two fresh Codex assessors scored shuffled opaque halves against the frozen seven-dimension
+rubric; all eighty original scores and packet/key hashes locked before the key join. The Chief
+checked source evidence without changing scores. Arm structure can reveal identity and none
+of the twenty-two familiar plus eighteen authored cases is independently held out. One run
+establishes no reliability. Reporting tools passed separate review after bounded repairs;
+these authored checks are separate from fresh model outcomes.
+
+All **396 historical + 67 V11 entries** and seventeen historical wrapper-9 generations verify;
+all **34 selected wrapper-10** summaries/audits/warnings roundtrip exactly. Formatting, lint,
+strict types and 978 offline tests pass; six integration tests excluded, capture unchanged.
+No current manual Obsidian acceptance, Built note or merge ran. The 167 unused requests are
+not reused. Next is a separate successor-scope decision based on offline investigation of
+unit/relationship semantics, extraction/uncertainty and actual admission/retraction failures,
+while preserving genuine work, source meaning, historical evidence and all milestone gates.
 
 **M11 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
