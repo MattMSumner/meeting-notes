@@ -19,12 +19,13 @@ still implements V11. Automatic reconciliation is deferred for that successor.
 Phase 0 (Handy) set up.
 
 **Fresh-session handoff (2026-11-13):** [NEXT_SESSION.md](NEXT_SESSION.md) and the
-[action-only report](evaluation/m10/reviewable-draft/diagnostic-3/results/report.md)
-record six completed requests in 4m07s: five cases meet their scoped criteria, one has a
-critical surviving-work omission. All six outputs replay exactly; quality still fails.
-All 1335 offline tests pass. All 736 prior entries, twenty current freeze entries and
-157 sealed result entries verify; no historical outcome is regraded. All six requests
-are used and no further inference is authorized. The app remains V11 and M10 unbuilt.
+[local-model screen](evaluation/m10/reviewable-draft/model-comparison-1/analysis/report.md)
+record an incomplete comparison: five requests in 23m01s, three returned outputs, two
+timeouts and seven unsent cases. Neither challenger completes the screen. All eighteen
+baseline/challenger grades locked with model names hidden before identity joining; cached
+Qwen3 remains five passes and one critical omission. All 1386 offline tests pass and old
+evidence remains exact. No model switch, additional inference or merge is authorized;
+the app remains V11 and M10 unbuilt.
 
 ---
 
@@ -1377,6 +1378,41 @@ and twelve model-only packets; manifest SHA256
 Commit/push before executing the already approved twelve-request/thirty-minute run once;
 do not request the same approval again. No new application behavior, quality acceptance,
 follow-up test budget, Built or merge is implied by engineering preparation.
+
+**Local-model evaluation checkpoint (2026-11-13; M10 remains unbuilt).** The approved
+once-only screen used five new requests in 1381.014 seconds (23m01s), with no retries or
+arm/global overrun. Qwen3.5 completed the price case then timed out on availability;
+four cases were unsent. Gemma4 completed price/availability then timed out on partial
+withdrawal; three cases were unsent. Both affected arms stopped at their first fixed
+600-second client timeout. No resumption, configuration repair or model switch followed.
+The seven unused slots authorize nothing further.
+
+All eighteen opaque records, including six cached baseline, two failed and seven unsent
+cases, were graded independently with names/technical identifiers withheld. Every grade
+locked before joining the original pinned key. All three returned challenger outputs meet
+their negative-control criteria; Qwen3.5 has five incomplete cases and Gemma4 four. The
+cached baseline remains five passes/one critical retention failure. No challenger supplied
+positive work-retention/timing evidence. Timeouts are operational incompleteness, not proof
+of wrong missing answers. Familiar inputs, one repetition and incomplete coverage establish
+no reliability, full-draft improvement, editing-time benefit or Obsidian acceptance.
+
+The [report](evaluation/m10/reviewable-draft/model-comparison-1/analysis/report.md) preserves
+raw captures/timeouts, exact inventory, technical verification, the masked packet, locked
+grades, identity key and joined assessment under a final seal. All 913 prior entries,
+thirty current freeze entries and forty original inputs remain exact. Three new outputs
+and all cached baseline artifacts replay. Source/request/config/identity gates passed;
+five POSTs and twenty captured metadata GETs are accounted for.
+
+Format/lint/strict types and 1386 offline tests pass; six integration tests excluded,
+capture unchanged. CI found a test fixture requiring old Git objects absent in shallow
+checkouts; fixture-only fix `0e34921` reads committed frozen baseline sources. Depth-one
+collection passes all51newtests. No frozen runtime or model request changed for that repair.
+
+Keep the existing baseline. A small generation/runtime configuration investigation should
+precede another quality comparison or pipeline work; thinking mode is a possible variable,
+not a proven timeout cause. This is a recommendation, not new configuration/inference
+permission. Fresh cases/repeats, broader regression, production persistence, current
+usefulness, Built and owner shipit remain pending; application behavior stays V11.
 
 **M11 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
