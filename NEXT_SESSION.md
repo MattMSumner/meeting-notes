@@ -1,4 +1,4 @@
-# M10 handoff — 2026-11-13, offline draft prototype
+# M10 handoff — 2026-11-13, draft format approved
 
 Continue on `m10/notes-guided-enhancement`, [PR #16](https://github.com/MattMSumner/meeting-notes/pull/16).
 Read AGENTS.md, this handoff, the reviewable draft section of plan.md and the
@@ -13,6 +13,10 @@ suggested decisions/actions, separately attributed writing and honest uncertaint
 Automatic conflict classification is deferred; relevant passages can be shown for review.
 Actions become checkboxes only through the user's ordinary Obsidian editing. A draft
 label permits neither wrong facts nor unaccepted/cancelled work claimed as commitments.
+
+After inspecting the normal and incomplete authored previews, the owner said “Yeah these
+look good!” The preview format is approved. This does not establish generated quality,
+measured editing-time savings or current synthetic Obsidian acceptance.
 
 The prospective contract in plan.md allows clear section-level incompleteness while
 retaining independently useful work. It requires focused source/context, not a generic
@@ -113,17 +117,26 @@ Formatting, lint, strict types and **1016 offline tests** pass, including 38 pro
 checks; six integration tests excluded. All **396 historical + 67 V11 + 23 sealed result
 entries** remain unchanged, and seventeen wrapper-9 generations replay exactly.
 Reproducible authored previews and passing engineering tests establish no model quality
-or owner usefulness acceptance. Capture is unchanged.
+or measured owner editing-time benefit. Capture is unchanged.
 
 ## Next decision and authorization
 
-Review the normal and incomplete previews for whether their suggestions and source
-presentation would save editing time. The format remains a sketch for the owner to judge.
-Then predeclare one small diagnostic experiment with exact cases, repetitions, settings,
-separate request/time ceilings and a stopping rule. A model-facing wire/prompt contract
-and any isolated generator need their own bounded implementation/review before inference.
-Change one capability at a time, preserve every original input/verdict, and include honest
-fresh-case provenance for final assessment. Prototype authorization grants no model calls.
+The format feedback is recorded. The isolated `generation.py` now prepares the small
+model-facing schema/prompt, binds output to saved snapshot/host generation identity and
+decodes one response using only an explicit injected transport. It has no default network
+transport or production imports. Fake responses exercise shape, source-kind, identity,
+unavailable-section and failure behavior; they establish no model capability.
+The combined offline suite passes 1046 tests (30 additional generator checks), plus
+formatting, lint and strict types; six integration tests remain excluded.
+
+The [first diagnostic proposal](prototypes/reviewable_draft/EXPERIMENT.md) predeclares six
+familiar cases, one request each, unchanged qwen3:30b settings, a proposed six-request /
+fifteen-minute ceiling and explicit stopping/assessment rules. No baseline, corrections
+or retries are proposed. These ceilings are pending separate owner approval, not a grant.
+Next implement/review the timed capture driver and freeze exact source, packets, input
+hashes and expected local model identity before inference. The preparation API does not
+implement the timed run or prove its ceilings. Keep every original input/verdict and
+honest fresh-case provenance. Format approval and offline preparation grant no model calls.
 
 Passing prospective quality, current synthetic Obsidian usefulness acceptance and the
 owner's `shipit` remain required before Built/merge. Numerical latency/review-effort

@@ -5,6 +5,12 @@ no model, recording, vault, production CLI, pipeline, store, prompt or saved wra
 used. Authored examples demonstrate intended behavior, not model capability, a passing
 quality evaluation or owner usefulness acceptance. V11's failed results remain unchanged.
 
+The owner approved the normal and incomplete preview format on 2026-11-13. That is format
+feedback; generated quality and actual editing effort remain untested. The next
+[six-case diagnostic proposal](EXPERIMENT.md) has a transport-free request builder and
+decoder in `generation.py`. Only offline fake-response checks have run; the timed
+run/capture driver, freeze and separate inference approval still precede model calls.
+
 ## Try the previews
 
 Start with the [normal draft](previews/additional.md), the
