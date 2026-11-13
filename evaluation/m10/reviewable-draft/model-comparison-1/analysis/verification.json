@@ -1,0 +1,227 @@
+{
+  "freeze_sha256": "0c08baba4e1a1524f7ba8fa8b8c74e1a2b4b38fb8cc6798dd3c28c356d450c7d",
+  "source_commit": "3275c1d380fbda9d2fd76f429c4c6014dfd03843",
+  "prior_entries_verified": 913,
+  "freeze_entries_verified": 30,
+  "baseline_artifacts_verified": 179,
+  "capture_inventory_sha256": "1da63d1cde30f2bf09d337bf334737155fa1d84231a3e33c455cdfe0a90773dc",
+  "http_exchanges": {
+    "GET": 20,
+    "POST": 5
+  },
+  "http_errors": [
+    {
+      "path": "01-02-accepted_status_answer/response/exchange.json",
+      "error": "TimeoutExpired: Command '['/Users/matthewsumner/development/meeting-notes/.venv/bin/python', '-B', '/Users/matthewsumner/development/meeting-notes/prototypes/reviewable_draft/_http.py', 'POST', '/api/chat', 'evaluation/m10/reviewable-draft/model-comparison-1/results/01-02-accepted_status_answer/request.json', '/Users/matthewsumner/development/meeting-notes/evaluation/m10/reviewable-draft/model-comparison-1/results/01-02-accepted_status_answer/response', '600', '31830bb17204c729a13ae2ad6bd422c7ad7e0554f4522419fdef121b71843c9e']' timed out after 600 seconds",
+      "status": null
+    },
+    {
+      "path": "02-03-partial_coordination_retracted/response/exchange.json",
+      "error": "TimeoutExpired: Command '['/Users/matthewsumner/development/meeting-notes/.venv/bin/python', '-B', '/Users/matthewsumner/development/meeting-notes/prototypes/reviewable_draft/_http.py', 'POST', '/api/chat', 'evaluation/m10/reviewable-draft/model-comparison-1/results/02-03-partial_coordination_retracted/request.json', '/Users/matthewsumner/development/meeting-notes/evaluation/m10/reviewable-draft/model-comparison-1/results/02-03-partial_coordination_retracted/response', '600', '8fdee41ddcb8fee1fc2732164987907355fbaa84c7b70622812d1220d94ad4bb']' timed out after 600 seconds",
+      "status": null
+    }
+  ],
+  "requested": 12,
+  "possibly_sent": 5,
+  "complete": 3,
+  "failed": 2,
+  "unsent": 7,
+  "incomplete": 0,
+  "retries": 0,
+  "elapsed_seconds": 1381.0144846659387,
+  "overrun_seconds": 0,
+  "arms": [
+    {
+      "arm": 1,
+      "elapsed": 719.4382419999456,
+      "overrun_seconds": 0,
+      "stopping_reason": "_ArmStop: TimeoutExpired: Command '['/Users/matthewsumner/development/meeting-notes/.venv/bin/python', '-B', '/Users/matthewsumner/development/meeting-notes/prototypes/reviewable_draft/_http.py', 'POST', '/api/chat', 'evaluation/m10/reviewable-draft/model-comparison-1/results/01-02-accepted_status_answer/request.json', '/Users/matthewsumner/development/meeting-notes/evaluation/m10/reviewable-draft/model-comparison-1/results/01-02-accepted_status_answer/response', '600', '31830bb17204c729a13ae2ad6bd422c7ad7e0554f4522419fdef121b71843c9e']' timed out after 600 seconds"
+    },
+    {
+      "arm": 2,
+      "elapsed": 661.2497201249935,
+      "overrun_seconds": 0,
+      "stopping_reason": "_ArmStop: TimeoutExpired: Command '['/Users/matthewsumner/development/meeting-notes/.venv/bin/python', '-B', '/Users/matthewsumner/development/meeting-notes/prototypes/reviewable_draft/_http.py', 'POST', '/api/chat', 'evaluation/m10/reviewable-draft/model-comparison-1/results/02-03-partial_coordination_retracted/request.json', '/Users/matthewsumner/development/meeting-notes/evaluation/m10/reviewable-draft/model-comparison-1/results/02-03-partial_coordination_retracted/response', '600', '8fdee41ddcb8fee1fc2732164987907355fbaa84c7b70622812d1220d94ad4bb']' timed out after 600 seconds"
+    }
+  ],
+  "rows": [
+    {
+      "slot": "01-01-unit_equivalence",
+      "model": "qwen3.5:9b-q4_K_M",
+      "possibly_sent": true,
+      "complete": true,
+      "partial_issues": 0,
+      "identity": {
+        "before": true,
+        "after": true
+      },
+      "elapsed_seconds": 117.6231857080711,
+      "timings": {
+        "eval_count": 4080,
+        "eval_duration": 110345844000,
+        "load_duration": 4594726083,
+        "prompt_eval_count": 384,
+        "prompt_eval_duration": 955293000,
+        "total_duration": 115909888375
+      }
+    },
+    {
+      "slot": "01-02-accepted_status_answer",
+      "model": "qwen3.5:9b-q4_K_M",
+      "possibly_sent": true,
+      "complete": false,
+      "partial_issues": 0,
+      "identity": {
+        "before": true,
+        "after": true
+      },
+      "elapsed_seconds": 601.4869967919076,
+      "timings": {}
+    },
+    {
+      "slot": "01-03-partial_coordination_retracted",
+      "model": "qwen3.5:9b-q4_K_M",
+      "possibly_sent": false,
+      "complete": false,
+      "partial_issues": 0,
+      "identity": {
+        "before": null,
+        "after": null
+      },
+      "elapsed_seconds": 0,
+      "timings": {}
+    },
+    {
+      "slot": "01-04-cancellation_with_new_task",
+      "model": "qwen3.5:9b-q4_K_M",
+      "possibly_sent": false,
+      "complete": false,
+      "partial_issues": 0,
+      "identity": {
+        "before": null,
+        "after": null
+      },
+      "elapsed_seconds": 0,
+      "timings": {}
+    },
+    {
+      "slot": "01-05-qualified_external_timing",
+      "model": "qwen3.5:9b-q4_K_M",
+      "possibly_sent": false,
+      "complete": false,
+      "partial_issues": 0,
+      "identity": {
+        "before": null,
+        "after": null
+      },
+      "elapsed_seconds": 0,
+      "timings": {}
+    },
+    {
+      "slot": "01-06-additional",
+      "model": "qwen3.5:9b-q4_K_M",
+      "possibly_sent": false,
+      "complete": false,
+      "partial_issues": 0,
+      "identity": {
+        "before": null,
+        "after": null
+      },
+      "elapsed_seconds": 0,
+      "timings": {}
+    },
+    {
+      "slot": "02-01-unit_equivalence",
+      "model": "gemma4:12b-it-q4_K_M",
+      "possibly_sent": true,
+      "complete": true,
+      "partial_issues": 0,
+      "identity": {
+        "before": true,
+        "after": true
+      },
+      "elapsed_seconds": 28.007156166946515,
+      "timings": {
+        "eval_count": 551,
+        "eval_duration": 13957392000,
+        "load_duration": 10773017958,
+        "prompt_eval_count": 384,
+        "prompt_eval_duration": 1764662000,
+        "total_duration": 26506784500
+      }
+    },
+    {
+      "slot": "02-02-accepted_status_answer",
+      "model": "gemma4:12b-it-q4_K_M",
+      "possibly_sent": true,
+      "complete": true,
+      "partial_issues": 0,
+      "identity": {
+        "before": true,
+        "after": true
+      },
+      "elapsed_seconds": 31.73953087499831,
+      "timings": {
+        "eval_count": 1184,
+        "eval_duration": 28528493000,
+        "load_duration": 1608542,
+        "prompt_eval_count": 418,
+        "prompt_eval_duration": 1592677000,
+        "total_duration": 30164841500
+      }
+    },
+    {
+      "slot": "02-03-partial_coordination_retracted",
+      "model": "gemma4:12b-it-q4_K_M",
+      "possibly_sent": true,
+      "complete": false,
+      "partial_issues": 0,
+      "identity": {
+        "before": true,
+        "after": true
+      },
+      "elapsed_seconds": 601.5025309580378,
+      "timings": {}
+    },
+    {
+      "slot": "02-04-cancellation_with_new_task",
+      "model": "gemma4:12b-it-q4_K_M",
+      "possibly_sent": false,
+      "complete": false,
+      "partial_issues": 0,
+      "identity": {
+        "before": null,
+        "after": null
+      },
+      "elapsed_seconds": 0,
+      "timings": {}
+    },
+    {
+      "slot": "02-05-qualified_external_timing",
+      "model": "gemma4:12b-it-q4_K_M",
+      "possibly_sent": false,
+      "complete": false,
+      "partial_issues": 0,
+      "identity": {
+        "before": null,
+        "after": null
+      },
+      "elapsed_seconds": 0,
+      "timings": {}
+    },
+    {
+      "slot": "02-06-additional",
+      "model": "gemma4:12b-it-q4_K_M",
+      "possibly_sent": false,
+      "complete": false,
+      "partial_issues": 0,
+      "identity": {
+        "before": null,
+        "after": null
+      },
+      "elapsed_seconds": 0,
+      "timings": {}
+    }
+  ],
+  "quality": "Separate model-name-hidden meaning assessment; no semantic grades inferred from capture/replay."
+}

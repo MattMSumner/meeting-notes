@@ -1,0 +1,294 @@
+[
+  {
+    "id": "empty",
+    "expected": "Retain both spoken tasks and independent release agreement. No written context or conflicts.",
+    "familiar": true,
+    "independent": false
+  },
+  {
+    "id": "sparse",
+    "expected": "Retain both tasks, next-week recovery and monitoring 120. Written focus is separate; no selected option invented.",
+    "familiar": true,
+    "independent": false
+  },
+  {
+    "id": "additional",
+    "expected": "Retain both spoken tasks/dates. Notes-only 40 seats and venue request remain written context.",
+    "familiar": true,
+    "independent": false
+  },
+  {
+    "id": "conflicting",
+    "expected": "Separate unresolved price and date accounts with uncertainty intact; no budget approval invented. Verification survives independently.",
+    "familiar": true,
+    "independent": false
+  },
+  {
+    "id": "ambiguous_dates",
+    "expected": "Preserve full conditional relative due wording. Notes suggestions stay separate; do not invent dates or launch approval.",
+    "familiar": true,
+    "independent": false
+  },
+  {
+    "id": "same_speaker_tasks",
+    "expected": "Retain both tasks; Friday applies only to sending.",
+    "familiar": true,
+    "independent": false
+  },
+  {
+    "id": "coordinated_tasks",
+    "expected": "Retain both tasks and Friday under review if association unclear. No borrowed rollback due.",
+    "familiar": true,
+    "independent": false
+  },
+  {
+    "id": "later_timing",
+    "expected": "Retain original rollback task and later Friday evidence in unverified review; due remains null.",
+    "familiar": true,
+    "independent": false
+  },
+  {
+    "id": "revised_timing",
+    "expected": "Retain original task and later Monday correction under review. Never assign obsolete Friday unqualified.",
+    "familiar": true,
+    "independent": false
+  },
+  {
+    "id": "shared_numbers",
+    "expected": "Explicit unresolved support 120 versus 150 conflict. Monitoring 120 and invoice task survive; shared values do not link subjects.",
+    "familiar": true,
+    "independent": false
+  },
+  {
+    "id": "status_conflict",
+    "expected": "Preserve tentative staging account versus paused-for-repair notes. Separate directly disputed accounts; health-check task survives without unrelated review.",
+    "familiar": true,
+    "independent": false
+  },
+  {
+    "id": "tentative_task",
+    "expected": "Only actual checklist commitment becomes action. Noncommitment stays out of spoken actions.",
+    "familiar": true,
+    "independent": false
+  },
+  {
+    "id": "front_loaded_timing",
+    "expected": "Retain original sending task and complete Next Tuesday under review; never strip qualifier or invent assigned due.",
+    "familiar": true,
+    "independent": false
+  },
+  {
+    "id": "unit_equivalence",
+    "expected": "Same service, period and currency after explicit unit conversion. No false conflict.",
+    "expected_outcomes": [
+      "consistent"
+    ],
+    "familiar": true,
+    "independent": false
+  },
+  {
+    "id": "unit_disagreement",
+    "expected": "Same service and period; currency conversion still leaves a price disagreement.",
+    "expected_outcomes": [
+      "conflicting"
+    ],
+    "familiar": true,
+    "independent": false
+  },
+  {
+    "id": "periods_separate",
+    "expected": "Distinct explicit periods can coexist. Do not assert a price conflict.",
+    "expected_outcomes": [
+      "related-distinct",
+      "additional"
+    ],
+    "familiar": true,
+    "v11_contract_change": "Distinct accounts may retain related transcript context; unmatched additional still has no transcript accounts. Do not call distinct values corroborating.",
+    "independent": false
+  },
+  {
+    "id": "scope_separate",
+    "expected": "Different office scope can explain the amounts. No false conflict.",
+    "expected_outcomes": [
+      "related-distinct",
+      "additional"
+    ],
+    "familiar": true,
+    "v11_contract_change": "Distinct accounts may retain related transcript context; unmatched additional still has no transcript accounts. Do not call distinct values corroborating.",
+    "independent": false
+  },
+  {
+    "id": "estimate_approval",
+    "expected": "Estimate and approved budget have different epistemic roles. Preserve both; review relation rather than assume agreement or hard conflict.",
+    "expected_outcomes": [
+      "uncertain"
+    ],
+    "familiar": true,
+    "independent": false
+  },
+  {
+    "id": "proposal_rejected",
+    "expected": "Same launch proposal has explicitly incompatible approval accounts. Neither becomes an unqualified decision.",
+    "expected_outcomes": [
+      "conflicting"
+    ],
+    "familiar": true,
+    "independent": false
+  },
+  {
+    "id": "tentative_confirmed",
+    "expected": "Tentative speech does not establish confirmation. Preserve uncertainty for review.",
+    "expected_outcomes": [
+      "uncertain"
+    ],
+    "familiar": true,
+    "independent": false
+  },
+  {
+    "id": "additive_context",
+    "expected": "Two claims: consistent support price and unmatched room capacity. Both retained with source separation.",
+    "expected_outcomes": [
+      "consistent",
+      "additional"
+    ],
+    "familiar": true,
+    "independent": false
+  },
+  {
+    "id": "multi_claim_notes",
+    "expected": "Split one note passage into at least three independent claims. Conflict cites support only; monitoring remains factual; venue remains written-only. Keep invoice task and full relative timing.",
+    "expected_outcomes": [
+      "conflicting",
+      "consistent",
+      "additional"
+    ],
+    "familiar": true,
+    "independent": false
+  },
+  {
+    "id": "third_person_commitment",
+    "expected": "Retain the explicit third-person commitment without assigning Sam as owner or inventing a date.",
+    "authorship": "Chief-authored before V11 implementation; not held out or independent quality evidence",
+    "familiar": false,
+    "independent": false
+  },
+  {
+    "id": "implied_commitment",
+    "expected": "Preserve the implied spoken commitment; exact source wording remains available and is not silently dropped.",
+    "authorship": "Chief-authored before V11 implementation; not held out or independent quality evidence",
+    "familiar": false,
+    "independent": false
+  },
+  {
+    "id": "retracted_commitment",
+    "expected": "No executable review task after the explicit same-speaker retraction; retain any uncertainty visibly rather than ignoring context.",
+    "authorship": "Chief-authored before V11 implementation; not held out or independent quality evidence",
+    "familiar": false,
+    "independent": false
+  },
+  {
+    "id": "quoted_commitment",
+    "expected": "A quoted/hypothetical commitment must not create an executable task.",
+    "authorship": "Chief-authored before V11 implementation; not held out or independent quality evidence",
+    "familiar": false,
+    "independent": false
+  },
+  {
+    "id": "status_not_commitment",
+    "expected": "Only checking renewal terms is an action; cost and invoice status remain facts.",
+    "authorship": "Chief-authored before V11 implementation; not held out or independent quality evidence",
+    "familiar": false,
+    "independent": false
+  },
+  {
+    "id": "proposal_not_commitment",
+    "expected": "Only the accepted first-person sending commitment is an action; do not promote the question to Alex's commitment.",
+    "authorship": "Chief-authored before V11 implementation; not held out or independent quality evidence",
+    "familiar": false,
+    "independent": false
+  },
+  {
+    "id": "gap_negation",
+    "expected": "Retain negation and the connector exactly; expose unresolved approval accounts, preserve the independent invoice task, and keep room booking written-only.",
+    "authorship": "Chief-authored before V11 implementation; not held out or independent quality evidence",
+    "familiar": false,
+    "independent": false
+  },
+  {
+    "id": "repeated_note_anchors",
+    "expected": "Cover the full repeated note text without loss of separators or silent deduplication. If split into repeated literal anchors, disambiguate their occurrences. Preserve the independent invoice task.",
+    "authorship": "Chief-authored before V11 implementation; not held out or independent quality evidence",
+    "familiar": false,
+    "independent": false
+  },
+  {
+    "id": "conditional_spoken_commitment",
+    "expected": "Preserve both commitments with the entire legal-approval condition; do not detach Friday from its qualification or borrow it for invoice checking.",
+    "authorship": "Chief-authored before V11 implementation; not held out or independent quality evidence",
+    "familiar": false,
+    "independent": false
+  },
+  {
+    "id": "related_scopes_with_task",
+    "expected": "Retain related but distinct office accounts without asserting conflict or agreement over the values; preserve independent verification and written source separation.",
+    "authorship": "Chief-authored before V11 implementation; not held out or independent quality evidence",
+    "familiar": false,
+    "independent": false
+  },
+  {
+    "id": "accepted_status_answer",
+    "expected": "An affirmative factual availability answer creates no executable action; do not treat every answered question as an accepted task.",
+    "familiar": false,
+    "independent": false,
+    "authorship": "Chief-authored from independent code-review probes before any V11 inference; development material, not held-out quality evidence"
+  },
+  {
+    "id": "accepted_request_retracted",
+    "expected": "The explicit same-speaker retraction cancels the accepted sending task. Do not protect a cancelled action during correction.",
+    "familiar": false,
+    "independent": false,
+    "authorship": "Chief-authored from independent code-review probes before any V11 inference; development material, not held-out quality evidence"
+  },
+  {
+    "id": "cancellation_with_new_task",
+    "expected": "The review task is cancelled, while the new invoice-sending undertaking survives. A cancellation marker cannot erase the new promise.",
+    "familiar": false,
+    "independent": false,
+    "authorship": "Chief-authored from independent code-review probes before any V11 inference; development material, not held-out quality evidence"
+  },
+  {
+    "id": "partial_coordination_retracted",
+    "expected": "Do not execute the cancelled review. Preserve the independent sending undertaking, either as safely admitted evidence or explicit non-executable review with the complete original and retraction; do not silently omit all work.",
+    "familiar": false,
+    "independent": false,
+    "authorship": "Chief-authored from independent code-review probes before any V11 inference; development material, not held-out quality evidence"
+  },
+  {
+    "id": "qualified_external_timing",
+    "expected": "Keep the sending task and the full later timing statement under association review, including Not before, next and unless finance objects. Do not publish a bare Friday due date or truncated timing review.",
+    "familiar": false,
+    "independent": false,
+    "authorship": "Chief-authored from independent code-review probes before any V11 inference; development material, not held-out quality evidence"
+  },
+  {
+    "id": "approximate_timing",
+    "expected": "Preserve all three undertakings and each complete approximate/not-before timing qualifier, in supported due wording or full-source timing review; never assign bare Friday, Monday or after Tuesday with qualifiers removed.",
+    "familiar": false,
+    "independent": false,
+    "authorship": "Chief-authored from independent code-review probes before any V11 inference; development material, not held-out quality evidence"
+  },
+  {
+    "id": "mixed_owner_cancellation",
+    "expected": "Do not execute the withdrawn sending task or assign both tasks to Sam. Preserve the independent review undertaking and complete mixed-owner coordination/retraction as non-executable review if scope cannot safely be isolated.",
+    "familiar": false,
+    "independent": false,
+    "authorship": "Chief-authored from the focused independent core recheck before V11 inference; not held-out quality evidence"
+  },
+  {
+    "id": "accepted_coordination_retracted",
+    "expected": "Preserve the complete request, acceptance and partial retraction, including the still-relevant review work, in visible review. Do not publish cancelled sending or a bare Yes that hides task/retraction context.",
+    "familiar": false,
+    "independent": false,
+    "authorship": "Chief-authored from the focused independent core recheck before V11 inference; not held-out quality evidence"
+  }
+]

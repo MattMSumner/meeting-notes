@@ -1,0 +1,140 @@
+{
+  "frozen_entries_verified": 19,
+  "http_exchanges": {
+    "POST": 2,
+    "GET": 8
+  },
+  "elapsed_seconds": 184.8139642920578,
+  "captured_raw_responses": 2,
+  "compiled_drafts": 1,
+  "unsent": 4,
+  "rows": [
+    {
+      "case": "additional",
+      "status": "CAPTURE_COMPLETE",
+      "reproduces": true
+    },
+    {
+      "case": "unit_equivalence",
+      "status": "DECODE_FAILURE",
+      "error": "Source references must be unique",
+      "reproduces": true
+    },
+    {
+      "case": "accepted_status_answer",
+      "status": "UNSENT"
+    },
+    {
+      "case": "cancellation_with_new_task",
+      "status": "UNSENT"
+    },
+    {
+      "case": "partial_coordination_retracted",
+      "status": "UNSENT"
+    },
+    {
+      "case": "qualified_external_timing",
+      "status": "UNSENT"
+    }
+  ],
+  "quality_assessment": "separate; incomplete diagnostic, no quality pass",
+  "historical_manifest_entries_verified": 486,
+  "historical_manifests": [
+    {
+      "manifest": "evaluation/m10/results/sha256.json",
+      "entries": 9
+    },
+    {
+      "manifest": "evaluation/m10/sha256.json",
+      "entries": 18
+    },
+    {
+      "manifest": "evaluation/m10/v10/results/sha256.json",
+      "entries": 14
+    },
+    {
+      "manifest": "evaluation/m10/v10/sha256.json",
+      "entries": 42
+    },
+    {
+      "manifest": "evaluation/m10/v11/results/sha256.json",
+      "entries": 23
+    },
+    {
+      "manifest": "evaluation/m10/v11/sha256.json",
+      "entries": 67
+    },
+    {
+      "manifest": "evaluation/m10/v2/results/sha256.json",
+      "entries": 9
+    },
+    {
+      "manifest": "evaluation/m10/v2/sha256.json",
+      "entries": 20
+    },
+    {
+      "manifest": "evaluation/m10/v3/results/sha256.json",
+      "entries": 9
+    },
+    {
+      "manifest": "evaluation/m10/v3/sha256.json",
+      "entries": 23
+    },
+    {
+      "manifest": "evaluation/m10/v4/results/sha256.json",
+      "entries": 9
+    },
+    {
+      "manifest": "evaluation/m10/v4/sha256.json",
+      "entries": 28
+    },
+    {
+      "manifest": "evaluation/m10/v5/results/sha256.json",
+      "entries": 9
+    },
+    {
+      "manifest": "evaluation/m10/v5/sha256.json",
+      "entries": 31
+    },
+    {
+      "manifest": "evaluation/m10/v6/results/sha256.json",
+      "entries": 9
+    },
+    {
+      "manifest": "evaluation/m10/v6/sha256.json",
+      "entries": 33
+    },
+    {
+      "manifest": "evaluation/m10/v7/results/sha256.json",
+      "entries": 9
+    },
+    {
+      "manifest": "evaluation/m10/v7/sha256.json",
+      "entries": 36
+    },
+    {
+      "manifest": "evaluation/m10/v8/results/sha256.json",
+      "entries": 10
+    },
+    {
+      "manifest": "evaluation/m10/v8/sha256.json",
+      "entries": 33
+    },
+    {
+      "manifest": "evaluation/m10/v9/results/sha256.json",
+      "entries": 9
+    },
+    {
+      "manifest": "evaluation/m10/v9/sha256.json",
+      "entries": 36
+    }
+  ],
+  "first_freeze_entries_verified": 18,
+  "first_results_entries_verified": 157,
+  "first_diagnostic_drafts_replayed": 6,
+  "identity_checks": "All eight metadata exchanges match the frozen version/model/digest before and after both requests.",
+  "request_and_response_bindings": "Both requests match frozen packets; both HTTP200 done=true done_reason=stop; one exact draft replay and one exact rejection replay.",
+  "no_retries": true,
+  "freeze_commit": "77fd9d3526ce8759ab9915c852209be820d84c0b",
+  "candidate_commit": "9e369ad51b55ed324a5377463e76822a5951def6"
+}

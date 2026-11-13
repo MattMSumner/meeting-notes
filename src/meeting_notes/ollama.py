@@ -5,23 +5,35 @@ import json
 import urllib.error
 import urllib.request
 from collections.abc import Callable
+from copy import deepcopy
 from importlib import resources
 from typing import Any, cast
 
-from meeting_notes.figures import unsaid_numbers
+from meeting_notes.audit import V11Attempt, V11Audit, needs_correction, selection_errors
+from meeting_notes.comparison_v11 import Comparison
+from meeting_notes.comparison_v11 import request_schema as comparison_schema
+from meeting_notes.comparison_v11 import resolve as resolve_comparison
+from meeting_notes.comparison_v11 import validate as validate_comparison
+from meeting_notes.compiler_v11 import Checked, validate
+from meeting_notes.contract_v11 import Draft, request_schema
+from meeting_notes.evidence import comparison_content, meeting_context, source_content
 from meeting_notes.meeting import Meeting
-from meeting_notes.summary import Summary, SummaryError, parse_summary
+from meeting_notes.request_v11 import CHARS_PER_TOKEN as CHARS_PER_TOKEN
+from meeting_notes.request_v11 import (
+    LENGTH_ERROR,
+    MISSING_MESSAGE_ERROR,
+    OVERSIZED_ERROR,
+    request_budget,
+    response_result,
+)
+from meeting_notes.request_v11 import REPLY_TOKENS as REPLY_TOKENS
+from meeting_notes.spans_v11 import snapshot
+from meeting_notes.summary import Summary, SummaryError
 
 # Sends a JSON request to an Ollama API path and returns the JSON reply.
 Post = Callable[[str, dict[str, Any]], dict[str, Any]]
 
 TIMEOUT_SECONDS = 600
-
-# English transcripts run about 3.5 characters per token with qwen3; 3 errs on the side of
-# saying a transcript won't fit.
-CHARS_PER_TOKEN = 3
-# Room left in the context for the model's thinking and its reply.
-REPLY_TOKENS = 4096
 
 
 def default_prompt() -> str:
@@ -86,96 +98,155 @@ class OllamaSummarizer:
             "{name}", my_name
         )
         self.think = think
+        self.audit = V11Audit()
 
-    def summarize(self, meeting: Meeting, transcript: str) -> Summary:
+    def summarize(
+        self, meeting: Meeting, transcript: str, *, handwritten_text: str = ""
+    ) -> Summary:
+        self.audit = V11Audit(
+            snapshot=snapshot(transcript, handwritten_text),
+            context=meeting_context(meeting),
+            handwritten_original=handwritten_text,
+        )
+        if not any(s.source == "transcript" for s in self.audit.passages):
+            raise SummaryError("No transcript sources available")
         messages = [
             {"role": "system", "content": self.prompt},
             {
                 "role": "user",
-                "content": f"Meeting: {meeting.title}\n"
-                f"Date: {meeting.started_at:%A %Y-%m-%d %H:%M}\n"
-                # From the calendar: lets the model name people and spell names right.
-                + (f"Others invited: {', '.join(meeting.attendees)}\n" if meeting.attendees else "")
-                + f"\nTranscript:\n\n{transcript}",
+                "content": source_content(self.audit.snapshot, self.audit.context),
             },
         ]
-        # Ollama doesn't refuse a prompt that's too long: it quietly drops part of it (in a
-        # test, 7.4k tokens became 2k with a 4k context) and reports only what it kept. So
-        # the check has to happen before sending.
-        estimate = sum(len(m["content"]) for m in messages) // CHARS_PER_TOKEN + REPLY_TOKENS
-        if estimate > self.num_ctx:
+        comparison = self._compare(messages[1]["content"])
+        messages[1]["content"] += comparison_content(comparison)
+        best: Summary | None = None
+        best_warnings = 0
+        previous: Checked | None = None
+        failure = "No valid draft"
+        # One shared correction budget for format, grounding and numeric issues. A
+        # malformed correction cannot replace a structurally valid first candidate.
+        for index in range(2):
+            try:
+                reply = self._chat(messages)
+            except SummaryError:
+                if best is not None:
+                    return best
+                raise
+            attempt = self.audit.attempts[-1]
+            try:
+                draft = Draft.model_validate_json(reply)
+                checked = validate(draft, self.audit.snapshot, comparison, self.audit.context)
+                attempt.compilation = checked.evidence
+                attempt.selection_errors = selection_errors(previous, checked)
+                attempt.blocking = [*checked.blocking, *attempt.selection_errors]
+                attempt.warnings = checked.warnings
+                previous = checked
+                if checked.summary is not None and not attempt.blocking:
+                    if best is None or (len(checked.warnings) < best_warnings):
+                        best, best_warnings = checked.summary, len(checked.warnings)
+                        self.audit.selected = index
+                    if not needs_correction(checked.warnings):
+                        return best
+            except ValueError as error:
+                attempt.blocking = [f"Invalid draft: {error}"]
+            issues = attempt.blocking + attempt.warnings
+            failure = "; ".join(issues)
+            messages += [
+                {"role": "assistant", "content": reply},
+                {
+                    "role": "user",
+                    "content": "Correct these validation issues without dropping "
+                    "valid commitments or hiding conflicts: " + failure + ". Return JSON only.",
+                },
+            ]
+        if best is not None:
+            return best
+        raise SummaryError("Enhancement failed evidence validation: " + failure)
+
+    def _compare(self, inputs: str) -> Comparison:
+        if not any(s.source == "notes" for s in self.audit.passages):
+            return Comparison(claims=[])
+        prompt = resources.files("meeting_notes").joinpath("prompts/comparison.md").read_text()
+        messages = [
+            {"role": "system", "content": prompt},
+            {"role": "user", "content": inputs},
+        ]
+        failure = "Incomplete claim coverage"
+        for index in range(2):
+            reply = self._chat(
+                messages,
+                schema=comparison_schema(self.audit.passages),
+                attempts=self.audit.comparison_attempts,
+            )
+            attempt = self.audit.comparison_attempts[-1]
+            try:
+                comparison = Comparison.model_validate_json(reply)
+                attempt.resolution = resolve_comparison(comparison, self.audit.passages)
+                attempt.blocking = validate_comparison(comparison, self.audit.passages)
+                if not attempt.blocking:
+                    self.audit.comparison_selected = index
+                    return comparison
+            except ValueError as error:
+                attempt.blocking = [f"Invalid comparison: {error}"]
+            failure = "; ".join(attempt.blocking)
+            messages += [
+                {"role": "assistant", "content": reply},
+                {
+                    "role": "user",
+                    "content": "Correct comparison coverage and references: "
+                    + failure
+                    + ". Preserve every claim and all qualifiers. Return JSON only.",
+                },
+            ]
+        raise SummaryError("Comparison failed; coverage requires review: " + failure)
+
+    def _chat(
+        self,
+        messages: list[dict[str, str]],
+        *,
+        schema: dict[str, Any] | None = None,
+        attempts: list[V11Attempt] | None = None,
+    ) -> str:
+        if schema is None:
+            schema = request_schema(
+                [s.id for s in self.audit.passages if s.source == "transcript"],
+                [s.id for s in self.audit.passages if s.source == "notes"],
+            )
+        body: dict[str, Any] = {
+            "model": self.model,
+            "messages": deepcopy(messages),
+            "stream": False,
+            "think": self.think,
+            "format": schema,
+            "options": {"num_ctx": self.num_ctx, "temperature": 0},
+        }
+        attempt = V11Attempt(request=deepcopy(body))
+        (self.audit.attempts if attempts is None else attempts).append(attempt)
+        try:
+            estimate, context = request_budget(body)
+        except ValueError as error:
+            attempt.error = f"Invalid request: {error}"
+            raise OllamaError(attempt.error) from error
+        if estimate > context:
+            attempt.error = OVERSIZED_ERROR
             raise OllamaError(
-                f"The transcript is too long for the model's context (about {estimate} tokens "
-                f"needed, {self.num_ctx} set), so the summary would miss part of it. "
+                f"The complete request is too long for the model's context (about {estimate} "
+                f"tokens needed, {self.num_ctx} set). "
                 f"Raise MEETING_NOTES_NUM_CTX to at least {estimate}."
             )
-        reply, summary = self._ask(messages)
-        # The model sometimes works out a number nobody said, like the rest of a total.
-        # One retry, told which; the retry is kept only if it has fewer such numbers, and
-        # any left are flagged in the note.
-        said = messages[1]["content"]
-        unsaid = unsaid_numbers(summary, said)
-        if not unsaid:
-            return summary
         try:
-            _, retried = self._ask(
-                [
-                    *messages,
-                    {"role": "assistant", "content": reply},
-                    {
-                        "role": "user",
-                        "content": f"Nobody said these numbers: {', '.join(unsaid)}. Use only "
-                        "numbers someone said, and don't work out new ones. Reply again with "
-                        "JSON only.",
-                    },
-                ]
-            )
-        except SummaryError:
-            return summary
-        return retried if len(unsaid_numbers(retried, said)) < len(unsaid) else summary
-
-    def _ask(self, messages: list[dict[str, str]]) -> tuple[str, Summary]:
-        """The model's reply and the summary in it."""
-        reply = self._chat(messages)
-        try:
-            return reply, parse_summary(reply)
+            response = self.post("/api/chat", body)
         except SummaryError as error:
-            # Local models occasionally break the format; one retry, told what was wrong,
-            # almost always fixes it.
-            reply = self._chat(
-                [
-                    *messages,
-                    {"role": "assistant", "content": reply},
-                    {"role": "user", "content": f"{error}. Reply again with JSON only."},
-                ]
-            )
-            return reply, parse_summary(reply)
-
-    def _chat(self, messages: list[dict[str, str]]) -> str:
-        response = self.post(
-            "/api/chat",
-            {
-                "model": self.model,
-                "messages": messages,
-                "stream": False,
-                "think": self.think,
-                # Constrains the reply to the schema, so it's almost always valid.
-                "format": Summary.model_json_schema(),
-                "options": {
-                    # Ollama's default context is a few thousand tokens and it drops the
-                    # start of anything longer without saying so. An hour-long meeting is
-                    # about 10-15k tokens.
-                    "num_ctx": self.num_ctx,
-                    "temperature": 0,
-                },
-            },
-        )
-        if response.get("done_reason") == "length":
+            attempt.error = str(error)
+            raise
+        attempt.response = deepcopy(response)
+        attempt.reply, attempt.error = response_result(response)
+        if attempt.error == LENGTH_ERROR:
             raise OllamaError(
                 f"The model ran out of context ({self.num_ctx} tokens) before finishing its "
                 "reply. Raise MEETING_NOTES_NUM_CTX."
             )
-        try:
-            return str(response["message"]["content"])
-        except (KeyError, TypeError):
+        if attempt.error == MISSING_MESSAGE_ERROR:
             raise OllamaError(f"Ollama's reply had no message: {response!r:.200}") from None
+        assert attempt.reply is not None
+        return attempt.reply

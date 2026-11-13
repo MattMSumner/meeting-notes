@@ -1,0 +1,13 @@
+{
+  "started_at": "2026-11-13T14:44:17.078761+00:00",
+  "pid": 22016,
+  "freeze_commit": "1a3acebc8192647aa114ec16728264cba414ab93",
+  "expected_manifest_sha256": "8c1b2ee279047f3c751311c73e0c9ff4680b0e5cc0afbd7fc4b147d283680168",
+  "approval": {
+    "owner_reply": "I approve",
+    "scope": "six-case reviewable draft diagnostic; one request per case; no retries",
+    "max_requests": 6,
+    "max_elapsed_seconds": 900,
+    "recorded_at": "2026-11-13T09:15:55.755886-05:00"
+  }
+}

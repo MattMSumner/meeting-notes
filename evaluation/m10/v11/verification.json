@@ -1,0 +1,38 @@
+{
+  "kind": "offline source verification; not model quality",
+  "source_commit": "fb3b130fb0d6a48859b96c7e9e74ffbd6152c878",
+  "verified_at": "2026-11-12T18:43:27.132153-05:00",
+  "ruff_format": "pass",
+  "ruff_check": "pass",
+  "pyright": {
+    "errors": 0,
+    "warnings": 0
+  },
+  "pytest": {
+    "passed": 978,
+    "integration_deselected": 6
+  },
+  "capture_changed": false,
+  "swift_tests": "not rerun locally; capture unchanged",
+  "historical_manifest_entries": 396,
+  "historical_wrapper9_replays": 17,
+  "strict_unchanged_v10_replies": {
+    "compiled": 0,
+    "blocked": 0,
+    "unmappable": 43
+  },
+  "independent_source_review": {
+    "verdict": "PASS",
+    "selected_tests_passed": 555,
+    "filesystem_dependent_deselected": 1,
+    "fake_transport_wrapper10_scenarios": 12
+  },
+  "cases": 40,
+  "preserved_v10_pairs": 22,
+  "authored_additions": 18,
+  "independent_held_out_cases": 0,
+  "v11_inference_requests": 0,
+  "model_quality": "not evaluated",
+  "manual_obsidian_acceptance": "not advanced",
+  "m10_built": false
+}

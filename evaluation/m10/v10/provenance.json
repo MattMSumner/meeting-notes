@@ -1,0 +1,10 @@
+{
+  "implementation_commit": "31323dcbd77e8449a130cbed5999ed322b81bfdc",
+  "baseline_commit": "199dd62858b6bda6c13dc749424f6bd9de03f8ba",
+  "previous_freeze_manifest_sha256": "e24daf07a023a1bcd88bce1f892c8d74149c67bdded85ad611385f77648f23ec",
+  "method": "Exact working implementation source copied from implementation_commit; baseline copied byte-for-byte from frozen V9. Source hashes are in sha256.json.",
+  "fixture_count": 22,
+  "original_pairs": 13,
+  "new_pairs": 9,
+  "limitations": "Original 13 cases are familiar; nine new cases were authored with expectations by the implementing agent and are not independent held-out evidence. No generated candidate outputs exist."
+}

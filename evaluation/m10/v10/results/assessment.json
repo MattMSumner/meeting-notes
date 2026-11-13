@@ -1,0 +1,107 @@
+{
+  "assessment_method": "Opaque arm labels scored before reading key. Source scope/output structure reveal arms; not fully blinded or independent. Same implementing agent assessed all rows.",
+  "scoring_conventions": "Six dimensions 0\u20132; blocked outputs score zero in all dimensions and are separately recorded as incomplete, not as published hallucinations. Conservative unassigned timing gets partial dates credit, as in prior reports; undated-task review is polish. Numeric meaning also assesses explicit comparison dimensions, so missing quantities/units can earn partial credit even when quoted final values are correct.",
+  "comparison_failures": [
+    "scope_separate",
+    "tentative_confirmed",
+    "multi_claim_notes"
+  ],
+  "summary_failures": [
+    "periods_separate",
+    "estimate_approval"
+  ],
+  "selected_comparisons": 12,
+  "selected_claims": 18,
+  "selected_outcomes": {
+    "additional": 10,
+    "conflicting": 6,
+    "consistent": 2
+  },
+  "selected_accounts_with_empty_or_literal_null_dimension": [
+    {
+      "case": "additional",
+      "source": "N1",
+      "meaning": {
+        "subject": "null",
+        "quantity": "null",
+        "unit": "null",
+        "period": "null",
+        "scope": "null",
+        "status": "null"
+      }
+    },
+    {
+      "case": "additional",
+      "source": "N1",
+      "meaning": {
+        "subject": "workshop",
+        "quantity": "",
+        "unit": "seats",
+        "period": "null",
+        "scope": "internal",
+        "status": "null"
+      }
+    },
+    {
+      "case": "additional",
+      "source": "N2",
+      "meaning": {
+        "subject": "null",
+        "quantity": "null",
+        "unit": "null",
+        "period": "null",
+        "scope": "null",
+        "status": "null"
+      }
+    },
+    {
+      "case": "additional",
+      "source": "N2",
+      "meaning": {
+        "subject": "null",
+        "quantity": "null",
+        "unit": "null",
+        "period": "null",
+        "scope": "null",
+        "status": "null"
+      }
+    },
+    {
+      "case": "conflicting",
+      "source": "T1",
+      "meaning": {
+        "subject": "budget estimate",
+        "quantity": "",
+        "unit": "thousand dollars",
+        "period": "current",
+        "scope": "synthetic release",
+        "status": "confirmed"
+      }
+    }
+  ],
+  "proposed_critical_failure_cases": [
+    "multi_claim_notes",
+    "scope_separate",
+    "tentative_confirmed",
+    "unit_disagreement",
+    "periods_separate",
+    "estimate_approval"
+  ],
+  "baseline_critical_failure_cases": [
+    "same_speaker_tasks",
+    "tentative_confirmed",
+    "status_conflict",
+    "multi_claim_notes"
+  ],
+  "spoken_commitment_missing_with_blocked_output": [
+    "multi_claim_notes"
+  ],
+  "published_invented_action_cases": [
+    "unit_disagreement"
+  ],
+  "original_13_spoken_commitments_and_independent_agreement_retained": true,
+  "original_13_baseline_summaries_identical_to_v9": 13,
+  "quality_result": "failed: five incomplete proposed outputs and an invented action in a published output; estimate/status comparison also does not satisfy frozen uncertainty expectations",
+  "manual_acceptance": "Not advanced; quality gate failed. Current workflow acceptance remains pending.",
+  "further_inference": "None; no tuning or reruns. Unused request allowance is not reused."
+}

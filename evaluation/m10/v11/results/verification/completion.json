@@ -1,0 +1,3486 @@
+{
+  "verifier": "m10-v11-results",
+  "results_dir": "/Users/matthewsumner/development/meeting-notes/evaluation/m10/v11/results",
+  "manifest_entries": {
+    "historical": 396,
+    "v11": 67
+  },
+  "approved_repetitions": 1,
+  "approved_total_request_cap": 276,
+  "arms": {
+    "baseline": {
+      "recorded_slots": 40,
+      "expected_slots": 40,
+      "outcome_counts": {
+        "complete": 40
+      },
+      "requests": 40,
+      "request_cap": 160,
+      "elapsed_seconds": 1025.4392321250634,
+      "stages": {
+        "summary": {
+          "attempts": 40,
+          "requests": 40,
+          "corrections": 0,
+          "sent_corrections": 0,
+          "unsent": 0,
+          "errors": 0,
+          "transport_errors": 0,
+          "response_errors": 0,
+          "blocked": 0,
+          "unmappable": 0,
+          "selected": 40,
+          "warnings": 0,
+          "measured_server_replies": 40,
+          "server_seconds_total": 1025.1817571670001,
+          "server_seconds_median": 24.0781645005,
+          "server_seconds_max": 73.785846875
+        }
+      },
+      "outcomes": [
+        {
+          "case": "empty",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 1,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 1
+        },
+        {
+          "case": "sparse",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 2,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 1
+        },
+        {
+          "case": "additional",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 3,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 2
+        },
+        {
+          "case": "conflicting",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 4,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "ambiguous_dates",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 5,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 1
+        },
+        {
+          "case": "same_speaker_tasks",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 6,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 1
+        },
+        {
+          "case": "coordinated_tasks",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 7,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 1
+        },
+        {
+          "case": "later_timing",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 8,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 1
+        },
+        {
+          "case": "revised_timing",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 9,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 1
+        },
+        {
+          "case": "shared_numbers",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 10,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "status_conflict",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 11,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "tentative_task",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 12,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 1
+        },
+        {
+          "case": "front_loaded_timing",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 13,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 1
+        },
+        {
+          "case": "unit_equivalence",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 14,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "unit_disagreement",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 15,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "periods_separate",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 16,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "scope_separate",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 17,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "estimate_approval",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 18,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "proposal_rejected",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 19,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "tentative_confirmed",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 20,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "additive_context",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 21,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "multi_claim_notes",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 22,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 1
+        },
+        {
+          "case": "third_person_commitment",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 23,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 1
+        },
+        {
+          "case": "implied_commitment",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 24,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "retracted_commitment",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 25,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "quoted_commitment",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 26,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "status_not_commitment",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 27,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "proposal_not_commitment",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 28,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "gap_negation",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 29,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "repeated_note_anchors",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 30,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "conditional_spoken_commitment",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 31,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 1
+        },
+        {
+          "case": "related_scopes_with_task",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 32,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "accepted_status_answer",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 33,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "accepted_request_retracted",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 34,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "cancellation_with_new_task",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 35,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "partial_coordination_retracted",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 36,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "qualified_external_timing",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 37,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 1
+        },
+        {
+          "case": "approximate_timing",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 38,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 2
+        },
+        {
+          "case": "mixed_owner_cancellation",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 39,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "accepted_coordination_retracted",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "parse_errors": 0,
+          "fallback": false,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "request_number": 40,
+              "sent": true,
+              "selected": true,
+              "correction": null,
+              "status": "compiled",
+              "error": null,
+              "transport_error": null,
+              "response_error": null,
+              "parse_error": null,
+              "warnings": [],
+              "selection_reason": "Selected valid initial summary"
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        }
+      ],
+      "output_sha256": "eadf294150e39cbacc0604e5d14da06ef770f857c8fbe0f47b3a80371108df88"
+    },
+    "proposed": {
+      "recorded_slots": 40,
+      "expected_slots": 40,
+      "outcome_counts": {
+        "complete": 34,
+        "blocked": 6
+      },
+      "requests": 69,
+      "request_cap": 116,
+      "elapsed_seconds": 4900.736566583975,
+      "stages": {
+        "comparison": {
+          "attempts": 22,
+          "requests": 22,
+          "corrections": 4,
+          "sent_corrections": 4,
+          "unsent": 0,
+          "errors": 0,
+          "transport_errors": 0,
+          "response_errors": 0,
+          "blocked": 7,
+          "unmappable": 0,
+          "selected": 15,
+          "warnings": 0,
+          "measured_server_replies": 22,
+          "server_seconds_total": 1679.998047043,
+          "server_seconds_median": 79.79305662499999,
+          "server_seconds_max": 143.482720208
+        },
+        "summary": {
+          "attempts": 47,
+          "requests": 47,
+          "corrections": 10,
+          "sent_corrections": 10,
+          "unsent": 0,
+          "errors": 0,
+          "transport_errors": 0,
+          "response_errors": 0,
+          "blocked": 13,
+          "unmappable": 0,
+          "selected": 34,
+          "warnings": 12,
+          "measured_server_replies": 47,
+          "server_seconds_total": 3220.088443585,
+          "server_seconds_median": 73.807386709,
+          "server_seconds_max": 128.374118708
+        }
+      },
+      "outcomes": [
+        {
+          "case": "empty",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6156
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 1,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "sparse",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 2,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "comparison_selected": 0,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "comparison",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 5864
+            },
+            {
+              "stage": "summary",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6599
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 1,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "additional",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 3,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "comparison_selected": 1,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "comparison",
+              "index": 0,
+              "selected": false,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "blocked",
+              "error": null,
+              "blocking": [
+                "Additional claim must be unmatched: N1",
+                "Additional claim must be unmatched: N2"
+              ],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 5846
+            },
+            {
+              "stage": "comparison",
+              "index": 1,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 7179
+            },
+            {
+              "stage": "summary",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6474
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 2,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "conflicting",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 3,
+          "raw_errors": 0,
+          "selected_attempt": 1,
+          "comparison_selected": 0,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "comparison",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 5873
+            },
+            {
+              "stage": "summary",
+              "index": 0,
+              "selected": false,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "blocked",
+              "error": null,
+              "blocking": [
+                "Noncommitment T4: Timing anchor has no recognized timing expression"
+              ],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6664
+            },
+            {
+              "stage": "summary",
+              "index": 1,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 7156
+            }
+          ],
+          "error": null,
+          "conflicts": 2,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "ambiguous_dates",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 2,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "comparison_selected": 0,
+          "failed_comparison": false,
+          "warnings": [
+            "Comparison review required (N1.C1): handwritten: Follow up after the holiday. Transcript: No match established. Relation: additional. No transcript evidence found for the note.",
+            "Comparison review required (N2.C1): handwritten: Maybe ask Casey to help. Transcript: No match established. Relation: additional. No transcript evidence found for the note."
+          ],
+          "attempts": [
+            {
+              "stage": "comparison",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 5861
+            },
+            {
+              "stage": "summary",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [
+                "Comparison review required (N1.C1): handwritten: Follow up after the holiday. Transcript: No match established. Relation: additional. No transcript evidence found for the note.",
+                "Comparison review required (N2.C1): handwritten: Maybe ask Casey to help. Transcript: No match established. Relation: additional. No transcript evidence found for the note."
+              ],
+              "selection_errors": [],
+              "estimated_tokens": 6466
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 1,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "same_speaker_tasks",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6121
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 1
+        },
+        {
+          "case": "coordinated_tasks",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6111
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 1,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "later_timing",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6125
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 1,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "revised_timing",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 2,
+          "raw_errors": 0,
+          "selected_attempt": 1,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "selected": false,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "blocked",
+              "error": null,
+              "blocking": [
+                "Noncommitment T1: Undertaking must anchor the original commitment"
+              ],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6137
+            },
+            {
+              "stage": "summary",
+              "index": 1,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6673
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 1,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "shared_numbers",
+          "repetition": 1,
+          "status": "blocked",
+          "published": false,
+          "evidence_valid": true,
+          "requests": 2,
+          "raw_errors": 0,
+          "selected_attempt": null,
+          "comparison_selected": null,
+          "failed_comparison": true,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "comparison",
+              "index": 0,
+              "selected": false,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "blocked",
+              "error": null,
+              "blocking": [
+                "N1: Unresolved dimension quantity must have null value",
+                "T2: Unresolved dimension quantity must have null value",
+                "T2: Dimension quantity must be extracted literally from its account",
+                "Unresolved extraction requires an uncertain relation"
+              ],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 5825
+            },
+            {
+              "stage": "comparison",
+              "index": 1,
+              "selected": false,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "blocked",
+              "error": null,
+              "blocking": [
+                "N1: Unresolved dimension quantity must have null value",
+                "T2: Unresolved dimension quantity must have null value",
+                "Unresolved extraction requires an uncertain relation"
+              ],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6347
+            }
+          ],
+          "error": "Comparison failed; coverage requires review: N1: Unresolved dimension quantity must have null value; T2: Unresolved dimension quantity must have null value; Unresolved extraction requires an uncertain relation",
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "status_conflict",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 3,
+          "raw_errors": 0,
+          "selected_attempt": 1,
+          "comparison_selected": 0,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "comparison",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 5811
+            },
+            {
+              "stage": "summary",
+              "index": 0,
+              "selected": false,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "blocked",
+              "error": null,
+              "blocking": [
+                "Noncommitment T2: Timing anchor has no recognized timing expression"
+              ],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6377
+            },
+            {
+              "stage": "summary",
+              "index": 1,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6840
+            }
+          ],
+          "error": null,
+          "conflicts": 1,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "tentative_task",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6158
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 1,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "front_loaded_timing",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6107
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 1,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "unit_equivalence",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 2,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "comparison_selected": 0,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "comparison",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 5783
+            },
+            {
+              "stage": "summary",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6380
+            }
+          ],
+          "error": null,
+          "conflicts": 1,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "unit_disagreement",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 2,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "comparison_selected": 0,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "comparison",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 5783
+            },
+            {
+              "stage": "summary",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6335
+            }
+          ],
+          "error": null,
+          "conflicts": 1,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "periods_separate",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 2,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "comparison_selected": 0,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "comparison",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 5792
+            },
+            {
+              "stage": "summary",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6410
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "scope_separate",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 2,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "comparison_selected": 0,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "comparison",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 5797
+            },
+            {
+              "stage": "summary",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6386
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "estimate_approval",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 3,
+          "raw_errors": 0,
+          "selected_attempt": 1,
+          "comparison_selected": 0,
+          "failed_comparison": false,
+          "warnings": [
+            "Comparison review required (N1.C1): handwritten: The approved support budget is 150 dollars. Transcript: The support estimate is 120 dollars. Relation: related-distinct. The note states an approved budget of 150 dollars for 'support budget', while the transcript states an estimate of 120 dollars for 'support estimate'. The subjects are distinct (approved budget vs estimate) and the numbers differ."
+          ],
+          "attempts": [
+            {
+              "stage": "comparison",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 5792
+            },
+            {
+              "stage": "summary",
+              "index": 0,
+              "selected": false,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "blocked",
+              "error": null,
+              "blocking": [
+                "overview: number 2026 absent from cited evidence (only in metadata)",
+                "overview: number 10 absent from cited evidence (only in metadata)",
+                "overview: number 20 absent from cited evidence (only in metadata)"
+              ],
+              "warnings": [
+                "Comparison review required (N1.C1): handwritten: The approved support budget is 150 dollars. Transcript: The support estimate is 120 dollars. Relation: related-distinct. The note states an approved budget of 150 dollars for 'support budget', while the transcript states an estimate of 120 dollars for 'support estimate'. The subjects are distinct (approved budget vs estimate) and the numbers differ.",
+                "overview: number 2026 absent from cited evidence (only in metadata)",
+                "overview: number 10 absent from cited evidence (only in metadata)",
+                "overview: number 20 absent from cited evidence (only in metadata)"
+              ],
+              "selection_errors": [
+                "overview: number 2026 absent from cited evidence (only in metadata)",
+                "overview: number 10 absent from cited evidence (only in metadata)",
+                "overview: number 20 absent from cited evidence (only in metadata)"
+              ],
+              "estimated_tokens": 6412
+            },
+            {
+              "stage": "summary",
+              "index": 1,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [
+                "Comparison review required (N1.C1): handwritten: The approved support budget is 150 dollars. Transcript: The support estimate is 120 dollars. Relation: related-distinct. The note states an approved budget of 150 dollars for 'support budget', while the transcript states an estimate of 120 dollars for 'support estimate'. The subjects are distinct (approved budget vs estimate) and the numbers differ."
+              ],
+              "selection_errors": [],
+              "estimated_tokens": 6885
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "proposal_rejected",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 2,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "comparison_selected": 0,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "comparison",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 5788
+            },
+            {
+              "stage": "summary",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6396
+            }
+          ],
+          "error": null,
+          "conflicts": 1,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "tentative_confirmed",
+          "repetition": 1,
+          "status": "blocked",
+          "published": false,
+          "evidence_valid": true,
+          "requests": 2,
+          "raw_errors": 0,
+          "selected_attempt": null,
+          "comparison_selected": null,
+          "failed_comparison": true,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "comparison",
+              "index": 0,
+              "selected": false,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "blocked",
+              "error": null,
+              "blocking": [
+                "T1: Dimension status must be extracted literally from its account",
+                "Overt tentative/confirmed relation requires uncertain/related review"
+              ],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 5789
+            },
+            {
+              "stage": "comparison",
+              "index": 1,
+              "selected": false,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "blocked",
+              "error": null,
+              "blocking": [
+                "T1: Dimension status must be extracted literally from its account"
+              ],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6258
+            }
+          ],
+          "error": "Comparison failed; coverage requires review: T1: Dimension status must be extracted literally from its account",
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "additive_context",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 2,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "comparison_selected": 0,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "comparison",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 5800
+            },
+            {
+              "stage": "summary",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6466
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "multi_claim_notes",
+          "repetition": 1,
+          "status": "blocked",
+          "published": false,
+          "evidence_valid": true,
+          "requests": 2,
+          "raw_errors": 0,
+          "selected_attempt": null,
+          "comparison_selected": null,
+          "failed_comparison": true,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "comparison",
+              "index": 0,
+              "selected": false,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "blocked",
+              "error": null,
+              "blocking": [
+                "Unresolved extraction requires an uncertain relation",
+                "Unresolved extraction requires an uncertain relation"
+              ],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 5846
+            },
+            {
+              "stage": "comparison",
+              "index": 1,
+              "selected": false,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "blocked",
+              "error": null,
+              "blocking": [
+                "Unresolved extraction requires an uncertain relation"
+              ],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6975
+            }
+          ],
+          "error": "Comparison failed; coverage requires review: Unresolved extraction requires an uncertain relation",
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "third_person_commitment",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6113
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 1,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "implied_commitment",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6106
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "retracted_commitment",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6130
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "quoted_commitment",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6132
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "status_not_commitment",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6145
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "proposal_not_commitment",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6142
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "gap_negation",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 2,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "comparison_selected": 0,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "comparison",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 5807
+            },
+            {
+              "stage": "summary",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6475
+            }
+          ],
+          "error": null,
+          "conflicts": 1,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "repeated_note_anchors",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 2,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "comparison_selected": 0,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "comparison",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 5811
+            },
+            {
+              "stage": "summary",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6590
+            }
+          ],
+          "error": null,
+          "conflicts": 2,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "conditional_spoken_commitment",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6130
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 1,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "related_scopes_with_task",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 2,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "comparison_selected": 0,
+          "failed_comparison": false,
+          "warnings": [
+            "Comparison review required (N1.C1): handwritten: West office support costs 150 dollars. Transcript: East office support costs 120 dollars. Relation: related-distinct. The handwritten claim specifies West office support costs while the transcript account specifies East office support costs, representing different locations and thus distinct subjects."
+          ],
+          "attempts": [
+            {
+              "stage": "comparison",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 5810
+            },
+            {
+              "stage": "summary",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [
+                "Comparison review required (N1.C1): handwritten: West office support costs 150 dollars. Transcript: East office support costs 120 dollars. Relation: related-distinct. The handwritten claim specifies West office support costs while the transcript account specifies East office support costs, representing different locations and thus distinct subjects."
+              ],
+              "selection_errors": [],
+              "estimated_tokens": 6432
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "accepted_status_answer",
+          "repetition": 1,
+          "status": "blocked",
+          "published": false,
+          "evidence_valid": true,
+          "requests": 2,
+          "raw_errors": 0,
+          "selected_attempt": null,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "selected": false,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "blocked",
+              "error": null,
+              "blocking": [
+                "Noncommitment T2: External timing must follow the original commitment",
+                "No supported content was generated"
+              ],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6115
+            },
+            {
+              "stage": "summary",
+              "index": 1,
+              "selected": false,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "blocked",
+              "error": null,
+              "blocking": [
+                "Noncommitment T2: Timing anchor has no recognized timing expression",
+                "No supported content was generated"
+              ],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6526
+            }
+          ],
+          "error": "Enhancement failed evidence validation: Noncommitment T2: Timing anchor has no recognized timing expression; No supported content was generated",
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "accepted_request_retracted",
+          "repetition": 1,
+          "status": "blocked",
+          "published": false,
+          "evidence_valid": true,
+          "requests": 2,
+          "raw_errors": 0,
+          "selected_attempt": null,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "selected": false,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "blocked",
+              "error": null,
+              "blocking": [
+                "Noncommitment T2: Timing anchor has no recognized timing expression",
+                "Invalid later timing evidence: T3"
+              ],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6135
+            },
+            {
+              "stage": "summary",
+              "index": 1,
+              "selected": false,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "blocked",
+              "error": null,
+              "blocking": [
+                "Noncommitment T2: Same-speaker retraction or example disclaimer"
+              ],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6759
+            }
+          ],
+          "error": "Enhancement failed evidence validation: Noncommitment T2: Same-speaker retraction or example disclaimer",
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "cancellation_with_new_task",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 2,
+          "raw_errors": 0,
+          "selected_attempt": 1,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "selected": false,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "blocked",
+              "error": null,
+              "blocking": [
+                "Noncommitment T2: Undertaking must retain the complete statement and its qualifiers; Timing anchor has no recognized timing expression"
+              ],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6126
+            },
+            {
+              "stage": "summary",
+              "index": 1,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6622
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "partial_coordination_retracted",
+          "repetition": 1,
+          "status": "blocked",
+          "published": false,
+          "evidence_valid": true,
+          "requests": 2,
+          "raw_errors": 0,
+          "selected_attempt": null,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "selected": false,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "blocked",
+              "error": null,
+              "blocking": [
+                "Noncommitment T2: Negated undertaking"
+              ],
+              "warnings": [
+                "Commitment review required (T1), Sam: “I will review the draft and send the invoice.” Retraction scope unresolved; retain full undertaking and retraction; Admissibility unresolved; attributed review only Context (T1): “I will review the draft and send the invoice.” Retraction (T2): “I will not review the draft.”"
+              ],
+              "selection_errors": [],
+              "estimated_tokens": 6129
+            },
+            {
+              "stage": "summary",
+              "index": 1,
+              "selected": false,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "blocked",
+              "error": null,
+              "blocking": [
+                "Noncommitment T2: Negated undertaking"
+              ],
+              "warnings": [
+                "Commitment review required (T1), Sam: “I will review the draft and send the invoice.” Retraction scope unresolved; retain full undertaking and retraction; Admissibility unresolved; attributed review only Context (T1): “I will review the draft and send the invoice.” Retraction (T2): “I will not review the draft.”"
+              ],
+              "selection_errors": [],
+              "estimated_tokens": 6781
+            }
+          ],
+          "error": "Enhancement failed evidence validation: Noncommitment T2: Negated undertaking; Commitment review required (T1), Sam: “I will review the draft and send the invoice.” Retraction scope unresolved; retain full undertaking and retraction; Admissibility unresolved; attributed review only Context (T1): “I will review the draft and send the invoice.” Retraction (T2): “I will not review the draft.”",
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "qualified_external_timing",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6128
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 1,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "approximate_timing",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 1,
+          "raw_errors": 0,
+          "selected_attempt": 0,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6157
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 3,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "mixed_owner_cancellation",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 2,
+          "raw_errors": 0,
+          "selected_attempt": 1,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [
+            "Commitment review required (T1), Sam: “I will review the draft and Ravi will send the invoice.” Retraction scope unresolved; retain full undertaking and retraction; Admissibility unresolved; attributed review only Context (T1): “I will review the draft and Ravi will send the invoice.” Retraction (T2): “Ravi will not send the invoice.”"
+          ],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "selected": false,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "blocked",
+              "error": null,
+              "blocking": [
+                "Noncommitment T1: Undertaking must retain the complete statement and its qualifiers"
+              ],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6134
+            },
+            {
+              "stage": "summary",
+              "index": 1,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [
+                "Commitment review required (T1), Sam: “I will review the draft and Ravi will send the invoice.” Retraction scope unresolved; retain full undertaking and retraction; Admissibility unresolved; attributed review only Context (T1): “I will review the draft and Ravi will send the invoice.” Retraction (T2): “Ravi will not send the invoice.”"
+              ],
+              "selection_errors": [],
+              "estimated_tokens": 6560
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        },
+        {
+          "case": "accepted_coordination_retracted",
+          "repetition": 1,
+          "status": "complete",
+          "published": true,
+          "evidence_valid": true,
+          "requests": 2,
+          "raw_errors": 0,
+          "selected_attempt": 1,
+          "comparison_selected": null,
+          "failed_comparison": false,
+          "warnings": [
+            "Commitment review required (T2), Ravi: “Request: Could you review the draft and send the invoice? Acceptance: Yes.” Retraction scope unresolved; retain full undertaking and retraction; Admissibility unresolved; attributed review only Context (T1): “Could you review the draft and send the invoice?” Retraction (T3): “I will not send the invoice.”"
+          ],
+          "attempts": [
+            {
+              "stage": "summary",
+              "index": 0,
+              "selected": false,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "blocked",
+              "error": null,
+              "blocking": [
+                "Noncommitment T2: Timing anchor has no recognized timing expression",
+                "Duplicate original commitment: T2",
+                "Invalid later timing evidence: T3"
+              ],
+              "warnings": [],
+              "selection_errors": [],
+              "estimated_tokens": 6142
+            },
+            {
+              "stage": "summary",
+              "index": 1,
+              "selected": true,
+              "sent": true,
+              "unsent_reason": null,
+              "status": "compiled",
+              "error": null,
+              "blocking": [],
+              "warnings": [
+                "Commitment review required (T2), Ravi: “Request: Could you review the draft and send the invoice? Acceptance: Yes.” Retraction scope unresolved; retain full undertaking and retraction; Admissibility unresolved; attributed review only Context (T1): “Could you review the draft and send the invoice?” Retraction (T3): “I will not send the invoice.”"
+              ],
+              "selection_errors": [],
+              "estimated_tokens": 6819
+            }
+          ],
+          "error": null,
+          "conflicts": 0,
+          "review_items": 0,
+          "assigned_due_values": 0
+        }
+      ],
+      "output_sha256": "745757def8cb4bf24e6a76b43b9d74eca8c459d72598590569f782112dc0ae4b"
+    }
+  },
+  "quality": {
+    "status": "not_assessed",
+    "reason": "Requires semantic scoring against frozen rubric/expected.json. IDs, valid schemas and faithful replay do not establish quality."
+  },
+  "latency_basis": "Arm wall times and raw response total_duration; failed requests may have no server duration. Frozen runner has no per-request client wall timer.",
+  "failures": [
+    {
+      "kind": "completion",
+      "location": "proposed/shared_numbers/1",
+      "message": "Slot lacks a valid published selection or replay"
+    },
+    {
+      "kind": "completion",
+      "location": "proposed/tentative_confirmed/1",
+      "message": "Slot lacks a valid published selection or replay"
+    },
+    {
+      "kind": "completion",
+      "location": "proposed/multi_claim_notes/1",
+      "message": "Slot lacks a valid published selection or replay"
+    },
+    {
+      "kind": "completion",
+      "location": "proposed/accepted_status_answer/1",
+      "message": "Slot lacks a valid published selection or replay"
+    },
+    {
+      "kind": "completion",
+      "location": "proposed/accepted_request_retracted/1",
+      "message": "Slot lacks a valid published selection or replay"
+    },
+    {
+      "kind": "completion",
+      "location": "proposed/partial_coordination_retracted/1",
+      "message": "Slot lacks a valid published selection or replay"
+    }
+  ],
+  "historical_replay": {
+    "historical_manifest_entries": 396,
+    "wrapper9_replays": 17,
+    "compatibility_kind": "Strict unchanged archived replies; no field conversion",
+    "counts": {
+      "comparison_attempts": {
+        "compiled": 0,
+        "blocked": 0,
+        "unmappable": 19
+      },
+      "summary_attempts": {
+        "compiled": 0,
+        "blocked": 0,
+        "unmappable": 24
+      },
+      "cases": {
+        "compiled": 0,
+        "blocked": 0,
+        "unmappable": 22
+      }
+    },
+    "cases": [
+      {
+        "case": "empty",
+        "strict_v11_status": "unmappable"
+      },
+      {
+        "case": "sparse",
+        "strict_v11_status": "unmappable"
+      },
+      {
+        "case": "additional",
+        "strict_v11_status": "unmappable"
+      },
+      {
+        "case": "conflicting",
+        "strict_v11_status": "unmappable"
+      },
+      {
+        "case": "ambiguous_dates",
+        "strict_v11_status": "unmappable"
+      },
+      {
+        "case": "same_speaker_tasks",
+        "strict_v11_status": "unmappable"
+      },
+      {
+        "case": "coordinated_tasks",
+        "strict_v11_status": "unmappable"
+      },
+      {
+        "case": "later_timing",
+        "strict_v11_status": "unmappable"
+      },
+      {
+        "case": "revised_timing",
+        "strict_v11_status": "unmappable"
+      },
+      {
+        "case": "shared_numbers",
+        "strict_v11_status": "unmappable"
+      },
+      {
+        "case": "status_conflict",
+        "strict_v11_status": "unmappable"
+      },
+      {
+        "case": "tentative_task",
+        "strict_v11_status": "unmappable"
+      },
+      {
+        "case": "front_loaded_timing",
+        "strict_v11_status": "unmappable"
+      },
+      {
+        "case": "unit_equivalence",
+        "strict_v11_status": "unmappable"
+      },
+      {
+        "case": "unit_disagreement",
+        "strict_v11_status": "unmappable"
+      },
+      {
+        "case": "periods_separate",
+        "strict_v11_status": "unmappable"
+      },
+      {
+        "case": "scope_separate",
+        "strict_v11_status": "unmappable"
+      },
+      {
+        "case": "estimate_approval",
+        "strict_v11_status": "unmappable"
+      },
+      {
+        "case": "proposal_rejected",
+        "strict_v11_status": "unmappable"
+      },
+      {
+        "case": "tentative_confirmed",
+        "strict_v11_status": "unmappable"
+      },
+      {
+        "case": "additive_context",
+        "strict_v11_status": "unmappable"
+      },
+      {
+        "case": "multi_claim_notes",
+        "strict_v11_status": "unmappable"
+      }
+    ],
+    "limitations": "Schema incompatibility is not a semantic repair. Authored V11 fake responses and fresh model quality evaluation are separate evidence."
+  },
+  "environment": {
+    "stable": true,
+    "model_digest": "ad815644918f0eaab341c12b67837cc6dd4562342cdaf118f83d5d554cb37226",
+    "ollama_version": "0.40.9"
+  },
+  "frozen_imports": {
+    "baseline": {
+      "meeting_notes": "/Users/matthewsumner/development/meeting-notes/evaluation/m10/v11/baseline/meeting_notes/__init__.py",
+      "meeting_notes.meeting": "/Users/matthewsumner/development/meeting-notes/evaluation/m10/v11/baseline/meeting_notes/meeting.py",
+      "meeting_notes.summary": "/Users/matthewsumner/development/meeting-notes/evaluation/m10/v11/baseline/meeting_notes/summary.py",
+      "meeting_notes.figures": "/Users/matthewsumner/development/meeting-notes/evaluation/m10/v11/baseline/meeting_notes/figures.py",
+      "meeting_notes.ollama": "/Users/matthewsumner/development/meeting-notes/evaluation/m10/v11/baseline/meeting_notes/ollama.py"
+    },
+    "proposed": {
+      "meeting_notes": "/Users/matthewsumner/development/meeting-notes/evaluation/m10/v11/proposed/meeting_notes/__init__.py",
+      "meeting_notes.meeting": "/Users/matthewsumner/development/meeting-notes/evaluation/m10/v11/proposed/meeting_notes/meeting.py",
+      "meeting_notes.summary": "/Users/matthewsumner/development/meeting-notes/evaluation/m10/v11/proposed/meeting_notes/summary.py",
+      "meeting_notes.figures": "/Users/matthewsumner/development/meeting-notes/evaluation/m10/v11/proposed/meeting_notes/figures.py",
+      "meeting_notes.grounding": "/Users/matthewsumner/development/meeting-notes/evaluation/m10/v11/proposed/meeting_notes/grounding.py",
+      "meeting_notes.contract_v4": "/Users/matthewsumner/development/meeting-notes/evaluation/m10/v11/proposed/meeting_notes/contract_v4.py",
+      "meeting_notes.compiler_v4": "/Users/matthewsumner/development/meeting-notes/evaluation/m10/v11/proposed/meeting_notes/compiler_v4.py",
+      "meeting_notes.spans_v11": "/Users/matthewsumner/development/meeting-notes/evaluation/m10/v11/proposed/meeting_notes/spans_v11.py",
+      "meeting_notes.comparison_v11": "/Users/matthewsumner/development/meeting-notes/evaluation/m10/v11/proposed/meeting_notes/comparison_v11.py",
+      "meeting_notes.contract": "/Users/matthewsumner/development/meeting-notes/evaluation/m10/v11/proposed/meeting_notes/contract.py",
+      "meeting_notes.coverage": "/Users/matthewsumner/development/meeting-notes/evaluation/m10/v11/proposed/meeting_notes/coverage.py",
+      "meeting_notes.compiler": "/Users/matthewsumner/development/meeting-notes/evaluation/m10/v11/proposed/meeting_notes/compiler.py",
+      "meeting_notes.contract_v11": "/Users/matthewsumner/development/meeting-notes/evaluation/m10/v11/proposed/meeting_notes/contract_v11.py",
+      "meeting_notes.commitments_v11": "/Users/matthewsumner/development/meeting-notes/evaluation/m10/v11/proposed/meeting_notes/commitments_v11.py",
+      "meeting_notes.compiler_v11": "/Users/matthewsumner/development/meeting-notes/evaluation/m10/v11/proposed/meeting_notes/compiler_v11.py",
+      "meeting_notes.audit": "/Users/matthewsumner/development/meeting-notes/evaluation/m10/v11/proposed/meeting_notes/audit.py",
+      "meeting_notes.request_v11": "/Users/matthewsumner/development/meeting-notes/evaluation/m10/v11/proposed/meeting_notes/request_v11.py",
+      "meeting_notes.evidence": "/Users/matthewsumner/development/meeting-notes/evaluation/m10/v11/proposed/meeting_notes/evidence.py",
+      "meeting_notes.ollama": "/Users/matthewsumner/development/meeting-notes/evaluation/m10/v11/proposed/meeting_notes/ollama.py"
+    }
+  },
+  "input_sha256": {
+    "run.json": "c3fb2da2790217c7d14a7012983595809059eadbaffc6ac4f7825b086a6bfc11",
+    "baseline.jsonl": "eadf294150e39cbacc0604e5d14da06ef770f857c8fbe0f47b3a80371108df88",
+    "proposed.jsonl": "745757def8cb4bf24e6a76b43b9d74eca8c459d72598590569f782112dc0ae4b"
+  },
+  "requests_used": 109,
+  "unused_requests": 167,
+  "expected_slots": 80,
+  "recorded_slots": 80,
+  "outcome_counts": {
+    "complete": 74,
+    "blocked": 6
+  },
+  "published_summary_replays": 34,
+  "published_proposed_summaries": 34,
+  "evidence_integrity": "verified",
+  "completion": "failed"
+}

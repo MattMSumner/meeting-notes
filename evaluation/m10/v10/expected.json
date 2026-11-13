@@ -1,0 +1,144 @@
+[
+  {
+    "id": "empty",
+    "expected": "Retain both spoken tasks and independent release agreement. No written context or conflicts.",
+    "familiar": true
+  },
+  {
+    "id": "sparse",
+    "expected": "Retain both tasks, next-week recovery and monitoring 120. Written focus is separate; no selected option invented.",
+    "familiar": true
+  },
+  {
+    "id": "additional",
+    "expected": "Retain both spoken tasks/dates. Notes-only 40 seats and venue request remain written context.",
+    "familiar": true
+  },
+  {
+    "id": "conflicting",
+    "expected": "Separate unresolved price and date accounts with uncertainty intact; no budget approval invented. Verification survives independently.",
+    "familiar": true
+  },
+  {
+    "id": "ambiguous_dates",
+    "expected": "Preserve full conditional relative due wording. Notes suggestions stay separate; do not invent dates or launch approval.",
+    "familiar": true
+  },
+  {
+    "id": "same_speaker_tasks",
+    "expected": "Retain both tasks; Friday applies only to sending.",
+    "familiar": true
+  },
+  {
+    "id": "coordinated_tasks",
+    "expected": "Retain both tasks and Friday under review if association unclear. No borrowed rollback due.",
+    "familiar": true
+  },
+  {
+    "id": "later_timing",
+    "expected": "Retain original rollback task and later Friday evidence in unverified review; due remains null.",
+    "familiar": true
+  },
+  {
+    "id": "revised_timing",
+    "expected": "Retain original task and later Monday correction under review. Never assign obsolete Friday unqualified.",
+    "familiar": true
+  },
+  {
+    "id": "shared_numbers",
+    "expected": "Explicit unresolved support 120 versus 150 conflict. Monitoring 120 and invoice task survive; shared values do not link subjects.",
+    "familiar": true
+  },
+  {
+    "id": "status_conflict",
+    "expected": "Preserve tentative staging account versus paused-for-repair notes. Separate directly disputed accounts; health-check task survives without unrelated review.",
+    "familiar": true
+  },
+  {
+    "id": "tentative_task",
+    "expected": "Only actual checklist commitment becomes action. Noncommitment stays out of spoken actions.",
+    "familiar": true
+  },
+  {
+    "id": "front_loaded_timing",
+    "expected": "Retain original sending task and complete Next Tuesday under review; never strip qualifier or invent assigned due.",
+    "familiar": true
+  },
+  {
+    "id": "unit_equivalence",
+    "expected": "Same service, period and currency after explicit unit conversion. No false conflict.",
+    "expected_outcomes": [
+      "consistent"
+    ],
+    "familiar": false
+  },
+  {
+    "id": "unit_disagreement",
+    "expected": "Same service and period; currency conversion still leaves a price disagreement.",
+    "expected_outcomes": [
+      "conflicting"
+    ],
+    "familiar": false
+  },
+  {
+    "id": "periods_separate",
+    "expected": "Distinct explicit periods can coexist. Do not assert a price conflict.",
+    "expected_outcomes": [
+      "consistent",
+      "additional"
+    ],
+    "familiar": false
+  },
+  {
+    "id": "scope_separate",
+    "expected": "Different office scope can explain the amounts. No false conflict.",
+    "expected_outcomes": [
+      "consistent",
+      "additional"
+    ],
+    "familiar": false
+  },
+  {
+    "id": "estimate_approval",
+    "expected": "Estimate and approved budget have different epistemic roles. Preserve both; review relation rather than assume agreement or hard conflict.",
+    "expected_outcomes": [
+      "uncertain"
+    ],
+    "familiar": false
+  },
+  {
+    "id": "proposal_rejected",
+    "expected": "Same launch proposal has explicitly incompatible approval accounts. Neither becomes an unqualified decision.",
+    "expected_outcomes": [
+      "conflicting"
+    ],
+    "familiar": false
+  },
+  {
+    "id": "tentative_confirmed",
+    "expected": "Tentative speech does not establish confirmation. Preserve uncertainty for review.",
+    "expected_outcomes": [
+      "uncertain"
+    ],
+    "familiar": false
+  },
+  {
+    "id": "additive_context",
+    "expected": "Two claims: consistent support price and unmatched room capacity. Both retained with source separation.",
+    "expected_outcomes": [
+      "consistent",
+      "additional"
+    ],
+    "familiar": false
+  },
+  {
+    "id": "multi_claim_notes",
+    "expected": "Split one note passage into at least three independent claims. Conflict cites support only; monitoring remains factual; venue remains written-only. Keep invoice task and full relative timing.",
+    "expected_outcomes": [
+      "conflicting",
+      "consistent",
+      "additional"
+    ],
+    "familiar": false
+  }
+]

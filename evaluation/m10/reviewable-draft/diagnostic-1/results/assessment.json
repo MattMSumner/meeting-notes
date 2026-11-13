@@ -1,0 +1,78 @@
+{
+  "overall": "DEFECTS_FOUND",
+  "meets_case_criteria": 4,
+  "critical_case_count": 1,
+  "noncritical_criterion_failure_count": 1,
+  "assessor": "Independent read-only Codex reviewer draft-diagnostic-review; Chief transcribed terminal findings and independently checked source evidence.",
+  "independent_from_implementation": true,
+  "blinded": false,
+  "held_out": false,
+  "post_capture": true,
+  "criteria": "../EXPERIMENT.md",
+  "limitations": [
+    "Six familiar development cases, one candidate and one repetition.",
+    "No measured editing-time benefit, current Obsidian acceptance, full regression, reliability or Built/merge readiness.",
+    "Replay/accounting success is separate from semantic quality."
+  ],
+  "cases": [
+    {
+      "case": "additional",
+      "assessment": "MEETS_CRITERIA",
+      "critical": [],
+      "partial": [
+        "Sam sending remains in Summary/Decisions but is absent from Actions.",
+        "Undertakings are repeated under Decisions."
+      ],
+      "evidence": "Both spoken owners/timing survive; written venue work and capacity stay separate."
+    },
+    {
+      "case": "unit_equivalence",
+      "assessment": "MEETS_CRITERIA",
+      "critical": [],
+      "partial": [
+        "Inline T1/N1 identifiers, repetition and generic notices add burden.",
+        "Empty sections contain notices contrary to the prompt instruction."
+      ],
+      "evidence": "Both literal prices remain without conflict, conversion or equivalence claims."
+    },
+    {
+      "case": "accepted_status_answer",
+      "assessment": "DEFECTS",
+      "critical": [
+        "Invented schedule-adjustment decision and Friday-meeting rescheduling action from an availability question/answer."
+      ],
+      "partial": [
+        "Inline source IDs and repeated context."
+      ],
+      "evidence": "The sources only ask whether Ravi will be away Friday and answer Yes; no Friday meeting or rescheduling undertaking is stated."
+    },
+    {
+      "case": "cancellation_with_new_task",
+      "assessment": "MEETS_CRITERIA",
+      "critical": [],
+      "partial": [
+        "Inline source IDs and cross-section repetition."
+      ],
+      "evidence": "Review is cancelled; invoice sending survives without an invented deadline."
+    },
+    {
+      "case": "partial_coordination_retracted",
+      "assessment": "NONCRITICAL_CRITERION_FAILURE",
+      "critical": [],
+      "partial": [
+        "Summary repeats the original undertaking and withdrawal without identifying remaining invoice sending as work or focused review.",
+        "Actions and Passages to review both say No suggestions supplied."
+      ],
+      "evidence": "Both whole passages and their meaning survive. This fails useful surviving-work handling, not factual source retention."
+    },
+    {
+      "case": "qualified_external_timing",
+      "assessment": "MEETS_CRITERIA",
+      "critical": [],
+      "partial": [
+        "Repeated context and a stray draft notice in the empty review section."
+      ],
+      "evidence": "The summary preserves the complete not-before/next-Friday/finance condition; suggestions say on or after next Friday, unless finance objects."
+    }
+  ]
+}

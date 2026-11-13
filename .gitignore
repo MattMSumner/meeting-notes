@@ -20,3 +20,11 @@ build/
 *.flac
 *.m4a
 recordings/
+
+# Local agent coordination (templates and workflow are committed)
+.chief/STATE.md
+.chief/DECISIONS.md
+.chief/tasks/
+.chief/results/
+.chief/runs/
+.chief/worktrees/

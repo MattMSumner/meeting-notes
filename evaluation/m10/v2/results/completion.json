@@ -1,0 +1,22 @@
+{
+  "model_digest": "ad815644918f0eaab341c12b67837cc6dd4562342cdaf118f83d5d554cb37226",
+  "ollama_version": "0.40.9",
+  "arms": {
+    "baseline": {
+      "completed": 15,
+      "requests": 15,
+      "correction_requests": 0,
+      "errors": [],
+      "output_sha256": "2f2940d25b2c4a19a0b02fad85f8f9b6980393bc04b6d4c3bbe47321c2bc8ada"
+    },
+    "proposed": {
+      "completed": 15,
+      "requests": 17,
+      "correction_requests": 2,
+      "errors": [],
+      "output_sha256": "517ff3323eff2334c2c365416623549e4a3a84f2d4b10f5b20ed47fa4e8d554f"
+    }
+  },
+  "quality_scoring": "failed: 3 conflict qualification failures and 2 invented task deadlines",
+  "manual_acceptance": "User reported complete"
+}

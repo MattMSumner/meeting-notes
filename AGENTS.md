@@ -56,11 +56,26 @@ from run to run, so run them a few times before trusting a change in result.
 - Keep plan.md changes in their own commits, titled "Plan: ...". When a milestone is built,
   add a dated "Built" note under it with what was learned (counts only).
 - Work on a branch per milestone and open a PR. `gh` is signed in as the owner, so start
-  every GitHub comment, review or PR description with a line saying which agent wrote it,
-  such as "🤖 **Codex**:", then a blank line.
+  every GitHub post or substantially rewritten body with the exact prefix `🤖 Codex:`,
+  then a blank line. Keep titles free of the prefix; don't duplicate existing attribution.
 - When the owner says "shipit", run `git shipit` from the feature branch. That alias
   merges the branch into main, pushes, and deletes the branch locally and on GitHub,
   which closes the PR. Don't merge on GitHub.
+
+## Coordinating work
+
+Use the [Chief workflow](.chief/README.md) for work that benefits from delegation.
+The main session owns planning, verification and integration; use the Herdr skill to
+delegate bounded tasks to Codex workers in separate Git worktrees. Small tasks can stay
+in one session. A session assigned a worker or reviewer task follows that contract instead
+of becoming another Chief; workers do not delegate, push, open PRs or merge.
+
+Read [NEXT_SESSION.md](NEXT_SESSION.md) and the relevant plan section before planning.
+The roadmap remains in plan.md, the milestone handoff in NEXT_SESSION.md, and local task
+state in the Chief checkout's ignored `.chief/STATE.md`. Do not turn local task state into
+a second roadmap. Worker worktrees do not share ignored files: pass explicit task context
+and collect handoffs in the Chief checkout. Never put real meeting content in task prompts,
+logs or handoffs. Evaluation budgets and the owner's `shipit` gate apply to every worker.
 
 ## Things learned the hard way
 

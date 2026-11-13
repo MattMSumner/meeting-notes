@@ -1,0 +1,140 @@
+{
+  "started_at": "2026-11-05T15:36:20.161028-05:00",
+  "revision": "76afc71cd09e634637be848a34309975c2eaceb4",
+  "approved_total_request_cap": 78,
+  "approved_repetitions": 1,
+  "budget_basis": "User requested a new evaluation; same bounded one-repetition scope announced before starting",
+  "stage": 1,
+  "stage_repetitions": 1,
+  "stage_caps": {
+    "baseline": 52,
+    "proposed": 26
+  },
+  "gate": "One repetition only; score all outputs. No further inference authorized.",
+  "frozen_hashes": {
+    "README.md": "9d47c0118d1b3aab0652de84c9d32315d23656fa00e8edf168f7c8f7b1c72866",
+    "baseline/meeting_notes/__init__.py": "919ef1ac8abe04b1965cf28437f21c34cdeddf202c588b61ab7cc7daa630ac39",
+    "baseline/meeting_notes/figures.py": "239fc023e0c4176164eb2f0009a2e9daff0341b3e39b176e8bed4a683b2a1ce4",
+    "baseline/meeting_notes/meeting.py": "5bf2b35f14500897e76feb8841a34d3462e24b0e3d74d982a17972df9d4bb6be",
+    "baseline/meeting_notes/ollama.py": "622fba9f3e777e9736183e4da4aae7b876050c99c1d9c03c1be9dcfb67883594",
+    "baseline/meeting_notes/prompts/summary.md": "c852a869f224a78216e79d71dad91eafd3bf9adb87730a284639c33a4b0c1c2a",
+    "baseline/meeting_notes/summary.py": "19efab90c2e03afcad7b356d2af24cbb507d04fe8d9876842ebaae6a5a614378",
+    "baseline/schema.json": "a03923835b7f3aec3881f968f818d78b8ac2b3ec6f17c3abe8716fe5e1545e38",
+    "pairs.json": "353a797cdc961297f8ff217f83b3bdb62656372de8f7b267fd3c9a6813652631",
+    "proposed/meeting_notes/__init__.py": "919ef1ac8abe04b1965cf28437f21c34cdeddf202c588b61ab7cc7daa630ac39",
+    "proposed/meeting_notes/audit.py": "8c85bf67cfdec26b83ae20920a15572c587f01bf6a2662cb35e020017828cc9e",
+    "proposed/meeting_notes/compiler.py": "336a689d9aec333d3f938643c300cb3bbc4f8834b46d448f00d070b0090d48dd",
+    "proposed/meeting_notes/compiler_v4.py": "a5ab19432542c9cb17b8f04766b92d98c15aade8f2de0b6263dc21f13cd47647",
+    "proposed/meeting_notes/compiler_v5.py": "1f315fd8c2e83078e61a17942d694ac25bc0b053ff4a2bc822fb56ac14f4efcb",
+    "proposed/meeting_notes/contract.py": "b14fe3cfffc6affde51f20f84313ee07f203a53f7fba92da46fe18964b81edf1",
+    "proposed/meeting_notes/contract_v4.py": "25b56cc838c3cc466e5a7fefb719df50704ef26151b88f359d264cd5800d3d03",
+    "proposed/meeting_notes/contract_v5.py": "8d0cd2c20cf2ae35fcaf7d703800d1386df49f4c7eee3975f3ad61794cf6cc91",
+    "proposed/meeting_notes/evidence.py": "8b3b70ba49ae91f5de91c902c0868331f07569289d8612db4d852a7a7711566e",
+    "proposed/meeting_notes/figures.py": "507c9e09ea1af49605df20fe4a60dd00ae8ca0ebbce5523479f12275d983a456",
+    "proposed/meeting_notes/grounding.py": "35247dfbbb1eeddf710cfd88b79945840da0d38c80d65941bc1ca74e1d9074fc",
+    "proposed/meeting_notes/meeting.py": "5bf2b35f14500897e76feb8841a34d3462e24b0e3d74d982a17972df9d4bb6be",
+    "proposed/meeting_notes/ollama.py": "e070c39420f34f7196991fcbfb729a7a22a38be308685f0b768731fd76bef961",
+    "proposed/meeting_notes/prompts/summary.md": "6b34364f69421adc9e8bd25f6e6d7e3e97fe99028e8f61401b5d2c8ad5609197",
+    "proposed/meeting_notes/summary.py": "7515b272644c5f2c20608a9e80fc283f7712367cf6a7f3b66f89f280d15986f5",
+    "proposed/published-schema.json": "c60fe65a0f4c617d788b56d77a4b4b724f8e4bf1c8400c6147ed7a227c3b4041",
+    "proposed/request-schemas.json": "b24086767c6a5c1660b20f55db47605922372274b42cf7fcd7353d53e76c4bd3",
+    "proposed/schema.json": "026d0a7e50671c3a714575b8a16089146b54fd7ee0fa900af7b839018661b757",
+    "replay/README.md": "3aa21f9142001e2cc4aae7e405c205acba083569dedd6d3d8cb192e4aa7233e9",
+    "replay/results.jsonl": "b08eafddaacda5a26706069b241f87e02a58b65f8c94d49f074035a750ac8a86",
+    "replay.py": "d6a21b5322b57365dea0c45eb11bb3cbca999f677f151cd2a808bdb2a63cda7e",
+    "rubric.md": "1ce64ccb6966fa07ea4bf8b2138250e69af424db105dfd879468af7d2af7f5b4",
+    "runner.py": "ebda7fdba17a5e6cdb67a5b8074f7e890b8f07942812ae565d349f813481e693",
+    "settings.json": "998966ad97bee9704573498506e6ee0e899fc8f5b5540de0e6aa5d428bb455af"
+  },
+  "environment_before": {
+    "ollama": {
+      "version": "0.40.9"
+    },
+    "model": {
+      "name": "qwen3:30b",
+      "model": "qwen3:30b",
+      "modified_at": "2026-10-20T13:20:18.92312213-04:00",
+      "size": 18556699314,
+      "digest": "ad815644918f0eaab341c12b67837cc6dd4562342cdaf118f83d5d554cb37226",
+      "details": {
+        "parent_model": "",
+        "format": "gguf",
+        "family": "qwen3moe",
+        "families": [
+          "qwen3moe"
+        ],
+        "parameter_size": "30.5B",
+        "quantization_level": "Q4_K_M",
+        "context_length": 262144,
+        "embedding_length": 2048,
+        "runner": "ggml"
+      },
+      "capabilities": [
+        "completion",
+        "tools",
+        "thinking"
+      ]
+    }
+  },
+  "environment_after_baseline": {
+    "ollama": {
+      "version": "0.40.9"
+    },
+    "model": {
+      "name": "qwen3:30b",
+      "model": "qwen3:30b",
+      "modified_at": "2026-10-20T13:20:18.92312213-04:00",
+      "size": 18556699314,
+      "digest": "ad815644918f0eaab341c12b67837cc6dd4562342cdaf118f83d5d554cb37226",
+      "details": {
+        "parent_model": "",
+        "format": "gguf",
+        "family": "qwen3moe",
+        "families": [
+          "qwen3moe"
+        ],
+        "parameter_size": "30.5B",
+        "quantization_level": "Q4_K_M",
+        "context_length": 262144,
+        "embedding_length": 2048,
+        "runner": "ggml"
+      },
+      "capabilities": [
+        "completion",
+        "tools",
+        "thinking"
+      ]
+    }
+  },
+  "environment_after_proposed": {
+    "ollama": {
+      "version": "0.40.9"
+    },
+    "model": {
+      "name": "qwen3:30b",
+      "model": "qwen3:30b",
+      "modified_at": "2026-10-20T13:20:18.92312213-04:00",
+      "size": 18556699314,
+      "digest": "ad815644918f0eaab341c12b67837cc6dd4562342cdaf118f83d5d554cb37226",
+      "details": {
+        "parent_model": "",
+        "format": "gguf",
+        "family": "qwen3moe",
+        "families": [
+          "qwen3moe"
+        ],
+        "parameter_size": "30.5B",
+        "quantization_level": "Q4_K_M",
+        "context_length": 262144,
+        "embedding_length": 2048,
+        "runner": "ggml"
+      },
+      "capabilities": [
+        "completion",
+        "tools",
+        "thinking"
+      ]
+    }
+  },
+  "finished_at": "2026-11-05T15:49:01.462770-05:00"
+}

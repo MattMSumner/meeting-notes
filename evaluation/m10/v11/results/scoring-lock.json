@@ -1,0 +1,17 @@
+{
+  "locked_at": "2026-11-12T20:59:31.197960-05:00",
+  "scores_sha256": "c954e48cb43b5cdd8c1e23b50b3654105c7094b76ee563676e952086be608cc3",
+  "files_sha256": {
+    "blinded.json": "17ebe1635b116994f4ba531726bb8eb5d261040e580abf577a2d48a43ce3c6e7",
+    "blind-key.json": "0f69f7d4998b7eb6d16cff53c86fbc22fad2a218392e456cf45b86fddd0e2b3f",
+    "blind-preparation.json": "969f4c362b9d99226a524223ba83d7ee96eff723226e17416b1fba47ee6a2f68"
+  },
+  "assessor_files_sha256": {
+    "assessor-a.json": "15165cd49f35c6938442cd6dc19a35d5a0c857a239685155ff7465d463e81555",
+    "assessor-b.json": "c5aee4c307648b3f3bac240bba39002c304df0991bc9b1e97b86552227cdc75a"
+  },
+  "method": "Two fresh read-only Codex assessors independently inspected random opaque-label halves (40 each), all raw attempt replies/findings and selected outputs against the frozen seven-dimension rubric. All 80 original scores locked before Chief opened the arm key. Chief checked every critical source quote and final evidence plus all noncritical partial findings before locking. No scores or classifications were changed.",
+  "handoff_recovery": "Original terminal responses were archived. Temporary-file fallback recovered valid JSON after display hard wraps. Assessor A matched terminal reconstruction exactly; B matched except restoring singular/plural from the display-wrapped singular/ plural in R060 intermediate_findings. All scores and findings unchanged.",
+  "limitations": "Notes and output structure can reveal arms; agent assessment is not fully blinded or independent held-out measurement. One repetition; no statistical reliability estimate.",
+  "chief_prejoin_source_check": "Every critical source quote matches supplied transcript or notes; all 80 completion flags match opaque packet publication state. Original and selected intermediate findings remain separate."
+}

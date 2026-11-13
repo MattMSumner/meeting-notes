@@ -1,0 +1,422 @@
+[
+  {
+    "arm": "baseline",
+    "case": "additional",
+    "repetition": 1,
+    "id": "R09",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Both tasks, owners and dates correct; duplicates personal commitments in Decisions."
+  },
+  {
+    "arm": "proposed",
+    "case": "additional",
+    "repetition": 1,
+    "id": "R08",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 2
+    },
+    "critical_failures": [],
+    "evidence": "Both spoken tasks and Friday/next week retained. Written-only 40 seats and venue task isolated in notes_context."
+  },
+  {
+    "arm": "baseline",
+    "case": "ambiguous_dates",
+    "repetition": 1,
+    "id": "R23",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 1,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 1,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Invents \u201creview document\u201d for unspecified \u201cit\u201d. Conditional Friday wording survives task/prose, but due field reduces it to next Friday."
+  },
+  {
+    "arm": "proposed",
+    "case": "ambiguous_dates",
+    "repetition": 1,
+    "id": "R21",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Full conditional \u201cnext Friday, or the Friday after if review slips\u201d retained. Written follow-up/Casey suggestion separate; no launch decision duplicated in two sections."
+  },
+  {
+    "arm": "baseline",
+    "case": "conflicting",
+    "repetition": 1,
+    "id": "R22",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 2
+    },
+    "critical_failures": [],
+    "evidence": "Spoken 120,000 estimate unapproved, June expectation attributed to Alex, verification retained."
+  },
+  {
+    "arm": "proposed",
+    "case": "conflicting",
+    "repetition": 1,
+    "id": "R19",
+    "scores": {
+      "commitment_completeness": 0,
+      "source_attribution": 0,
+      "conflicts": 0,
+      "numbers": 0,
+      "dates_and_owners": 0,
+      "useful_emphasis": 0
+    },
+    "critical_failures": [],
+    "evidence": "No summary: transport timeout. Zeros mean unavailable output, not six invented claims."
+  },
+  {
+    "arm": "baseline",
+    "case": "coordinated_tasks",
+    "repetition": 1,
+    "id": "R26",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Both tasks retained with separate due fields, Friday only sending; unsupported filler \u201cfinalizing the release process\u201d."
+  },
+  {
+    "arm": "proposed",
+    "case": "coordinated_tasks",
+    "repetition": 1,
+    "id": "R07",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 1,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Both coordinated tasks retained in exact source text, Friday visible in review, no assigned rollback deadline."
+  },
+  {
+    "arm": "baseline",
+    "case": "empty",
+    "repetition": 1,
+    "id": "R05",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 2
+    },
+    "critical_failures": [],
+    "evidence": "Tagging Friday, Alex rollback without deadline, and independent Friday release decision retained."
+  },
+  {
+    "arm": "proposed",
+    "case": "empty",
+    "repetition": 1,
+    "id": "R01",
+    "scores": {
+      "commitment_completeness": 1,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Both tasks survive, but the independent agreement \u201cAgreed, release Friday.\u201d is absent; tagging Friday does not retain the release agreement."
+  },
+  {
+    "arm": "baseline",
+    "case": "front_loaded_timing",
+    "repetition": 1,
+    "id": "R18",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Sam sending next Tuesday retained; unnecessary commentary about short transcript."
+  },
+  {
+    "arm": "proposed",
+    "case": "front_loaded_timing",
+    "repetition": 1,
+    "id": "R15",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 1,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Sam\u2019s original task and Next Tuesday preserved in source-worded review; due remains unassigned."
+  },
+  {
+    "arm": "baseline",
+    "case": "later_timing",
+    "repetition": 1,
+    "id": "R17",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Sam rollback on Friday retained; redundant task in Decisions and filler overview."
+  },
+  {
+    "arm": "proposed",
+    "case": "later_timing",
+    "repetition": 1,
+    "id": "R20",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 1,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Original rollback task and later \u201cFriday.\u201d preserved as association-unverified review, no automatic due."
+  },
+  {
+    "arm": "baseline",
+    "case": "revised_timing",
+    "repetition": 1,
+    "id": "R06",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 2
+    },
+    "critical_failures": [],
+    "evidence": "Monday correction replaces Friday for Sam sending the draft."
+  },
+  {
+    "arm": "proposed",
+    "case": "revised_timing",
+    "repetition": 1,
+    "id": "R02",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 1,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Original sending commitment retained with \u201cActually, Monday instead.\u201d in explicitly unassigned review; no unqualified Friday due."
+  },
+  {
+    "arm": "baseline",
+    "case": "same_speaker_tasks",
+    "repetition": 1,
+    "id": "R03",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 1,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 0,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [
+      "unsupported deadline"
+    ],
+    "evidence": "Overview says \u201csend a draft and check rollback by Friday\u201d; the source assigns Friday only to sending. Action due values alone are correct."
+  },
+  {
+    "arm": "proposed",
+    "case": "same_speaker_tasks",
+    "repetition": 1,
+    "id": "R25",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 2
+    },
+    "critical_failures": [],
+    "evidence": "Both Sam tasks retained, Friday only assigned to sending and rollback due null."
+  },
+  {
+    "arm": "baseline",
+    "case": "shared_numbers",
+    "repetition": 1,
+    "id": "R13",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 2
+    },
+    "critical_failures": [],
+    "evidence": "Both spoken 120-dollar costs and monitoring invoice commitment retained with correct attribution."
+  },
+  {
+    "arm": "proposed",
+    "case": "shared_numbers",
+    "repetition": 1,
+    "id": "R04",
+    "scores": {
+      "commitment_completeness": 0,
+      "source_attribution": 0,
+      "conflicts": 0,
+      "numbers": 0,
+      "dates_and_owners": 0,
+      "useful_emphasis": 0
+    },
+    "critical_failures": [],
+    "evidence": "No summary: transport timeout. Zeros mean unavailable output, not six invented claims."
+  },
+  {
+    "arm": "baseline",
+    "case": "sparse",
+    "repetition": 1,
+    "id": "R14",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 2
+    },
+    "critical_failures": [],
+    "evidence": "Compare two options, Alex recovery next week, 120-dollar monitoring and no option selected retained."
+  },
+  {
+    "arm": "proposed",
+    "case": "sparse",
+    "repetition": 1,
+    "id": "R24",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 2
+    },
+    "critical_failures": [],
+    "evidence": "Both tasks, next week, spoken monitoring $120 and no option chosen survive; notes focus separately labelled."
+  },
+  {
+    "arm": "baseline",
+    "case": "status_conflict",
+    "repetition": 1,
+    "id": "R10",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 1,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [
+      "tentative statement presented as confirmed"
+    ],
+    "evidence": "\u201cI think ... ready\u201d becomes \u201cSam confirmed ... ready\u201d and an unqualified ready key point. Health-check task retained."
+  },
+  {
+    "arm": "proposed",
+    "case": "status_conflict",
+    "repetition": 1,
+    "id": "R16",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 1,
+      "conflicts": 1,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Both status accounts and \u201cI think\u201d preserved unresolved, but conflict also includes \u201cI will verify the health checks.\u201d and incorrectly marks that unrelated commitment disputed; no timing was supplied."
+  },
+  {
+    "arm": "baseline",
+    "case": "tentative_task",
+    "repetition": 1,
+    "id": "R12",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Sam noncommitment and Alex tomorrow task retained; personal task duplicated in Decisions."
+  },
+  {
+    "arm": "proposed",
+    "case": "tentative_task",
+    "repetition": 1,
+    "id": "R11",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Only Alex assigned tomorrow. Sam\u2019s tentative rollback/noncommitment is omitted from prose, but not promoted to a task."
+  }
+]

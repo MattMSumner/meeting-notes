@@ -1,0 +1,91 @@
+{
+  "overall": "INCOMPLETE",
+  "meets_case_criteria": 1,
+  "incomplete_case_count": 5,
+  "compiled_draft_count": 1,
+  "critical_raw_case_count": 1,
+  "critical_compiled_draft_case_count": 0,
+  "assessor": "Independent read-only Codex assessor quoted-extraction-assessment; Chief transcribed terminal findings and independently checked source evidence.",
+  "independent_from_implementation": true,
+  "blinded": false,
+  "held_out": false,
+  "post_capture": true,
+  "criteria": "../EXPERIMENT.md",
+  "cases": [
+    {
+      "case": "additional",
+      "assessment": "MEETS_CRITERIA",
+      "capture": "COMPILED",
+      "critical": [],
+      "partial": [
+        "Undertakings duplicated under decisions, repeated summary/review content, excessive reciprocal context and literal draft notices."
+      ],
+      "evidence": "Both spoken undertakings, owners and timing survive. Venue work and capacity remain attributed to writing."
+    },
+    {
+      "case": "unit_equivalence",
+      "assessment": "INCOMPLETE",
+      "capture": "REJECTED",
+      "raw_assessment": "DEFECTS",
+      "critical_raw": [
+        "Speech-only summary includes a written price while citing only speech, a source/separation violation."
+      ],
+      "other_raw_defects": [
+        "Factual price selected as action and decision.",
+        "Repeated T1 in summary item citations and review references violates uniqueness.",
+        "Summary needs_review state has an empty notice."
+      ],
+      "published_claims": false,
+      "evidence": "Both literal prices occur without conflict or computed relationship. Decoder rejects Source references must be unique; no draft/extraction artifacts exist."
+    },
+    {
+      "case": "accepted_status_answer",
+      "assessment": "INCOMPLETE",
+      "capture": "UNSENT",
+      "critical": [],
+      "partial": [],
+      "evidence": "No request, reply or draft; prospective behavior unassessed."
+    },
+    {
+      "case": "cancellation_with_new_task",
+      "assessment": "INCOMPLETE",
+      "capture": "UNSENT",
+      "critical": [],
+      "partial": [],
+      "evidence": "No request, reply or draft; prospective behavior unassessed."
+    },
+    {
+      "case": "partial_coordination_retracted",
+      "assessment": "INCOMPLETE",
+      "capture": "UNSENT",
+      "critical": [],
+      "partial": [],
+      "evidence": "No request, reply or draft; prospective behavior unassessed."
+    },
+    {
+      "case": "qualified_external_timing",
+      "assessment": "INCOMPLETE",
+      "capture": "UNSENT",
+      "critical": [],
+      "partial": [],
+      "evidence": "No request, reply or draft; prospective behavior unassessed."
+    }
+  ],
+  "accounting": {
+    "requests": 2,
+    "metadata_gets": 8,
+    "raw_responses": 2,
+    "compiled_drafts": 1,
+    "structural_failures": 1,
+    "unsent": 4,
+    "elapsed_seconds": 184.8139642920578,
+    "overrun_seconds": 0,
+    "retries": 0
+  },
+  "limits": [
+    "Only two familiar development cases captured once; four cases untested.",
+    "Raw rejected defects are distinct from compiled draft defects.",
+    "No reliability/full regression/measured editing-time benefit/current Obsidian acceptance/Built or merge readiness.",
+    "Do not normalize/regrade the rejected response or reuse four unused slots."
+  ]
+}

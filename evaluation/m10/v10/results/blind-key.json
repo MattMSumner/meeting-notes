@@ -1,0 +1,222 @@
+{
+  "R01": {
+    "arm": "baseline",
+    "case": "sparse",
+    "repetition": 1
+  },
+  "R02": {
+    "arm": "proposed",
+    "case": "front_loaded_timing",
+    "repetition": 1
+  },
+  "R03": {
+    "arm": "baseline",
+    "case": "shared_numbers",
+    "repetition": 1
+  },
+  "R04": {
+    "arm": "proposed",
+    "case": "multi_claim_notes",
+    "repetition": 1
+  },
+  "R05": {
+    "arm": "baseline",
+    "case": "same_speaker_tasks",
+    "repetition": 1
+  },
+  "R06": {
+    "arm": "proposed",
+    "case": "revised_timing",
+    "repetition": 1
+  },
+  "R07": {
+    "arm": "baseline",
+    "case": "estimate_approval",
+    "repetition": 1
+  },
+  "R08": {
+    "arm": "baseline",
+    "case": "ambiguous_dates",
+    "repetition": 1
+  },
+  "R09": {
+    "arm": "baseline",
+    "case": "additional",
+    "repetition": 1
+  },
+  "R10": {
+    "arm": "proposed",
+    "case": "scope_separate",
+    "repetition": 1
+  },
+  "R11": {
+    "arm": "baseline",
+    "case": "tentative_confirmed",
+    "repetition": 1
+  },
+  "R12": {
+    "arm": "proposed",
+    "case": "coordinated_tasks",
+    "repetition": 1
+  },
+  "R13": {
+    "arm": "proposed",
+    "case": "tentative_confirmed",
+    "repetition": 1
+  },
+  "R14": {
+    "arm": "baseline",
+    "case": "periods_separate",
+    "repetition": 1
+  },
+  "R15": {
+    "arm": "baseline",
+    "case": "tentative_task",
+    "repetition": 1
+  },
+  "R16": {
+    "arm": "proposed",
+    "case": "conflicting",
+    "repetition": 1
+  },
+  "R17": {
+    "arm": "proposed",
+    "case": "ambiguous_dates",
+    "repetition": 1
+  },
+  "R18": {
+    "arm": "baseline",
+    "case": "unit_disagreement",
+    "repetition": 1
+  },
+  "R19": {
+    "arm": "proposed",
+    "case": "unit_disagreement",
+    "repetition": 1
+  },
+  "R20": {
+    "arm": "proposed",
+    "case": "additional",
+    "repetition": 1
+  },
+  "R21": {
+    "arm": "proposed",
+    "case": "proposal_rejected",
+    "repetition": 1
+  },
+  "R22": {
+    "arm": "proposed",
+    "case": "shared_numbers",
+    "repetition": 1
+  },
+  "R23": {
+    "arm": "proposed",
+    "case": "sparse",
+    "repetition": 1
+  },
+  "R24": {
+    "arm": "proposed",
+    "case": "later_timing",
+    "repetition": 1
+  },
+  "R25": {
+    "arm": "baseline",
+    "case": "revised_timing",
+    "repetition": 1
+  },
+  "R26": {
+    "arm": "baseline",
+    "case": "proposal_rejected",
+    "repetition": 1
+  },
+  "R27": {
+    "arm": "baseline",
+    "case": "status_conflict",
+    "repetition": 1
+  },
+  "R28": {
+    "arm": "proposed",
+    "case": "unit_equivalence",
+    "repetition": 1
+  },
+  "R29": {
+    "arm": "proposed",
+    "case": "tentative_task",
+    "repetition": 1
+  },
+  "R30": {
+    "arm": "baseline",
+    "case": "scope_separate",
+    "repetition": 1
+  },
+  "R31": {
+    "arm": "baseline",
+    "case": "conflicting",
+    "repetition": 1
+  },
+  "R32": {
+    "arm": "baseline",
+    "case": "multi_claim_notes",
+    "repetition": 1
+  },
+  "R33": {
+    "arm": "proposed",
+    "case": "status_conflict",
+    "repetition": 1
+  },
+  "R34": {
+    "arm": "proposed",
+    "case": "periods_separate",
+    "repetition": 1
+  },
+  "R35": {
+    "arm": "baseline",
+    "case": "front_loaded_timing",
+    "repetition": 1
+  },
+  "R36": {
+    "arm": "proposed",
+    "case": "additive_context",
+    "repetition": 1
+  },
+  "R37": {
+    "arm": "proposed",
+    "case": "empty",
+    "repetition": 1
+  },
+  "R38": {
+    "arm": "baseline",
+    "case": "coordinated_tasks",
+    "repetition": 1
+  },
+  "R39": {
+    "arm": "baseline",
+    "case": "empty",
+    "repetition": 1
+  },
+  "R40": {
+    "arm": "proposed",
+    "case": "same_speaker_tasks",
+    "repetition": 1
+  },
+  "R41": {
+    "arm": "proposed",
+    "case": "estimate_approval",
+    "repetition": 1
+  },
+  "R42": {
+    "arm": "baseline",
+    "case": "unit_equivalence",
+    "repetition": 1
+  },
+  "R43": {
+    "arm": "baseline",
+    "case": "later_timing",
+    "repetition": 1
+  },
+  "R44": {
+    "arm": "baseline",
+    "case": "additive_context",
+    "repetition": 1
+  }
+}

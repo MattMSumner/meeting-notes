@@ -4,10 +4,28 @@ A personal, local-first meeting notetaker for macOS. It's a CLI that records my 
 other side of a call, transcribes locally after the meeting, summarizes with a local model,
 and writes an Obsidian-friendly markdown note.
 
-Status: **M8 shipped** (fold backchannels). M1–M7 and the spike done. Proposed next:
-M9 creates handwritten notes in Obsidian; M10 adds explicit notes-guided enhancement.
-Neither is built. This roadmap update authorizes no feature implementation or model calls.
+Status: **M8 shipped**. M9 and M10 implementations are present; manual Obsidian
+acceptance was reported complete for M10. V7 meets its frozen single-run quality criteria;
+V9 completes 13/13 cases with no timeouts and retains the release agreement, but still fails
+quality on a missed cross-source price conflict. The three reproduced PR review bugs are fixed.
+The approved one-repetition V10 run finds the shared-number conflict but produces only 17/22
+proposed summaries and invents an action from a factual price statement. V10 fails quality.
+The approved V11 run publishes 34/40 proposed outputs, blocks six and invents one
+unit-conversion conflict; it also fails quality. Current review-workflow manual acceptance
+remains pending, so M10 remains unbuilt. Further model runs require separately agreed scope.
+On 2026-11-13 the owner confirmed that a useful draft requiring review is valuable.
+The next first-release target is the reviewable draft contract below; the current runtime
+still implements V11. Automatic reconciliation is deferred for that successor.
 Phase 0 (Handy) set up.
+
+**Fresh-session handoff (2026-11-13):** [NEXT_SESSION.md](NEXT_SESSION.md) and the
+[local-model screen](evaluation/m10/reviewable-draft/model-comparison-1/analysis/report.md)
+record an incomplete comparison: five requests in 23m01s, three returned outputs, two
+timeouts and seven unsent cases. Neither challenger completes the screen. All eighteen
+baseline/challenger grades locked with model names hidden before identity joining; cached
+Qwen3 remains five passes and one critical omission. All 1386 offline tests pass and old
+evidence remains exact. No model switch, additional inference or merge is authorized;
+the app remains V11 and M10 unbuilt.
 
 ---
 
@@ -71,23 +89,30 @@ pipeline state with enums and dataclasses.
 
 ## Architecture
 
-**Shipped through M8:** recording ends with automatic transcript-only summarization.
-Handwritten notes are not created or used as model input today.
+**Implemented workflow (M10 quality/manual acceptance pending):**
 
 ```
-notes start [--title T]
-  ├─ notes-capture (Swift)  ── me.wav   (mic, 16 kHz mono)
-  │                         └─ them.wav (global tap: all system output, 16 kHz mono)
-  └─ writes PID + meeting.json (start time, calendar event from notes-capture)
-
-notes stop
-  ├─ signal capture to stop, wait for WAVs to finalize
-  ├─ transcribe me.wav, them.wav  → segments with timestamps (JSON)
-  ├─ merge by time                → transcript.md  ("**Me:** … / **Them:** …")
-  ├─ summarize (Ollama)           → summary.json (summary, key points, decisions, action items)
-  └─ render                       → ~/development/notes/meetings/2026-10-17_Weekly Sync_1400.md
-                                  → ~/development/notes/meetings/transcripts/2026-10-17_Weekly Sync_1400_transcript.md
+notes start / record
+  ├─ create and open handwritten note in Obsidian
+  └─ record me.wav + them.wav and capture offsets
+notes stop / foreground completion / recovery / transcribe
+  ├─ transcribe usable channels → segments.*.json
+  ├─ clear saved generation and evidence
+  └─ render transcript and ready-to-enhance status (preserve edited vault files)
+notes enhance <id> / summarize <id> / enhance --choose
+  ├─ claim meeting; reject incomplete, no-speech or busy meetings
+  ├─ snapshot handwritten bytes, effective text, segment transcript and context
+  ├─ compare note claims against speech (bounded correction; skip empty notes)
+  ├─ generate with fixed comparison → code-assembled conflicts/review + number checks
+  ├─ atomically replace versioned summary.json (summary + evidence)
+  └─ render; Spotlight notifies and opens a newly published summary in a new tab
+notes render <id>
+  └─ use saved generation/evidence; never reread original handwritten file
 ```
+
+A nonblocking per-meeting lock serializes processing; short global claims coordinate
+session ownership. An `enhancing` crash requires explicit `notes enhance <id>` retry.
+Legacy flat summaries and meetings with no handwritten-path metadata remain supported.
 
 **Each stage reads the previous stage's files and writes its own**, so any stage can be
 re-run on its own:
@@ -114,7 +139,9 @@ notes start [--title T]
 notes stop
 notes status
 notes record [--title T]        # foreground capture; Ctrl-C ends the meeting
-notes transcribe <meeting-id>   # re-run transcription and summarization
+notes transcribe <meeting-id>   # re-transcribe; ready to enhance
+notes enhance   <meeting-id>   # explicit generation
+notes enhance --choose         # chooser and detached worker
 notes summarize  <meeting-id>
 notes render     <meeting-id>
 ```
@@ -123,17 +150,13 @@ Configuration uses the environment variables documented in [README.md](README.md
 Keep the shipped models and settings: Parakeet TDT 0.6B v2, Ollama `qwen3:30b`,
 `num_ctx=32768` and thinking enabled. All processing stays local.
 
-**Proposed workflow:** M9 adds a separate `…_handwritten.md` file beside the generated
-summary, opens it at start, and keeps automatic transcript-only summaries on stop. The
-handwritten note and generated summary link to one another; the transcript retains its
-existing filename and link. M10 changes stop to transcribe and report ready to enhance;
-`notes enhance <meeting-id>` or the **Enhance meeting notes** Spotlight shortcut then
-generates the summary from a saved snapshot of the writing and the transcript.
-`notes summarize <meeting-id>` remains a compatible generation entry point. Rendering
-uses the saved evidence, never the current contents of a subsequently edited handwritten
-file. The enhancement command and workflow changes are planned, not available in M8.
+Handwritten notes remain separate files. Successful enhancement saves exact source inputs
+alongside its summary. Later rendering uses that evidence even if the handwritten file
+changes or disappears. A missing associated handwritten file prevents new inference.
+Summary/Decisions/Action items remain grounded in speech; optional From your notes and
+Conflicts sections separate written-only material and unresolved accounts.
 
-### Generated Obsidian note shape (M8)
+### Core generated Obsidian note shape (optional M10 sections follow Action items)
 
 ```markdown
 ---
@@ -614,6 +637,10 @@ notes are not model input in this stage.
   writing. This is a planned milestone, not a Built note.
 
 **M10 — Enhance notes with the transcript.** Make notes-guided enhancement explicit.
+The 2026-11-13 reviewable draft contract below governs the next first-release design.
+It prospectively replaces automatic conflict classification and all-or-nothing semantic
+analysis publication. V1–V11 freezes, expectations and failed results remain unchanged;
+the existing implementation has not yet adopted this contract.
 Stop (including the end of foreground recording) ends capture and transcribes, then reports
 that the meeting is ready to enhance; it no longer automatically generates a summary.
 Re-running transcription also leaves generation to the explicit enhancement action.
@@ -625,9 +652,10 @@ Re-running transcription also leaves generation to the explicit enhancement acti
 - Snapshot the saved handwritten text when enhancement starts and store that exact input
   alongside the generated result. Later rendering uses the same evidence. Pass handwritten
   notes and transcript as separately labelled inputs; count both in context-size checks.
-- Keep Summary, Key points, Decisions and Action items (M8 currently renders key points
-  as bullets under Summary). Add separate sections for useful context found only in the
-  handwritten notes and for conflicts between sources; omit those sections when empty.
+- Plan a draft Summary and Key points, suggested decisions/actions with evidence, and
+  separately attributed handwritten context. Present relevant source passages for review
+  instead of automatically declaring conflicts. The draft contract below defines the
+  prospective output and partial-failure policy; current V11 output remains unchanged.
   Notes guide emphasis, but omissions do not instruct the model to discard other important
   commitments. Do not silently turn personal observations into spoken agreements or choose
   between conflicting sources.
@@ -643,13 +671,748 @@ Re-running transcription also leaves generation to the explicit enhancement acti
   synthetic meeting.
 - **Quality acceptance:** before inference, freeze a bounded comparison covering sparse
   notes, empty notes, additional written context, conflicting facts and ambiguous dates.
-  Passing that evaluation is a separate prerequisite for declaring M10 built; implementing
-  the workflow alone is insufficient. This roadmap update authorizes no model calls.
+  A successor needs prospective draft-specific criteria before inference, preserving all
+  forty existing regression inputs and the original historical verdicts. Passing that
+  evaluation and current manual usefulness acceptance remain prerequisites for Built.
+  Implementing the workflow alone is insufficient; this update authorizes no model calls.
+
+- **Implementation (2026-11-03; not Built):** explicit enhancement, saved input wrappers,
+  source-aware number checks, chooser, per-meeting serialization and unit coverage are
+  implemented. Five synthetic comparison pairs, baseline source at `199dd62`, proposed
+  prompt/schema/settings, guarded runner and manual rubric are frozen in `evaluation/m10/`.
+  No model runs, quality scores or real-meeting evaluation were performed. Decide inference
+  budget/repetitions separately. Quality evaluation and manual acceptance remain required.
+
+- **Evaluation (2026-11-03; not Built):** user reported manual Obsidian acceptance
+  complete. The approved five-case comparison ran three repetitions per arm (30 summaries,
+  30 requests, no corrections/errors). Rubric review found critical conflict qualification
+  failures in all three proposed conflict outputs; spoken commitments were preserved.
+  Both arms weakened conditional due wording. Full synthetic evidence and per-repetition
+  scores: [evaluation report](evaluation/m10/results/report.md). Quality acceptance failed;
+  fixes require a new freeze and agreed rerun. No Built note or merge yet.
+
+- **Revision (2026-11-04; not Built):** revised prompt and schema descriptions require
+  unresolved conflict references in core sections and complete conditional due phrases.
+  Added request-contract and saved-render regression checks. The original scored freeze
+  is unchanged; `evaluation/m10/v2/` freezes the candidate with the same five pairs,
+  baseline, settings and rubric. Versioned runner selection is available. No v2 inference
+  has run; its rerun budget requires separate agreement. Quality acceptance remains failed
+  for v1 and pending for v2; manual workflow acceptance was previously reported complete.
+
+- **V2 evaluation (2026-11-04; not Built):** approved rerun produced 30 summaries
+  using 32 requests, with no execution errors. Conditional due phrasing passed in 3/3
+  proposed cases, but conflict qualification failed in 3/3 and unsupported task deadlines
+  appeared in 2/3 empty-note outputs. Five proposed outputs have critical failures; M10
+  remains unbuilt. [V2 scores and evidence](evaluation/m10/v2/results/report.md) preserve
+  the run, corrections/observability limits and per-repetition assessment. No further
+  prompt changes or inference were performed; any next candidate needs a new freeze.
+
+- **Evidence-backed candidate (2026-11-04; not Built):** shared claim IDs and exact source
+  spans replace freely repeated model prose. Code controls known-conflict placement,
+  checks task-local timing and spoken owner evidence, and retains uncertain timing in
+  review warnings. Blocking failures get one shared correction attempt, then preserve
+  the prior result. Requests, replies, validation findings and selection are saved with
+  successful generation or separately for failures; legacy wrappers still load.
+  V3 freezes 13 synthetic cases (five unchanged, eight new) with the same baseline,
+  model/settings and six-dimension rubric. Unit tests cover structural checks and saved
+  audit rendering; they do not establish entailment or completeness. No v3 model runs
+  have occurred. Choose a new inference budget before evaluation and check the new
+  failure/review-warning behavior manually. V1/v2 failures remain recorded and unmodified.
+
+- **V3 stage-one evaluation (2026-11-04; not Built):** approved three repetitions with
+  a 234-request cap and first-pass quality gate. One repetition across 13 cases and both
+  arms used 38 requests (13 baseline, 25 proposed). Baseline published 13/13; proposed
+  published 5/13 and blocked 8/13 after correction, regressing commitment completeness.
+  Stopped at the agreed gate; no remaining repetitions or candidate tuning. Task/timing
+  text coupling and full-line note citations repeatedly prevent valid output; shared-number
+  and status-conflict handling succeed in their single published cases. All attempts and
+  [scores](evaluation/m10/v3/results/report.md) are preserved; freezes remain unchanged.
+  A revised candidate needs a new freeze/budget and new failure/review-warning manual
+  acceptance. M10 remains unbuilt.
+
+- **V4 implementation (2026-11-05; not Built):** direct source IDs replace generated claim
+  IDs. Code assembles tasks, conservative owners, complete trailing timing and inline review
+  evidence. Task prose is suppressed elsewhere; handwritten facts receive sentence IDs.
+  Wrapper version 3 preserves original validation for legacy saves. Offline replay of 25
+  V3 attempts compiles 23, rejects two and produces review evidence in seven; these are
+  not quality scores. A revised-date selection still loses the original commitment and
+  leaves obsolete timing in prose. V4 freezes the same 13 cases and baseline/settings.
+  No new inference; agree a separate budget and test the new manual review workflow.
+  [Replay details](evaluation/m10/v4/replay/README.md) preserve limitations. M10 remains unbuilt.
+
+- **V4 evaluation (2026-11-05; not Built):** approved one repetition across 13 cases and
+  both arms, capped at 78 requests. Completed with 36 requests (13 baseline, 23 proposed).
+  Baseline produced 13 summaries; V4 produced nine and blocked four. Later timing loses
+  its answer; sparse notes omit a spoken cost; unnecessary review obscures simple deadlines.
+  The original conflict case retains both accounts correctly in this single pass. Quality
+  acceptance failed. [Full scores and attempts](evaluation/m10/v4/results/report.md) are
+  preserved, with no tuning or extra inference. Frozen inputs and earlier results remain
+  unchanged. Source-ID confusion, context misuse and timing loss need a new revision;
+  agree its freeze/budget separately. M10 remains unbuilt, manual V4 acceptance pending.
+
+- **V5 reference repair (2026-11-05; not Built):** explicit commitment IDs and source-bearing
+  timing quotes replace overloaded strings; request schemas enumerate available IDs.
+  Self-context no longer creates review, later timing evidence survives suppression when
+  timing is unassigned, and known conflicts neutralize redundant cross-source prose.
+  Unknown/unrelated references still block; valid IDs do not prove semantic selection.
+  Wrapper version 4 preserves validation of earlier saves. Offline replay of 23 V4 attempts
+  compiles 11, blocks nine and leaves three unmappable; four compiled attempts contain review.
+  Revised-date references and missing context remain unresolved. V5 freezes the same inputs,
+  baseline, settings and actual per-case schemas. No inference; budget and quality/manual
+  acceptance remain separate. [Replay evidence](evaluation/m10/v5/replay/README.md).
+
+- **V5 evaluation (2026-11-05; not Built):** requested one repetition across 13 cases and
+  both arms under the same 78-request cap. Completed using 27 requests (13 baseline,
+  14 proposed); proposed produced 12 summaries and one block. All proposed references
+  conform to the recorded allowed-ID enums. Quality still fails: revised timing selects
+  the correction as the task; compiler suppression moves a release decision into unrelated
+  review and removes an undisputed price. Sparse also omits a commitment before blocking.
+  Conditional timing, later-answer review and written context improve in this single pass.
+  [Scores and audit evidence](evaluation/m10/v5/results/report.md) are preserved; no tuning
+  or extra inference. Previous freezes/results are unchanged. M10 remains unbuilt; future
+  revisions require a new freeze/budget and current review-workflow manual acceptance.
+
+- **V6 compiler preservation (2026-11-05; not Built):** shared prose no longer creates
+  timing links. Mixed items preserve unaffected sources as attributed quotes; disputed
+  accounts remain unresolved. Original tasks and later timing updates have separate
+  references, with backwards links rejected. Model-facing sources omit coordinates;
+  saved audits retain them. Numeric correction cannot discard an existing update link.
+  Wrapper version 5 preserves original V5/version-4 validation. Offline replay compiles
+  11 of 14 saved responses: the release decision and monitoring cost survive, sparse stays
+  blocked twice, and reversed timing now blocks instead of becoming a misleading task.
+  [V6 freeze and replay](evaluation/m10/v6/README.md) retain the same 13 cases, baseline,
+  rubric and settings. All 365 unit tests pass; no inference ran. Budget/repetitions remain
+  unset. Semantic selection, completeness, quality and current manual acceptance still
+  require evaluation. M10 remains unbuilt.
+
+- **V6 evaluation (2026-11-05; not Built):** requested one repetition of all 13 cases in
+  both arms under the same announced 78-request cap. Used 28 requests (13 baseline,
+  15 proposed), producing 12 proposed summaries and one block. Release decision, monitoring
+  cost, sparse-note completeness and original revised-date task survive in this pass.
+  Quality still fails: additional context accompanies an omitted spoken review commitment;
+  later timing identifies the correct sources but blocks on cross-statement initial timing
+  after a failed correction. Budget conflict also includes an unrelated delivery source.
+  [Scores and audit evidence](evaluation/m10/v6/results/report.md) preserve all outputs;
+  all prior freezes/results remain unchanged. No tuning or extra inference. All 365 unit
+  tests pass. Next design work should examine conservative timing normalization and explicit
+  commitment coverage diagnostics offline. M10 remains unbuilt; future revisions need a
+  new freeze/budget and current manual review-workflow acceptance.
+
+- **V7 offline repair (2026-11-05; not Built):** exact unique timing quotes from later
+  transcript sources become unverified review evidence, never assigned deadlines. A narrow
+  first-person task-verb diagnostic flags omitted actions for the existing bounded correction,
+  without inventing tasks; negation, uncertainty, quotations and nearby retractions are
+  excluded. It does not establish completeness or classify all commitments. Numeric retries
+  retain normalized timing links. Wrapper version 6 preserves V6/version-5 validation.
+  [V7 freeze and replay](evaluation/m10/v7/README.md) compile 13 of 15 saved attempts:
+  both later-timing drafts now review Friday; additional now blocks on the missing task;
+  sparse's original invalid draft remains blocked. Same prompt/schema, 13 cases, baseline,
+  rubric and model settings. All 395 unit tests pass. No inference; budget/repetitions unset.
+  Quality and current manual acceptance remain pending. M10 remains unbuilt.
+
+- **V7 evaluation (2026-11-05; not Built):** requested one repetition of all 13 cases in
+  both arms under the announced 78-request cap; used 28 requests (13 baseline, 15 proposed).
+  All 13 proposed summaries complete. Omission correction restores the missing review task;
+  external Friday timing is preserved in unassigned review. All initial parsed drafts match
+  V6; the changed validator/compiler/correction behavior explains the targeted differences.
+  [Scores and evidence](evaluation/m10/v7/results/report.md) meet the frozen single-run
+  criteria: no observed proposed critical failures or commitment completeness regressions,
+  with useful written context. Conflict grouping and polish remain imperfect; conservative
+  timing earns partial credit. One repetition and reused synthetic fixtures do not establish
+  reliability. All prior artifacts remain unchanged; no tuning or extra inference. Current
+  manual review-workflow acceptance remains pending, so M10 stays unbuilt. Broader confidence
+  requires separately budgeted repeat/held-out checks. All 395 unit tests pass.
+
+- **Recording safeguard (2026-11-10):** foreground and background recordings now have
+  a default one-hour cap, configurable with a positive finite
+  `MEETING_NOTES_MAX_RECORDING_SECONDS`. Explicit duration can shorten but not exceed
+  the cap. Reaching the limit stops capture cleanly, reports the reason, and transcribes
+  without enhancing. Shortcuts inherit the code default and capture configured overrides
+  on reinstall. All 410 unit tests pass; no capture code or model contract changed.
+
+- **PR review fixes (2026-11-12; not Built):** orphan capture stays in a durable stopping
+  phase until helper exit is confirmed; interrupted or crashed shutdown remains retryable
+  and blocks concurrent recording starts. The chooser skips corrupt metadata/transcripts
+  individually, warns, and handles corruption during selection. Shared schema enums and
+  compact labelled source rows reduce request overhead without dropping source material or
+  raising context size. The review's 5,202-word case now fits; a 10,402-word regression
+  fixture also fits, but size remains wording/notes/retry dependent. Current transport tests
+  cover request limits and malformed responses, separately from legacy compatibility tests.
+  All 433 offline unit tests pass. [V8 freeze](evaluation/m10/v8/README.md) preserves the
+  output contract and saved validators. No model inference; V7 evidence stays unchanged,
+  and V8 quality/manual acceptance remain pending. M10 remains unbuilt.
+
+- **V8 evaluation and independent review (2026-11-12; not Built):** one repetition of 13
+  synthetic cases per arm used 29 of the announced 78 requests (13 baseline, 16 proposed).
+  Baseline produces 13/13 summaries; V8 produces 11/13, with two initial-request transport
+  timeouts. V8 also loses the independent release agreement in the empty-notes case and
+  unnecessarily disputes an unrelated task in the status-conflict case. Written-only context
+  remains separate in successful cases. [Scores and evidence](evaluation/m10/v8/results/report.md)
+  fail completion and no-completeness-regression criteria. All 11 selected summaries replay
+  exactly; prior frozen artifacts remain unchanged. No tuning or selective reruns occurred.
+  A fresh maximum-effort [review](evaluation/m10/v8/results/pr-review.md) reproduces two P1
+  recovery defects involving malformed session/meeting metadata and a P2 partial timing quote
+  defect. These remain unfixed and block merging independently of quality. Formatting, lint,
+  strict types and all 433 offline unit tests pass. Fixes, separately budgeted evaluation and
+  current manual acceptance remain pending; M10 remains unbuilt.
+
+- **Independent review fixes (2026-11-12; not Built):** malformed session recovery uses
+  stable file-derived identity rather than a fresh timestamp per read. Session discovery
+  includes recordings whose metadata is missing, and title lookup falls back to the meeting
+  ID so damaged metadata cannot block capture shutdown. Partial timing quotes leaving temporal
+  qualifiers or duration units in the task remain unassigned with the full source for review;
+  complete timing quotes retain their qualifiers. New saves use wrapper version 7/grounding-v6,
+  while version-6 saves keep the original compiler. Synthetic regressions cover corrupt-session
+  claims, concurrent starts, interrupted recovery, damaged metadata with/without audio, timing
+  qualifiers and saved-summary compatibility. All 465 unit tests, formatting, lint and strict
+  types pass. Frozen evaluation artifacts are unchanged; no inference or new quality claim.
+  V8 timeout/omission failures and current manual acceptance remain pending. M10 remains unbuilt.
+
+- **V9 candidate and evaluation (2026-11-12; not Built):** a flat shared source-ID enum
+  removes the nested reference union while retaining runtime source-kind checks and complete
+  request-size limits. Narrow diagnostics flag uncited explicit agreements and mixed task/fact
+  conflicts; prompt guidance clarifies both. No decisions are generated by these diagnostics.
+  Wrapper version 8 preserves prior validators, including the qualifier repair in version 7.
+  [V9 freeze and offline replay](evaluation/m10/v9/README.md) precede the explicitly approved
+  one-repetition, 78-request-cap run. [Results](evaluation/m10/v9/results/report.md) use 26
+  requests (13 per arm), with all summaries completing and no corrections/timeouts. The
+  independent release agreement and unrelated verification task are retained correctly.
+  Quality still fails: a support-price disagreement is not flagged despite both values being
+  present. No commitment completeness regression is observed; one repetition cannot establish
+  timeout causality or reliability. All 482 offline unit tests, format, lint and strict types
+  pass. All prior artifacts remain unchanged. No extra runs or tuning used the unused budget.
+  Missed-conflict handling needs a new candidate and separately scoped evaluation. Current
+  manual acceptance remains pending; M10 remains unbuilt.
+
+- **V10 offline comparison candidate (2026-11-12; not Built):** a separate pre-summary
+  pass partitions note passages into claims, recording subject, quantity/unit, period, scope,
+  epistemic status and consistent/additional/conflicting/uncertain outcomes with exact source
+  accounts. Code checks text coverage and references, assembles conflicts and retains uncertain
+  accounts in visible review. Semantic splitting and classification remain model work; text
+  coverage does not prove completeness. Independent tasks/agreements and relative timing retain
+  code assembly. Comparison and summary each allow one correction: at most four requests with
+  notes, two without; complete request bodies include stage history and selected comparison
+  in the unchanged context estimate. New wrapper 9/grounding-v8 atomically saves both stages
+  for replay; versions 1–8 retain historical validators. All 539 offline tests, formatting,
+  lint and strict types pass; all 340 prior manifest entries remain unchanged. The
+  [V10 freeze](evaluation/m10/v10/README.md) records exact source, both prompts, schemas,
+  settings, rubric and pre-output expectations for 13 original plus nine new synthetic pairs.
+  The new cases are implementer-authored, not independently held out. No inference ran. Added
+  cost, case/repetition counts and budgets need separate approval (one full repetition would
+  allow 88 baseline + 74 proposed = 162 requests). Quality and current Obsidian acceptance
+  remain pending; no Built note or merge.
+
+- **V10 evaluation (2026-11-12; not Built):** the approved one-repetition evaluation of all
+  22 pairs per arm used 65 of the 162-request cap (22 baseline, 43 proposed), with no tuning,
+  selective reruns or transport errors/timeouts. Baseline publishes 22/22; proposed 17/22.
+  The missed support-price conflict now appears with unrelated monitoring and invoice task
+  intact; original 13 commitments and the release agreement survive. Quality still fails:
+  five new cases block, and unit_disagreement publishes a factual price statement as an
+  action. The blocked multi-claim case leaves a spoken invoice commitment unavailable.
+  Additional/no-match structure and exact quote separators repeatedly fail; two summary
+  cases persistently cite notes in spoken core. Estimate/status uncertainty expectations
+  are unmet and no selected comparison uses uncertain. All 17 selected summaries replay
+  exactly in wrapper 9; all 340 prior and 42 V10 input manifest entries remain unchanged.
+  [Report, scores and attempts](evaluation/m10/v10/results/report.md) preserve stage counts,
+  failure evidence and latency (48m44s total). One familiar/implementer-authored repetition
+  is not independent reliability evidence. All 539 offline tests, formatting, lint and
+  strict types pass. No further inference used the 97 unused requests. Current Obsidian
+  acceptance was not advanced because quality failed; M10 remains unbuilt. An offline
+  successor needs a fresh contract/freeze and separately scoped evaluation.
+
+
+### M10 V11 candidate — historical offline sequence, 2026-11-12
+
+Planned 2026-11-12 after V10 failed quality. This is an evaluation candidate within M10,
+not milestone M11. Continue on `m10/notes-guided-enhancement` and existing PR #16. This
+planning session does not implement or run V11. On resuming, work through the offline
+steps below; no further model inference, merge or Built note is authorized. Preserve V1–V10
+inputs/results, baseline `199dd62` and the shipped recording safeguards.
+
+1. **Reproduce and specify before changing behavior.** Read V10's report, raw responses and
+   expected outcomes. Add regressions from `unit_disagreement`, `multi_claim_notes`,
+   `scope_separate`, `periods_separate`, `estimate_approval` and `tentative_confirmed`.
+   Record the proposed action-admissibility, claim-span, related-account, uncertainty and
+   failure contracts before implementation. Treat the choices below as design direction,
+   not a proven algorithm. Keep the two-stage workflow; do not add a model pass to solve
+   commitment classification without a separately agreed cost decision.
+
+2. **Reject facts selected as actions first.** Reproduce V10 selecting factual T1 as a task
+   before and after summary correction. Specify what source evidence permits a spoken
+   commitment and what triggers correction or visible unassigned review. Keep task/owner/
+   timing assembly in code; never generate replacement task prose. A model-supplied kind or
+   status is not independent proof, and exact quotes/valid IDs alone are insufficient.
+   Use a narrowly justified diagnostic or structured commitment evidence with explicit
+   limits; do not blacklist fixture strings or require every legitimate promise to start
+   with “I will.” Test genuine first/third-person commitments, coordinated and implied
+   tasks, factual costs/status, negation, proposals, quotations and retractions. Uncertain
+   candidates must not become executable checklist items merely because a source exists.
+   Preserve unrelated real tasks and independent agreements during correction.
+
+3. **Move claim span bookkeeping into code.** Prefer exact claim anchors resolved to saved
+   source spans, with code retaining separators and original text, over asking the model
+   to reproduce an entire punctuation/whitespace partition. Define uniqueness, order,
+   overlap, repeated-anchor and uncovered-text rules first. Explicitly define any permitted
+   separator/connective gaps and retain them in compiled evidence; never silently discard
+   words or treat gaps containing negation, uncertainty or conditions as harmless formatting.
+   Test commas, conjunctions, headings, repeated phrases and multiple facts/requests in one
+   passage. Coverage must still account for all meaningful note content. A valid span map
+   cannot prove atomic semantic splitting or entailment; keep that limitation explicit.
+
+4. **Separate comparison relationships from matching evidence.** Represent related accounts
+   with distinct periods/scopes/status without forcing “additional” to erase useful comparison
+   context or pretend the accounts agree. Distinguish matching/corroborating, conflicting,
+   related-but-distinct and uncertain relations in the contract before choosing fields.
+   Written-only material stays notes. Preserve subject, quantity/unit, period, scope and
+   epistemic qualifiers; do not infer identity from shared numbers or keywords. Estimate
+   versus approval and tentative versus confirmed need visible review where the relation
+   is unresolved. Validate blank/literal-null dimensions without inventing absent facts;
+   distinguish true absence from missing extraction. Semantic correctness remains an
+   evaluation question, even with well-formed dimensions.
+
+5. **Constrain source kinds before summary correction.** Keep conflicts and written context
+   code-assembled from comparison evidence. Prefer a simple transcript-only reference
+   vocabulary for generated spoken core/actions/timing; remove redundant model-written note
+   prose if it serves no purpose. If separate note fields remain, give them their own source
+   kind. Avoid rebuilding the nested reference unions previously removed for request size.
+   Keep runtime kind/quote/number validation and full-body context accounting on every call.
+   Grammar restrictions do not prevent prose from misrepresenting a valid transcript source;
+   test that failure too. Preserve source separation through both correction and fallback.
+
+6. **Version, integrate and verify offline.** Preserve wrapper 9 / grounding-v8 and all its
+   transitive validation behavior; use new contract/comparison/compiler modules as needed.
+   New semantics should use wrapper 10 / grounding-v9, retaining versions 1–9. Do not change
+   shared historical model schemas in place. Save selected spans, relations, commitment
+   evidence, requests/replies and compilation findings atomically with each new generation.
+   Failures preserve the prior successful result; rendering uses saved evidence without
+   inference or original-note reads. Keep at most four requests with notes and two without,
+   unless a different policy is explicitly agreed before live runs. No transport retries,
+   truncation or silent chunking. Exercise context limits on every initial/correction request.
+   Update the V10 freeze test that equates frozen source with the current working tree:
+   verify manifest/recorded-commit integrity instead, while replaying all 17 historical V10
+   results under their original wrapper. Never update a frozen manifest to make tests pass.
+   Replays of old replies may compile, block or be unmappable under a new contract; report
+   those counts only. Keep authored new-contract fake responses distinct from faithful replay.
+
+7. **Check and freeze a reviewable V11 candidate; stop before inference.** Run formatting,
+   lint, strict types and the full offline suite; Swift tests only if capture changes.
+   Verify all 396 existing manifest entries unchanged. Freeze source revision, both prompts,
+   generic/per-case schemas, settings, fixture hashes, provenance and manual rubric. Retain
+   the original 22 pairs and predeclare any additional discriminating cases/expectations.
+   Reserve separately authored unseen cases where practical; do not call implementer-authored
+   fixtures held out or independent. Freeze expectations before seeing generated outputs.
+   Report offline replay limits, maximum calls and context/cost implications. Commit roadmap
+   changes separately as `Plan: ...`; keep the handoff current.
+
+8. **Agree and run evaluation separately, then consider manual acceptance.** Choose cases,
+   repetitions, per-arm ceilings, total request budget and stopping rules with the user.
+   V10's 97 unused requests provide no authorization. Its run took 48m44s, so account for
+   latency as well as request count. No tuning/selective reruns inside a scored run. Require
+   every agreed output complete, no invented task, no lost spoken commitment/agreement,
+   correct source separation, no critical missed/invented conflict and correct uncertainty/
+   numeric/date meaning. Inspect both stage evidence and final notes; valid IDs or nonempty
+   fields are not success. Replay every selected result and preserve old manifests. Only a
+   passing quality gate advances current synthetic Obsidian acceptance; merging still needs
+   the owner's authorization and `git shipit`.
 
 For both stages, run formatting, lint, strict types and unit tests before committing;
 run Swift tests only if capture code changes. Keep shipped model settings unchanged.
 Live transcription, in-place AI editing, custom Obsidian plugins and automatic tracking
 of renamed or moved notes are outside this roadmap replacement.
+
+**Offline checkpoint (2026-11-12; M10 remains unbuilt).** V11 source `fb3b130` is
+frozen at `e866b10` in [evaluation/m10/v11/](evaluation/m10/v11/README.md). The two-stage
+candidate adds source-anchored commitment evidence and narrow retraction/admissibility
+diagnostics, code-resolved claim spans/gaps, related-distinct accounts and source-separated
+drafts. Wrapper 10 / grounding-v9 binds snapshots, raw attempts, compilation and selection;
+runtime/replay share full request accounting and raw failure checks. Independent code
+review findings have regression coverage; uncertain partial work stays visible outside
+executable checklists. These checks cannot prove semantic correctness or completeness.
+
+Formatting, lint, strict types and 978 offline tests pass; six integration tests excluded.
+Capture is unchanged. All 396 historical entries and 17 V10 saved generations verify;
+67 new freeze entries include 43 exact runtime/prompt files and 40 per-case schemas.
+The original 22 pairs and baseline remain unchanged; 18 authored additions bring V11
+to 40 cases. Strict unchanged V10 replies are 0 compiled, 0 blocked, 43 unmappable under
+the new wire contract; authored new-contract regressions are separate evidence. No case
+is independently held out, and no V11 inference, quality scoring or current manual
+Obsidian acceptance ran. Source review and offline success are not a model quality pass.
+
+Next is a separately agreed evaluation: proposed one repetition of all 40 pairs per arm,
+with ceilings 160 baseline plus 116 proposed (276 total), unchanged settings, declared
+stopping rules and no tuning/selective reruns. This is not approval; account for V10's
+48m44s latency and do not reuse its 97 unused requests. Quality, current manual acceptance
+and the owner's `shipit` remain required before Built/merge. The current handoff is
+[NEXT_SESSION.md](NEXT_SESSION.md).
+
+
+**Evaluation checkpoint (2026-11-12; M10 remains unbuilt).** The owner approved all forty
+frozen synthetic pairs once per arm, capped at 160 baseline + 116 proposed = 276 requests.
+The serial run used 40 baseline + 69 proposed = **109 requests** in **98m46s**, with unchanged
+model/settings/identity and no tuning or selective reruns. Baseline completed 40/40; V11
+published **34/40**, with three comparison blocks and three summary blocks. All eighty slots
+and every attempt are retained in [V11 results](evaluation/m10/v11/results/report.md).
+
+Quality failed independently of faithful mechanical replay. One published V11 output calls
+12000 cents and 120 dollars conflicting. Three comparison failures make independent invoice
+work unavailable in two cases; three summary failures include a partial retraction whose
+remaining sending work never reaches publication. The thirty-four published outputs have no
+identified invented executable task, but misleading unaccepted-task prose, dimension extraction
+and conservative review still have partial findings. Baseline has eight critical semantic
+failure cases; a weaker baseline does not relax acceptance.
+
+Two fresh Codex assessors scored shuffled opaque halves against the frozen seven-dimension
+rubric; all eighty original scores and packet/key hashes locked before the key join. The Chief
+checked source evidence without changing scores. Arm structure can reveal identity and none
+of the twenty-two familiar plus eighteen authored cases is independently held out. One run
+establishes no reliability. Reporting tools passed separate review after bounded repairs;
+these authored checks are separate from fresh model outcomes.
+
+All **396 historical + 67 V11 entries** and seventeen historical wrapper-9 generations verify;
+all **34 selected wrapper-10** summaries/audits/warnings roundtrip exactly. Formatting, lint,
+strict types and 978 offline tests pass; six integration tests excluded, capture unchanged.
+No current manual Obsidian acceptance, Built note or merge ran. The 167 unused requests are
+not reused. Next is a separate successor-scope decision based on offline investigation of
+unit/relationship semantics, extraction/uncertainty and actual admission/retraction failures,
+while preserving genuine work, source meaning, historical evidence and all milestone gates.
+
+### Next: M10 reviewable draft — product reset, 2026-11-13
+
+The owner confirmed: “a draft that saves me time but requires I review it is super useful.”
+Optimize the first release for that workflow. Keep local privacy, factual accuracy,
+source separation, protected writing and historical evidence. This is a prospective
+product decision, not a regrading of V11 or evidence that the simpler design already works.
+Current work records the contract and bounded next task; no runtime, prompt, schema,
+storage migration, model run, Built note or merge is part of this requirements update.
+
+**First-release output.** Every generated section is visibly an AI draft requiring review.
+Summary and key points should be readable without decoding source IDs. Notes can guide
+emphasis but remain separately attributed; preserve the original handwritten file and
+the exact saved inputs. Source excerpts or links must make meaningful claims easy to check.
+Suggested decisions/actions remain ordinary reviewable Markdown, with source/context,
+supported owner and full timing qualifiers. A user can promote an action to a checkbox
+by editing in Obsidian; this adds no custom plugin, approval database or automatic promotion.
+Questions, examples, retractions and unaccepted requests cannot become claimed commitments
+merely because the output is a draft. Preserve third-person, implied and conditional work.
+
+Automatic semantic merging and conflict classification are deferred. Relevant written
+and spoken passages can be shown together under review, without asserting that they
+agree, conflict or resolve each other. For example, 12000 cents versus 120 dollars cannot
+be presented as a factual disagreement. Any later arithmetic check needs established
+subject, currency/unit, period and scope; lexical overlap alone is insufficient.
+
+**Uncertainty and failure.** All generated content needs user review. A specific
+“Needs review” notice identifies known ambiguity; “Unavailable” identifies analysis that
+did not finish. Neither ordinary draft text nor absence of a warning means verified truth.
+An unavailable optional analysis must not suppress independently usable, source-backed
+draft sections or silently hide genuine work. Retain the affected source/context in
+focused review, including remaining work after a partial cancellation. Dumping the whole
+transcript or saying only “Review needed” does not satisfy useful retention or completion.
+
+Permit an explicitly incomplete draft with section statuses; never present it as complete
+analysis. Before integrating this policy, define how each section binds to one saved input
+snapshot and generation and how an incomplete draft coexists with prior successful output.
+Keep atomic writes and user-edit protection; do not replace protected/previous results
+with an unvalidated partial result or silently splice sections from different generations.
+Missing/unreadable previously associated notes still stop enhancement; an incomplete input
+snapshot is distinct from an optional analysis failure. Empty notes remain supported.
+
+**Quality and usefulness.** A draft label does not excuse invented facts, wrong source
+meaning, owners/deadlines, changed quantities, lost conditions or cancelled work presented
+as current. Keep these as defects. Require meaningful source-backed access to genuine
+undertakings and independent agreements, clear uncertainty and honest section status.
+Evaluate readable emphasis and review burden as well as semantic safety. The owner must
+find that checking/editing the draft saves work compared with composing the note manually.
+Record generation latency and review effort; no numerical latency/review-time target
+has been agreed, and no existing case or failed verdict may be dropped to manufacture a pass.
+
+**Bounded next task: offline prototype only.** Build an isolated in-memory/rendering
+prototype with authored synthetic responses and no production CLI/pipeline/store changes.
+Specify the smallest useful draft contract, source presentation, section states and
+prospective partial-result persistence requirements before integrating anything. Avoid
+carrying every V11 semantic classification field into the new contract. Demonstrate a
+normal draft and graceful, clearly incomplete output; include a failure in one section
+that preserves independent valid work without publishing the rejected claim.
+
+Use these ten existing frozen inputs for focused diagnostics: empty, additional,
+unit_equivalence, multi_claim_notes, tentative_confirmed, accepted_status_answer,
+accepted_request_retracted, cancellation_with_new_task, partial_coordination_retracted
+and qualified_external_timing. They are familiar development cases. Retain all forty
+unchanged inputs for full regression and map prospective draft criteria explicitly;
+do not rewrite their frozen historical expectations. Authored examples, adapting saved
+responses and rendering probes are engineering evidence, not fresh model-quality evidence.
+
+Review the prototype and prospective acceptance criteria before any new inference.
+Change one capability at a time in a small declared diagnostic experiment, rather than
+rerunning two complete arms after each patch. Agree its exact cases, repetitions,
+settings, request/time ceilings and stopping rule separately. If an important capability
+still fails that bounded test, reassess it before adding more validation machinery.
+Reserve fresh independently authored cases where practical for final assessment; keep
+their provenance honest. Full regression, passing prospective quality criteria and
+current synthetic Obsidian usefulness acceptance still precede Built and owner `shipit`.
+Any later private pilot must be separately scoped, keep real data out of this public repo
+and report only approved aggregate findings. V11's 167 unused requests authorize no new run.
+
+**Offline prototype checkpoint (2026-11-13; M10 remains unbuilt).** The owner authorized
+the bounded prototype. [Ten authored previews](prototypes/reviewable_draft/previews/index.md)
+now demonstrate the prospective format on the named unchanged inputs, including a
+[normal draft](prototypes/reviewable_draft/previews/additional.md) and an
+[unavailable comparison retaining the independent invoice suggestion](prototypes/reviewable_draft/previews/multi_claim_notes.md).
+The small immutable model validates snapshot/generation/source bindings; the pure renderer
+shows ordinary suggestions, focused review, explicit section states, shared literal
+source excerpts and original writing. The demo exporter creates fresh directories only
+and records captured-input/fixture/output hashes. No semantic classifier, inference,
+production integration or persistence migration is included.
+
+Formatting, lint, strict types and 1016 offline tests pass (38 prototype checks; six
+integration tests excluded). All 396 historical + 67 V11 + 23 sealed result entries and
+seventeen old wrapper-9 replays remain unchanged. All forty original regression inputs
+are retained. Authored responses and rendering tests are engineering evidence, not a
+model-quality pass; at this checkpoint the owner had not yet accepted the format or tested
+it in Obsidian.
+
+Next, review whether the previews would save editing time, then bound and review the
+smallest model-facing contract/isolated generator and declare a separate diagnostic
+experiment before any inference. The prototype README records prospective acceptance
+and production snapshot/section/prior-output/atomicity/edit-protection requirements;
+those integration safeguards have not been implemented by this prototype. No new
+request/time budget, numerical review-effort target, Built note or merge is implied.
+
+**Preview feedback and next diagnostic (2026-11-13).** The owner reviewed the normal and
+incomplete examples and replied “Yeah these look good!” Record the authored preview
+format as approved; generated quality, measured editing effort and current synthetic
+Obsidian acceptance remain untested.
+
+The isolated generator preparation uses one response in the small draft contract,
+host-bound snapshot/generation identity, code-copied writing and literal source references.
+It has no default transport or production integration. Offline fake responses test shape
+and failure behavior only; no new semantic compiler or correction pass is added.
+The [diagnostic proposal](prototypes/reviewable_draft/EXPERIMENT.md) names six familiar
+cases in fixed order: additional, unit_equivalence, accepted_status_answer,
+cancellation_with_new_task, partial_coordination_retracted and qualified_external_timing.
+Proposed scope is one candidate, one request per case, six total and fifteen minutes,
+with unchanged qwen3:30b settings and no baseline, corrections, retries or selective reruns.
+Criteria and stopping rules precede outputs. These are proposed limits, not inference
+authorization. Review the timed capture driver and freeze exact source/requests/inputs/
+identity before seeking execution approval; preparation alone implements no timed run.
+Formatting, lint, strict types and 1046 offline tests pass, including 30 new generator
+checks. Six integration tests remain excluded; no model request has been sent.
+All forty historical inputs and failed verdicts remain unchanged, with the existing
+quality, usefulness, persistence and owner `shipit` gates.
+
+**Execution approval (2026-11-13).** The owner replied “I approve” after the Chief specified
+at most six local model requests and a fifteen-minute elapsed cap. Finish and independently
+review the timed capture driver, freeze the exact source/criteria/inputs/requests/settings
+and verified local model identity, then run that declared diagnostic without asking again.
+No baseline, corrections, retries, selective reruns or production integration are authorized.
+The fifteen-minute clock includes run preflight, metadata, inference and capture; offline
+preparation precedes that clock. Preserve all captured failures and unsent slots. No unused
+allowance transfers to a second run, and every existing quality/usefulness/shipit gate stays.
+
+**First draft diagnostic checkpoint (2026-11-13; M10 remains unbuilt).** The approved
+single-candidate run captured all six cases using six requests in 5m13s, with no retries,
+corrections, transport/format errors, unavailable sections, unsent slots or overrun.
+Independent source-based assessment and Chief review found four cases meeting criteria,
+one critical invented-work case and one noncritical surviving-work criterion failure.
+Partial category/source-label/repetition findings remain. All raw replies and exact
+findings are retained in the [report](evaluation/m10/reviewable-draft/diagnostic-1/results/report.md).
+
+Source `2934d10` passed independent driver review without formal repairs. The eighteen-entry
+freeze was committed/pushed at `1a3aceb` before inference; every selected draft JSON/Markdown
+artifact replays exactly. All 486 historical/result entries and forty original regression
+inputs remain unchanged. Formatting, lint, strict types and 1109 offline tests pass; six
+integration tests excluded, capture unchanged. Engineering completion does not pass quality.
+
+All six requests are used; no inference followed or allowance transferred. Next is an
+offline successor-design decision focused on source-faithful action/decision wording and
+useful surviving-work extraction. Source-extracted wording or a narrower summary-first
+scope are candidates to inspect before adding more semantic validators; no new contract,
+implementation or experiment is approved by this checkpoint. Keep the accepted presentation,
+old failed verdicts and every persistence/quality/usefulness/owner `shipit` gate. These six
+familiar cases and one repetition establish no reliability or measured editing benefit.
+
+**Quoted-selection successor (2026-11-13; offline scope).** The owner said “Great, get it
+done!” to the focused faithful-action-extraction recommendation. Implement the small
+[quoted contract](prototypes/reviewable_draft/QUOTED.md) while retaining the accepted
+presentation. Actions/decisions select literal speech and complete supplied context;
+code supplies their display/notices. Reject invented wording, retain independent valid
+selections during known-source literal failures and expose incomplete status/focused
+evidence. Quotation remains no proof of admissibility, full qualifier coverage or retention.
+
+Use separate modules/capture profile and explicitly authored examples. Leave the first
+generator, failed diagnostic, V11 verdict, all forty inputs and sealed evidence unchanged.
+Prepare the same six-case diagnostic with a proposed six-request/fifteen-minute cap,
+unchanged settings and no retries. Finish implementation, independent review and exact
+freeze before requesting new execution approval. This offline authorization grants no
+model requests, production integration, current Obsidian acceptance, Built or merge.
+
+**Quoted diagnostic checkpoint (2026-11-13; M10 remains unbuilt).** Implementation and
+independent engineering review passed at `9e369ad` without findings/formal repairs. The
+nineteen-entry freeze was committed/pushed at `77fd9d3` before the owner approved six
+requests / fifteen minutes, no retries. The once-only run stopped after **two requests
+in 184.814 seconds (3m05s)**: one compiled draft, one source-reference validation failure
+and four unsent cases. No retries, transport/truncation errors, identity drift or overrun.
+The four unused slots authorize neither resumption nor another experiment.
+
+The [incomplete report](evaluation/m10/reviewable-draft/diagnostic-2/results/report.md)
+preserves both replies, exact failure, all accounting and independent assessment, sealed
+by a separate 56-entry result manifest. The completed draft preserves both undertakings
+but repeats content heavily. The rejected price response repeats references, selects a
+factual price as action/decision and includes writing in a speech-only summary with
+speech-only citations. The critical raw source/separation defect was not published in
+a compiled draft. No conflict or computed relationship was asserted. Availability,
+cancellation/replacement, surviving-work and qualified timing remain untested; no claim
+that the original failures are repaired is supported.
+
+All nineteen frozen entries, 486 historical/sealed entries, eighteen first-freeze entries,
+157 first-result entries and forty original inputs verify unchanged. All six old drafts,
+the one new draft and the new rejection reproduce exactly. Formatting, lint, strict types
+and 1234 offline tests pass; six integration tests excluded, capture unchanged. Mechanical
+integrity and engineering checks do not pass model quality or establish editing benefit.
+
+Keep the accepted presentation. Before another run, reassess avoidable response-contract
+burden and whether work extraction should be evaluated separately from summary generation.
+This is a recommendation, not a replacement implementation or new inference permission.
+Do not add semantic validators or repeat the same diagnostic by reflex. Any subsequent
+candidate needs concrete criteria, review, freeze and fresh request/time approval.
+Production integration, full regression, current synthetic Obsidian usefulness, Built
+and owner `shipit` remain pending; application behavior still follows V11.
+
+**Actions-alone successor (2026-11-13; authorized offline).** The owner accepted simplifying
+the response contract and testing action extraction separately. Implement the
+[two-field contract](prototypes/reviewable_draft/ACTIONS.md): literal action selections
+and focused review references, without summaries, decisions, model states/notices or
+free-form owner/deadline fields. Code supplies status/attribution and canonicalizes benign
+known duplicate references only after validating every reference. Preserve the complete
+input snapshot and original writing, but exclude writing from this spoken-action request.
+Current-work admissibility and useful retention remain capabilities to assess, not code
+guarantees. Do not add semantic classifiers or reinterpret historical failed responses.
+
+Prepare/review/freeze the isolated generator, pure action-only inspection, authored
+examples and timed capture profile. Proposed diagnostic: the same six familiar cases,
+negative controls first, one request each, six requests / fifteen minutes with unchanged
+local-model settings and no retries. No new inference budget is granted by this offline
+authorization; unused old slots do not transfer. Production integration, summary/decision
+quality, full regression, current Obsidian usefulness, Built and owner shipit remain pending.
+
+**Actions-alone preparation checkpoint (2026-11-13; M10 remains unbuilt).** The isolated
+generator, pure renderer, capture profile and six authored previews are implemented.
+Formatting, lint, strict types and 1335 offline tests pass; six integration tests excluded,
+capture unchanged. Independent review passed at `287d85b` after one noncritical accounting
+repair: issue-bearing partial results now appear in final incomplete-case accounting.
+No findings remain. Ninety-two contract tests, prior hashes/replays/previews, twenty tamper
+probes and a read-only in-memory fake capture were independently checked.
+
+The twenty-entry third freeze binds exact reviewed source, original inputs, requests,
+snapshots, declaration, settings and verified local identity. Manifest SHA256
+`472027ef8be047233a3a8cf75630c922afe28c96b73911b844619c16b33e8bd3`.
+All 736 previous entries, all forty inputs, seven old draft replays and the prior rejection
+remain exact. Eight historical replies are incompatible with this smaller protocol;
+incompatibility and about 58% smaller requests are no semantic, latency or usefulness pass.
+No new inference has run and no results directory exists. The complete setup is ready
+for a fresh six-request / fifteen-minute execution approval. Record any approval outside
+the freeze; do not ask again for an approved run. All prior failed outcomes and production
+quality/persistence/usefulness/Built/owner shipit gates remain unchanged.
+
+**Actions-alone evaluation checkpoint (2026-11-13; M10 remains unbuilt).** The owner
+replied “yes please!” to the exact frozen six-case / six-request / fifteen-minute run,
+no retries. It completed all six captures/decodes/renders using six requests in 247.310
+seconds (4m07s), without transport/format/literal failures, mechanically incomplete
+results, identity drift, unsent cases or overrun. All six requests are used; no resumption
+or further inference followed. Unused time/old allowances authorize no new experiment.
+
+Independent assessment and Chief source checks found five cases meeting prospective
+action-only criteria and one **critical retention failure**. Partial cancellation leaves
+invoice sending current, but raw actions/review references are empty and the render shows
+only a generic notice, without the work or focused context. A complete backend snapshot
+does not satisfy useful retention. This differs from the first diagnostic's visibly
+retained summary facts; no previous severity or verdict is rewritten. Price/availability
+produce no action; replacement sending, full later timing and both independent undertakings
+survive in the other cases. Minor attribution/context repetition remains.
+
+The [report](evaluation/m10/reviewable-draft/diagnostic-3/results/report.md) preserves all
+six raw replies, exact artifacts/accounting, independent assessment and Chief verification,
+sealed by a separate 157-entry result manifest. All twenty current frozen entries and
+736 previous entries verify; all forty inputs remain exact. Every new output replays,
+including the omission. Formatting, lint, strict types and 1335 offline tests pass; six
+integration tests excluded, capture unchanged. Frozen-head Python/Swift CI passed.
+
+One repetition on six familiar inputs and a narrower task establishes no reliability,
+summary/decision quality, full-draft improvement, editing-time benefit or current Obsidian
+acceptance. Keep the smaller contract as a benchmark; consider a bounded local-model
+comparison before more pipeline changes. This is a recommendation, not a new implementation
+or inference budget. Do not add quote validators or automatically rerun cases to obtain
+a pass. Full regression, production persistence, current usefulness, Built and owner shipit
+remain pending. The application still follows V11.
+
+**Local-model screen approved (2026-11-13).** The owner said “Do it!” to preparing/reviewing
+a controlled comparison of installed Qwen3.5 9B and Gemma4 12B, using the same six inputs,
+prompt, response schema and scoring and reusing diagnostic-3's Qwen3 baseline. This
+authorizes one bounded run of **twelve new requests / thirty minutes, no retries**, after
+tooling checks, independent review and exact source/input/request/identity freeze. Do not
+request that same approval again. Model names will be hidden during meaning assessment;
+all eighteen records, including cached baseline and failed/unsent cases, must be graded
+and locked before joining the key. Familiar inputs remain familiar, not held out.
+
+The [comparison declaration](prototypes/reviewable_draft/MODEL_COMPARISON.md) fixes serial
+model/case order, thinking enabled (supported by both according to read-only metadata),
+temperature zero, context 32768, six requests/fifteen minutes per model and a shared
+twelve-request/thirty-minute ceiling. Only the model field varies; original action-only
+modules and all 913 prior manifest entries remain unchanged. Capture preserves every
+attempt/error/partial/unsent slot, with no warm-up, baseline inference, resumption or
+configuration repair. Freeze and publish before inference; preparation is outside the run
+clock. Fresh examples/repeated runs and broader regression are follow-up decisions, not
+part of this budget. No production change, requirements weakening, Built or merge is implied.
+
+**Local-model preparation checkpoint (2026-11-13).** The model-only adapter, bounded
+two-arm capture and eighteen-record masking/grade-lock tools are implemented. Independent
+review passed at `3275c1d` without findings or formal repairs; formatting, lint, strict types
+and 1386 offline tests pass, six integration tests excluded. All 913 prior entries and
+baseline raw/request/result/render bindings remain exact. Both local configurations were
+rechecked through metadata only; no inference has run for this screen yet.
+
+The [thirty-entry freeze](evaluation/m10/reviewable-draft/model-comparison-1/manifest.json)
+pins exact source, identities, baseline evidence, declaration, inputs/snapshots/settings
+and twelve model-only packets; manifest SHA256
+`0c08baba4e1a1524f7ba8fa8b8c74e1a2b4b38fb8cc6798dd3c28c356d450c7d`.
+Commit/push before executing the already approved twelve-request/thirty-minute run once;
+do not request the same approval again. No new application behavior, quality acceptance,
+follow-up test budget, Built or merge is implied by engineering preparation.
+
+**Local-model evaluation checkpoint (2026-11-13; M10 remains unbuilt).** The approved
+once-only screen used five new requests in 1381.014 seconds (23m01s), with no retries or
+arm/global overrun. Qwen3.5 completed the price case then timed out on availability;
+four cases were unsent. Gemma4 completed price/availability then timed out on partial
+withdrawal; three cases were unsent. Both affected arms stopped at their first fixed
+600-second client timeout. No resumption, configuration repair or model switch followed.
+The seven unused slots authorize nothing further.
+
+All eighteen opaque records, including six cached baseline, two failed and seven unsent
+cases, were graded independently with names/technical identifiers withheld. Every grade
+locked before joining the original pinned key. All three returned challenger outputs meet
+their negative-control criteria; Qwen3.5 has five incomplete cases and Gemma4 four. The
+cached baseline remains five passes/one critical retention failure. No challenger supplied
+positive work-retention/timing evidence. Timeouts are operational incompleteness, not proof
+of wrong missing answers. Familiar inputs, one repetition and incomplete coverage establish
+no reliability, full-draft improvement, editing-time benefit or Obsidian acceptance.
+
+The [report](evaluation/m10/reviewable-draft/model-comparison-1/analysis/report.md) preserves
+raw captures/timeouts, exact inventory, technical verification, the masked packet, locked
+grades, identity key and joined assessment under a final seal. All 913 prior entries,
+thirty current freeze entries and forty original inputs remain exact. Three new outputs
+and all cached baseline artifacts replay. Source/request/config/identity gates passed;
+five POSTs and twenty captured metadata GETs are accounted for.
+
+Format/lint/strict types and 1386 offline tests pass; six integration tests excluded,
+capture unchanged. CI found a test fixture requiring old Git objects absent in shallow
+checkouts; fixture-only fix `0e34921` reads committed frozen baseline sources. Depth-one
+collection passes all51newtests. No frozen runtime or model request changed for that repair.
+
+Keep the existing baseline. A small generation/runtime configuration investigation should
+precede another quality comparison or pipeline work; thinking mode is a possible variable,
+not a proven timeout cause. This is a recommendation, not new configuration/inference
+permission. Fresh cases/repeats, broader regression, production persistence, current
+usefulness, Built and owner shipit remain pending; application behavior stays V11.
 
 **M11 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are

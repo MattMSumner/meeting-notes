@@ -1,0 +1,402 @@
+{
+  "R001": {
+    "arm": "baseline",
+    "case": "gap_negation",
+    "repetition": 1
+  },
+  "R002": {
+    "arm": "baseline",
+    "case": "status_conflict",
+    "repetition": 1
+  },
+  "R003": {
+    "arm": "proposed",
+    "case": "approximate_timing",
+    "repetition": 1
+  },
+  "R004": {
+    "arm": "proposed",
+    "case": "coordinated_tasks",
+    "repetition": 1
+  },
+  "R005": {
+    "arm": "baseline",
+    "case": "conditional_spoken_commitment",
+    "repetition": 1
+  },
+  "R006": {
+    "arm": "proposed",
+    "case": "estimate_approval",
+    "repetition": 1
+  },
+  "R007": {
+    "arm": "proposed",
+    "case": "unit_equivalence",
+    "repetition": 1
+  },
+  "R008": {
+    "arm": "proposed",
+    "case": "gap_negation",
+    "repetition": 1
+  },
+  "R009": {
+    "arm": "proposed",
+    "case": "conflicting",
+    "repetition": 1
+  },
+  "R010": {
+    "arm": "proposed",
+    "case": "shared_numbers",
+    "repetition": 1
+  },
+  "R011": {
+    "arm": "baseline",
+    "case": "accepted_status_answer",
+    "repetition": 1
+  },
+  "R012": {
+    "arm": "proposed",
+    "case": "sparse",
+    "repetition": 1
+  },
+  "R013": {
+    "arm": "proposed",
+    "case": "accepted_status_answer",
+    "repetition": 1
+  },
+  "R014": {
+    "arm": "proposed",
+    "case": "conditional_spoken_commitment",
+    "repetition": 1
+  },
+  "R015": {
+    "arm": "baseline",
+    "case": "same_speaker_tasks",
+    "repetition": 1
+  },
+  "R016": {
+    "arm": "baseline",
+    "case": "accepted_coordination_retracted",
+    "repetition": 1
+  },
+  "R017": {
+    "arm": "baseline",
+    "case": "repeated_note_anchors",
+    "repetition": 1
+  },
+  "R018": {
+    "arm": "baseline",
+    "case": "multi_claim_notes",
+    "repetition": 1
+  },
+  "R019": {
+    "arm": "proposed",
+    "case": "proposal_not_commitment",
+    "repetition": 1
+  },
+  "R020": {
+    "arm": "proposed",
+    "case": "revised_timing",
+    "repetition": 1
+  },
+  "R021": {
+    "arm": "proposed",
+    "case": "proposal_rejected",
+    "repetition": 1
+  },
+  "R022": {
+    "arm": "proposed",
+    "case": "same_speaker_tasks",
+    "repetition": 1
+  },
+  "R023": {
+    "arm": "baseline",
+    "case": "conflicting",
+    "repetition": 1
+  },
+  "R024": {
+    "arm": "baseline",
+    "case": "periods_separate",
+    "repetition": 1
+  },
+  "R025": {
+    "arm": "proposed",
+    "case": "ambiguous_dates",
+    "repetition": 1
+  },
+  "R026": {
+    "arm": "baseline",
+    "case": "coordinated_tasks",
+    "repetition": 1
+  },
+  "R027": {
+    "arm": "proposed",
+    "case": "tentative_confirmed",
+    "repetition": 1
+  },
+  "R028": {
+    "arm": "baseline",
+    "case": "implied_commitment",
+    "repetition": 1
+  },
+  "R029": {
+    "arm": "baseline",
+    "case": "revised_timing",
+    "repetition": 1
+  },
+  "R030": {
+    "arm": "baseline",
+    "case": "approximate_timing",
+    "repetition": 1
+  },
+  "R031": {
+    "arm": "proposed",
+    "case": "third_person_commitment",
+    "repetition": 1
+  },
+  "R032": {
+    "arm": "proposed",
+    "case": "accepted_request_retracted",
+    "repetition": 1
+  },
+  "R033": {
+    "arm": "baseline",
+    "case": "qualified_external_timing",
+    "repetition": 1
+  },
+  "R034": {
+    "arm": "baseline",
+    "case": "additive_context",
+    "repetition": 1
+  },
+  "R035": {
+    "arm": "baseline",
+    "case": "cancellation_with_new_task",
+    "repetition": 1
+  },
+  "R036": {
+    "arm": "baseline",
+    "case": "front_loaded_timing",
+    "repetition": 1
+  },
+  "R037": {
+    "arm": "proposed",
+    "case": "quoted_commitment",
+    "repetition": 1
+  },
+  "R038": {
+    "arm": "baseline",
+    "case": "shared_numbers",
+    "repetition": 1
+  },
+  "R039": {
+    "arm": "baseline",
+    "case": "mixed_owner_cancellation",
+    "repetition": 1
+  },
+  "R040": {
+    "arm": "baseline",
+    "case": "sparse",
+    "repetition": 1
+  },
+  "R041": {
+    "arm": "proposed",
+    "case": "retracted_commitment",
+    "repetition": 1
+  },
+  "R042": {
+    "arm": "baseline",
+    "case": "ambiguous_dates",
+    "repetition": 1
+  },
+  "R043": {
+    "arm": "proposed",
+    "case": "repeated_note_anchors",
+    "repetition": 1
+  },
+  "R044": {
+    "arm": "proposed",
+    "case": "later_timing",
+    "repetition": 1
+  },
+  "R045": {
+    "arm": "proposed",
+    "case": "unit_disagreement",
+    "repetition": 1
+  },
+  "R046": {
+    "arm": "proposed",
+    "case": "implied_commitment",
+    "repetition": 1
+  },
+  "R047": {
+    "arm": "baseline",
+    "case": "scope_separate",
+    "repetition": 1
+  },
+  "R048": {
+    "arm": "proposed",
+    "case": "mixed_owner_cancellation",
+    "repetition": 1
+  },
+  "R049": {
+    "arm": "baseline",
+    "case": "status_not_commitment",
+    "repetition": 1
+  },
+  "R050": {
+    "arm": "proposed",
+    "case": "status_conflict",
+    "repetition": 1
+  },
+  "R051": {
+    "arm": "baseline",
+    "case": "partial_coordination_retracted",
+    "repetition": 1
+  },
+  "R052": {
+    "arm": "baseline",
+    "case": "estimate_approval",
+    "repetition": 1
+  },
+  "R053": {
+    "arm": "baseline",
+    "case": "tentative_task",
+    "repetition": 1
+  },
+  "R054": {
+    "arm": "baseline",
+    "case": "additional",
+    "repetition": 1
+  },
+  "R055": {
+    "arm": "baseline",
+    "case": "related_scopes_with_task",
+    "repetition": 1
+  },
+  "R056": {
+    "arm": "proposed",
+    "case": "additive_context",
+    "repetition": 1
+  },
+  "R057": {
+    "arm": "proposed",
+    "case": "partial_coordination_retracted",
+    "repetition": 1
+  },
+  "R058": {
+    "arm": "baseline",
+    "case": "accepted_request_retracted",
+    "repetition": 1
+  },
+  "R059": {
+    "arm": "baseline",
+    "case": "proposal_not_commitment",
+    "repetition": 1
+  },
+  "R060": {
+    "arm": "proposed",
+    "case": "periods_separate",
+    "repetition": 1
+  },
+  "R061": {
+    "arm": "proposed",
+    "case": "accepted_coordination_retracted",
+    "repetition": 1
+  },
+  "R062": {
+    "arm": "proposed",
+    "case": "status_not_commitment",
+    "repetition": 1
+  },
+  "R063": {
+    "arm": "baseline",
+    "case": "empty",
+    "repetition": 1
+  },
+  "R064": {
+    "arm": "baseline",
+    "case": "retracted_commitment",
+    "repetition": 1
+  },
+  "R065": {
+    "arm": "baseline",
+    "case": "tentative_confirmed",
+    "repetition": 1
+  },
+  "R066": {
+    "arm": "proposed",
+    "case": "cancellation_with_new_task",
+    "repetition": 1
+  },
+  "R067": {
+    "arm": "baseline",
+    "case": "unit_equivalence",
+    "repetition": 1
+  },
+  "R068": {
+    "arm": "proposed",
+    "case": "scope_separate",
+    "repetition": 1
+  },
+  "R069": {
+    "arm": "baseline",
+    "case": "third_person_commitment",
+    "repetition": 1
+  },
+  "R070": {
+    "arm": "proposed",
+    "case": "qualified_external_timing",
+    "repetition": 1
+  },
+  "R071": {
+    "arm": "proposed",
+    "case": "tentative_task",
+    "repetition": 1
+  },
+  "R072": {
+    "arm": "baseline",
+    "case": "later_timing",
+    "repetition": 1
+  },
+  "R073": {
+    "arm": "baseline",
+    "case": "unit_disagreement",
+    "repetition": 1
+  },
+  "R074": {
+    "arm": "proposed",
+    "case": "additional",
+    "repetition": 1
+  },
+  "R075": {
+    "arm": "baseline",
+    "case": "quoted_commitment",
+    "repetition": 1
+  },
+  "R076": {
+    "arm": "proposed",
+    "case": "related_scopes_with_task",
+    "repetition": 1
+  },
+  "R077": {
+    "arm": "proposed",
+    "case": "empty",
+    "repetition": 1
+  },
+  "R078": {
+    "arm": "baseline",
+    "case": "proposal_rejected",
+    "repetition": 1
+  },
+  "R079": {
+    "arm": "proposed",
+    "case": "front_loaded_timing",
+    "repetition": 1
+  },
+  "R080": {
+    "arm": "proposed",
+    "case": "multi_claim_notes",
+    "repetition": 1
+  }
+}

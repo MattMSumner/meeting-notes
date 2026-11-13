@@ -1,0 +1,20 @@
+{
+  "README.md": "8a66bbbbc0fe6ca71ce284a8636c359d1b81eccce2d8b7c76ff327ffbc4c9ee6",
+  "baseline/meeting_notes/__init__.py": "919ef1ac8abe04b1965cf28437f21c34cdeddf202c588b61ab7cc7daa630ac39",
+  "baseline/meeting_notes/figures.py": "239fc023e0c4176164eb2f0009a2e9daff0341b3e39b176e8bed4a683b2a1ce4",
+  "baseline/meeting_notes/meeting.py": "5bf2b35f14500897e76feb8841a34d3462e24b0e3d74d982a17972df9d4bb6be",
+  "baseline/meeting_notes/ollama.py": "622fba9f3e777e9736183e4da4aae7b876050c99c1d9c03c1be9dcfb67883594",
+  "baseline/meeting_notes/prompts/summary.md": "c852a869f224a78216e79d71dad91eafd3bf9adb87730a284639c33a4b0c1c2a",
+  "baseline/meeting_notes/summary.py": "19efab90c2e03afcad7b356d2af24cbb507d04fe8d9876842ebaae6a5a614378",
+  "baseline/schema.json": "a03923835b7f3aec3881f968f818d78b8ac2b3ec6f17c3abe8716fe5e1545e38",
+  "pairs.json": "22422d7f80df157105ca690013a5825734c35eadaed1824a46cfedc52df787ac",
+  "proposed/meeting_notes/__init__.py": "919ef1ac8abe04b1965cf28437f21c34cdeddf202c588b61ab7cc7daa630ac39",
+  "proposed/meeting_notes/evidence.py": "1bce36d4118beebb4bbd7302f9364986e8b404d84842986bd33c7c902b004795",
+  "proposed/meeting_notes/figures.py": "507c9e09ea1af49605df20fe4a60dd00ae8ca0ebbce5523479f12275d983a456",
+  "proposed/meeting_notes/meeting.py": "5bf2b35f14500897e76feb8841a34d3462e24b0e3d74d982a17972df9d4bb6be",
+  "proposed/meeting_notes/ollama.py": "7d409eb63d8db4193cf254e10609da80b288e134d7ddfa6713c6f69275e297f0",
+  "proposed/meeting_notes/prompts/summary.md": "add4f73a84936e1624025dd15b6a2fff0cb27cd140171cce991c10203cf6b43f",
+  "proposed/meeting_notes/summary.py": "2d70d4869b67274be56e118be1ecffae68486cacc09f9c97eb70465dcaa76761",
+  "proposed/schema.json": "65532416edb4f9935f3350e4419ef61e4341cb27e3fe84a2c3191db1bf351c4d",
+  "settings.json": "933dc65b12836b683f5d8b3adf48753847c5b404bf9ab9883cc0267c3ab63246"
+}

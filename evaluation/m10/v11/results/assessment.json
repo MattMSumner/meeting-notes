@@ -1,0 +1,81 @@
+{
+  "method": "Two fresh read-only Codex assessors independently inspected random opaque-label halves (40 each), all raw attempt replies/findings and selected outputs against the frozen seven-dimension rubric. All 80 original scores locked before Chief opened the arm key. Chief checked every critical source quote and final evidence plus all noncritical partial findings before locking. No scores or classifications were changed.",
+  "limitations": "One repetition; all cases are development/evaluation material, none independently held out. Output structure and notes reveal arms. Agent assessment is not fully blinded measurement. Scores are descriptive, not reliability estimates.",
+  "arms": {
+    "baseline": {
+      "assessed_slots": 40,
+      "complete": 40,
+      "incomplete_cases": [],
+      "critical_failure_cases": [
+        "status_conflict",
+        "same_speaker_tasks",
+        "multi_claim_notes",
+        "approximate_timing",
+        "qualified_external_timing",
+        "cancellation_with_new_task",
+        "partial_coordination_retracted",
+        "tentative_confirmed"
+      ],
+      "critical_failure_kinds": {
+        "lost_uncertainty": 1,
+        "invented_deadline": 2,
+        "lost_timing_qualifier": 3,
+        "lost_timing_qualifiers": 1,
+        "cancelled_undertaking_executable": 1,
+        "tentative_status_promoted_to_confirmation": 1
+      },
+      "dimension_totals_out_of_80": {
+        "commitments": 74,
+        "sources": 77,
+        "coverage": 80,
+        "comparison": 80,
+        "quantities": 76,
+        "timing_owners": 71,
+        "usefulness_completion": 67
+      }
+    },
+    "proposed": {
+      "assessed_slots": 40,
+      "complete": 34,
+      "incomplete_cases": [
+        "shared_numbers",
+        "accepted_status_answer",
+        "tentative_confirmed",
+        "accepted_request_retracted",
+        "partial_coordination_retracted",
+        "multi_claim_notes"
+      ],
+      "critical_failure_cases": [
+        "unit_equivalence",
+        "shared_numbers",
+        "accepted_status_answer",
+        "tentative_confirmed",
+        "accepted_request_retracted",
+        "partial_coordination_retracted",
+        "multi_claim_notes"
+      ],
+      "critical_failure_kinds": {
+        "invented_conflict": 1,
+        "incomplete_publication": 6,
+        "lost_commitment_unpublished": 1,
+        "undertaking_unavailable_with_blocked_output": 2
+      },
+      "dimension_totals_out_of_80": {
+        "commitments": 67,
+        "sources": 67,
+        "coverage": 68,
+        "comparison": 65,
+        "quantities": 64,
+        "timing_owners": 68,
+        "usefulness_completion": 58
+      }
+    }
+  },
+  "evidence_integrity": "verified",
+  "completion": "failed",
+  "quality_pass": false,
+  "quality_result": "Failed: incomplete/unverifiable outputs or critical semantic failures; current manual acceptance does not advance.",
+  "requests_used": 109,
+  "inference_policy": "No tuning, selective reruns or further inference; unused allowance is not reused.",
+  "built_or_merged": false
+}

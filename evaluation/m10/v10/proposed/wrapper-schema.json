@@ -1,0 +1,716 @@
+{
+  "$defs": {
+    "ActionItem": {
+      "additionalProperties": false,
+      "properties": {
+        "owner": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Who will do it: a name, \"Them\" if no name was given, or null if unclear",
+          "title": "Owner"
+        },
+        "task": {
+          "title": "Task",
+          "type": "string"
+        },
+        "review": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Review",
+          "type": "array"
+        },
+        "due": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Complete spoken timing phrase, including every alternative, condition and uncertainty. Must stand on its own even if task repeats the timing. Preserve relative wording; null when no timing was spoken.",
+          "title": "Due"
+        }
+      },
+      "required": [
+        "owner",
+        "task",
+        "due"
+      ],
+      "title": "ActionItem",
+      "type": "object"
+    },
+    "Attempt": {
+      "additionalProperties": false,
+      "properties": {
+        "request": {
+          "additionalProperties": true,
+          "title": "Request",
+          "type": "object"
+        },
+        "reply": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reply"
+        },
+        "response": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Response"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error"
+        },
+        "blocking": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Blocking",
+          "type": "array"
+        },
+        "warnings": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Warnings",
+          "type": "array"
+        }
+      },
+      "required": [
+        "request"
+      ],
+      "title": "Attempt",
+      "type": "object"
+    },
+    "Audit": {
+      "additionalProperties": false,
+      "properties": {
+        "validator_version": {
+          "const": "grounding-v1",
+          "default": "grounding-v1",
+          "title": "Validator Version",
+          "type": "string"
+        },
+        "passages": {
+          "items": {
+            "$ref": "#/$defs/Passage"
+          },
+          "title": "Passages",
+          "type": "array"
+        },
+        "attempts": {
+          "items": {
+            "$ref": "#/$defs/Attempt"
+          },
+          "title": "Attempts",
+          "type": "array"
+        },
+        "selected": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Selected"
+        }
+      },
+      "title": "Audit",
+      "type": "object"
+    },
+    "ComparisonAudit": {
+      "additionalProperties": false,
+      "properties": {
+        "validator_version": {
+          "const": "grounding-v8",
+          "default": "grounding-v8",
+          "title": "Validator Version",
+          "type": "string"
+        },
+        "passages": {
+          "items": {
+            "$ref": "#/$defs/Source"
+          },
+          "title": "Passages",
+          "type": "array"
+        },
+        "comparison_attempts": {
+          "items": {
+            "$ref": "#/$defs/Attempt"
+          },
+          "title": "Comparison Attempts",
+          "type": "array"
+        },
+        "comparison_selected": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Comparison Selected"
+        },
+        "attempts": {
+          "items": {
+            "$ref": "#/$defs/Attempt"
+          },
+          "title": "Attempts",
+          "type": "array"
+        },
+        "selected": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Selected"
+        }
+      },
+      "title": "ComparisonAudit",
+      "type": "object"
+    },
+    "CompletenessAudit": {
+      "additionalProperties": false,
+      "properties": {
+        "validator_version": {
+          "const": "grounding-v7",
+          "default": "grounding-v7",
+          "title": "Validator Version",
+          "type": "string"
+        },
+        "passages": {
+          "items": {
+            "$ref": "#/$defs/Source"
+          },
+          "title": "Passages",
+          "type": "array"
+        },
+        "attempts": {
+          "items": {
+            "$ref": "#/$defs/Attempt"
+          },
+          "title": "Attempts",
+          "type": "array"
+        },
+        "selected": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Selected"
+        }
+      },
+      "title": "CompletenessAudit",
+      "type": "object"
+    },
+    "Conflict": {
+      "additionalProperties": false,
+      "properties": {
+        "topic": {
+          "title": "Topic",
+          "type": "string"
+        },
+        "transcript": {
+          "description": "The spoken account, preserving uncertainty",
+          "title": "Transcript",
+          "type": "string"
+        },
+        "handwritten": {
+          "description": "The handwritten account, preserving uncertainty",
+          "title": "Handwritten",
+          "type": "string"
+        }
+      },
+      "required": [
+        "topic",
+        "transcript",
+        "handwritten"
+      ],
+      "title": "Conflict",
+      "type": "object"
+    },
+    "CoverageAudit": {
+      "additionalProperties": false,
+      "properties": {
+        "validator_version": {
+          "const": "grounding-v5",
+          "default": "grounding-v5",
+          "title": "Validator Version",
+          "type": "string"
+        },
+        "passages": {
+          "items": {
+            "$ref": "#/$defs/Source"
+          },
+          "title": "Passages",
+          "type": "array"
+        },
+        "attempts": {
+          "items": {
+            "$ref": "#/$defs/Attempt"
+          },
+          "title": "Attempts",
+          "type": "array"
+        },
+        "selected": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Selected"
+        }
+      },
+      "title": "CoverageAudit",
+      "type": "object"
+    },
+    "CurrentAudit": {
+      "additionalProperties": false,
+      "properties": {
+        "validator_version": {
+          "const": "grounding-v2",
+          "default": "grounding-v2",
+          "title": "Validator Version",
+          "type": "string"
+        },
+        "passages": {
+          "items": {
+            "$ref": "#/$defs/Source"
+          },
+          "title": "Passages",
+          "type": "array"
+        },
+        "attempts": {
+          "items": {
+            "$ref": "#/$defs/Attempt"
+          },
+          "title": "Attempts",
+          "type": "array"
+        },
+        "selected": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Selected"
+        }
+      },
+      "title": "CurrentAudit",
+      "type": "object"
+    },
+    "Evidence": {
+      "additionalProperties": false,
+      "properties": {
+        "transcript": {
+          "title": "Transcript",
+          "type": "string"
+        },
+        "context": {
+          "title": "Context",
+          "type": "string"
+        },
+        "handwritten_original": {
+          "title": "Handwritten Original",
+          "type": "string"
+        },
+        "handwritten_text": {
+          "title": "Handwritten Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "transcript",
+        "context",
+        "handwritten_original",
+        "handwritten_text"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    },
+    "Passage": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "source": {
+          "enum": [
+            "transcript",
+            "notes"
+          ],
+          "title": "Source",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "speaker": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Speaker"
+        }
+      },
+      "required": [
+        "id",
+        "source",
+        "text",
+        "speaker"
+      ],
+      "title": "Passage",
+      "type": "object"
+    },
+    "ReferenceAudit": {
+      "additionalProperties": false,
+      "properties": {
+        "validator_version": {
+          "const": "grounding-v3",
+          "default": "grounding-v3",
+          "title": "Validator Version",
+          "type": "string"
+        },
+        "passages": {
+          "items": {
+            "$ref": "#/$defs/Source"
+          },
+          "title": "Passages",
+          "type": "array"
+        },
+        "attempts": {
+          "items": {
+            "$ref": "#/$defs/Attempt"
+          },
+          "title": "Attempts",
+          "type": "array"
+        },
+        "selected": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Selected"
+        }
+      },
+      "title": "ReferenceAudit",
+      "type": "object"
+    },
+    "Source": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "source": {
+          "enum": [
+            "transcript",
+            "notes"
+          ],
+          "title": "Source",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "speaker": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Speaker"
+        },
+        "start": {
+          "title": "Start",
+          "type": "integer"
+        },
+        "end": {
+          "title": "End",
+          "type": "integer"
+        },
+        "turn": {
+          "title": "Turn",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "source",
+        "text",
+        "speaker",
+        "start",
+        "end",
+        "turn"
+      ],
+      "title": "Source",
+      "type": "object"
+    },
+    "Summary": {
+      "additionalProperties": false,
+      "properties": {
+        "overview": {
+          "description": "Two or three sentences about the meeting. Describe disputed topics as unresolved and refer to Conflicts; do not repeat a disputed value as settled.",
+          "title": "Overview",
+          "type": "string"
+        },
+        "key_points": {
+          "description": "Important spoken points. For disputed topics, state that the sources disagree and refer to Conflicts instead of repeating one disputed value as fact.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Key Points",
+          "type": "array"
+        },
+        "decisions": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Decisions",
+          "type": "array"
+        },
+        "action_items": {
+          "items": {
+            "$ref": "#/$defs/ActionItem"
+          },
+          "title": "Action Items",
+          "type": "array"
+        },
+        "notes_context": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Notes Context",
+          "type": "array"
+        },
+        "conflicts": {
+          "items": {
+            "$ref": "#/$defs/Conflict"
+          },
+          "title": "Conflicts",
+          "type": "array"
+        }
+      },
+      "required": [
+        "overview",
+        "key_points",
+        "decisions",
+        "action_items"
+      ],
+      "title": "Summary",
+      "type": "object"
+    },
+    "TaskAudit": {
+      "additionalProperties": false,
+      "properties": {
+        "validator_version": {
+          "const": "grounding-v4",
+          "default": "grounding-v4",
+          "title": "Validator Version",
+          "type": "string"
+        },
+        "passages": {
+          "items": {
+            "$ref": "#/$defs/Source"
+          },
+          "title": "Passages",
+          "type": "array"
+        },
+        "attempts": {
+          "items": {
+            "$ref": "#/$defs/Attempt"
+          },
+          "title": "Attempts",
+          "type": "array"
+        },
+        "selected": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Selected"
+        }
+      },
+      "title": "TaskAudit",
+      "type": "object"
+    },
+    "TimingAudit": {
+      "additionalProperties": false,
+      "properties": {
+        "validator_version": {
+          "const": "grounding-v6",
+          "default": "grounding-v6",
+          "title": "Validator Version",
+          "type": "string"
+        },
+        "passages": {
+          "items": {
+            "$ref": "#/$defs/Source"
+          },
+          "title": "Passages",
+          "type": "array"
+        },
+        "attempts": {
+          "items": {
+            "$ref": "#/$defs/Attempt"
+          },
+          "title": "Attempts",
+          "type": "array"
+        },
+        "selected": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Selected"
+        }
+      },
+      "title": "TimingAudit",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "default": 1,
+      "enum": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "title": "Version",
+      "type": "integer"
+    },
+    "summary": {
+      "$ref": "#/$defs/Summary"
+    },
+    "evidence": {
+      "$ref": "#/$defs/Evidence"
+    },
+    "audit": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Audit"
+        },
+        {
+          "$ref": "#/$defs/CurrentAudit"
+        },
+        {
+          "$ref": "#/$defs/ReferenceAudit"
+        },
+        {
+          "$ref": "#/$defs/TaskAudit"
+        },
+        {
+          "$ref": "#/$defs/CoverageAudit"
+        },
+        {
+          "$ref": "#/$defs/CompletenessAudit"
+        },
+        {
+          "$ref": "#/$defs/ComparisonAudit"
+        },
+        {
+          "$ref": "#/$defs/TimingAudit"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Audit"
+    }
+  },
+  "required": [
+    "summary",
+    "evidence"
+  ],
+  "title": "Generation",
+  "type": "object"
+}
