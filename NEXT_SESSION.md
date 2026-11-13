@@ -150,6 +150,16 @@ Combined validation passes 1109 offline tests (63 new driver checks), formatting
 and strict types; six integration tests excluded. Independent code review and exact
 freeze still precede the approved run. No inference has run at this checkpoint.
 
+Independent driver review passed at `2934d1004fb592d5ff0708fa2068532c7d51b543`, with no
+findings or formal repairs. The [exact freeze](evaluation/m10/reviewable-draft/diagnostic-1/manifest.json)
+contains 18 hashed files and has manifest SHA256
+`8c1b2ee279047f3c751311c73e0c9ff4680b0e5cc0afbd7fc4b147d283680168`.
+The source commit, declaration, all forty original inputs, six requests/snapshots and
+verified Ollama 0.40.9 / qwen3:30b digest are fixed before inference. Before any execution,
+inspect the freeze's `results/`: existing results mean the run was already claimed and
+must not restart. Raw attempts/final metadata, rather than this pre-run checkpoint,
+determine consumed requests and completion. Run once under the recorded approval.
+
 Passing prospective quality, current synthetic Obsidian usefulness acceptance and the
 owner's `shipit` remain required before Built/merge. Numerical latency/review-effort
 targets are not yet agreed; record them rather than inventing approval.
