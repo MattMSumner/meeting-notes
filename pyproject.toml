@@ -27,14 +27,14 @@ dev = [
 ]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["tests", "prototypes/reviewable_draft"]
 # Integration tests need real models and macOS audio, so they only run on demand:
 #   uv run pytest -m integration
 addopts = "-m 'not integration'"
 markers = ["integration: needs real models or audio hardware; never runs in CI"]
 
 [tool.pyright]
-include = ["src", "tests"]
+include = ["src", "tests", "prototypes/reviewable_draft"]
 typeCheckingMode = "strict"
 
 [tool.ruff]
