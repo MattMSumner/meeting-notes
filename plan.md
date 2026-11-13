@@ -1208,6 +1208,28 @@ The fifteen-minute clock includes run preflight, metadata, inference and capture
 preparation precedes that clock. Preserve all captured failures and unsent slots. No unused
 allowance transfers to a second run, and every existing quality/usefulness/shipit gate stays.
 
+**First draft diagnostic checkpoint (2026-11-13; M10 remains unbuilt).** The approved
+single-candidate run captured all six cases using six requests in 5m13s, with no retries,
+corrections, transport/format errors, unavailable sections, unsent slots or overrun.
+Independent source-based assessment and Chief review found four cases meeting criteria,
+one critical invented-work case and one noncritical surviving-work criterion failure.
+Partial category/source-label/repetition findings remain. All raw replies and exact
+findings are retained in the [report](evaluation/m10/reviewable-draft/diagnostic-1/results/report.md).
+
+Source `2934d10` passed independent driver review without formal repairs. The eighteen-entry
+freeze was committed/pushed at `1a3aceb` before inference; every selected draft JSON/Markdown
+artifact replays exactly. All 486 historical/result entries and forty original regression
+inputs remain unchanged. Formatting, lint, strict types and 1109 offline tests pass; six
+integration tests excluded, capture unchanged. Engineering completion does not pass quality.
+
+All six requests are used; no inference followed or allowance transferred. Next is an
+offline successor-design decision focused on source-faithful action/decision wording and
+useful surviving-work extraction. Source-extracted wording or a narrower summary-first
+scope are candidates to inspect before adding more semantic validators; no new contract,
+implementation or experiment is approved by this checkpoint. Keep the accepted presentation,
+old failed verdicts and every persistence/quality/usefulness/owner `shipit` gate. These six
+familiar cases and one repetition establish no reliability or measured editing benefit.
+
 **M11 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
 compared on tests rather than by eye on real meetings: stance (a "maybe" turned into a
