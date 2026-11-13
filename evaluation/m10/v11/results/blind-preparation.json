@@ -1,0 +1,15 @@
+{
+  "captured_output_sha256": {
+    "baseline": "eadf294150e39cbacc0604e5d14da06ef770f857c8fbe0f47b3a80371108df88",
+    "proposed": "745757def8cb4bf24e6a76b43b9d74eca8c459d72598590569f782112dc0ae4b"
+  },
+  "run_sha256": "c3fb2da2790217c7d14a7012983595809059eadbaffc6ac4f7825b086a6bfc11",
+  "verification_sha256": "c8fab37180dfbb2c645475b35ba28a76e403a7285d89d3a021e4e029b6c144d1",
+  "files_sha256": {
+    "blind-key.json": "0f69f7d4998b7eb6d16cff53c86fbc22fad2a218392e456cf45b86fddd0e2b3f",
+    "blinded.json": "17ebe1635b116994f4ba531726bb8eb5d261040e580abf577a2d48a43ce3c6e7"
+  },
+  "rows": 80,
+  "method": "SystemRandom opaque labels; key kept separate until assessments lock.",
+  "limitations": "Notes and output structure reveal arms; agent assessment is not fully blinded or independent held-out evidence."
+}

@@ -1,0 +1,794 @@
+[
+  {
+    "id": "R041",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "Source: \u201cScratch that, I am not committing to the review.\u201d Output explicitly records the retraction and has no action items."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R042",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 1,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 1,
+      "usefulness_completion": 1
+    },
+    "critical_failures": [],
+    "observations": [
+      "Source: \u201cI will send it next Friday, or the Friday after if review slips.\u201d The action preserves this complete condition, but due is only \u201cnext Friday\u201d; the overview also supplies the unsupported referent \u201creview document\u201d. These narrow or embellish an otherwise retained undertaking.",
+      "Source: \u201cNo launch decision yet.\u201d Output correctly leaves decisions empty."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R043",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "Both occurrences of \u201cSupport costs 150 dollars\u201d have distinct anchors; separator gaps remain recorded. Output retains both written-versus-spoken conflicts against \u201cSupport costs 120 dollars.\u201d",
+      "Source and executable action both retain \u201cI will check the invoice.\u201d independently of the price dispute."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R044",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "Source: \u201cI will check rollback.\u201d followed by \u201cWhen?\u201d and \u201cFriday.\u201d Output retains Sam's task and the complete Friday evidence in \u201cassociation unverified\u201d review, with due null; the key point also preserves Friday."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R045",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "Spoken \u201cSupport costs 120 dollars.\u201d and written \u201cSupport costs 15000 cents.\u201d remain separately labeled in the conflict. Comparison correctly explains that 15000 cents is 150 dollars, which differs from 120; neither fact becomes an action."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R046",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "Source: \u201cLeave the invoice review to me.\u201d Output preserves that undertaking as Sam's executable task, without inventing a deadline."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R047",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "Source: \u201cSupport costs 120 dollars for the east office.\u201d Output: \u201cSupport costs $120 for the east office.\u201d Amount, unit and office remain factual; no notes were supplied or invented."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R048",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 1
+    },
+    "critical_failures": [],
+    "observations": [
+      "Source: \u201cI will review the draft and Ravi will send the invoice.\u201d followed by \u201cRavi will not send the invoice.\u201d Retained review quotes both complete statements, preserving Sam's remaining review undertaking without executing cancelled sending or assigning both tasks to Sam.",
+      "Usefulness is partial: action_items is empty and the surviving review work requires resolving the retained warning \u201cRetraction scope unresolved; retain full undertaking and retraction\u201d."
+    ],
+    "intermediate_findings": [
+      "Attempt 0 selected only \u201cI will review the draft\u201d and was blocked for an incomplete undertaking span. Attempt 1 retained the full coordination; compilation placed it and the retraction in non-executable review."
+    ]
+  },
+  {
+    "id": "R049",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 1,
+      "timing_owners": 2,
+      "usefulness_completion": 1
+    },
+    "critical_failures": [],
+    "observations": [
+      "Source: \u201cThe support contract costs 75 dollars. The invoice is overdue.\u201d Overview: \u201can overdue support contract invoice for $75\u201d. This adds an invoice-amount link not explicit in the source, although the key point preserves the separate contract-cost and invoice-status facts.",
+      "Source: \u201cI will check the renewal terms.\u201d Output correctly makes only \u201cCheck the renewal terms\u201d an action owned by Sam."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R050",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "The final unresolved conflict preserves tentative \u201cI think the staging environment is ready.\u201d separately from written \u201cStaging is paused pending repairs.\u201d",
+      "Independent \u201cI will verify the health checks.\u201d survives as Sam's executable task without unrelated review or an invented due date."
+    ],
+    "intermediate_findings": [
+      "Attempt 0 incorrectly used \u201cI will verify the health checks.\u201d as timing and was blocked; attempt 1 changed timing to null.",
+      "Both raw summary replies said \u201cStaging environment status: ready\u201d; final compilation withheld that unqualified assertion and retained the complete tentative source account in the conflict."
+    ]
+  },
+  {
+    "id": "R051",
+    "complete": true,
+    "scores": {
+      "commitments": 0,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 0,
+      "usefulness_completion": 0
+    },
+    "critical_failures": [
+      {
+        "kind": "cancelled_undertaking_executable",
+        "source_quote": "I will not review the draft.",
+        "output_quote": "Review the draft and send the invoice",
+        "reason": "The executable combined task still includes the explicitly cancelled draft review. Adding a second executable \u201cNot review the draft\u201d item does not cancel or safely isolate the first item."
+      }
+    ],
+    "observations": [
+      "The independent sending undertaking remains present, but the output leaves contradictory executable review instructions instead of retaining only sending or complete non-executable cancellation review."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R052",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "Source: \u201cThe support estimate is 120 dollars.\u201d Output retains \u201csupport estimate\u201d and 120 dollars as a fact, with no action or approval invented. No written budget was supplied, so no cross-source comparison is required."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R053",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "Source: \u201cMaybe I could check rollback. I am not committing to it yet.\u201d Output preserves noncommitment and creates no rollback task.",
+      "\u201cAlex here. I will send the checklist tomorrow.\u201d becomes Alex's checklist task due \u201ctomorrow\u201d, retaining the actual undertaking and owner."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R054",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "\u201cI will send the draft Friday.\u201d and \u201cAlex here. I will review it next week.\u201d survive as separate Sam/Friday and Alex/next-week actions. No notes were supplied; no written capacity or venue request is required."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R055",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "\u201cEast office support costs 120 dollars.\u201d remains a scoped factual key point. \u201cI will verify the invoice.\u201d becomes only Sam's verification task; no unsupported office comparison or deadline is added."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R056",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "Written \u201cSupport costs 120 dollars.\u201d and \u201cThe training room has 40 seats.\u201d receive separate complete anchors and consistent/additional relations respectively. Output retains both in notes_context while spoken support cost remains $120; room capacity is not promoted to speech or work."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R057",
+    "complete": false,
+    "scores": {
+      "commitments": 0,
+      "sources": 0,
+      "coverage": 0,
+      "comparison": 0,
+      "quantities": 0,
+      "timing_owners": 0,
+      "usefulness_completion": 0
+    },
+    "critical_failures": [
+      {
+        "kind": "incomplete_publication",
+        "source_quote": "I will review the draft and send the invoice.",
+        "output_quote": null,
+        "reason": "No summary was selected or published. Both summary attempts failed evidence validation with \u201cNoncommitment T2: Negated undertaking\u201d; this is an incomplete summary-stage outcome, not a published hallucination."
+      },
+      {
+        "kind": "undertaking_unavailable_with_blocked_output",
+        "source_quote": "I will review the draft and send the invoice.",
+        "output_quote": null,
+        "reason": "The later cancellation concerns reviewing the draft; independent invoice sending remains genuine but has no published action or review because the whole output was blocked."
+      }
+    ],
+    "observations": [
+      "Diagnostics retain the complete original undertaking and \u201cI will not review the draft.\u201d, but retained attempt diagnostics do not complete the required publication."
+    ],
+    "intermediate_findings": [
+      "Both attempts represented \u201cI will not review the draft.\u201d as a committed action and were rejected. The attempted combined undertaking was separately retained under unresolved retraction review; neither attempt published."
+    ]
+  },
+  {
+    "id": "R058",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "Source sequence: \u201cCould you send the invoice?\u201d, \u201cYes.\u201d, then \u201cI will not send the invoice.\u201d Output explicitly describes Ravi's initial agreement and subsequent withdrawal, records the cancellation and has no executable sending task."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R059",
+    "complete": true,
+    "scores": {
+      "commitments": 1,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 1,
+      "usefulness_completion": 1
+    },
+    "critical_failures": [],
+    "observations": [
+      "Source: \u201cCould Alex check the invoice? No one has accepted that task.\u201d Output: \u201cInvoice task remains unaccepted, requiring Alex to check it.\u201d The unaccepted qualifier survives, but \u201crequiring Alex\u201d overstates the proposed owner's obligation and makes the prose misleading.",
+      "Only Sam's genuine \u201cI will send the contract.\u201d becomes an executable action. The Alex wording is a noncritical prose defect, not an invented executable task."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R060",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "Spoken \u201cSupport cost 120 dollars last quarter.\u201d and written \u201cSupport costs 150 dollars this quarter.\u201d retain their distinct periods and amounts. Comparison is related-distinct; publication preserves written source separation and invents no conflict."
+    ],
+    "intermediate_findings": [
+      "The comparison rationale unnecessarily calls singular/plural wording \u201cdifferent subjects\u201d; it also correctly identifies the distinct quarters, which support its selected relation."
+    ]
+  },
+  {
+    "id": "R061",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 1
+    },
+    "critical_failures": [],
+    "observations": [
+      "Retained review contains \u201cRequest: Could you review the draft and send the invoice? Acceptance: Yes.\u201d together with \u201cI will not send the invoice.\u201d Thus the surviving draft-review work, acceptance and partial retraction remain visible; cancelled sending is not executable.",
+      "Usefulness is partial: the published summary says only \u201cAgreement to request (T2)\u201d about the surviving work, while its actual content must be recovered from the complete non-executable warning."
+    ],
+    "intermediate_findings": [
+      "Attempt 0 duplicated the \u201cYes.\u201d commitment, used \u201cYes.\u201d as timing and treated the invoice retraction as later timing evidence; compilation blocked all three defects. Attempt 1 removed those entries and retained complete request/acceptance/retraction review."
+    ]
+  },
+  {
+    "id": "R062",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "\u201cThe support contract costs 75 dollars.\u201d and \u201cThe invoice is overdue.\u201d remain factual quotations/key points. Only \u201cI will check the renewal terms.\u201d becomes Sam's executable action; contextual facts are not admitted as work."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R063",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "Sam's \u201cI will tag the release Friday.\u201d and Alex's \u201cI will check the rollback procedure.\u201d survive as correctly owned tasks. Independent \u201cAgreed, release Friday.\u201d survives in the release-Friday decision rather than disappearing into the task list."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R064",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "Source: \u201cScratch that, I am not committing to the review.\u201d Output: \u201cSam retracted their commitment to review the invoice.\u201d Action items remain empty, correctly cancelling the initial promise."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R065",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 1,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 0,
+      "timing_owners": 2,
+      "usefulness_completion": 0
+    },
+    "critical_failures": [
+      {
+        "kind": "tentative_status_promoted_to_confirmation",
+        "source_quote": "I think the staging environment is ready.",
+        "output_quote": "Sam confirmed the staging environment is ready, concluding the discussion.",
+        "reason": "The only source account is tentative. The overview and key point replace that uncertainty with confirmed readiness, changing its epistemic status and the central published meaning."
+      }
+    ],
+    "observations": [
+      "Output also says \u201cStaging environment confirmed ready for synthetic release review.\u201d No tentative qualifier or uncertainty review survives. No task is invented; written coverage and comparison receive two because no notes were supplied."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R066",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "Source: \u201cI will review the draft. Scratch that, I will send the invoice.\u201d Output has no executable draft-review task and preserves the new promise as Sam's \u201cScratch that, I will send the invoice.\u201d The cancellation marker remains available alongside the quoted original."
+    ],
+    "intermediate_findings": [
+      "Attempt 0 shortened the replacement undertaking to \u201cI will send the invoice.\u201d and used the non-temporal replacement sentence as timing; compilation rejected both. Attempt 1 retained the complete \u201cScratch that\u201d sentence and set timing to null, preserving the new promise."
+    ]
+  },
+  {
+    "id": "R067",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "Source: \u201cSupport costs 120 dollars.\u201d Output: \u201cSupport costs $120.\u201d It remains a fact with no task or invented comparison; no notes were supplied."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R068",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "Spoken \u201cSupport costs 120 dollars for the east office.\u201d and written \u201cSupport costs 150 dollars for the west office.\u201d have complete separate anchors, correct office scopes and a related-distinct relation. Both values survive with no false conflict or agreement."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R069",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "Source: \u201cAlex will review the deployment checklist tomorrow.\u201d Output assigns \u201creview the deployment checklist\u201d to Alex with due \u201ctomorrow\u201d, preserving the third-person undertaking without assigning Sam or inventing an absolute date."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R070",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "Sam's \u201cI will send the invoice.\u201d remains executable. The full later statement \u201cNot before next Friday unless finance objects.\u201d survives in both prose and association-unverified review; due stays null, retaining negation, relative timing and the exception."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R071",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 1
+    },
+    "critical_failures": [],
+    "observations": [
+      "\u201cMaybe I could check rollback. I am not committing to it yet.\u201d remains noncommittal prose, with no rollback action. Alex's \u201cI will send the checklist tomorrow.\u201d survives as the sole executable task with the correct owner.",
+      "Timing is fully preserved in the task, but \u201cTiming is unassigned; review original commitment\u201d and due null add unnecessary review to its explicit \u201ctomorrow\u201d, reducing usefulness without losing the qualifier."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R072",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "\u201cI will check rollback.\u201d, \u201cWhen?\u201d and Sam's \u201cFriday.\u201d directly support the published Sam-owned rollback task due \u201cFriday\u201d. This transcript-only representation faithfully preserves the exchange without requiring the V11 review format or an absolute date."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R073",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "Source and key point both say \u201cSupport costs 120 dollars.\u201d No task or written material is invented. No notes were supplied, so the packet's comparison expectation does not require a conflict."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R074",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 1
+    },
+    "critical_failures": [],
+    "observations": [
+      "Sam's \u201cI will send the draft Friday.\u201d and Alex's \u201cI will review it next week.\u201d survive as separately owned executable tasks with their complete timing wording.",
+      "Written \u201cPersonal context: the internal workshop has 40 seats.\u201d and \u201cTask for myself: ask the venue about access.\u201d remain separately anchored additional notes_context, never spoken actions.",
+      "Both actions nevertheless receive \u201cTiming is unassigned\u201d review and due null despite explicit timing in their own sentences; this adds review work without a semantic loss."
+    ],
+    "intermediate_findings": [
+      "Comparison attempt 0 attached all transcript sentences to claims labeled additional, producing \u201cAdditional claim must be unmatched\u201d errors. Attempt 1 removed those unrelated anchors; the selected comparison leaves both written claims genuinely unmatched."
+    ]
+  },
+  {
+    "id": "R075",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "Source surrounds \u201cI will review the invoice.\u201d with \u201cFor example, someone could say\u201d and \u201cThis is only an example.\u201d Output explicitly calls it hypothetical and creates no executable task."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R076",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 1,
+      "timing_owners": 2,
+      "usefulness_completion": 1
+    },
+    "critical_failures": [],
+    "observations": [
+      "Spoken \u201cEast office support costs 120 dollars.\u201d and written \u201cWest office support costs 150 dollars.\u201d retain correct values, scopes, separate attribution and the related-distinct relation. Independent \u201cI will verify the invoice.\u201d remains executable without disputed-price review.",
+      "Neither price sentence states a period or epistemic qualifier, yet both extractions mark \u201cunresolved\u201d as [\u201cperiod\u201d,\u201cstatus\u201d] rather than distinguishing absent dimensions. This adds \u201cComparison review required\u201d noise despite the clear office distinction; no explicit dimension is lost."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R077",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 1
+    },
+    "critical_failures": [],
+    "observations": [
+      "\u201cI will tag the release Friday.\u201d and Alex's \u201cI will check the rollback procedure.\u201d remain correctly owned executable tasks. Independent \u201cAgreed, release Friday.\u201d survives as \u201cRelease scheduled for Friday (T4)\u201d.",
+      "The tagging task retains Friday verbatim, but its \u201cTiming is unassigned\u201d review and due null add unnecessary uncertainty about explicit same-sentence timing, reducing usefulness without losing content."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R078",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "Source and output preserve \u201cThe proposal to launch on Friday was rejected.\u201d No launch action or approval is invented. No notes were supplied, so no competing approval account or cross-source conflict is required."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R079",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 1
+    },
+    "critical_failures": [],
+    "observations": [
+      "Source and executable task both retain \u201cNext Tuesday, I will send the draft.\u201d Complete \u201cNext Tuesday\u201d also survives in review, with Sam correctly identified and no absolute date invented.",
+      "\u201cTiming is unassigned; review original commitment\u201d and due null preserve the expected conservative review but require extra handling of timing already explicit in the undertaking; usefulness is partial, with no lost task or qualifier."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R080",
+    "complete": false,
+    "scores": {
+      "commitments": 0,
+      "sources": 0,
+      "coverage": 0,
+      "comparison": 0,
+      "quantities": 0,
+      "timing_owners": 0,
+      "usefulness_completion": 0
+    },
+    "critical_failures": [
+      {
+        "kind": "incomplete_publication",
+        "source_quote": "Support costs 150 dollars, monitoring costs 120 dollars, and please book a venue.",
+        "output_quote": null,
+        "reason": "Comparison-stage validation failed after both attempts with \u201cUnresolved extraction requires an uncertain relation\u201d. No comparison was selected and no summary attempt or publication followed; this is blocked completion, not a published hallucination."
+      },
+      {
+        "kind": "undertaking_unavailable_with_blocked_output",
+        "source_quote": "I will check the invoice not before next Friday.",
+        "output_quote": null,
+        "reason": "The genuine invoice-check undertaking and its complete not-before relative timing have no published action or review because comparison failure blocked the entire output."
+      }
+    ],
+    "observations": [
+      "Both attempts split support, monitoring and the written venue request into separate anchored claims and retain separator gaps, but those intermediate results do not complete the required output."
+    ],
+    "intermediate_findings": [
+      "Attempt 0 marked absent period/scope/status dimensions unresolved while labeling support conflicting and monitoring consistent; both relations failed validation.",
+      "Attempt 1 changed support to uncertain on those unresolved dimensions but retained monitoring as consistent with unresolved metadata, so validation still failed. The written venue request remained unmatched; none of these attempted relations published."
+    ]
+  }
+]
