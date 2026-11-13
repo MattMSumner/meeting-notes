@@ -183,6 +183,18 @@ is not a semantic repair. Prepare/review/freeze the proposed six fixed cases, si
 and fifteen minutes before requesting fresh execution approval. Both earlier approved
 runs are finished; neither old unused allowance nor the six used slots transfers.
 
+The quoted candidate is implemented and independently reviewed at
+`9e369ad51b55ed324a5377463e76822a5951def6`, with no findings/formal repairs. Formatting,
+lint, strict types and 1234 offline tests pass; six integration tests excluded. The
+[second freeze](evaluation/m10/reviewable-draft/diagnostic-2/manifest.json) contains
+nineteen hashed artifacts; manifest SHA256
+`0cbaafa34c9f538eaa6b5cc43158d1f21429e7e85c197fc79372bc0f24ad28bf`.
+It binds the actual verified local model identity, source/contract, all forty unchanged
+inputs and six exact packets/snapshots. No new inference has run and `results/` is absent
+at this checkpoint. The complete reviewed run setup is ready for a fresh six-request /
+fifteen-minute execution approval. Record any later approval outside the freeze; do not
+ask again for that same approved run. Existing results would prevent restart.
+
 Passing prospective quality, current synthetic Obsidian usefulness acceptance and the
 owner's `shipit` remain required before Built/merge. Numerical latency/review-effort
 targets are not yet agreed; record them rather than inventing approval.

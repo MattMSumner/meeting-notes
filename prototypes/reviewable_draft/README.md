@@ -45,8 +45,10 @@ with the new wire contract; that is separate from any quality improvement.
 `quoted_diagnostic.py` is a separate capture profile, preserving the first generator,
 driver and saved results. It retains raw output/partial drafts and stops on a rejected
 quote selection. A proposed new six-case / six-request / fifteen-minute diagnostic
-needs independent review, exact freeze and fresh execution approval. The earlier six
-requests are used; no new inference or production integration is authorized here.
+has passed independent review and is [frozen](../../evaluation/m10/reviewable-draft/diagnostic-2/manifest.json).
+Fresh execution approval is pending. The earlier six requests are used; no new inference
+or production integration is authorized here. All 1234 offline checks, lint and strict
+types pass; those engineering checks do not prove the model will select correct work.
 
 ## Try the previews
 
