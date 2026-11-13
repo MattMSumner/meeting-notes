@@ -83,7 +83,16 @@ def main():
     }
     joined = []
     for score in scores:
+        assert set(score) == {
+            "id",
+            "complete",
+            "scores",
+            "critical_failures",
+            "observations",
+            "intermediate_findings",
+        }, "Score fields must follow the opaque-label protocol and cannot supply slot identity"
         identity = key[score["id"]]
+        assert set(identity) == {"arm", "case", "repetition"}
         row = raw[identity["arm"], identity["case"], identity["repetition"]]
         assert packets[score["id"]] == {
             "id": score["id"],
@@ -102,10 +111,12 @@ def main():
         if not score["complete"]:
             assert not any(score["scores"].values())
         assert isinstance(score["observations"], list) and score["observations"]
+        assert isinstance(score["intermediate_findings"], list)
+        assert isinstance(score["critical_failures"], list)
         for failure in score["critical_failures"]:
             assert set(failure) == {"kind", "source_quote", "output_quote", "reason"}
             assert failure["kind"] and failure["reason"]
-        joined.append({**identity, **score})
+        joined.append({**score, **identity})
     arms = {}
     for arm in ("baseline", "proposed"):
         assessed = [s for s in joined if s["arm"] == arm]
