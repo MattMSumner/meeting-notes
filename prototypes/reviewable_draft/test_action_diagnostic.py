@@ -148,6 +148,7 @@ def test_literal_failure_retains_independent_work_and_raw_reply_then_stops(
     assert not final["capture_complete"]
     assert final["possibly_sent"] == 1 and len(http.posts) == 1
     assert final["failed"] == ["unit_equivalence"] and len(final["unsent"]) == 5
+    assert final["incomplete_cases"] == ["unit_equivalence"]
     slot = target / "results/01-unit_equivalence"
     assert (slot / "response/body.raw").read_bytes() == http.body
     assert read(slot / "result.json")["issues"]

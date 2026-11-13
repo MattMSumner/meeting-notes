@@ -429,6 +429,20 @@ def _capture_slot(
     return incomplete
 
 
+def _incomplete_cases(results: Path) -> list[str]:
+    # Literal failures save usable partial results before raising and stopping capture.
+    cases: list[str] = []
+    for index, name in enumerate(generation.CASES, 1):
+        path = results / f"{index:02}-{name}" / "result.json"
+        try:
+            saved = json_helpers._load(path.read_bytes().decode("utf-8"))
+        except (OSError, UnicodeError, ValueError):
+            continue
+        if saved.get("issues"):
+            cases.append(name)
+    return cases
+
+
 def run(frozen: Path, approval: str, expected_manifest_sha256: str) -> dict[str, Any]:
     """Claim frozen/results once; explicit invocation is the only network entry point.
 
@@ -442,7 +456,6 @@ def run(frozen: Path, approval: str, expected_manifest_sha256: str) -> dict[str,
     results.mkdir(exist_ok=False)
     reason = "capture completed; semantic acceptance pending"
     completed: list[str] = []
-    incomplete: list[str] = []
     slot: Path | None = None
     slot_started = started
     try:
@@ -486,8 +499,6 @@ def run(frozen: Path, approval: str, expected_manifest_sha256: str) -> dict[str,
                     "elapsed": time.monotonic() - slot_started,
                 },
             )
-            if is_incomplete:
-                incomplete.append(name)
             completed.append(name)
             slot = None
     except BaseException as error:
@@ -516,7 +527,7 @@ def run(frozen: Path, approval: str, expected_manifest_sha256: str) -> dict[str,
         final = {
             "capture_complete": len(completed) == 6 and elapsed <= LIMIT,
             "completed": completed,
-            "incomplete_cases": incomplete,
+            "incomplete_cases": _incomplete_cases(results),
             "possibly_sent": len(attempted),
             "expected_manifest_sha256": expected_manifest_sha256,
             "attempted": attempted,
