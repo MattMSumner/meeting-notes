@@ -23,10 +23,12 @@ cases were unsent. Literal quotation still permits selecting facts as work; this
 quality pass. Current quality and Obsidian usefulness acceptance remain required before
 M10 is built.
 
-An [action-only successor](prototypes/reviewable_draft/ACTIONS.md) is implemented,
-independently reviewed and frozen for a separate six-case diagnostic. Its
-[authored previews](prototypes/reviewable_draft/actions-previews/index.md) demonstrate the
-smaller task; generated quality is untested and fresh inference approval is pending.
+The [action-only diagnostic](evaluation/m10/reviewable-draft/diagnostic-3/results/report.md)
+completed six requests in 4m07s: five cases meet criteria, one critically omits surviving
+invoice work after a partial withdrawal. All outputs replay exactly; this narrower task
+does not pass overall quality or establish full-draft usefulness. The
+[authored previews](prototypes/reviewable_draft/actions-previews/index.md) remain intended
+behavior, distinct from the captured model outputs.
 
 ## Setup
 

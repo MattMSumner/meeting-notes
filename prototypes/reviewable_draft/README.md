@@ -67,15 +67,22 @@ Correct current-work selection remains a model capability to assess, not a code 
 
 The separate `actions.py`, `action_diagnostic.py` and `actions_examples.py` preserve all
 earlier modules and results. New [authored action previews](actions-previews/index.md)
-demonstrate intended behavior only. The proposed diagnostic uses the same six cases with
+demonstrate intended behavior only. The approved diagnostic uses the same six cases with
 negative controls first, at most six requests / fifteen minutes, no retries. Independent
 review passed at `287d85b` after one accounting repair; no findings remain. The exact
 [twenty-entry freeze](../../evaluation/m10/reviewable-draft/diagnostic-3/manifest.json)
-is ready for fresh execution approval. No new model calls or production changes have run;
-there is no results directory. Old unused slots do not transfer.
+was committed before approval and inference. The approved
+[six-case run](../../evaluation/m10/reviewable-draft/diagnostic-3/results/report.md)
+completed six captures in 4m07s with no retries, validation failures or unsent cases.
+Five cases meet their action-only criteria; partial cancellation critically omits surviving
+invoice work and focused review. All six outputs replay, including that omission. See an
+[actual normal action draft](../../evaluation/m10/reviewable-draft/diagnostic-3/results/06-additional/actions.md)
+and the [empty surviving-work failure](../../evaluation/m10/reviewable-draft/diagnostic-3/results/03-partial_coordination_retracted/actions.md).
+All six requests are used; no further inference is authorized. Production remains unchanged.
 
 Formatting, lint, strict types and 1335 offline tests pass; six integration tests excluded.
-All 736 previous manifest entries remain exact. All eight captured historical replies
+All 736 previous manifest entries and twenty current freeze entries remain exact; 157
+new result entries are separately sealed. All eight captured historical replies
 are incompatible with the new protocol, separately from any quality improvement. The
 prepared six requests are about 58% smaller in total than the quoted four-section requests;
 that is no latency, reliability or editing-time claim.
