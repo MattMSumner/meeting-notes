@@ -1,9 +1,28 @@
-# M10 handoff — 2026-11-12, V11 evaluation failed quality
+# M10 handoff — 2026-11-13, reviewable draft direction
 
 Continue on `m10/notes-guided-enhancement`, [PR #16](https://github.com/MattMSumner/meeting-notes/pull/16).
-Read AGENTS.md, this handoff, the V11 section of plan.md and the
+Read AGENTS.md, this handoff, the reviewable draft section of plan.md and the
 [V11 results](evaluation/m10/v11/results/report.md). Use `.chief/CHIEF.md` and the Herdr
 skill when coordinating workers; small work can stay in the main session.
+
+## Latest product decision
+
+The owner confirmed that a draft saving time while requiring review is useful. The
+next first-release design targets a reviewable AI draft: readable source-backed summary,
+suggested decisions/actions, separately attributed writing and honest uncertainty.
+Automatic conflict classification is deferred; relevant passages can be shown for review.
+Actions become checkboxes only through the user's ordinary Obsidian editing. A draft
+label permits neither wrong facts nor unaccepted/cancelled work claimed as commitments.
+
+The prospective contract in plan.md allows clear section-level incompleteness while
+retaining independently useful work. It requires focused source/context, not a generic
+warning or a transcript dump. Missing input snapshots remain fatal, and protected edits,
+prior results, atomic saving and old wrapper behavior remain safeguards. Define the
+snapshot/generation and prior-result coexistence policy before production integration.
+
+This requirements update changes no application behavior. The current implementation
+still follows V11. Its failed evaluation stays failed; no historical criteria or results
+are rewritten. Next is the bounded offline prototype specified below, not another full run.
 
 ## Outcome and current authorization
 
@@ -65,24 +84,28 @@ logical tool checks are not model quality evidence; read results/tool-review.md.
 Formatting, lint, strict types and **978 offline tests** pass; six model/hardware integration
 tests excluded. Capture is unchanged. CI and publication status are recorded in the PR/local ledger.
 
-## Next decision
+## Next bounded task
 
-Preserve this failed freeze and evidence. Agree any successor scope after offline investigation:
+Build an isolated offline draft/rendering prototype using authored synthetic responses.
+Do not change production CLI/pipeline/store, prompts, model settings or old contracts as
+part of that prototype. Use the ten diagnostic inputs named in plan.md, while retaining
+all forty unchanged regression inputs. Show source-backed suggestions and a clear partial
+failure that preserves independent useful work; specify prospective section/persistence
+and acceptance contracts before integration. Keep schema/semantic responsibilities small.
 
-1. Fix the demonstrated 12000-cents versus 120-dollars false conflict without relying on
-   shared lexical quantities or weakening subject/unit/period/scope checks.
-2. Investigate comparison extraction/uncertainty failures in shared_numbers,
-   tentative_confirmed and multi_claim_notes. Independent invoice work was unavailable
-   when comparison blocked. No new partial-publication policy is assumed.
-3. Investigate the actual rejected summary replies in accepted_status_answer,
-   accepted_request_retracted and partial_coordination_retracted. Correct rejection of
-   noncommitments did not produce a complete useful result within the existing budget.
-4. Keep the remaining partial findings visible: misleading unaccepted-task prose,
-   absent versus unresolved dimensions, omitted explicit nonapproval and review noise.
-   Preserve independent agreements, genuine undertakings and full timing qualifiers.
-5. Any successor needs a fresh reviewed source/schema freeze, preserved historical replay
-   and a separately agreed evaluation. Only passing quality advances current synthetic
-   Obsidian acceptance; then consider Built and the owner's merge approval.
+The prototype must retain numbers, owners, uncertainty, full timing, retractions and
+independent agreements. It cannot claim equivalent money amounts conflict, promote
+questions to commitments, or hide tasks behind meaningless warnings. Review remains
+the user's job; accuracy and discoverability remain the product's job.
+
+Authored fixtures, converted saved replies and renderings establish engineering behavior,
+not model capability. Next, review the prototype and predeclare one small diagnostic
+experiment with separate inference/time budget and stopping rule. Freeze prospective
+draft criteria before outputs, keep old verdicts intact and add honest fresh-case provenance
+for final assessment. No new inference is authorized by the product-direction confirmation.
+Passing prospective quality, current synthetic Obsidian usefulness acceptance and the
+owner's `shipit` remain required before Built/merge. Numerical latency/review-effort
+targets are not yet agreed; record them rather than inventing approval.
 
 ## Separate follow-up
 

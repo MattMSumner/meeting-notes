@@ -6,11 +6,13 @@ the conversation with a local model served by [Ollama](https://ollama.com), and 
 note and its transcript into an Obsidian vault. No audio, transcripts or summaries leave
 the machine.
 
-Status: **M10 implementation**, explicit notes-guided enhancement.
-V10 failed quality; the [V11 offline candidate](evaluation/m10/v11/README.md) is frozen
-but unevaluated. M10 is not yet built. The original manual Obsidian workflow passed,
-but the current failure/review-warning workflow still needs acceptance after a passing
-quality evaluation. See [plan.md](plan.md) for the roadmap.
+Status: **M10 implementation**, explicit notes-guided enhancement; not yet built.
+The [V11 evaluation](evaluation/m10/v11/results/report.md) failed quality: 34/40 proposed
+outputs published, six blocked and one published output invented a unit-conversion
+conflict. The next first-release target is a useful AI draft that the owner reviews,
+with source-backed suggestions and visible uncertainty. That direction is documented
+in [plan.md](plan.md); application behavior has not yet changed. Current quality and
+Obsidian usefulness acceptance remain required before M10 is built.
 
 ## Setup
 
