@@ -8,10 +8,18 @@ quality evaluation or owner usefulness acceptance. V11's failed results remain u
 The owner approved the normal and incomplete preview format on 2026-11-13. That is format
 feedback; generated quality and actual editing effort remain untested. The next
 [six-case diagnostic](EXPERIMENT.md) has a transport-free request builder and
-decoder in `generation.py`. Only offline fake-response checks have run; the timed
-run/capture driver and freeze still precede model calls. The owner has now approved
-six local requests / fifteen minutes for that diagnostic; no further permission is needed
-after setup/review for the declared run.
+decoder in `generation.py`. The `diagnostic.py` driver freezes exact source, original
+inputs, snapshots, requests and model identity into a new directory. Its explicit `run`
+entry claims one results directory, verifies the reviewed manifest hash, enforces child
+process deadlines and keeps raw responses/errors before decoding. No inference runs on
+import or freeze, and no automatic retry/resume exists. A timed-out client cannot guarantee
+server-side compute cancellation; elapsed overruns are recorded honestly.
+
+Only offline fake-response checks have run. The owner has approved six local requests /
+fifteen minutes for the declared diagnostic; independent review and the exact freeze
+precede execution, with no further permission needed. The approval string supplied to
+the runner is audit context, not an authentication mechanism. Existing app behavior,
+production persistence and protected vault files are unaffected by this diagnostic.
 
 ## Try the previews
 

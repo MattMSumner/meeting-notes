@@ -140,6 +140,16 @@ The clock starts with run preflight and includes metadata/capture, not offline s
 Keep every original input/verdict and honest fresh-case provenance. Stop and report
 unused/unsent cases honestly if a gate fails; the remaining allowance grants no rerun.
 
+The capture driver is implemented in `diagnostic.py` / `_http.py`. It requires committed
+source and an externally pinned manifest hash, checks input/request/source/identity drift,
+claims one results directory and bounds each child by remaining elapsed time. Raw bodies
+and conservative possibly-sent markers survive malformed replies and interruption.
+Source-equivalent descendant commits permit committing the freeze before inference.
+Disconnect does not guarantee server compute cancellation; record any overrun honestly.
+Combined validation passes 1109 offline tests (63 new driver checks), formatting, lint
+and strict types; six integration tests excluded. Independent code review and exact
+freeze still precede the approved run. No inference has run at this checkpoint.
+
 Passing prospective quality, current synthetic Obsidian usefulness acceptance and the
 owner's `shipit` remain required before Built/merge. Numerical latency/review-effort
 targets are not yet agreed; record them rather than inventing approval.
