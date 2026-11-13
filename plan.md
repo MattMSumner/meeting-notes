@@ -1199,6 +1199,15 @@ checks. Six integration tests remain excluded; no model request has been sent.
 All forty historical inputs and failed verdicts remain unchanged, with the existing
 quality, usefulness, persistence and owner `shipit` gates.
 
+**Execution approval (2026-11-13).** The owner replied “I approve” after the Chief specified
+at most six local model requests and a fifteen-minute elapsed cap. Finish and independently
+review the timed capture driver, freeze the exact source/criteria/inputs/requests/settings
+and verified local model identity, then run that declared diagnostic without asking again.
+No baseline, corrections, retries, selective reruns or production integration are authorized.
+The fifteen-minute clock includes run preflight, metadata, inference and capture; offline
+preparation precedes that clock. Preserve all captured failures and unsent slots. No unused
+allowance transfers to a second run, and every existing quality/usefulness/shipit gate stays.
+
 **M11 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
 compared on tests rather than by eye on real meetings: stance (a "maybe" turned into a
