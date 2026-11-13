@@ -13,14 +13,18 @@ proposed summaries and invents an action from a factual price statement. V10 fai
 The approved V11 run publishes 34/40 proposed outputs, blocks six and invents one
 unit-conversion conflict; it also fails quality. Current review-workflow manual acceptance
 remains pending, so M10 remains unbuilt. Further model runs require separately agreed scope.
+On 2026-11-13 the owner confirmed that a useful draft requiring review is valuable.
+The next first-release target is the reviewable draft contract below; the current runtime
+still implements V11. Automatic reconciliation is deferred for that successor.
 Phase 0 (Handy) set up.
 
-**Fresh-session handoff (2026-11-12):** [NEXT_SESSION.md](NEXT_SESSION.md) and the
+**Fresh-session handoff (2026-11-13):** [NEXT_SESSION.md](NEXT_SESSION.md) and the
 [V11 report](evaluation/m10/v11/results/report.md) record the completed approved run:
 80 slots, 109/276 requests, 98m46s, six incomplete proposed outputs and one published
 false conflict. All 34 selected V11 generations replay exactly, all 463 frozen entries
 verify and 978 offline tests pass. No tuning/reruns, current manual acceptance, Built
-note or merge followed. Agree any successor scope separately; preserve this evidence.
+note or merge followed. The reviewable draft direction is now confirmed; next is a bounded
+offline prototype, followed by a separately approved model experiment. Preserve old evidence.
 
 ---
 
@@ -632,6 +636,10 @@ notes are not model input in this stage.
   writing. This is a planned milestone, not a Built note.
 
 **M10 — Enhance notes with the transcript.** Make notes-guided enhancement explicit.
+The 2026-11-13 reviewable draft contract below governs the next first-release design.
+It prospectively replaces automatic conflict classification and all-or-nothing semantic
+analysis publication. V1–V11 freezes, expectations and failed results remain unchanged;
+the existing implementation has not yet adopted this contract.
 Stop (including the end of foreground recording) ends capture and transcribes, then reports
 that the meeting is ready to enhance; it no longer automatically generates a summary.
 Re-running transcription also leaves generation to the explicit enhancement action.
@@ -643,9 +651,10 @@ Re-running transcription also leaves generation to the explicit enhancement acti
 - Snapshot the saved handwritten text when enhancement starts and store that exact input
   alongside the generated result. Later rendering uses the same evidence. Pass handwritten
   notes and transcript as separately labelled inputs; count both in context-size checks.
-- Keep Summary, Key points, Decisions and Action items (M8 currently renders key points
-  as bullets under Summary). Add separate sections for useful context found only in the
-  handwritten notes and for conflicts between sources; omit those sections when empty.
+- Plan a draft Summary and Key points, suggested decisions/actions with evidence, and
+  separately attributed handwritten context. Present relevant source passages for review
+  instead of automatically declaring conflicts. The draft contract below defines the
+  prospective output and partial-failure policy; current V11 output remains unchanged.
   Notes guide emphasis, but omissions do not instruct the model to discard other important
   commitments. Do not silently turn personal observations into spoken agreements or choose
   between conflicting sources.
@@ -661,8 +670,10 @@ Re-running transcription also leaves generation to the explicit enhancement acti
   synthetic meeting.
 - **Quality acceptance:** before inference, freeze a bounded comparison covering sparse
   notes, empty notes, additional written context, conflicting facts and ambiguous dates.
-  Passing that evaluation is a separate prerequisite for declaring M10 built; implementing
-  the workflow alone is insufficient. This roadmap update authorizes no model calls.
+  A successor needs prospective draft-specific criteria before inference, preserving all
+  forty existing regression inputs and the original historical verdicts. Passing that
+  evaluation and current manual usefulness acceptance remain prerequisites for Built.
+  Implementing the workflow alone is insufficient; this update authorizes no model calls.
 
 - **Implementation (2026-11-03; not Built):** explicit enhancement, saved input wrappers,
   source-aware number checks, chooser, per-meeting serialization and unit coverage are
@@ -909,7 +920,7 @@ Re-running transcription also leaves generation to the explicit enhancement acti
   successor needs a fresh contract/freeze and separately scoped evaluation.
 
 
-### Next: M10 V11 candidate — offline work, then a separate evaluation decision
+### M10 V11 candidate — historical offline sequence, 2026-11-12
 
 Planned 2026-11-12 after V10 failed quality. This is an evaluation candidate within M10,
 not milestone M11. Continue on `m10/notes-guided-enhancement` and existing PR #16. This
@@ -1063,6 +1074,83 @@ No current manual Obsidian acceptance, Built note or merge ran. The 167 unused r
 not reused. Next is a separate successor-scope decision based on offline investigation of
 unit/relationship semantics, extraction/uncertainty and actual admission/retraction failures,
 while preserving genuine work, source meaning, historical evidence and all milestone gates.
+
+### Next: M10 reviewable draft — product reset, 2026-11-13
+
+The owner confirmed: “a draft that saves me time but requires I review it is super useful.”
+Optimize the first release for that workflow. Keep local privacy, factual accuracy,
+source separation, protected writing and historical evidence. This is a prospective
+product decision, not a regrading of V11 or evidence that the simpler design already works.
+Current work records the contract and bounded next task; no runtime, prompt, schema,
+storage migration, model run, Built note or merge is part of this requirements update.
+
+**First-release output.** Every generated section is visibly an AI draft requiring review.
+Summary and key points should be readable without decoding source IDs. Notes can guide
+emphasis but remain separately attributed; preserve the original handwritten file and
+the exact saved inputs. Source excerpts or links must make meaningful claims easy to check.
+Suggested decisions/actions remain ordinary reviewable Markdown, with source/context,
+supported owner and full timing qualifiers. A user can promote an action to a checkbox
+by editing in Obsidian; this adds no custom plugin, approval database or automatic promotion.
+Questions, examples, retractions and unaccepted requests cannot become claimed commitments
+merely because the output is a draft. Preserve third-person, implied and conditional work.
+
+Automatic semantic merging and conflict classification are deferred. Relevant written
+and spoken passages can be shown together under review, without asserting that they
+agree, conflict or resolve each other. For example, 12000 cents versus 120 dollars cannot
+be presented as a factual disagreement. Any later arithmetic check needs established
+subject, currency/unit, period and scope; lexical overlap alone is insufficient.
+
+**Uncertainty and failure.** All generated content needs user review. A specific
+“Needs review” notice identifies known ambiguity; “Unavailable” identifies analysis that
+did not finish. Neither ordinary draft text nor absence of a warning means verified truth.
+An unavailable optional analysis must not suppress independently usable, source-backed
+draft sections or silently hide genuine work. Retain the affected source/context in
+focused review, including remaining work after a partial cancellation. Dumping the whole
+transcript or saying only “Review needed” does not satisfy useful retention or completion.
+
+Permit an explicitly incomplete draft with section statuses; never present it as complete
+analysis. Before integrating this policy, define how each section binds to one saved input
+snapshot and generation and how an incomplete draft coexists with prior successful output.
+Keep atomic writes and user-edit protection; do not replace protected/previous results
+with an unvalidated partial result or silently splice sections from different generations.
+Missing/unreadable previously associated notes still stop enhancement; an incomplete input
+snapshot is distinct from an optional analysis failure. Empty notes remain supported.
+
+**Quality and usefulness.** A draft label does not excuse invented facts, wrong source
+meaning, owners/deadlines, changed quantities, lost conditions or cancelled work presented
+as current. Keep these as defects. Require meaningful source-backed access to genuine
+undertakings and independent agreements, clear uncertainty and honest section status.
+Evaluate readable emphasis and review burden as well as semantic safety. The owner must
+find that checking/editing the draft saves work compared with composing the note manually.
+Record generation latency and review effort; no numerical latency/review-time target
+has been agreed, and no existing case or failed verdict may be dropped to manufacture a pass.
+
+**Bounded next task: offline prototype only.** Build an isolated in-memory/rendering
+prototype with authored synthetic responses and no production CLI/pipeline/store changes.
+Specify the smallest useful draft contract, source presentation, section states and
+prospective partial-result persistence requirements before integrating anything. Avoid
+carrying every V11 semantic classification field into the new contract. Demonstrate a
+normal draft and graceful, clearly incomplete output; include a failure in one section
+that preserves independent valid work without publishing the rejected claim.
+
+Use these ten existing frozen inputs for focused diagnostics: empty, additional,
+unit_equivalence, multi_claim_notes, tentative_confirmed, accepted_status_answer,
+accepted_request_retracted, cancellation_with_new_task, partial_coordination_retracted
+and qualified_external_timing. They are familiar development cases. Retain all forty
+unchanged inputs for full regression and map prospective draft criteria explicitly;
+do not rewrite their frozen historical expectations. Authored examples, adapting saved
+responses and rendering probes are engineering evidence, not fresh model-quality evidence.
+
+Review the prototype and prospective acceptance criteria before any new inference.
+Change one capability at a time in a small declared diagnostic experiment, rather than
+rerunning two complete arms after each patch. Agree its exact cases, repetitions,
+settings, request/time ceilings and stopping rule separately. If an important capability
+still fails that bounded test, reassess it before adding more validation machinery.
+Reserve fresh independently authored cases where practical for final assessment; keep
+their provenance honest. Full regression, passing prospective quality criteria and
+current synthetic Obsidian usefulness acceptance still precede Built and owner `shipit`.
+Any later private pilot must be separately scoped, keep real data out of this public repo
+and report only approved aggregate findings. V11's 167 unused requests authorize no new run.
 
 **M11 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
