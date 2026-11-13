@@ -17,7 +17,7 @@ from .test_diagnostic import FakeHTTP, git, read
 
 REAL_ROOT = c.ROOT
 BASELINE_SOURCE = {
-    name: git(REAL_ROOT, "show", f"{c.PINS['source']}:{name}") for name in c.d.RUNTIME
+    name: (REAL_ROOT / c.BASELINE / "source" / name).read_bytes() for name in c.d.RUNTIME
 }
 
 
