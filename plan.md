@@ -18,16 +18,13 @@ The next first-release target is the reviewable draft contract below; the curren
 still implements V11. Automatic reconciliation is deferred for that successor.
 Phase 0 (Handy) set up.
 
-**Fresh-session handoff (2026-11-13):** [NEXT_SESSION.md](NEXT_SESSION.md) records the
-implemented [action-only contract](prototypes/reviewable_draft/ACTIONS.md): no summary,
-decisions, model states/notices or writing in the model request. All 1335 offline tests
-pass. Independent review passed at `287d85b`; the exact
-[twenty-entry freeze](evaluation/m10/reviewable-draft/diagnostic-3/manifest.json) is ready
-for fresh execution approval, with zero new inference requests. All 736 earlier manifest
-entries remain exact. The
-[previous diagnostic](evaluation/m10/reviewable-draft/diagnostic-2/results/report.md)
-stays incomplete: two requests, one compiled draft, one rejected response and four unsent
-cases in 3m05s. No unused allowance transfers or semantic outcome is regraded.
+**Fresh-session handoff (2026-11-13):** [NEXT_SESSION.md](NEXT_SESSION.md) and the
+[action-only report](evaluation/m10/reviewable-draft/diagnostic-3/results/report.md)
+record six completed requests in 4m07s: five cases meet their scoped criteria, one has a
+critical surviving-work omission. All six outputs replay exactly; quality still fails.
+All 1335 offline tests pass. All 736 prior entries, twenty current freeze entries and
+157 sealed result entries verify; no historical outcome is regraded. All six requests
+are used and no further inference is authorized. The app remains V11 and M10 unbuilt.
 
 ---
 
@@ -1315,6 +1312,37 @@ No new inference has run and no results directory exists. The complete setup is 
 for a fresh six-request / fifteen-minute execution approval. Record any approval outside
 the freeze; do not ask again for an approved run. All prior failed outcomes and production
 quality/persistence/usefulness/Built/owner shipit gates remain unchanged.
+
+**Actions-alone evaluation checkpoint (2026-11-13; M10 remains unbuilt).** The owner
+replied “yes please!” to the exact frozen six-case / six-request / fifteen-minute run,
+no retries. It completed all six captures/decodes/renders using six requests in 247.310
+seconds (4m07s), without transport/format/literal failures, mechanically incomplete
+results, identity drift, unsent cases or overrun. All six requests are used; no resumption
+or further inference followed. Unused time/old allowances authorize no new experiment.
+
+Independent assessment and Chief source checks found five cases meeting prospective
+action-only criteria and one **critical retention failure**. Partial cancellation leaves
+invoice sending current, but raw actions/review references are empty and the render shows
+only a generic notice, without the work or focused context. A complete backend snapshot
+does not satisfy useful retention. This differs from the first diagnostic's visibly
+retained summary facts; no previous severity or verdict is rewritten. Price/availability
+produce no action; replacement sending, full later timing and both independent undertakings
+survive in the other cases. Minor attribution/context repetition remains.
+
+The [report](evaluation/m10/reviewable-draft/diagnostic-3/results/report.md) preserves all
+six raw replies, exact artifacts/accounting, independent assessment and Chief verification,
+sealed by a separate 157-entry result manifest. All twenty current frozen entries and
+736 previous entries verify; all forty inputs remain exact. Every new output replays,
+including the omission. Formatting, lint, strict types and 1335 offline tests pass; six
+integration tests excluded, capture unchanged. Frozen-head Python/Swift CI passed.
+
+One repetition on six familiar inputs and a narrower task establishes no reliability,
+summary/decision quality, full-draft improvement, editing-time benefit or current Obsidian
+acceptance. Keep the smaller contract as a benchmark; consider a bounded local-model
+comparison before more pipeline changes. This is a recommendation, not a new implementation
+or inference budget. Do not add quote validators or automatically rerun cases to obtain
+a pass. Full regression, production persistence, current usefulness, Built and owner shipit
+remain pending. The application still follows V11.
 
 **M11 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
