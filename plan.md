@@ -19,12 +19,12 @@ still implements V11. Automatic reconciliation is deferred for that successor.
 Phase 0 (Handy) set up.
 
 **Fresh-session handoff (2026-11-13):** [NEXT_SESSION.md](NEXT_SESSION.md) and the
-[V11 report](evaluation/m10/v11/results/report.md) record the completed approved run:
-80 slots, 109/276 requests, 98m46s, six incomplete proposed outputs and one published
-false conflict. All 34 selected V11 generations replay exactly, all 463 frozen entries
-verify and 978 offline tests pass. No tuning/reruns, current manual acceptance, Built
-note or merge followed. The reviewable draft direction is now confirmed; next is a bounded
-offline prototype, followed by a separately approved model experiment. Preserve old evidence.
+[latest draft report](evaluation/m10/reviewable-draft/diagnostic-2/results/report.md)
+record the quoted-selection successor: two requests, one compiled draft, one rejected
+response and four unsent cases in 3m05s. This is incomplete, with semantic defects in
+the rejected raw reply. All earlier evidence remains unchanged; 1234 offline tests pass.
+Keep the approved presentation, reassess the smallest model-facing task before another
+experiment and obtain fresh execution scope/budget. No unused allowance transfers.
 
 ---
 
@@ -1244,6 +1244,38 @@ Prepare the same six-case diagnostic with a proposed six-request/fifteen-minute 
 unchanged settings and no retries. Finish implementation, independent review and exact
 freeze before requesting new execution approval. This offline authorization grants no
 model requests, production integration, current Obsidian acceptance, Built or merge.
+
+**Quoted diagnostic checkpoint (2026-11-13; M10 remains unbuilt).** Implementation and
+independent engineering review passed at `9e369ad` without findings/formal repairs. The
+nineteen-entry freeze was committed/pushed at `77fd9d3` before the owner approved six
+requests / fifteen minutes, no retries. The once-only run stopped after **two requests
+in 184.814 seconds (3m05s)**: one compiled draft, one source-reference validation failure
+and four unsent cases. No retries, transport/truncation errors, identity drift or overrun.
+The four unused slots authorize neither resumption nor another experiment.
+
+The [incomplete report](evaluation/m10/reviewable-draft/diagnostic-2/results/report.md)
+preserves both replies, exact failure, all accounting and independent assessment, sealed
+by a separate 56-entry result manifest. The completed draft preserves both undertakings
+but repeats content heavily. The rejected price response repeats references, selects a
+factual price as action/decision and includes writing in a speech-only summary with
+speech-only citations. The critical raw source/separation defect was not published in
+a compiled draft. No conflict or computed relationship was asserted. Availability,
+cancellation/replacement, surviving-work and qualified timing remain untested; no claim
+that the original failures are repaired is supported.
+
+All nineteen frozen entries, 486 historical/sealed entries, eighteen first-freeze entries,
+157 first-result entries and forty original inputs verify unchanged. All six old drafts,
+the one new draft and the new rejection reproduce exactly. Formatting, lint, strict types
+and 1234 offline tests pass; six integration tests excluded, capture unchanged. Mechanical
+integrity and engineering checks do not pass model quality or establish editing benefit.
+
+Keep the accepted presentation. Before another run, reassess avoidable response-contract
+burden and whether work extraction should be evaluated separately from summary generation.
+This is a recommendation, not a replacement implementation or new inference permission.
+Do not add semantic validators or repeat the same diagnostic by reflex. Any subsequent
+candidate needs concrete criteria, review, freeze and fresh request/time approval.
+Production integration, full regression, current synthetic Obsidian usefulness, Built
+and owner `shipit` remain pending; application behavior still follows V11.
 
 **M11 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
