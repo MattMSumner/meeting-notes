@@ -33,13 +33,16 @@ def _literal(text: str) -> str:
     return f"{fence}text\n{text}{ending}{fence}"
 
 
-def _source(source: Source) -> str:
-    label = (
+def _label(source: Source) -> str:
+    return (
         f"Spoken by {_escape(source.speaker)} at {_escape(source.timestamp)}"
         if source.kind == "transcript"
         else f"Written by {_escape(source.speaker)}"
     )
-    return f"{label}\n\n{_literal(source.text)}"
+
+
+def _source(source: Source) -> str:
+    return f"{_label(source)}\n\n{_literal(source.text)}"
 
 
 def render(draft: Draft) -> str:
@@ -50,10 +53,18 @@ def render(draft: Draft) -> str:
     draft.validate()
     snapshot = draft.snapshot
     sources = {source.id: source for source in snapshot.sources}
+    cited: dict[str, int] = {}
+
+    def citations(refs: tuple[str, ...]) -> str:
+        for ref in refs:
+            if ref not in cited:
+                cited[ref] = len(cited) + 1
+        return "Sources: " + "; ".join(f"{cited[ref]} — {_label(sources[ref])}" for ref in refs)
+
     out = [
         f"# {_escape(snapshot.title)}",
         "**AI draft — review required**",
-        "Review every suggestion. Source references do not verify meaning or acceptance.",
+        "Review and edit these suggestions before using them. Source excerpts are included below.",
     ]
     if any(section.state == "unavailable" for section in draft.sections):
         out.append(
@@ -70,21 +81,21 @@ def render(draft: Draft) -> str:
     for kind in KINDS:
         section = sections[kind]
         out.append(f"## {_TITLES[kind]}")
-        state = {"draft": "AI draft", "needs_review": "Needs review", "unavailable": "Unavailable"}[
-            section.state
-        ]
-        out.append(f"*{state} — review required*")
+        if section.state != "draft":
+            out.append("**Needs review**" if section.state == "needs_review" else "**Unavailable**")
         if section.notice:
             out.append(_escape(section.notice))
         for item in section.items:
             out.append(f"- {_escape(item.text)}")
-            for ref in item.sources:
-                out.append("\n".join("  " + line for line in _source(sources[ref]).split("\n")))
+            out.append("  " + citations(item.sources))
         if not section.items and section.state == "draft":
             out.append("No suggestions supplied.")
         if section.review_sources:
-            out.append("**Context to review**")
-            out.extend(_source(sources[ref]) for ref in section.review_sources)
+            out.append("**Context to review**\n\n" + citations(section.review_sources))
+    if cited:
+        out.append("## Source excerpts")
+        for ref, number in cited.items():
+            out.append(f"### Source {number}\n\n{_source(sources[ref])}")
     out.extend(
         (
             "## Original handwritten notes",

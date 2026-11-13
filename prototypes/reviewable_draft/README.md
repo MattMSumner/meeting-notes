@@ -5,6 +5,27 @@ no model, recording, vault, production CLI, pipeline, store, prompt or saved wra
 used. Authored examples demonstrate intended behavior, not model capability, a passing
 quality evaluation or owner usefulness acceptance. V11's failed results remain unchanged.
 
+## Try the previews
+
+Start with the [normal draft](previews/additional.md), the
+[incomplete comparison with a retained invoice suggestion](previews/multi_claim_notes.md),
+or [all ten examples](previews/index.md). Shared source excerpts appear once below the
+suggestions; original handwritten text stays separate. Every preview identifies itself
+as an authored offline example.
+
+From the repository root:
+
+```sh
+uv run python -B -m prototypes.reviewable_draft --case multi_claim_notes
+uv run python -B -m prototypes.reviewable_draft --output-dir /tmp/reviewable-draft-previews
+```
+
+The export directory must be new; existing files and edits are never overwritten.
+The exporter reads only frozen synthetic inputs and authored fixture JSON, then renders
+saved in-memory drafts. Its separate preview manifest records captured-input/fixture and
+output hashes; it is not a production persistence format or a quality-score report.
+Checked-in previews are reproducible with the same command in a fresh directory.
+
 ## Prototype contract
 
 Use a small immutable in-memory vocabulary, independent of production models:

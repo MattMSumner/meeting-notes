@@ -399,4 +399,5 @@ def test_valid_references_do_not_establish_meaning() -> None:
         )
     )
     assert "fictional rocket today" in output
-    assert "Source references do not verify meaning or acceptance" in output
+    assert "**AI draft — review required**" in output
+    assert "Review and edit these suggestions before using them" in output
