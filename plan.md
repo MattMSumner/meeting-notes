@@ -1152,6 +1152,30 @@ current synthetic Obsidian usefulness acceptance still precede Built and owner `
 Any later private pilot must be separately scoped, keep real data out of this public repo
 and report only approved aggregate findings. V11's 167 unused requests authorize no new run.
 
+**Offline prototype checkpoint (2026-11-13; M10 remains unbuilt).** The owner authorized
+the bounded prototype. [Ten authored previews](prototypes/reviewable_draft/previews/index.md)
+now demonstrate the prospective format on the named unchanged inputs, including a
+[normal draft](prototypes/reviewable_draft/previews/additional.md) and an
+[unavailable comparison retaining the independent invoice suggestion](prototypes/reviewable_draft/previews/multi_claim_notes.md).
+The small immutable model validates snapshot/generation/source bindings; the pure renderer
+shows ordinary suggestions, focused review, explicit section states, shared literal
+source excerpts and original writing. The demo exporter creates fresh directories only
+and records captured-input/fixture/output hashes. No semantic classifier, inference,
+production integration or persistence migration is included.
+
+Formatting, lint, strict types and 1016 offline tests pass (38 prototype checks; six
+integration tests excluded). All 396 historical + 67 V11 + 23 sealed result entries and
+seventeen old wrapper-9 replays remain unchanged. All forty original regression inputs
+are retained. Authored responses and rendering tests are engineering evidence, not a
+model-quality pass; the owner has not yet accepted this format or tested it in Obsidian.
+
+Next, review whether the previews would save editing time, then bound and review the
+smallest model-facing contract/isolated generator and declare a separate diagnostic
+experiment before any inference. The prototype README records prospective acceptance
+and production snapshot/section/prior-output/atomicity/edit-protection requirements;
+those integration safeguards have not been implemented by this prototype. No new
+request/time budget, numerical review-effort target, Built note or merge is implied.
+
 **M11 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
 compared on tests rather than by eye on real meetings: stance (a "maybe" turned into a
