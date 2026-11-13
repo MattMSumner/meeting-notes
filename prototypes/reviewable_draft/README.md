@@ -44,11 +44,17 @@ with the new wire contract; that is separate from any quality improvement.
 
 `quoted_diagnostic.py` is a separate capture profile, preserving the first generator,
 driver and saved results. It retains raw output/partial drafts and stops on a rejected
-quote selection. A proposed new six-case / six-request / fifteen-minute diagnostic
-has passed independent review and is [frozen](../../evaluation/m10/reviewable-draft/diagnostic-2/manifest.json).
-Fresh execution approval is pending. The earlier six requests are used; no new inference
-or production integration is authorized here. All 1234 offline checks, lint and strict
-types pass; those engineering checks do not prove the model will select correct work.
+quote selection. The independently reviewed [second freeze](../../evaluation/m10/reviewable-draft/diagnostic-2/manifest.json)
+was approved for six requests / fifteen minutes with no retries. That run stopped after
+two requests in 3m05s: one draft compiled, the second response failed source-reference
+validation and four cases were unsent. See the [incomplete diagnostic report](../../evaluation/m10/reviewable-draft/diagnostic-2/results/report.md)
+and [one actual draft](../../evaluation/m10/reviewable-draft/diagnostic-2/results/01-additional/draft.md).
+The rejected raw response also classifies a factual price quotation as work and includes
+a written price in a speech-only summary. It was never rendered as an accepted draft.
+The availability, cancellation, surviving-work and qualified-timing cases remain untested
+under this contract. No retries or further inference followed; the four unused slots
+authorize no restart or another run. Production integration remains pending. All 1234
+offline checks, lint and strict types pass; engineering correctness is no quality pass.
 
 ## Try the previews
 

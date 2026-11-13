@@ -17,8 +17,11 @@ draft and incomplete comparison that retains useful work. These offline sketches
 for reviewing the format; they are not model outputs. The separate
 [six-case model diagnostic](evaluation/m10/reviewable-draft/diagnostic-1/results/report.md)
 completed all six captures but found one critical invented-work case and one surviving-work
-criterion failure. Current quality and Obsidian usefulness acceptance remain required
-before M10 is built.
+criterion failure. The [quoted-selection successor diagnostic](evaluation/m10/reviewable-draft/diagnostic-2/results/report.md)
+stopped after two requests: one draft compiled, one response failed validation and four
+cases were unsent. Literal quotation still permits selecting facts as work; this is no
+quality pass. Current quality and Obsidian usefulness acceptance remain required before
+M10 is built.
 
 ## Setup
 
