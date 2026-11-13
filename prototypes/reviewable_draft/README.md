@@ -7,9 +7,11 @@ quality evaluation or owner usefulness acceptance. V11's failed results remain u
 
 The owner approved the normal and incomplete preview format on 2026-11-13. That is format
 feedback; generated quality and actual editing effort remain untested. The next
-[six-case diagnostic proposal](EXPERIMENT.md) has a transport-free request builder and
+[six-case diagnostic](EXPERIMENT.md) has a transport-free request builder and
 decoder in `generation.py`. Only offline fake-response checks have run; the timed
-run/capture driver, freeze and separate inference approval still precede model calls.
+run/capture driver and freeze still precede model calls. The owner has now approved
+six local requests / fifteen minutes for that diagnostic; no further permission is needed
+after setup/review for the declared run.
 
 ## Try the previews
 

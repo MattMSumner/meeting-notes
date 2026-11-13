@@ -1,4 +1,4 @@
-# M10 handoff — 2026-11-13, draft format approved
+# M10 handoff — 2026-11-13, six-case diagnostic approved
 
 Continue on `m10/notes-guided-enhancement`, [PR #16](https://github.com/MattMSumner/meeting-notes/pull/16).
 Read AGENTS.md, this handoff, the reviewable draft section of plan.md and the
@@ -42,7 +42,8 @@ context failures. The six blocks are three comparison failures and three summary
 Every agreed slot and attempt is retained. There was no tuning or selective rerun.
 The 167 unused requests authorize nothing further. Do not restart the completed run.
 
-No further inference, current manual Obsidian acceptance, Built note or merge is authorized.
+The owner subsequently approved the separate six-case diagnostic described below. No
+other inference, current manual Obsidian acceptance, Built note or merge is authorized.
 M10 remains unbuilt. Only the owner's explicit `shipit` authorizes `git shipit`; never
 merge on GitHub. Leave the separate safeguards worktree and unrelated recovery issue alone.
 
@@ -129,14 +130,15 @@ unavailable-section and failure behavior; they establish no model capability.
 The combined offline suite passes 1046 tests (30 additional generator checks), plus
 formatting, lint and strict types; six integration tests remain excluded.
 
-The [first diagnostic proposal](prototypes/reviewable_draft/EXPERIMENT.md) predeclares six
-familiar cases, one request each, unchanged qwen3:30b settings, a proposed six-request /
-fifteen-minute ceiling and explicit stopping/assessment rules. No baseline, corrections
-or retries are proposed. These ceilings are pending separate owner approval, not a grant.
-Next implement/review the timed capture driver and freeze exact source, packets, input
-hashes and expected local model identity before inference. The preparation API does not
-implement the timed run or prove its ceilings. Keep every original input/verdict and
-honest fresh-case provenance. Format approval and offline preparation grant no model calls.
+The [first diagnostic](prototypes/reviewable_draft/EXPERIMENT.md) predeclares six familiar
+cases, one request each, unchanged qwen3:30b settings, six requests / fifteen minutes and
+explicit stopping/assessment rules. The owner replied “I approve” to that scoped run.
+No baseline, corrections, retries or selective reruns are authorized. This approval
+persists while the driver is finished/reviewed and exact source, packets, input hashes
+and expected local model identity are frozen; no second permission question is needed.
+The clock starts with run preflight and includes metadata/capture, not offline setup.
+Keep every original input/verdict and honest fresh-case provenance. Stop and report
+unused/unsent cases honestly if a gate fails; the remaining allowance grants no rerun.
 
 Passing prospective quality, current synthetic Obsidian usefulness acceptance and the
 owner's `shipit` remain required before Built/merge. Numerical latency/review-effort

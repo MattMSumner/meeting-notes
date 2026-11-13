@@ -1,4 +1,4 @@
-# Proposed first draft-generation diagnostic
+# First draft-generation diagnostic — approved 2026-11-13
 
 The owner approved the normal and incomplete preview format on 2026-11-13 (“Yeah these
 look good!”). This accepts the authored format, not generated quality or Obsidian use.
@@ -17,7 +17,11 @@ references or malformed JSON fail the response; they do not trigger a repair req
 An unavailable section contains no accepted items and needs focused literal evidence.
 Passing these mechanical checks does not prove factual meaning or completeness.
 
-## Proposed run, pending separate inference approval
+## Approved run
+
+The owner replied “I approve” to at most six local model requests and fifteen minutes
+elapsed. This approval persists through the remaining driver review and exact freeze;
+do not ask again before the declared run. It authorizes no retries or follow-up run.
 
 One candidate, one repetition, in this fixed order:
 
@@ -34,11 +38,11 @@ All six are familiar development inputs selected before any new response. All fo
 original inputs/criteria and V11's failed verdict remain unchanged. This is a capability
 diagnostic, not full regression, held-out evaluation or release acceptance.
 
-Proposed ceilings: **six inference requests total, one per case; fifteen minutes elapsed**.
+Approved ceilings: **six inference requests total, one per case; fifteen minutes elapsed**.
 Keep qwen3:30b, temperature zero, thinking enabled, context 32768 and per-request timeout
 at most 600 seconds, further limited by remaining run time. No baseline arm, corrections,
 transport retries, warm-up inference, selective reruns or prompt tuning inside the run.
-The prior 167 unused requests grant nothing here. Approval must explicitly cover this run.
+The prior 167 unused requests grant nothing here. Approval covers this diagnostic only.
 
 Before inference, freeze the exact candidate commit, prompt/schema, six prepared request
 bodies, input/snapshot hashes, settings and expected model identity. Save all raw requests,
@@ -74,8 +78,8 @@ Model-supplied identity fields are disallowed; code binds output to the saved pa
 host generation identity. The run driver must load and hash-check the unchanged synthetic
 inputs; the pure preparation API does not read or attest files. Offline
 checks use authored/fake responses only and establish no local-model capability. The
-actual timed run/capture driver must be reviewed and frozen before invoking inference;
-this preparation alone does not implement or establish enforcement of the run ceilings.
+timed run/capture driver must be reviewed and frozen before invoking inference. The
+preparation helper alone does not implement or establish enforcement of the run ceilings.
 
 After this diagnostic, inspect the actual failure before adding machinery. Any new prompt,
 request, retry or case needs a separately declared follow-up. Full regression, fresh-case
