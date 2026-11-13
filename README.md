@@ -11,8 +11,11 @@ The [V11 evaluation](evaluation/m10/v11/results/report.md) failed quality: 34/40
 outputs published, six blocked and one published output invented a unit-conversion
 conflict. The next first-release target is a useful AI draft that the owner reviews,
 with source-backed suggestions and visible uncertainty. That direction is documented
-in [plan.md](plan.md); application behavior has not yet changed. Current quality and
-Obsidian usefulness acceptance remain required before M10 is built.
+in [plan.md](plan.md); application behavior has not yet changed. Try the isolated
+[authored draft previews](prototypes/reviewable_draft/README.md), including a normal
+draft and incomplete comparison that retains useful work. These offline sketches are
+for reviewing the format; they are not model outputs. Current quality and Obsidian
+usefulness acceptance remain required before M10 is built.
 
 ## Setup
 
