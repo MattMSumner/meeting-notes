@@ -1,11 +1,33 @@
-# M10 handoff — 2026-11-13, quoted-selection diagnostic stopped
+# M10 handoff — 2026-11-13, actions-alone successor
 
 Continue on `m10/notes-guided-enhancement`, [PR #16](https://github.com/MattMSumner/meeting-notes/pull/16).
 Read AGENTS.md, `.chief/CHIEF.md`, the reviewable draft section of plan.md and the
 [latest report](evaluation/m10/reviewable-draft/diagnostic-2/results/report.md).
 Use the Herdr skill for delegated work. Keep local task state in ignored `.chief/STATE.md`.
 
-## Current outcome and authorization
+## New authorized offline work
+
+The owner accepted simplifying the contract and testing actions separately. The new
+[action-only contract](prototypes/reviewable_draft/ACTIONS.md) has two response fields:
+literal action selections and focused review references. Code owns status, attribution
+and normalization of benign duplicate references. Writing stays in the complete snapshot
+and inspection artifact, excluded from the model request. Summary and decisions are
+outside this focused experiment; the approved full draft remains the product target.
+
+Implement, test, independently review and freeze this isolated candidate before requesting
+fresh inference approval. The proposed scope is the same six cases, negative controls
+first, one request each, at most six requests / fifteen minutes with unchanged local-model
+settings and no retries. This is offline authorization only. Do not spend the four unused
+slots from the stopped run below, reinterpret its replies or change production behavior.
+
+Implementation and combined offline checks are complete: formatting, lint, strict types
+and 1335 unit tests pass; six integration tests excluded, capture unchanged. The
+[six authored examples](prototypes/reviewable_draft/actions-previews/index.md) reproduce
+exactly and are not model outputs. All 736 historical/frozen/result hashes remain exact.
+All eight old raw replies are structurally incompatible with this smaller contract; this
+is no semantic repair. Independent review and the exact freeze precede execution approval.
+
+## Quoted-selection outcome and authorization
 
 The owner approved “six requests” for the frozen quoted-selection candidate: the same
 six synthetic cases, at most six local qwen3:30b requests / fifteen minutes, no retries.
@@ -35,14 +57,12 @@ Suggested actions remain ordinary Markdown; the user promotes them while editing
 Obsidian. Writing stays separately attributed. Automatic conflict classification is
 deferred. Draft labels still permit no wrong facts, unsupported obligations or lost work.
 
-The faithful-action-extraction successor is implemented offline and its approved bounded
-experiment is now accounted for. Application behavior still follows V11; M10 is unbuilt.
-Before another model run, reassess the smallest model-facing task: reduce avoidable
-protocol burden and inspect whether work extraction should be evaluated separately from
-summary generation. This is a recommendation, not an implemented replacement or approved
-new experiment. Do not add semantic validators or repeatedly rerun the same six cases by
-reflex. Any next candidate needs concrete criteria, independent review, exact freeze and
-fresh request/time approval. Do not ask again for the completed run's approval.
+The quoted-selection experiment is accounted for. Those findings motivated the separate
+actions-alone candidate above; its semantic selection remains untested. Application
+behavior still follows V11; M10 is unbuilt. Do not add semantic validators or repeatedly
+rerun the same six cases by reflex. Every new candidate needs concrete criteria,
+independent review, exact freeze and fresh request/time approval. Do not ask again for
+completed runs' approval.
 
 Full forty-case regression, honest fresh-case provenance, production persistence and
 current synthetic Obsidian usefulness acceptance remain required before Built. Numerical

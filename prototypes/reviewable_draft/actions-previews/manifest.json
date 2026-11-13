@@ -1,0 +1,15 @@
+{
+  "kind": "authored_action_only_examples",
+  "model_requests": 0,
+  "input_sha256": "d2c1fc42a6d6e59ad4fd766e226862d1f137e5cd1002b6984a94abcf2bc9d35f",
+  "fixture_sha256": "b7fe136746d554958ad766f319a00cbaf24973b86e5b6681faf965d403cdda8a",
+  "files": {
+    "unit_equivalence.md": "6b8b62c98e57922472ce7b579482bb94f539ddad7f401f2ac32978b535fbf675",
+    "accepted_status_answer.md": "9ac2b5f52982181e0deef958a0a3581ead3a9ea62754adcabfeed5213f7417c7",
+    "partial_coordination_retracted.md": "b3d4acf03ae1371d590ab78bf9b75725e8de8fabb7d33791b440d7bf4ca80cc2",
+    "cancellation_with_new_task.md": "f734bbfa8dd1dfd927b35b5968fed6de0803b2eda9928fab8570f76495757cd4",
+    "qualified_external_timing.md": "4deb83edca71d3bb51345206fce0359c83a1b2d0b10f7606a26cc22875db31f9",
+    "additional.md": "f08f7178364453a9f022c3971dabd85ce88979eb3de4aee897fef171c5dc4682",
+    "index.md": "235ab03b43fb6032c1150c3dfe15230e0a5c8d7bd5bb90e05bd2f3edd01e9c30"
+  }
+}

@@ -56,6 +56,28 @@ under this contract. No retries or further inference followed; the four unused s
 authorize no restart or another run. Production integration remains pending. All 1234
 offline checks, lint and strict types pass; engineering correctness is no quality pass.
 
+## Actions alone
+
+The owner accepted a smaller [action-only contract](ACTIONS.md) after the stopped run.
+The model selects literal actions and focused review passages only. Code supplies status
+and attribution and canonicalizes benign duplicate references. Handwritten notes remain
+in the complete snapshot and inspection artifact, excluded from the model input. No
+summary, decisions or free-form state/notice fields are requested in this experiment.
+Correct current-work selection remains a model capability to assess, not a code guarantee.
+
+The separate `actions.py`, `action_diagnostic.py` and `actions_examples.py` preserve all
+earlier modules and results. New [authored action previews](actions-previews/index.md)
+demonstrate intended behavior only. The proposed diagnostic uses the same six cases with
+negative controls first, at most six requests / fifteen minutes, no retries. Finish exact
+review/freeze before fresh execution approval; no new model calls or production changes
+are implied by implementation or authored previews.
+
+Formatting, lint, strict types and 1335 offline tests pass; six integration tests excluded.
+All 736 previous manifest entries remain exact. All eight captured historical replies
+are incompatible with the new protocol, separately from any quality improvement. The
+prepared six requests are about 58% smaller in total than the quoted four-section requests;
+that is no latency, reliability or editing-time claim.
+
 ## Try the previews
 
 Start with the [normal draft](previews/additional.md), the
