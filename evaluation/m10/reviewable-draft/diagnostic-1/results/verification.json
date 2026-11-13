@@ -1,0 +1,50 @@
+{
+  "frozen_entries_verified": 18,
+  "historical_entries_verified": 486,
+  "captured": 6,
+  "render_replays": 6,
+  "http_exchanges": {
+    "POST": 6,
+    "GET": 24
+  },
+  "elapsed_seconds": 312.6288123750128,
+  "rows": [
+    {
+      "case": "additional",
+      "elapsed_seconds": 72.7855862500146,
+      "request_sha256": "977b8ff077561e1fd409f391d4e221f3107136880d63dc1b49aa091719f4beea",
+      "replay_matches": true
+    },
+    {
+      "case": "unit_equivalence",
+      "elapsed_seconds": 34.953458125004545,
+      "request_sha256": "def1aca7aa2067652f77fcc5692fa89d576e93ec0506be2081bf36d0ab28b37f",
+      "replay_matches": true
+    },
+    {
+      "case": "accepted_status_answer",
+      "elapsed_seconds": 35.22837141598575,
+      "request_sha256": "cbc251b40f2393fa6edfc52e6f705bc16f18cdeced4d239dd9bd8bb2d2a26e54",
+      "replay_matches": true
+    },
+    {
+      "case": "cancellation_with_new_task",
+      "elapsed_seconds": 25.545686833094805,
+      "request_sha256": "b792599c8bb0cabcbebd24eb59a50f774e8c0d5198190490ace6b7eee0246ed3",
+      "replay_matches": true
+    },
+    {
+      "case": "partial_coordination_retracted",
+      "elapsed_seconds": 66.63897312502377,
+      "request_sha256": "7596acc0f4dc21a4f2e9f0b5b761552ef0bcd68ccd30288a15f4df39e6f3cad2",
+      "replay_matches": true
+    },
+    {
+      "case": "qualified_external_timing",
+      "elapsed_seconds": 77.36148574994877,
+      "request_sha256": "abc04b687b49cbccaf1bc820c6a697e45c757d318cf4b91af3f5cf85286cbe38",
+      "replay_matches": true
+    }
+  ],
+  "quality_assessment": "separate semantic assessment; replay is not quality"
+}

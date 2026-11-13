@@ -14,8 +14,11 @@ with source-backed suggestions and visible uncertainty. That direction is docume
 in [plan.md](plan.md); application behavior has not yet changed. Try the isolated
 [authored draft previews](prototypes/reviewable_draft/README.md), including a normal
 draft and incomplete comparison that retains useful work. These offline sketches are
-for reviewing the format; they are not model outputs. Current quality and Obsidian
-usefulness acceptance remain required before M10 is built.
+for reviewing the format; they are not model outputs. The separate
+[six-case model diagnostic](evaluation/m10/reviewable-draft/diagnostic-1/results/report.md)
+completed all six captures but found one critical invented-work case and one surviving-work
+criterion failure. Current quality and Obsidian usefulness acceptance remain required
+before M10 is built.
 
 ## Setup
 

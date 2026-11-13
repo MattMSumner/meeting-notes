@@ -1,4 +1,4 @@
-# M10 handoff — 2026-11-13, six-case diagnostic approved
+# M10 handoff — 2026-11-13, six-case diagnostic complete
 
 Continue on `m10/notes-guided-enhancement`, [PR #16](https://github.com/MattMSumner/meeting-notes/pull/16).
 Read AGENTS.md, this handoff, the reviewable draft section of plan.md and the
@@ -28,7 +28,23 @@ This requirements update changes no application behavior. The current implementa
 still follows V11. Its failed evaluation stays failed; no historical criteria or results
 are rewritten. The bounded offline prototype is now implemented as specified below.
 
-## Outcome and current authorization
+## Latest six-case diagnostic
+
+The separate approved diagnostic is complete: **six captures / six requests in 5m13s**,
+with no retries, transport/format failures, unavailable sections, unsent slots or overrun.
+**Four cases meet criteria; one invents work; one fails useful surviving-work handling.**
+See the [report and all raw evidence](evaluation/m10/reviewable-draft/diagnostic-1/results/report.md).
+An independent read-only reviewer and the Chief agreed on source-based findings after
+capture. All six requests are used; no more inference is authorized.
+
+The critical case turns an availability answer into a meeting-rescheduling action and
+schedule-adjustment decision. A different case retains original/withdrawal facts but
+does not identify surviving work while action/review sections report no suggestions.
+Remaining partial findings include category duplication, inline source IDs and boilerplate.
+Six familiar cases and one repetition establish no reliability, full regression, editing
+benefit, current Obsidian acceptance or Built/merge readiness. V11's fail stays unchanged.
+
+## Historical V11 run
 
 The owner replied “Sure, do it” to all forty frozen synthetic pairs once per arm,
 with ceilings 160 baseline + 116 proposed = 276 requests. That single run is complete.
@@ -42,8 +58,8 @@ context failures. The six blocks are three comparison failures and three summary
 Every agreed slot and attempt is retained. There was no tuning or selective rerun.
 The 167 unused requests authorize nothing further. Do not restart the completed run.
 
-The owner subsequently approved the separate six-case diagnostic described below. No
-other inference, current manual Obsidian acceptance, Built note or merge is authorized.
+The separate approved six-case run is also complete. No other inference, current manual
+Obsidian acceptance, Built note or merge is authorized.
 M10 remains unbuilt. Only the owner's explicit `shipit` authorizes `git shipit`; never
 merge on GitHub. Leave the separate safeguards worktree and unrelated recovery issue alone.
 
@@ -120,45 +136,38 @@ entries** remain unchanged, and seventeen wrapper-9 generations replay exactly.
 Reproducible authored previews and passing engineering tests establish no model quality
 or measured owner editing-time benefit. Capture is unchanged.
 
+## Capture and replay evidence
+
+The isolated `generation.py` prepares one small request and binds decoded fields to
+saved source/snapshot/host generation identity. The explicit `diagnostic.py` / `_http.py`
+capture driver has no retry/resume path. Independent engineering review passed at
+`2934d1004fb592d5ff0708fa2068532c7d51b543` with no findings/formal repairs.
+
+The [18-entry freeze](evaluation/m10/reviewable-draft/diagnostic-1/manifest.json) was
+committed and pushed at `1a3acebc8192647aa114ec16728264cba414ab93` before inference;
+manifest SHA256 `8c1b2ee279047f3c751311c73e0c9ff4680b0e5cc0afbd7fc4b147d283680168`.
+All nineteen committed freeze files including the manifest remain exact. Saved request,
+snapshot/generation and raw-response bindings reproduce all six draft JSON/Markdown
+artifacts. All six POSTs and 24 metadata GETs have HTTP 200 and no captured transport error.
+Before/after identities match Ollama 0.40.9 / qwen3:30b and the frozen digest. Actual
+elapsed is 312.629 seconds, with zero overrun. Client termination never proves server
+compute cancellation; no timeout occurred in this run.
+
+All 486 historical/sealed result entries and all forty original regression inputs remain
+unchanged. Formatting, lint, strict types and 1109 offline tests pass (63 driver checks);
+six integration tests excluded, capture unchanged. Driver fakes and faithful replay
+remain engineering evidence, distinct from fresh semantic outcomes. Results include
+independent assessment and a separate checksum manifest. Existing results prevent rerun.
+
 ## Next decision and authorization
 
-The format feedback is recorded. The isolated `generation.py` now prepares the small
-model-facing schema/prompt, binds output to saved snapshot/host generation identity and
-decodes one response using only an explicit injected transport. It has no default network
-transport or production imports. Fake responses exercise shape, source-kind, identity,
-unavailable-section and failure behavior; they establish no model capability.
-The combined offline suite passes 1046 tests (30 additional generator checks), plus
-formatting, lint and strict types; six integration tests remain excluded.
-
-The [first diagnostic](prototypes/reviewable_draft/EXPERIMENT.md) predeclares six familiar
-cases, one request each, unchanged qwen3:30b settings, six requests / fifteen minutes and
-explicit stopping/assessment rules. The owner replied “I approve” to that scoped run.
-No baseline, corrections, retries or selective reruns are authorized. This approval
-persists while the driver is finished/reviewed and exact source, packets, input hashes
-and expected local model identity are frozen; no second permission question is needed.
-The clock starts with run preflight and includes metadata/capture, not offline setup.
-Keep every original input/verdict and honest fresh-case provenance. Stop and report
-unused/unsent cases honestly if a gate fails; the remaining allowance grants no rerun.
-
-The capture driver is implemented in `diagnostic.py` / `_http.py`. It requires committed
-source and an externally pinned manifest hash, checks input/request/source/identity drift,
-claims one results directory and bounds each child by remaining elapsed time. Raw bodies
-and conservative possibly-sent markers survive malformed replies and interruption.
-Source-equivalent descendant commits permit committing the freeze before inference.
-Disconnect does not guarantee server compute cancellation; record any overrun honestly.
-Combined validation passes 1109 offline tests (63 new driver checks), formatting, lint
-and strict types; six integration tests excluded. Independent code review and exact
-freeze still precede the approved run. No inference has run at this checkpoint.
-
-Independent driver review passed at `2934d1004fb592d5ff0708fa2068532c7d51b543`, with no
-findings or formal repairs. The [exact freeze](evaluation/m10/reviewable-draft/diagnostic-1/manifest.json)
-contains 18 hashed files and has manifest SHA256
-`8c1b2ee279047f3c751311c73e0c9ff4680b0e5cc0afbd7fc4b147d283680168`.
-The source commit, declaration, all forty original inputs, six requests/snapshots and
-verified Ollama 0.40.9 / qwen3:30b digest are fixed before inference. Before any execution,
-inspect the freeze's `results/`: existing results mean the run was already claimed and
-must not restart. Raw attempts/final metadata, rather than this pre-run checkpoint,
-determine consumed requests and completion. Run once under the recorded approval.
+Keep the approved presentation. Offline successor design should address invented action/
+decision advice and poor surviving-work extraction. Investigate source-extracted wording
+or a narrower summary-first draft before adding more semantic validators. Exact quotes
+cannot alone prove current commitment or complete retention; preserve those limits.
+This is a recommendation, not a new accepted contract, implementation or inference budget.
+Declare any follow-up scope/criteria/freeze and requests/time budget separately. Both
+approved runs are finished; neither old unused allowance nor the six used slots transfers.
 
 Passing prospective quality, current synthetic Obsidian usefulness acceptance and the
 owner's `shipit` remain required before Built/merge. Numerical latency/review-effort

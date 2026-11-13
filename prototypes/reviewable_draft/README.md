@@ -1,12 +1,13 @@
-# Reviewable meeting draft — offline prototype
+# Reviewable meeting draft — prototype and diagnostic
 
-This is a rendering/design experiment inside M10. Inputs and responses are synthetic;
-no model, recording, vault, production CLI, pipeline, store, prompt or saved wrapper is
-used. Authored examples demonstrate intended behavior, not model capability, a passing
-quality evaluation or owner usefulness acceptance. V11's failed results remain unchanged.
+This is a rendering/design experiment inside M10, with ten authored previews and a
+separate six-case model diagnostic on frozen synthetic inputs. It changes no production
+CLI, pipeline, store, prompt, saved wrapper or vault. Authored examples demonstrate
+intended behavior, not model capability or owner editing-time benefit. V11's failed
+results remain unchanged.
 
 The owner approved the normal and incomplete preview format on 2026-11-13. That is format
-feedback; generated quality and actual editing effort remain untested. The next
+feedback; actual editing effort remains untested. The
 [six-case diagnostic](EXPERIMENT.md) has a transport-free request builder and
 decoder in `generation.py`. The `diagnostic.py` driver freezes exact source, original
 inputs, snapshots, requests and model identity into a new directory. Its explicit `run`
@@ -15,11 +16,16 @@ process deadlines and keeps raw responses/errors before decoding. No inference r
 import or freeze, and no automatic retry/resume exists. A timed-out client cannot guarantee
 server-side compute cancellation; elapsed overruns are recorded honestly.
 
-Only offline fake-response checks have run. The owner has approved six local requests /
-fifteen minutes for the declared diagnostic; independent review and the exact freeze
-precede execution, with no further permission needed. The approval string supplied to
-the runner is audit context, not an authentication mechanism. Existing app behavior,
-production persistence and protected vault files are unaffected by this diagnostic.
+The approved [six-case model diagnostic](../../evaluation/m10/reviewable-draft/diagnostic-1/results/report.md)
+is complete: six captures in 5m13s, four cases meeting criteria, one critical invented-work
+case and one noncritical surviving-work criterion failure. These actual model outputs are
+separate from the authored previews. The approval string supplied to the runner is audit
+context, not an authentication mechanism. Its one-use results directory and all six used
+requests prevent automatic continuation; another run needs fresh scope and approval.
+
+Read a [generated replacement-task draft](../../evaluation/m10/reviewable-draft/diagnostic-1/results/04-cancellation_with_new_task/draft.md)
+and the [invented-work failure](../../evaluation/m10/reviewable-draft/diagnostic-1/results/03-accepted_status_answer/draft.md)
+alongside the report. This diagnostic establishes no full quality or usefulness acceptance.
 
 ## Try the previews
 
@@ -118,8 +124,8 @@ does not satisfy useful retention. An honestly incomplete artifact can demonstra
 degradation without passing overall quality/usefulness acceptance.
 
 The owner must judge whether reviewing/editing a draft saves effort; no numerical review
-time or generation-latency target is agreed. Authoring these fixtures is no evidence
-that a local model can produce them. A later experiment needs separate exact scope,
+time or generation-latency target is agreed. Authoring these fixtures alone is no evidence
+that a local model can produce them. Another experiment needs separate exact scope,
 repetitions, request/time limits, settings, stopping rule and fresh-case provenance.
 
 Production persistence remains out of scope. Before integration, specify a distinct draft

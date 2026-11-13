@@ -1,5 +1,10 @@
 # Reviewable draft diagnostic
 
+The [first diagnostic is complete](diagnostic-1/results/report.md): six requests in
+5m13s, six captures, four cases meeting criteria, one critical invented-work case and
+one noncritical surviving-work criterion failure. All raw replies and replay evidence
+are retained. This is not a quality pass or production integration.
+
 The owner approved the authored normal/incomplete format and then explicitly approved
 one six-case local-model diagnostic: at most six requests, fifteen minutes elapsed,
 one candidate and no retries/corrections/baseline. The prospective declaration is
