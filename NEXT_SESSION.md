@@ -14,8 +14,8 @@ and normalization of benign duplicate references. Writing stays in the complete 
 and inspection artifact, excluded from the model request. Summary and decisions are
 outside this focused experiment; the approved full draft remains the product target.
 
-Implement, test, independently review and freeze this isolated candidate before requesting
-fresh inference approval. The proposed scope is the same six cases, negative controls
+The candidate is implemented, independently reviewed and frozen; fresh inference approval
+is pending. The proposed scope is the same six cases, negative controls
 first, one request each, at most six requests / fifteen minutes with unchanged local-model
 settings and no retries. This is offline authorization only. Do not spend the four unused
 slots from the stopped run below, reinterpret its replies or change production behavior.
@@ -25,7 +25,20 @@ and 1335 unit tests pass; six integration tests excluded, capture unchanged. The
 [six authored examples](prototypes/reviewable_draft/actions-previews/index.md) reproduce
 exactly and are not model outputs. All 736 historical/frozen/result hashes remain exact.
 All eight old raw replies are structurally incompatible with this smaller contract; this
-is no semantic repair. Independent review and the exact freeze precede execution approval.
+is no semantic repair. Review passed at `287d85b2229e0c03c6434337a2337bf777e5a136`
+after one accounting repair: saved partial literal failures now appear in final
+`incomplete_cases`. There are no remaining findings. Read-only review independently checked
+92 action-contract tests, hashes/replays/previews, twenty tamper probes and a fake partial
+capture with no disk writes or live calls. No model-quality pass is implied.
+
+The [third freeze](evaluation/m10/reviewable-draft/diagnostic-3/manifest.json) binds twenty
+artifacts to that exact candidate, complete original inputs/snapshots, six exact requests,
+declaration/settings and verified Ollama 0.40.9 / qwen3:30b identity. Manifest SHA256:
+`472027ef8be047233a3a8cf75630c922afe28c96b73911b844619c16b33e8bd3`.
+No results directory exists; no inference has run. The setup is concrete and ready for a
+fresh six-request / fifteen-minute approval, no retries. Record any later approval outside
+the immutable freeze and do not request that same approval again. Existing results would
+prevent restart. Summary/decision quality and all production acceptance remain pending.
 
 ## Quoted-selection outcome and authorization
 

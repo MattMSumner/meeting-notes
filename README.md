@@ -23,6 +23,11 @@ cases were unsent. Literal quotation still permits selecting facts as work; this
 quality pass. Current quality and Obsidian usefulness acceptance remain required before
 M10 is built.
 
+An [action-only successor](prototypes/reviewable_draft/ACTIONS.md) is implemented,
+independently reviewed and frozen for a separate six-case diagnostic. Its
+[authored previews](prototypes/reviewable_draft/actions-previews/index.md) demonstrate the
+smaller task; generated quality is untested and fresh inference approval is pending.
+
 ## Setup
 
 Needs an Apple Silicon Mac, [uv](https://docs.astral.sh/uv/), ffmpeg and Ollama:

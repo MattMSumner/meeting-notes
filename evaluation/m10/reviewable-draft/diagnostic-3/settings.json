@@ -1,0 +1,1 @@
+{"cases": ["unit_equivalence", "accepted_status_answer", "partial_coordination_retracted", "cancellation_with_new_task", "qualified_external_timing", "additional"], "contract": "spoken-actions-only-1", "model": "qwen3:30b", "num_ctx": 32768, "per_request_seconds": 600, "requests": 6, "retries": 0, "seconds": 900, "stream": false, "temperature": 0, "think": true}

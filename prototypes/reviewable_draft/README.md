@@ -68,9 +68,11 @@ Correct current-work selection remains a model capability to assess, not a code 
 The separate `actions.py`, `action_diagnostic.py` and `actions_examples.py` preserve all
 earlier modules and results. New [authored action previews](actions-previews/index.md)
 demonstrate intended behavior only. The proposed diagnostic uses the same six cases with
-negative controls first, at most six requests / fifteen minutes, no retries. Finish exact
-review/freeze before fresh execution approval; no new model calls or production changes
-are implied by implementation or authored previews.
+negative controls first, at most six requests / fifteen minutes, no retries. Independent
+review passed at `287d85b` after one accounting repair; no findings remain. The exact
+[twenty-entry freeze](../../evaluation/m10/reviewable-draft/diagnostic-3/manifest.json)
+is ready for fresh execution approval. No new model calls or production changes have run;
+there is no results directory. Old unused slots do not transfer.
 
 Formatting, lint, strict types and 1335 offline tests pass; six integration tests excluded.
 All 736 previous manifest entries remain exact. All eight captured historical replies
