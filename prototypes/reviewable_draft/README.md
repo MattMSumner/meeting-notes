@@ -102,6 +102,13 @@ Familiar inputs remain familiar; this screen can nominate follow-up testing rath
 establish full-draft usefulness, reliability or production readiness. Fresh cases/repeated
 runs and broader regression require separate decisions. Application behavior stays V11.
 
+The runner and masked-review tools are implemented. Independent review passed at `3275c1d`
+without findings; all 1386 offline tests, lint and strict types pass. The exact
+[thirty-entry freeze](../../evaluation/m10/reviewable-draft/model-comparison-1/manifest.json)
+is ready for the already approved once-only batch. No challenger inference has run at this
+checkpoint. The capture manifest covers results/ exactly; keep later launch/review/report
+artifacts in sibling directories and preserve the original capture inventory.
+
 ## Try the previews
 
 Start with the [normal draft](previews/additional.md), the

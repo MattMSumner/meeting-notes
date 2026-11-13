@@ -1,4 +1,4 @@
-# M10 handoff — 2026-11-13, action-only diagnostic assessed
+# M10 handoff — 2026-11-13, local-model comparison approved
 
 Continue on `m10/notes-guided-enhancement`, [PR #16](https://github.com/MattMSumner/meeting-notes/pull/16).
 Read AGENTS.md, `.chief/CHIEF.md`, the reviewable-draft section of plan.md and the
@@ -15,6 +15,19 @@ meaning assessment, all eighteen grades locked before joining identities. This i
 approved budget; do not request it again or infer permission for follow-up tests. Both
 installed models support thinking enabled, so only the request model field needs to vary.
 No inference has run for this new scope yet. Existing results remain immutable.
+
+Implementation and integration checks now pass: **1386 offline tests**, formatting,
+lint and strict types; six integration tests excluded. Independent engineering review
+passed exact source `3275c1d380fbda9d2fd76f429c4c6014dfd03843` without findings or formal
+repairs. The [thirty-entry freeze](evaluation/m10/reviewable-draft/model-comparison-1/manifest.json)
+binds both verified identities, baseline pins, source, unchanged inputs/snapshots and
+twelve exact model-only requests. Manifest SHA256:
+`0c08baba4e1a1524f7ba8fa8b8c74e1a2b4b38fb8cc6798dd3c28c356d450c7d`.
+Commit/push the freeze, then execute this already approved run once; no second permission
+is needed. At this preparation checkpoint, `results/` does not exist and no inference ran.
+Use compare.run; keep launch/report/review files outside its exact-inventory results/.
+After capture, verify and prepare all eighteen masked records; lock independent grades
+before joining model identities. Preserve all failed/partial/unsent cases and old verdicts.
 
 The owner replied “yes please!” to the frozen action-only experiment: six synthetic cases,
 at most six local qwen3:30b requests / fifteen minutes, no retries. That once-only run is
