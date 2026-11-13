@@ -105,9 +105,19 @@ runs and broader regression require separate decisions. Application behavior sta
 The runner and masked-review tools are implemented. Independent review passed at `3275c1d`
 without findings; all 1386 offline tests, lint and strict types pass. The exact
 [thirty-entry freeze](../../evaluation/m10/reviewable-draft/model-comparison-1/manifest.json)
-is ready for the already approved once-only batch. No challenger inference has run at this
-checkpoint. The capture manifest covers results/ exactly; keep later launch/review/report
-artifacts in sibling directories and preserve the original capture inventory.
+was committed before the approved once-only batch. The
+[comparison result](../../evaluation/m10/reviewable-draft/model-comparison-1/analysis/report.md)
+is **INCOMPLETE**: Qwen3.5 completed one case then timed out; Gemma4 completed two then timed
+out. Five requests used 23m01s, with two client timeouts, seven unsent cases and no retries
+or overrun. All three returned outputs meet their negative-control criteria, but neither
+challenger demonstrates positive work retention or completes the screen. Eighteen opaque
+grades locked before joining identities; the cached baseline stays five passes and one
+critical omission. No replacement is justified or production behavior changed.
+
+The capture manifest covers results/ exactly; launch/review/report artifacts are in sibling
+directories. Preserve the original inventory and final seal. Seven unused slots authorize
+no resumption or configuration repair. All 1386 offline tests pass, including a fixture
+repair for shallow CI checkouts; frozen runtime and request bytes remain unchanged.
 
 ## Try the previews
 

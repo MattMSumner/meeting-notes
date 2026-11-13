@@ -30,6 +30,12 @@ does not pass overall quality or establish full-draft usefulness. The
 [authored previews](prototypes/reviewable_draft/actions-previews/index.md) remain intended
 behavior, distinct from the captured model outputs.
 
+The [two-model screen](evaluation/m10/reviewable-draft/model-comparison-1/analysis/report.md)
+was incomplete: Qwen3.5 returned one case before timing out, and Gemma4 returned two before
+timing out. Five requests used 23m01s; seven slots remained unsent, with no retries. Model
+names were hidden while all eighteen baseline/challenger records were graded. No model
+switch or production change follows from this screen.
+
 ## Setup
 
 Needs an Apple Silicon Mac, [uv](https://docs.astral.sh/uv/), ffmpeg and Ollama:

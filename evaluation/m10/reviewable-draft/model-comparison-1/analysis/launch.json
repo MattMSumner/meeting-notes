@@ -1,0 +1,20 @@
+{
+  "started_at": "2026-11-13T21:44:06.162929+00:00",
+  "source_commit": "3275c1d380fbda9d2fd76f429c4c6014dfd03843",
+  "freeze_commit": "91157d4645452ddf92ebfc3fbf076acafc8c9f6b",
+  "manifest_sha256": "0c08baba4e1a1524f7ba8fa8b8c74e1a2b4b38fb8cc6798dd3c28c356d450c7d",
+  "approval": {
+    "owner_reply": "Do it!",
+    "scope": "Prepare/review/freeze then run the two installed challenger models on the same six cases once; reuse prior Qwen3 baseline; model names hidden for meaning assessment",
+    "models": [
+      "qwen3.5:9b-q4_K_M",
+      "gemma4:12b-it-q4_K_M"
+    ],
+    "max_requests": 12,
+    "max_elapsed_seconds": 1800,
+    "max_arm_seconds": 900,
+    "retries": 0,
+    "recorded_at": "2026-11-13T20:53:59.721054+00:00"
+  },
+  "head": "11639b262b9361f5bb3feae012ac785483cd262e"
+}
