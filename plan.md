@@ -21,8 +21,10 @@ Phase 0 (Handy) set up.
 **Fresh-session handoff (2026-11-13):** [NEXT_SESSION.md](NEXT_SESSION.md) records the
 implemented [action-only contract](prototypes/reviewable_draft/ACTIONS.md): no summary,
 decisions, model states/notices or writing in the model request. All 1335 offline tests
-pass. Independent review and an exact freeze precede fresh execution approval; zero new
-inference requests. All 736 earlier manifest entries remain exact. The
+pass. Independent review passed at `287d85b`; the exact
+[twenty-entry freeze](evaluation/m10/reviewable-draft/diagnostic-3/manifest.json) is ready
+for fresh execution approval, with zero new inference requests. All 736 earlier manifest
+entries remain exact. The
 [previous diagnostic](evaluation/m10/reviewable-draft/diagnostic-2/results/report.md)
 stays incomplete: two requests, one compiled draft, one rejected response and four unsent
 cases in 3m05s. No unused allowance transfers or semantic outcome is regraded.
@@ -1294,6 +1296,25 @@ negative controls first, one request each, six requests / fifteen minutes with u
 local-model settings and no retries. No new inference budget is granted by this offline
 authorization; unused old slots do not transfer. Production integration, summary/decision
 quality, full regression, current Obsidian usefulness, Built and owner shipit remain pending.
+
+**Actions-alone preparation checkpoint (2026-11-13; M10 remains unbuilt).** The isolated
+generator, pure renderer, capture profile and six authored previews are implemented.
+Formatting, lint, strict types and 1335 offline tests pass; six integration tests excluded,
+capture unchanged. Independent review passed at `287d85b` after one noncritical accounting
+repair: issue-bearing partial results now appear in final incomplete-case accounting.
+No findings remain. Ninety-two contract tests, prior hashes/replays/previews, twenty tamper
+probes and a read-only in-memory fake capture were independently checked.
+
+The twenty-entry third freeze binds exact reviewed source, original inputs, requests,
+snapshots, declaration, settings and verified local identity. Manifest SHA256
+`472027ef8be047233a3a8cf75630c922afe28c96b73911b844619c16b33e8bd3`.
+All 736 previous entries, all forty inputs, seven old draft replays and the prior rejection
+remain exact. Eight historical replies are incompatible with this smaller protocol;
+incompatibility and about 58% smaller requests are no semantic, latency or usefulness pass.
+No new inference has run and no results directory exists. The complete setup is ready
+for a fresh six-request / fifteen-minute execution approval. Record any approval outside
+the freeze; do not ask again for an approved run. All prior failed outcomes and production
+quality/persistence/usefulness/Built/owner shipit gates remain unchanged.
 
 **M11 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
