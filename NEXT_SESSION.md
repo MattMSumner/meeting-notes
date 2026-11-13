@@ -7,6 +7,15 @@ Use the Herdr skill for delegated work. Local coordination belongs in ignored `.
 
 ## Latest outcome and authorization
 
+New scope: the owner said “Do it!” to the controlled local-model comparison described in
+[MODEL_COMPARISON.md](prototypes/reviewable_draft/MODEL_COMPARISON.md): prepare/review/freeze,
+then one run of Qwen3.5 9B and Gemma4 12B on the same six cases each, max twelve new
+requests / thirty minutes, no retries. Reuse the baseline below; model names hidden during
+meaning assessment, all eighteen grades locked before joining identities. This is a fresh
+approved budget; do not request it again or infer permission for follow-up tests. Both
+installed models support thinking enabled, so only the request model field needs to vary.
+No inference has run for this new scope yet. Existing results remain immutable.
+
 The owner replied “yes please!” to the frozen action-only experiment: six synthetic cases,
 at most six local qwen3:30b requests / fifteen minutes, no retries. That once-only run is
 complete: **six requests / six captures in 247.310 seconds (4m07s)**. All six decoded and
