@@ -18,13 +18,14 @@ The next first-release target is the reviewable draft contract below; the curren
 still implements V11. Automatic reconciliation is deferred for that successor.
 Phase 0 (Handy) set up.
 
-**Fresh-session handoff (2026-11-13):** [NEXT_SESSION.md](NEXT_SESSION.md) and the
-[latest draft report](evaluation/m10/reviewable-draft/diagnostic-2/results/report.md)
-record the quoted-selection successor: two requests, one compiled draft, one rejected
-response and four unsent cases in 3m05s. This is incomplete, with semantic defects in
-the rejected raw reply. All earlier evidence remains unchanged; 1234 offline tests pass.
-Keep the approved presentation, reassess the smallest model-facing task before another
-experiment and obtain fresh execution scope/budget. No unused allowance transfers.
+**Fresh-session handoff (2026-11-13):** [NEXT_SESSION.md](NEXT_SESSION.md) records the
+implemented [action-only contract](prototypes/reviewable_draft/ACTIONS.md): no summary,
+decisions, model states/notices or writing in the model request. All 1335 offline tests
+pass. Independent review and an exact freeze precede fresh execution approval; zero new
+inference requests. All 736 earlier manifest entries remain exact. The
+[previous diagnostic](evaluation/m10/reviewable-draft/diagnostic-2/results/report.md)
+stays incomplete: two requests, one compiled draft, one rejected response and four unsent
+cases in 3m05s. No unused allowance transfers or semantic outcome is regraded.
 
 ---
 
@@ -1276,6 +1277,23 @@ Do not add semantic validators or repeat the same diagnostic by reflex. Any subs
 candidate needs concrete criteria, review, freeze and fresh request/time approval.
 Production integration, full regression, current synthetic Obsidian usefulness, Built
 and owner `shipit` remain pending; application behavior still follows V11.
+
+**Actions-alone successor (2026-11-13; authorized offline).** The owner accepted simplifying
+the response contract and testing action extraction separately. Implement the
+[two-field contract](prototypes/reviewable_draft/ACTIONS.md): literal action selections
+and focused review references, without summaries, decisions, model states/notices or
+free-form owner/deadline fields. Code supplies status/attribution and canonicalizes benign
+known duplicate references only after validating every reference. Preserve the complete
+input snapshot and original writing, but exclude writing from this spoken-action request.
+Current-work admissibility and useful retention remain capabilities to assess, not code
+guarantees. Do not add semantic classifiers or reinterpret historical failed responses.
+
+Prepare/review/freeze the isolated generator, pure action-only inspection, authored
+examples and timed capture profile. Proposed diagnostic: the same six familiar cases,
+negative controls first, one request each, six requests / fifteen minutes with unchanged
+local-model settings and no retries. No new inference budget is granted by this offline
+authorization; unused old slots do not transfer. Production integration, summary/decision
+quality, full regression, current Obsidian usefulness, Built and owner shipit remain pending.
 
 **M11 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
