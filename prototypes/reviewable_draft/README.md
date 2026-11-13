@@ -87,6 +87,21 @@ are incompatible with the new protocol, separately from any quality improvement.
 prepared six requests are about 58% smaller in total than the quoted four-section requests;
 that is no latency, reliability or editing-time claim.
 
+## Approved local-model comparison
+
+The owner approved the [controlled comparison](MODEL_COMPARISON.md): one six-case screen
+for installed Qwen3.5 9B and Gemma4 12B, **twelve new requests / thirty minutes, no retries**,
+after implementation, independent review and an exact freeze. The existing Qwen3 baseline
+is reused without new calls. Both alternatives support thinking enabled, so only the
+request's model field changes; prompt, input, schema, temperature and context stay fixed.
+
+Technical capture/replay is checked separately from meaning. All eighteen records, including
+cached baseline and any failed/unsent slots, enter a randomized review packet with model
+names and technical identifiers omitted. Independent grades lock before joining identities.
+Familiar inputs remain familiar; this screen can nominate follow-up testing rather than
+establish full-draft usefulness, reliability or production readiness. Fresh cases/repeated
+runs and broader regression require separate decisions. Application behavior stays V11.
+
 ## Try the previews
 
 Start with the [normal draft](previews/additional.md), the
