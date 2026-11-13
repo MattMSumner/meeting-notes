@@ -1230,6 +1230,21 @@ implementation or experiment is approved by this checkpoint. Keep the accepted p
 old failed verdicts and every persistence/quality/usefulness/owner `shipit` gate. These six
 familiar cases and one repetition establish no reliability or measured editing benefit.
 
+**Quoted-selection successor (2026-11-13; offline scope).** The owner said “Great, get it
+done!” to the focused faithful-action-extraction recommendation. Implement the small
+[quoted contract](prototypes/reviewable_draft/QUOTED.md) while retaining the accepted
+presentation. Actions/decisions select literal speech and complete supplied context;
+code supplies their display/notices. Reject invented wording, retain independent valid
+selections during known-source literal failures and expose incomplete status/focused
+evidence. Quotation remains no proof of admissibility, full qualifier coverage or retention.
+
+Use separate modules/capture profile and explicitly authored examples. Leave the first
+generator, failed diagnostic, V11 verdict, all forty inputs and sealed evidence unchanged.
+Prepare the same six-case diagnostic with a proposed six-request/fifteen-minute cap,
+unchanged settings and no retries. Finish implementation, independent review and exact
+freeze before requesting new execution approval. This offline authorization grants no
+model requests, production integration, current Obsidian acceptance, Built or merge.
+
 **M11 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
 compared on tests rather than by eye on real meetings: stance (a "maybe" turned into a
