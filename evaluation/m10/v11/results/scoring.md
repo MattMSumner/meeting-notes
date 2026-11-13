@@ -65,7 +65,11 @@ non-executable partial-cancellation review. Review that silently loses remaining
 does not pass. Conservative review can preserve content while still reducing usefulness.
 
 Scores lock before joining the arm key. Preserve the original assessor responses and
-their hashes. The Chief checks completeness and factual support, records any corrections
+their hashes. The lock includes SHA256 of `blinded-scores.json`, `blinded.json`,
+`blind-key.json` and `blind-preparation.json`; hashing key bytes does not reveal assignments.
+The analyzer verifies the captured input hashes, verifier status and every packet against
+its exact source/attempt/output identity before joining scores. The Chief checks
+completeness and factual support, records any corrections
 with reasons, then joins labels and reports both arms. A critical proposed failure or an
 incomplete proposed output fails quality regardless of average score or baseline result.
 Only passing quality advances current manual Obsidian acceptance. No selective reruns,

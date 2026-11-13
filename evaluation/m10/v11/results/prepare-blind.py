@@ -19,15 +19,91 @@ def write_once(name, value):
         output.write(json.dumps(value, indent=2) + "\n")
 
 
+def response_metadata(response):
+    message = (response or {}).get("message")
+    return {
+        "received": response is not None,
+        "message_type": type(message).__name__,
+        "content_present": isinstance(message, dict) and "content" in message,
+        **{
+            k: response[k]
+            for k in ("model", "done", "done_reason", "error")
+            if k in (response or {})
+        },
+    }
+
+
+def packet_material(row, pair, expectation, arm, diagnostics):
+    audit = row.get("audit", {})
+    stages = {}
+    for stage, field in (("comparison", "comparison_attempts"), ("summary", "attempts")):
+        stages[stage] = [
+            {
+                "response_metadata": response_metadata(a.get("response")),
+                **{
+                    k: a[k]
+                    for k in (
+                        "reply",
+                        "error",
+                        "blocking",
+                        "warnings",
+                        "resolution",
+                        "compilation",
+                        "selection_errors",
+                    )
+                    if k in a
+                },
+            }
+            for a in audit.get(field, [])
+        ]
+    if not audit:
+        assert arm == "baseline" and diagnostics is not None
+        attempts = diagnostics["attempts"]
+        assert {a["index"] for a in attempts if a["sent"]} == set(range(len(row["transport"])))
+        stages["summary"] = []
+        for attempt in attempts:
+            sent = row["transport"][attempt["index"]] if attempt["sent"] else {}
+            response = sent.get("response")
+            message = (response or {}).get("message")
+            stages["summary"].append(
+                {
+                    **attempt,
+                    "reply": message.get("content") if isinstance(message, dict) else None,
+                    "response_metadata": response_metadata(response),
+                }
+            )
+    return {
+        "meeting": pair["meeting"],
+        "transcript": pair["transcript"],
+        "notes_supplied": pair["handwritten_text"] if arm == "proposed" else "",
+        "declared_expectation": expectation["expected"],
+        "expected_relations_when_notes_supplied": expectation.get("expected_outcomes", []),
+        "summary": row.get("summary"),
+        "error": row.get("error"),
+        "selected": audit.get("selected") if audit else diagnostics["selected_attempt"],
+        "comparison_selected": audit.get("comparison_selected"),
+        "attempts": stages,
+    }
+
+
 def main():
     run = read(ROOT / "run.json")
     assert run["status"] == "complete", "Wait for both captured arms"
+    verification = read(ROOT / "verification/completion.json")
+    assert verification["evidence_integrity"] == "verified"
+    assert verification["recorded_slots"] == verification["expected_slots"] == 80
+    for name in ("run.json", "baseline.jsonl", "proposed.jsonl"):
+        assert (
+            hashlib.sha256((ROOT / name).read_bytes()).hexdigest()
+            == verification["input_sha256"][name]
+        )
     pairs = {p["id"]: p for p in read(FREEZE / "pairs.json")}
     expectations = {p["id"]: p for p in read(FREEZE / "expected.json")}
     assert len(pairs) == 40
     packets = []
     hashes = {}
     for arm in ("baseline", "proposed"):
+        diagnostics = {o["case"]: o for o in verification["arms"][arm]["outcomes"]}
         path = ROOT / (arm + ".jsonl")
         hashes[arm] = hashlib.sha256(path.read_bytes()).hexdigest()
         lines = path.read_text().splitlines()
@@ -35,48 +111,9 @@ def main():
         assert header["arm"] == arm and header["repetitions"] == 1
         assert [r["case"] for r in rows] == list(pairs)
         for row in rows:
-            pair = pairs[row["case"]]
-            audit = row.get("audit", {})
-            stages = {}
-            for stage, field in (("comparison", "comparison_attempts"), ("summary", "attempts")):
-                stages[stage] = [
-                    {
-                        k: a[k]
-                        for k in (
-                            "reply",
-                            "error",
-                            "blocking",
-                            "warnings",
-                            "resolution",
-                            "compilation",
-                            "selection_errors",
-                        )
-                        if k in a
-                    }
-                    for a in audit.get(field, [])
-                ]
-            if not audit:
-                stages["summary"] = [
-                    {
-                        "reply": sent.get("response", {}).get("message", {}).get("content"),
-                        "error": sent.get("error"),
-                    }
-                    for sent in row["transport"]
-                ]
-            material = {
-                "meeting": pair["meeting"],
-                "transcript": pair["transcript"],
-                "notes_supplied": pair["handwritten_text"] if arm == "proposed" else "",
-                "declared_expectation": expectations[row["case"]]["expected"],
-                "expected_relations_when_notes_supplied": expectations[row["case"]].get(
-                    "expected_outcomes", []
-                ),
-                "summary": row.get("summary"),
-                "error": row.get("error"),
-                "selected": audit.get("selected"),
-                "comparison_selected": audit.get("comparison_selected"),
-                "attempts": stages,
-            }
+            material = packet_material(
+                row, pairs[row["case"]], expectations[row["case"]], arm, diagnostics[row["case"]]
+            )
             identity = {"arm": arm, "case": row["case"], "repetition": row["repetition"]}
             packets.append((identity, material))
     random.SystemRandom().shuffle(packets)
@@ -91,6 +128,14 @@ def main():
         "blind-preparation.json",
         {
             "captured_output_sha256": hashes,
+            "run_sha256": hashlib.sha256((ROOT / "run.json").read_bytes()).hexdigest(),
+            "verification_sha256": hashlib.sha256(
+                (ROOT / "verification/completion.json").read_bytes()
+            ).hexdigest(),
+            "files_sha256": {
+                name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest()
+                for name in ("blind-key.json", "blinded.json")
+            },
             "rows": len(blinded),
             "method": "SystemRandom opaque labels; key kept separate until assessments lock.",
             "limitations": (
