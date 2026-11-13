@@ -1,4 +1,4 @@
-# M10 handoff — 2026-11-12, V11 offline candidate frozen
+# M10 handoff — 2026-11-12, approved V11 evaluation running
 
 ## Start here
 
@@ -7,10 +7,15 @@ Read AGENTS.md, this handoff, the V11 section of plan.md and the
 [V11 freeze contract](evaluation/m10/v11/README.md). Use `.chief/CHIEF.md` and the Herdr
 skill when coordinating workers; small work can stay in the main session.
 
-The owner authorized “Proceed with V11 offline work.” Investigation, implementation,
-offline verification and a fresh freeze are complete. **No V11 inference, model quality
-evaluation, current manual Obsidian acceptance, Built note or merge is authorized.**
-V10's failed evaluation and its 97 unused requests provide no new allowance.
+The owner replied **“Sure, do it”** to the frozen evaluation proposal: all 40 synthetic
+pairs once per arm, ceilings **160 baseline + 116 proposed = 276 requests**. The serial
+run started at 2026-11-12T19:04:05-05:00. Run metadata and every attempt are in
+`evaluation/m10/v11/results/`; the orchestrator is `.chief/runs/evaluate-v11.py`.
+**Do not launch a second run.** Check active process/status and `.chief/STATE.md` first.
+No tuning, selective reruns, extra inference, current manual acceptance, Built or merge.
+Frozen settings stay unchanged; the approval is recorded in new results/run.json.
+The original offline-only wording below describes the prior checkpoint and predeclared
+evaluation contract; this paragraph records the newer approval.
 
 ## Current source and evidence
 
