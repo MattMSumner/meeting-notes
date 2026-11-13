@@ -1344,6 +1344,25 @@ or inference budget. Do not add quote validators or automatically rerun cases to
 a pass. Full regression, production persistence, current usefulness, Built and owner shipit
 remain pending. The application still follows V11.
 
+**Local-model screen approved (2026-11-13).** The owner said “Do it!” to preparing/reviewing
+a controlled comparison of installed Qwen3.5 9B and Gemma4 12B, using the same six inputs,
+prompt, response schema and scoring and reusing diagnostic-3's Qwen3 baseline. This
+authorizes one bounded run of **twelve new requests / thirty minutes, no retries**, after
+tooling checks, independent review and exact source/input/request/identity freeze. Do not
+request that same approval again. Model names will be hidden during meaning assessment;
+all eighteen records, including cached baseline and failed/unsent cases, must be graded
+and locked before joining the key. Familiar inputs remain familiar, not held out.
+
+The [comparison declaration](prototypes/reviewable_draft/MODEL_COMPARISON.md) fixes serial
+model/case order, thinking enabled (supported by both according to read-only metadata),
+temperature zero, context 32768, six requests/fifteen minutes per model and a shared
+twelve-request/thirty-minute ceiling. Only the model field varies; original action-only
+modules and all 913 prior manifest entries remain unchanged. Capture preserves every
+attempt/error/partial/unsent slot, with no warm-up, baseline inference, resumption or
+configuration repair. Freeze and publish before inference; preparation is outside the run
+clock. Fresh examples/repeated runs and broader regression are follow-up decisions, not
+part of this budget. No production change, requirements weakening, Built or merge is implied.
+
 **M11 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
 compared on tests rather than by eye on real meetings: stance (a "maybe" turned into a
