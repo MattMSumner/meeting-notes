@@ -1363,6 +1363,21 @@ configuration repair. Freeze and publish before inference; preparation is outsid
 clock. Fresh examples/repeated runs and broader regression are follow-up decisions, not
 part of this budget. No production change, requirements weakening, Built or merge is implied.
 
+**Local-model preparation checkpoint (2026-11-13).** The model-only adapter, bounded
+two-arm capture and eighteen-record masking/grade-lock tools are implemented. Independent
+review passed at `3275c1d` without findings or formal repairs; formatting, lint, strict types
+and 1386 offline tests pass, six integration tests excluded. All 913 prior entries and
+baseline raw/request/result/render bindings remain exact. Both local configurations were
+rechecked through metadata only; no inference has run for this screen yet.
+
+The [thirty-entry freeze](evaluation/m10/reviewable-draft/model-comparison-1/manifest.json)
+pins exact source, identities, baseline evidence, declaration, inputs/snapshots/settings
+and twelve model-only packets; manifest SHA256
+`0c08baba4e1a1524f7ba8fa8b8c74e1a2b4b38fb8cc6798dd3c28c356d450c7d`.
+Commit/push before executing the already approved twelve-request/thirty-minute run once;
+do not request the same approval again. No new application behavior, quality acceptance,
+follow-up test budget, Built or merge is implied by engineering preparation.
+
 **M11 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
 compared on tests rather than by eye on real meetings: stance (a "maybe" turned into a
