@@ -50,8 +50,9 @@ Use needs_review plus a specific code-supplied incomplete-extraction notice when
 items survive; use unavailable/no items when none survive. Known selected/context turns
 provide focused evidence; never substitute a generic transcript dump.
 
-Missing/unknown source references without recoverable focused evidence, wrong structural
-fields, incomplete input snapshots or invalid summary/review structure fail the response.
+Missing, unknown or wrong-kind source references, wrong structural fields, incomplete
+input snapshots or invalid summary/review structure fail the response. Literal-selection
+recovery applies only after the selected source and all context references are valid.
 Do not silently convert first-contract responses or invent focus passages. The pure
 result renderer prominently marks partial extraction incomplete even when its valid
 items are retained. It must preserve Markdown/HTML/fence escaping and original context.

@@ -339,7 +339,7 @@ def decode(packet: Prepared, content: str) -> Result:
                 )
                 issues.extend(failures)
             elif state == "needs_review":
-                notice = f"Review the selected {kind} quotations with the cited original passages."
+                notice = f"Review these quoted {kind} with their original context."
             elif state == "unavailable":
                 notice = (
                     f"Quoted {kind} analysis is unavailable; review the cited original passages."

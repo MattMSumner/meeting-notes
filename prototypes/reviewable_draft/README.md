@@ -27,6 +27,27 @@ Read a [generated replacement-task draft](../../evaluation/m10/reviewable-draft/
 and the [invented-work failure](../../evaluation/m10/reviewable-draft/diagnostic-1/results/03-accepted_status_answer/draft.md)
 alongside the report. This diagnostic establishes no full quality or usefulness acceptance.
 
+## Quoted-selection successor
+
+The owner authorized the focused offline extraction change after those findings. The
+[quoted contract](QUOTED.md) replaces freely written action/decision text with exact
+speech selections and complete selected context. Known-source selection failures keep
+independent valid items and mark the artifact incomplete. Unknown references/structural
+failures are rejected. Summary/review prose still needs semantic assessment; literal
+matching cannot prove current commitment, qualifier coverage or complete extraction.
+
+See the [surviving-work example](quoted-previews/partial_coordination_retracted.md),
+[full timing context](quoted-previews/qualified_external_timing.md) and
+[all six authored examples](quoted-previews/index.md). These are intended compiler
+examples with zero model requests. All six first-contract model replies are incompatible
+with the new wire contract; that is separate from any quality improvement.
+
+`quoted_diagnostic.py` is a separate capture profile, preserving the first generator,
+driver and saved results. It retains raw output/partial drafts and stops on a rejected
+quote selection. A proposed new six-case / six-request / fifteen-minute diagnostic
+needs independent review, exact freeze and fresh execution approval. The earlier six
+requests are used; no new inference or production integration is authorized here.
+
 ## Try the previews
 
 Start with the [normal draft](previews/additional.md), the

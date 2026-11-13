@@ -1,4 +1,4 @@
-# M10 handoff — 2026-11-13, six-case diagnostic complete
+# M10 handoff — 2026-11-13, quoted-selection successor
 
 Continue on `m10/notes-guided-enhancement`, [PR #16](https://github.com/MattMSumner/meeting-notes/pull/16).
 Read AGENTS.md, this handoff, the reviewable draft section of plan.md and the
@@ -29,6 +29,10 @@ still follows V11. Its failed evaluation stays failed; no historical criteria or
 are rewritten. The bounded offline prototype is now implemented as specified below.
 
 ## Latest six-case diagnostic
+
+The owner subsequently said “Great, get it done!” to faithful action extraction. That
+authorizes the offline successor in [QUOTED.md](prototypes/reviewable_draft/QUOTED.md),
+not a new inference budget. The first run below and all sealed evidence remain unchanged.
 
 The separate approved diagnostic is complete: **six captures / six requests in 5m13s**,
 with no retries, transport/format failures, unavailable sections, unsent slots or overrun.
@@ -165,9 +169,19 @@ Keep the approved presentation. Offline successor design should address invented
 decision advice and poor surviving-work extraction. Investigate source-extracted wording
 or a narrower summary-first draft before adding more semantic validators. Exact quotes
 cannot alone prove current commitment or complete retention; preserve those limits.
-This is a recommendation, not a new accepted contract, implementation or inference budget.
-Declare any follow-up scope/criteria/freeze and requests/time budget separately. Both
-approved runs are finished; neither old unused allowance nor the six used slots transfers.
+The owner selected faithful action extraction for offline implementation. The new
+`extraction.py` contract permits exact literal speech selections and full context for
+actions/decisions, with code-supplied notices and independently retained valid items.
+Summary/review prose remains generated. Source selection can still be semantically wrong;
+the explicit counterexamples/tests and all forty old inputs/criteria stay relevant.
+
+The separate `quoted_diagnostic.py` profile retains the existing single-use/time/hash/
+identity controls without changing the first generator/driver. Quoted-selection failure
+saves the partial draft/issue evidence and stops later requests. Authored examples
+demonstrate intended behavior only. New model quality is untested; old reply incompatibility
+is not a semantic repair. Prepare/review/freeze the proposed six fixed cases, six requests
+and fifteen minutes before requesting fresh execution approval. Both earlier approved
+runs are finished; neither old unused allowance nor the six used slots transfers.
 
 Passing prospective quality, current synthetic Obsidian usefulness acceptance and the
 owner's `shipit` remain required before Built/merge. Numerical latency/review-effort
