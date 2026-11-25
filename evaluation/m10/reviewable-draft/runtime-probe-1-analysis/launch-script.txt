@@ -1,0 +1,70 @@
+"""One call to the reviewed profile; preserve full wall time outside its inventory."""
+
+import hashlib
+import json
+from pathlib import Path
+import subprocess
+import sys
+import time
+
+ROOT = Path('/Users/matthewsumner/development/meeting-notes')
+AUDIT = ROOT / '.chief/runs/runtime-probe-20261125'
+OUTPUT = ROOT / 'evaluation/m10/reviewable-draft/runtime-probe-1'
+sys.path.insert(0, str(ROOT))
+
+from prototypes.reviewable_draft import runtime_probe as probe
+
+approval = json.loads((AUDIT / 'approval.json').read_text())
+freeze = json.loads((AUDIT / 'freeze.json').read_text())
+assert approval['owner_message'] == 'Great, run the test'
+assert (approval['generation_requests'], approval['overall_seconds'], approval['per_generation_seconds'], approval['retries']) == (2, 420, 180, 0)
+assert freeze['directory'] == str(OUTPUT)
+pin = freeze['manifest_sha256']
+assert hashlib.sha256((OUTPUT / 'manifest.json').read_bytes()).hexdigest() == pin
+head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
+assert head == freeze['published_freeze_commit'], 'Run only the published freeze head'
+assert not (OUTPUT / 'results').exists(), 'Already consumed; inspect existing execution, never resume'
+with (AUDIT / 'execution-claim.json').open('x') as stream:
+    json.dump({'manifest_sha256': pin, 'approval': approval['owner_message']}, stream)
+
+started = time.monotonic()
+record = {
+    'manifest_sha256': pin, 'approval': approval['owner_message'], 'published_head': head,
+    'launch_source_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+}
+try:
+    record['return'] = probe.run(
+        OUTPUT,
+        'Owner: Great, run the test. Once-only 2 generation requests / 420 seconds / 180 seconds each; no retries; false then true.',
+        pin,
+    )
+except BaseException as error:
+    record['error'] = f'{type(error).__name__}: {error}'
+    raise
+finally:
+    record['full_run_wall_seconds'] = time.monotonic() - started
+    record['full_run_overrun_seconds'] = max(0.0, record['full_run_wall_seconds'] - 420)
+    try:
+        with (AUDIT / 'execution.json').open('x') as stream:
+            json.dump(record, stream, indent=2)
+            stream.write('\n')
+    except Exception as audit_error:
+        record['launch_audit_save_error'] = f'{type(audit_error).__name__}: {audit_error}'
+        print(json.dumps(record), flush=True)
+
+envelope = record['return']
+accounting = envelope['accounting']
+post = envelope['post_seal_observation']
+complete = (
+    accounting['capture_complete'] and post['sealed'] and not post['deadline_reached']
+    and record['full_run_wall_seconds'] < 420
+)
+print(json.dumps({
+    'capture_complete_including_seal_and_wall_observation': complete,
+    'full_run_wall_seconds': record['full_run_wall_seconds'],
+    'possibly_sent': accounting['possibly_sent'],
+    'completed': accounting['completed'], 'failed': accounting['failed'],
+    'unsent': accounting['unsent'], 'stop_reason': accounting['stop_reason'],
+    'slots': [{k: row.get(k) for k in ('slot', 'think', 'state', 'elapsed', 'progress')}
+              for row in accounting['slots']],
+}))

@@ -1,0 +1,18 @@
+{
+  "date": "2026-11-25",
+  "owner_message": "Great, run the test",
+  "generation_requests": 2,
+  "overall_seconds": 420,
+  "per_generation_seconds": 180,
+  "retries": 0,
+  "case": "accepted_status_answer",
+  "order": [
+    false,
+    true
+  ],
+  "model": "qwen3.5:9b-q4_K_M",
+  "observed_service_version": "0.40.13",
+  "version_difference_disclosed": true,
+  "preparation_review_freeze_precede_execution": true,
+  "execute_once": true
+}
