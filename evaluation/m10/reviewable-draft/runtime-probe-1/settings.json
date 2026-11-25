@@ -1,0 +1,1 @@
+{"case": "accepted_status_answer", "contract": "runtime-streaming-pair-1", "order": [false, true], "per_generation_seconds": 180, "per_metadata_seconds": 10, "requests": 2, "retries": 0, "seconds": 420, "server_compute_cancellation_guaranteed": false, "stream": true}

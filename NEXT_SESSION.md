@@ -1,4 +1,4 @@
-# M10 handoff — 2026-11-25, offline runtime investigation
+# M10 handoff — 2026-11-25, reviewed streaming probe awaiting execution
 
 Continue `m10/notes-guided-enhancement`, [PR #16](https://github.com/MattMSumner/meeting-notes/pull/16).
 Read AGENTS.md, `.chief/CHIEF.md`, the reviewable-draft section of plan.md and the
@@ -11,6 +11,44 @@ checkouts after preserving their work and handoffs.
 
 ## Latest outcome and authorization
 
+The owner replied **“Great, run the test”** to the proposed runtime probe. Prepare,
+test, independently review and freeze the separate collector, then execute the approved
+probe once: **two generation requests, seven minutes overall, 180 seconds per generation,
+no retries**, one Qwen3.5 availability case, false then true with streaming fixed. Do not
+ask for this approval again. Preparation precedes the run clock; validation/metadata,
+generation, saving and cleanup during the run count toward its 420 seconds. Stop the
+whole probe at the first declared failure; unused calls authorize no resumption.
+
+Preparation metadata found installed Ollama **0.40.13**, versus historical 0.40.9.
+The same model digest and boolean thinking support remain. This was disclosed to the
+owner; pin the installed version and relevant model defaults for the fresh pair without
+changing the service or model. Do not claim to reproduce the historical runtime or
+diagnose its timeout cause. Real-run gates must reject drift from the new exact freeze.
+No generation has run yet. Chief owns execution; workers have no inference allowance.
+
+The isolated collector is implemented and independently reviewed at
+`58bf14f216aa642bc3ab4d14022b17469724f787`: no remaining findings after two repair
+rounds. Format/lint/strict types and 1489 offline tests pass, six integration tests
+excluded; 103 tests cover the new profile. Existing production and historical files
+remain unchanged. All 1182 prior tracked evaluation/prototype hashes verify exact.
+
+The [36-file freeze](evaluation/m10/reviewable-draft/runtime-probe-1/manifest.json)
+has SHA256 `d459841b61df3ed2ecdab8e9866b7da280b2744707c56b4d2b574e7d1e4b22f2`
+and generation `runtime-probe-956c51abc1a849aa9eeccee33793ceb7`. Its source, wire
+hashes, selected complete snapshot and new identity/defaults independently verify.
+Commit/push this exact freeze before the already approved once-only execution.
+No results directory exists at this preparation checkpoint.
+
+Use the [collector contract](prototypes/reviewable_draft/RUNTIME_PROBE.md). Results are
+single-use. `results/manifest.json.accounting` is authoritative at its explicit boundary;
+`final.json` is only a labeled pre-save snapshot. Preserve the returned envelope's
+separate post-seal observation and independently measured full call wall time outside
+capture. Either a sealed failure, post-seal deadline or full wall time over 420 seconds
+makes the probe incomplete. Keep all later analysis/review/launch artifacts outside
+both the strict freeze inventory and results, such as a sibling analysis directory.
+
+## Completed offline investigation
+
 The owner asked to start the recommended timeout investigation. The offline audit
 rechecked eleven saved replies/attempts and 505 overlapping manifest entries, with no
 new Ollama requests, live service inspection or configuration changes. Neither timeout
@@ -22,11 +60,11 @@ metadata limit comparisons. The 4096 reply reserve is not a sent output-token ca
 The [proposal](evaluation/m10/reviewable-draft/runtime-investigation-1/proposal.json)
 is one fresh Qwen3.5 availability pair, false then true, with streaming fixed for both:
 two generation requests, 180 seconds each, seven minutes overall, no retries. Exact
-proposed request bodies are saved; they are not an execution freeze or permission.
-Prepare, test and independently review a separate streaming collector before freezing
-and asking to execute. Stop the whole probe on a timeout or other declared failure;
-do not queue another request behind uncertain server compute. No new inference budget
-has been agreed. This is a prospective setting test, not proof of the historical cause.
+proposed request bodies are saved; they are not an execution freeze. Prepare, test and
+independently review the separate streaming collector before freezing and executing the
+now-approved run. Stop the whole probe on a timeout or other declared failure; do not
+queue another request behind uncertain server compute. This is a prospective setting
+test, not proof of the historical cause.
 
 ## Earlier local-model screen — unchanged
 
@@ -100,11 +138,10 @@ commit `0e349218915d722c14e9d5e9385f826899dd7ab3` reads committed frozen baselin
 A real depth-one checkout collects all51newtests; full checks pass. Runtime, model packets
 and frozen source were unchanged by this repair. Final-head CI status is in PR/local ledger.
 
-Keep the existing baseline. The offline investigation is complete; next prepare and
-review the proposed streaming collector before agreeing any new execution budget.
-Thinking mode is a variable to test, not a diagnosed cause. No new configuration,
-model requests or experiment is approved by this recommendation. Do not add quote
-validators or rerun automatically.
+Keep the existing baseline. The offline investigation is complete; prepare and review
+the streaming collector, then freeze and execute the approved pair once. Thinking mode
+is a variable to test, not a diagnosed cause. The new approval is limited to the pair
+described above. Do not add quote validators or rerun automatically.
 
 The owner still values useful drafts requiring review and approved the authored normal/
 incomplete presentation. That product direction remains unchanged. Current app behavior
