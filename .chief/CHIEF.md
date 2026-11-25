@@ -17,8 +17,14 @@ or control integration. Do not run concurrent writers in the same checkout, incl
 a reviewer that might run commands which mutate files. Inherit model settings unless
 the owner agrees to a change.
 
+Use `hc run --bg --parent <verified-chief-terminal-id>` for child workers and launch
+Codex with `--no-daemon`, including templates. Resolve missing/stale terminal context
+from desktop/core state before launching; never guess from focus or legacy pane IDs.
+Keep workers in the Chief's existing tab/space without creating desktop layout.
+
 Keep STATE.md updated with task status, base/worker commits, dependencies, worktree path,
-Herdr workspace/pane/agent identifiers, revision count and evidence paths. Record decisions
+verified Chief/child core terminal addresses and names, revision count and evidence paths.
+Record desktop space/tab/pane IDs only when actually present. Record decisions
 and reasons in DECISIONS.md. Collect worker results in the Chief checkout. Treat terminal
 completion as a cue to inspect the work, not as proof it passed. Check the actual diff,
 uncommitted files, required tests and every acceptance criterion. Use an independent
@@ -29,6 +35,11 @@ offline successor inside M10, not M11. Do not run inference, spend the unused V1
 allowance, alter frozen evidence, mark M10 Built or merge as a consequence of this setup.
 Read the latest handoff for the current limits; this paragraph does not grant permission
 to start V11. Leave the separate safeguards worktree and unrelated recovery issue alone.
+
+After acceptance and integration, archive any remaining dirty/untracked work and useful
+local evidence, verify recovery copies, retire only the finished task terminals, and
+remove their Git worktrees as described in `.chief/README.md`. Keep only active or
+explicitly retained checkouts; do not accumulate completed worker directories.
 
 Integrate accepted commits into the milestone branch, rerun repository checks, and keep
 NEXT_SESSION.md current. Separate plan.md commits, use exact GitHub attribution, and

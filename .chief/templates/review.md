@@ -10,6 +10,8 @@ Contract: <task text or absolute path>
 Base commit: <SHA>
 Candidate commit: <SHA>
 Review checkout: <absolute path>
+Chief terminal / report-back address: <verified core terminal address>
+Reviewer terminal: <returned hc address; Chief records after launch>
 Validation evidence: <absolute paths or included output>
 
 Inspect `git diff <base>...<candidate>` and relevant surrounding code. Check each acceptance
@@ -28,3 +30,7 @@ NONCRITICAL: <other actionable findings, or none>
 MISSING_EVIDENCE: <unverified criteria/checks, or none>
 
 CHECKED: <commits, criteria inspected and commands actually run>
+
+Keep the full verdict in the terminal for the Chief to archive. Send the supplied
+Chief address a done/stuck note with `hc send <chief-terminal> "<status>"`; your own
+`HC_TERMINAL_ID` is your address. Do not launch another agent or change parentage/layout.

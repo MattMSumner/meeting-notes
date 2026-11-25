@@ -67,8 +67,12 @@ from run to run, so run them a few times before trusting a change in result.
 Use the [Chief workflow](.chief/README.md) for work that benefits from delegation.
 The main session owns planning, verification and integration; use the Herdr skill to
 delegate bounded tasks to Codex workers in separate Git worktrees. Small tasks can stay
-in one session. A session assigned a worker or reviewer task follows that contract instead
-of becoming another Chief; workers do not delegate, push, open PRs or merge.
+in one session. Use `hc` / `herdr-core` for terminals and agents, and `herdr-app` only
+for requested desktop layout changes. Launch workers with `--bg`, an explicit verified
+Chief terminal as `--parent`, and `codex --no-daemon`; children stay in the Chief's
+existing tab/space. The older `herdr` CLI uses a separate backend. A session assigned
+a worker or reviewer task follows that contract instead of becoming another Chief;
+workers do not delegate, push, open PRs or merge.
 
 Read [NEXT_SESSION.md](NEXT_SESSION.md) and the relevant plan section before planning.
 The roadmap remains in plan.md, the milestone handoff in NEXT_SESSION.md, and local task

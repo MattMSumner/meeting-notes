@@ -3,7 +3,11 @@
 Continue `m10/notes-guided-enhancement`, [PR #16](https://github.com/MattMSumner/meeting-notes/pull/16).
 Read AGENTS.md, `.chief/CHIEF.md`, the reviewable-draft section of plan.md and the
 [latest report](evaluation/m10/reviewable-draft/model-comparison-1/analysis/report.md).
-Use Herdr for delegated work; keep local coordination in ignored `.chief/STATE.md`.
+Use the [current Chief workflow](.chief/README.md) for delegated work: `hc` children
+with an explicit verified Chief parent and `codex --no-daemon`, in the existing
+desktop tab/space. Legacy `herdr` pane IDs in old evidence are not core addresses.
+Keep local coordination in ignored `.chief/STATE.md`; close out accepted worker
+checkouts after preserving their work and handoffs.
 
 ## Latest outcome and authorization
 

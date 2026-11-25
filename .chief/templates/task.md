@@ -3,6 +3,8 @@
 Role: implementer | investigator
 Chief checkout: <absolute path; read context only, do not write here>
 Worker checkout: <absolute path>
+Chief terminal / report-back address: <verified core terminal address>
+Worker terminal: <returned hc address; Chief records after launch>
 Worker branch: <agent/run/task>
 Base commit: <full SHA>
 Dependencies: <accepted prerequisite commits, or none>
@@ -38,3 +40,6 @@ commands and results, risks and decisions needed from the Chief. Implementers co
 their accepted scope on the worker branch and report the SHA plus any uncommitted or
 untracked files. Keep plan.md changes in separate `Plan: ...` commits. Investigators
 return file/line evidence without changes. PASS is a worker claim pending Chief review.
+Send the supplied Chief address a done/stuck note with `hc send <chief-terminal>
+"<status>"`; your own `HC_TERMINAL_ID` addresses you, not the Chief. Keep the full
+handoff in the terminal for the Chief to read/archive; do not alter shared state.
