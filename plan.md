@@ -18,7 +18,12 @@ The next first-release target is the reviewable draft contract below; the curren
 still implements V11. Automatic reconciliation is deferred for that successor.
 Phase 0 (Handy) set up.
 
-**Fresh-session handoff (2026-11-13):** [NEXT_SESSION.md](NEXT_SESSION.md) and the
+**Fresh-session handoff (2026-11-25):** [NEXT_SESSION.md](NEXT_SESSION.md) and the
+[offline runtime investigation](evaluation/m10/reviewable-draft/runtime-investigation-1/report.md)
+record eleven saved attempts/replies and 505 overlapping manifest entries checked without
+new inference or runtime changes. Timeout causes remain unproven; a concrete two-request
+streaming thinking-mode probe is proposed but needs collector preparation/review/freeze
+and a fresh agreed budget. The earlier
 [local-model screen](evaluation/m10/reviewable-draft/model-comparison-1/analysis/report.md)
 record an incomplete comparison: five requests in 23m01s, three returned outputs, two
 timeouts and seven unsent cases. Neither challenger completes the screen. All eighteen
@@ -1413,6 +1418,26 @@ precede another quality comparison or pipeline work; thinking mode is a possible
 not a proven timeout cause. This is a recommendation, not new configuration/inference
 permission. Fresh cases/repeats, broader regression, production persistence, current
 usefulness, Built and owner shipit remain pending; application behavior stays V11.
+
+**Offline runtime investigation checkpoint (2026-11-25; M10 remains unbuilt).** The owner
+asked to start the recommended investigation. Read-only analysis of eleven saved replies/
+attempts and 505 overlapping manifest entries found no drift and ran zero new model calls.
+Both timeouts lack headers/body bytes and server timings; their cause remains unproven.
+The completed Qwen3.5 request has 17,084 thinking characters for a 37-character answer,
+while successful older baseline replies also have long traces. Returned prompt-cache
+counts differ, and a saved residency snapshot cannot diagnose a timeout. The 4096 reply
+reserve is a pre-send guard, not an explicit server output-token cap.
+
+The [report](evaluation/m10/reviewable-draft/runtime-investigation-1/report.md) separates
+observations from hypotheses and saves exact prospective requests. Proposed first probe:
+one Qwen3.5 availability case, fresh false/true thinking pair with streaming held fixed,
+two requests / seven minutes total / 180 seconds per generation, no retries. Stop the
+whole probe on a timeout or other declared failure; server cancellation is unguaranteed.
+This can inspect a prospective setting effect, not establish the old cause or product
+quality. A separate streaming collector needs offline preparation, tests, independent
+review and exact freeze before requesting execution approval. No fresh inference budget
+has been agreed; old unused allowances transfer nothing. Production behavior, historical
+failures, full regression, persistence/usefulness, Built and owner `shipit` gates remain.
 
 **M11 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
