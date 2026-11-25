@@ -21,16 +21,17 @@ Phase 0 (Handy) set up.
 **Fresh-session handoff (2026-11-25):** [NEXT_SESSION.md](NEXT_SESSION.md) and the
 [offline runtime investigation](evaluation/m10/reviewable-draft/runtime-investigation-1/report.md)
 record eleven saved attempts/replies and 505 overlapping manifest entries checked without
-new inference or runtime changes. Timeout causes remain unproven; a concrete two-request
-streaming thinking-mode probe is proposed but needs collector preparation/review/freeze
-and a fresh agreed budget. The earlier
+new inference or runtime changes. Timeout causes remain unproven. The owner has now
+approved the concrete two-request / seven-minute streaming thinking-mode probe once,
+after collector preparation/review/freeze. Installed Ollama is now 0.40.13; the fresh
+pair will pin that disclosed version and the unchanged model digest. The earlier
 [local-model screen](evaluation/m10/reviewable-draft/model-comparison-1/analysis/report.md)
-record an incomplete comparison: five requests in 23m01s, three returned outputs, two
+records an incomplete comparison: five requests in 23m01s, three returned outputs, two
 timeouts and seven unsent cases. Neither challenger completes the screen. All eighteen
 baseline/challenger grades locked with model names hidden before identity joining; cached
-Qwen3 remains five passes and one critical omission. All 1386 offline tests pass and old
-evidence remains exact. No model switch, additional inference or merge is authorized;
-the app remains V11 and M10 unbuilt.
+Qwen3 remains five passes and one critical omission. All 1489 offline tests pass and old
+evidence remains exact. No model switch, inference beyond the approved pair or merge
+is authorized; the app remains V11 and M10 unbuilt.
 
 ---
 
@@ -1438,6 +1439,48 @@ quality. A separate streaming collector needs offline preparation, tests, indepe
 review and exact freeze before requesting execution approval. No fresh inference budget
 has been agreed; old unused allowances transfer nothing. Production behavior, historical
 failures, full regression, persistence/usefulness, Built and owner `shipit` gates remain.
+
+**Streaming probe approved (2026-11-25).** The owner said “Great, run the test” to the
+proposed one-case Qwen3.5 false/true pair with streaming held fixed: two generation
+requests, seven minutes overall, 180 seconds per generation, no retries. Prepare,
+test, independently review and publish the exact freeze before executing once; do not
+request the same approval again. Preparation is outside the run clock; all validation,
+metadata, loading, capture, saving and cleanup during execution count toward 420 seconds.
+Stop the entire probe on the first declared failure. Unused slots authorize no retry,
+resumption, different case or other model. No production or quality acceptance follows.
+
+Read-only preparation found Ollama 0.40.13, versus the historical 0.40.9; the model digest
+and boolean thinking controls match. The version difference was disclosed. Freeze the
+installed version and relevant defaults for both fresh requests without changing the
+service/model. Treat this as a prospective setting test on the installed runtime, not
+reproduction or diagnosis of the old failure. No generation has run at this checkpoint.
+Current quality defects, immutable history, production safeguards/usefulness, Built and
+the owner `shipit` gate remain unchanged.
+
+**Streaming preparation checkpoint (2026-11-25; M10 remains unbuilt).** The separate
+collector/profile and 103 authored offline tests are implemented at `58bf14f`. Two
+consolidated repair rounds resolved timing, interruption and accounting issues before
+inference; independent final engineering review passed with no remaining findings.
+Format/lint/strict types and 1489 offline tests pass; six integration tests excluded.
+Production code is unchanged and all 1182 prior tracked evaluation/prototype files
+verify byte-exact.
+
+The [36-file freeze](evaluation/m10/reviewable-draft/runtime-probe-1/manifest.json)
+binds exact reviewed source, tests, original inputs/proposal, complete selected snapshot,
+actual request bytes, identity/defaults and host generation IDs. Manifest SHA256
+`d459841b61df3ed2ecdab8e9866b7da280b2744707c56b4d2b574e7d1e4b22f2`;
+generation `runtime-probe-956c51abc1a849aa9eeccee33793ceb7`. Independent read-only
+validation passes, with no HTTP on import/freeze/validation and no generation yet.
+Publish the exact freeze before the approved once-only run; do not request that
+approval again. The fresh pair pins the disclosed installed 0.40.13 runtime.
+
+Timestamped raw chunks and partial progress remain separate from valid complete
+drafts. Single-use capture stops on its first declared failure and records conservative
+attempt/unsent accounting. `manifest.json.accounting` is the explicit authority;
+`final.json` is a pre-save snapshot, and post-seal/full-call wall observations remain
+separate. A late overrun cannot silently become success. Save all later analysis outside
+the strict freeze/capture inventories. No production integration, quality success,
+Built or merge follows from engineering preparation.
 
 **M11 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
