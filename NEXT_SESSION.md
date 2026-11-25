@@ -1,8 +1,8 @@
-# M10 handoff — 2026-11-13, local-model screen incomplete
+# M10 handoff — 2026-11-25, offline runtime investigation
 
 Continue `m10/notes-guided-enhancement`, [PR #16](https://github.com/MattMSumner/meeting-notes/pull/16).
 Read AGENTS.md, `.chief/CHIEF.md`, the reviewable-draft section of plan.md and the
-[latest report](evaluation/m10/reviewable-draft/model-comparison-1/analysis/report.md).
+[runtime investigation](evaluation/m10/reviewable-draft/runtime-investigation-1/report.md).
 Use the [current Chief workflow](.chief/README.md) for delegated work: `hc` children
 with an explicit verified Chief parent and `codex --no-daemon`, in the existing
 desktop tab/space. Legacy `herdr` pane IDs in old evidence are not core addresses.
@@ -10,6 +10,25 @@ Keep local coordination in ignored `.chief/STATE.md`; close out accepted worker
 checkouts after preserving their work and handoffs.
 
 ## Latest outcome and authorization
+
+The owner asked to start the recommended timeout investigation. The offline audit
+rechecked eleven saved replies/attempts and 505 overlapping manifest entries, with no
+new Ollama requests, live service inspection or configuration changes. Neither timeout
+has headers/body bytes or server timings, so the cause remains unproven. The completed
+Qwen3.5 request generated 17,084 thinking characters for 37 answer characters; older
+successful baseline replies also have long traces. Prompt caching and runtime residency
+metadata limit comparisons. The 4096 reply reserve is not a sent output-token cap.
+
+The [proposal](evaluation/m10/reviewable-draft/runtime-investigation-1/proposal.json)
+is one fresh Qwen3.5 availability pair, false then true, with streaming fixed for both:
+two generation requests, 180 seconds each, seven minutes overall, no retries. Exact
+proposed request bodies are saved; they are not an execution freeze or permission.
+Prepare, test and independently review a separate streaming collector before freezing
+and asking to execute. Stop the whole probe on a timeout or other declared failure;
+do not queue another request behind uncertain server compute. No new inference budget
+has been agreed. This is a prospective setting test, not proof of the historical cause.
+
+## Earlier local-model screen — unchanged
 
 The owner said “Do it!” to the fixed-task local-model screen: two installed alternatives,
 six cases each, at most twelve new requests / thirty minutes, no retries; reuse the Qwen3
@@ -81,10 +100,11 @@ commit `0e349218915d722c14e9d5e9385f826899dd7ab3` reads committed frozen baselin
 A real depth-one checkout collects all51newtests; full checks pass. Runtime, model packets
 and frozen source were unchanged by this repair. Final-head CI status is in PR/local ledger.
 
-Keep the existing baseline. A small generation/runtime configuration investigation should
-precede another quality comparison or pipeline changes. Thinking mode is one possible
-variable; the timeout cause is unproven. No new configuration, model requests or experiment
-is approved by this recommendation. Do not add quote validators or rerun automatically.
+Keep the existing baseline. The offline investigation is complete; next prepare and
+review the proposed streaming collector before agreeing any new execution budget.
+Thinking mode is a variable to test, not a diagnosed cause. No new configuration,
+model requests or experiment is approved by this recommendation. Do not add quote
+validators or rerun automatically.
 
 The owner still values useful drafts requiring review and approved the authored normal/
 incomplete presentation. That product direction remains unchanged. Current app behavior
