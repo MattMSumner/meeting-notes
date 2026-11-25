@@ -21,17 +21,19 @@ Phase 0 (Handy) set up.
 **Fresh-session handoff (2026-11-25):** [NEXT_SESSION.md](NEXT_SESSION.md) and the
 [offline runtime investigation](evaluation/m10/reviewable-draft/runtime-investigation-1/report.md)
 record eleven saved attempts/replies and 505 overlapping manifest entries checked without
-new inference or runtime changes. Timeout causes remain unproven. The owner has now
-approved the concrete two-request / seven-minute streaming thinking-mode probe once,
-after collector preparation/review/freeze. Installed Ollama is now 0.40.13; the fresh
-pair will pin that disclosed version and the unchanged model digest. The earlier
+new inference or runtime changes. The subsequently approved
+[streaming probe](evaluation/m10/reviewable-draft/runtime-probe-1-analysis/report.md)
+completed both requests in 104.676 seconds without retries or overruns: false took
+11.539 seconds, true 91.687 seconds with 13,509 thinking characters. Both meet the
+narrow availability/no-action criterion. The fresh pair pins disclosed Ollama 0.40.13
+and the unchanged model digest; historical timeout causes remain unproven. The earlier
 [local-model screen](evaluation/m10/reviewable-draft/model-comparison-1/analysis/report.md)
 records an incomplete comparison: five requests in 23m01s, three returned outputs, two
 timeouts and seven unsent cases. Neither challenger completes the screen. All eighteen
 baseline/challenger grades locked with model names hidden before identity joining; cached
 Qwen3 remains five passes and one critical omission. All 1489 offline tests pass and old
-evidence remains exact. No model switch, inference beyond the approved pair or merge
-is authorized; the app remains V11 and M10 unbuilt.
+evidence remains exact. The two-request allowance is consumed; no further inference,
+model switch or merge is authorized. The app remains V11 and M10 unbuilt.
 
 ---
 
@@ -1481,6 +1483,33 @@ attempt/unsent accounting. `manifest.json.accounting` is the explicit authority;
 separate. A late overrun cannot silently become success. Save all later analysis outside
 the strict freeze/capture inventories. No production integration, quality success,
 Built or merge follows from engineering preparation.
+
+**Streaming execution checkpoint (2026-11-25; M10 remains unbuilt).** The approved
+once-only pair completed in 104.676 seconds, consuming both generation requests with
+no retries, failures, unsent slots or overruns. The exact freeze was committed/pushed
+at `a5f0e64` before inference. Independent read-only post-run audit passed all 36 frozen
+artifacts plus manifest, 114 captured artifacts plus manifest, request/snapshot/identity
+bindings, stream/decoder/render replay and final wall accounting. Fourteen HTTP200
+exchanges account for two generation requests and twelve metadata requests; all four
+identity/default gate sets match disclosed Ollama 0.40.13 and the frozen model digest.
+All 1182 prior tracked evaluation/prototype files remain exact.
+
+The [report](evaluation/m10/reviewable-draft/runtime-probe-1-analysis/report.md) records
+false HTTP11.539s/load9.384s/output-evaluation0.864s/zero thinking characters, versus
+true HTTP91.687s/load0.003s/output-evaluation91.566s/13,509 thinking characters. Both
+meet the unchanged availability/no-action criterion; false adds two unnecessary focused
+review passages, true none. This is one ordered negative-control pair with differing
+load/cache conditions and returned prompt counts. It neither reproduces the old
+0.40.9/non-streaming conditions nor establishes their timeout cause, reliability,
+work-retention quality or a model switch. Captures remain immutable; later assessment,
+launch evidence and final seal live in the sibling analysis directory.
+
+Format/lint/strict types and 1489 offline tests pass; six integration tests excluded.
+Keep the baseline and production behavior. A positive work-retention check with thinking
+disabled is a possible next step requiring separately agreed scope and execution budget.
+No further inference is authorized; unused wall time grants nothing. Broader quality,
+regression, production persistence/edit protection, current Obsidian usefulness, Built
+and owner `shipit` gates remain pending. PR #16 is not ready to merge.
 
 **M11 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
