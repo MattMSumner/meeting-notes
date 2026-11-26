@@ -1667,6 +1667,31 @@ saved effort, production integration, model switch, historical regrading, Built 
 merge follows. Previous unused allowances remain closed. Investigate and rerun the
 cancelled Python CI job separately; change workflow code only if evidence requires it.
 
+**Passage-selection experiment stopped (2026-11-26; M10 remains unbuilt).** The
+[report](evaluation/m10/reviewable-draft/work-review-probe-1-analysis/report.md)
+records one Qwen3.5 request and a27.252second full-call wall, including Chief review.
+The first reply is valid groups-only JSON with an empty selection: surviving invoice
+sending and its original/withdrawal context are absent from the selected view. The
+Chief agent identified this critical omission at the first review gate and stopped
+before the six later requests. Independent saved-evidence source-meaning assessment
+agrees. Those six cases are incomplete/unsent, not wrong-answer grades. The allowance
+is closed; no retry, resumption, replacement or unused-slot transfer is authorized.
+
+Exact collector source67f0251 is integrated unchanged as an ancestor; independent
+engineering acceptance has no findings or repair rounds. Targeted104 and both full
+offline suites pass1725tests with6integration tests excluded, plus formatting/lint/
+strict types. The75artifact freeze was committed/pushed at a81f7dd before inference.
+Capture integrity passes:66artifacts plus manifest, one generation/six metadata HTTP200
+exchanges, two identity/default gate sets match, strict stream/decode/render replay,
+saved seal equals returned accounting, no errors/retries/overruns. All1610prior tracked
+evaluation/prototype files remain exact. This validates a correctly stopped incomplete
+capture and identifies a new retrieval failure; the accepted authored presentation and
+offline integrity do not establish automatic coverage or usefulness. Historical grades,
+productionV11, full-draft/full40/persistence/usefulness and merge gates remain unchanged.
+
+The cancelled Python CI job had no hosted runner assignment or executed steps; GitHub
+reported capacity constraints. Its rerun passes Python and Swift without workflow edits.
+
 **M11 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
 compared on tests rather than by eye on real meetings: stance (a "maybe" turned into a
