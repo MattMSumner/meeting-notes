@@ -129,6 +129,6 @@ print(json.dumps({
     'full_run_wall_seconds': record['full_run_wall_seconds'],
     'post_audit_observation': post_audit_observation,
     'possibly_sent': accounting['possibly_sent'],
-    'completed': accounting['completed'], 'failed': accounting['failed'],
+    'stop_completed': accounting['stop_completed'], 'failed': accounting['failed'],
     'unsent': accounting['unsent'], 'stop_reason': accounting['stop_reason'],
 }), flush=True)
