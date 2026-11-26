@@ -1,0 +1,31 @@
+{
+  "owner_message": "Great, do the temperature comparison",
+  "base": "dffcb42ced5f4d2bbb5aa9941946c384fa6c052b",
+  "case": "front_loaded_timing",
+  "slots": [
+    "01-temperature-0",
+    "02-temperature-1"
+  ],
+  "temperatures": [
+    0,
+    1
+  ],
+  "generation_requests": 2,
+  "repetitions_per_temperature": 1,
+  "overall_seconds": 600,
+  "per_generation_seconds": 180,
+  "per_metadata_seconds": 10,
+  "num_predict": 4096,
+  "num_ctx": 32768,
+  "model": "qwen3.5:9b-q4_K_M",
+  "think": true,
+  "stream": true,
+  "retries": 0,
+  "chief_review_between_requests": true,
+  "expected_length_censor_may_continue": true,
+  "technical_timeout_stops": true,
+  "critical_meaning_defect_stops": true,
+  "previous_allowances_closed": true,
+  "no_additional_format_control": true,
+  "telemetry": "Read-only concurrent thermal-state/memory/host-load sampling; unavailable channels explicitly recorded. No stress workload or runtime/service changes."
+}

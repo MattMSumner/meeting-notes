@@ -1,0 +1,220 @@
+"""One frozen two-temperature run with external read-only telemetry and Chief review."""
+
+import hashlib
+import json
+import os
+from pathlib import Path
+import select
+import signal
+import subprocess
+import sys
+import time
+
+ROOT = Path('/Users/matthewsumner/development/meeting-notes')
+AUDIT = ROOT / '.chief/runs/work-review-temperature-20261126'
+OUTPUT = ROOT / 'evaluation/m10/reviewable-draft/work-review-temperature-1'
+ANALYSIS = ROOT / 'evaluation/m10/reviewable-draft/work-review-temperature-1-analysis'
+sys.path.insert(0, str(ROOT))
+
+from prototypes.reviewable_draft import work_review as review
+from prototypes.reviewable_draft import work_review_temperature as probe
+
+approval = json.loads((AUDIT / 'approval.json').read_text())
+freeze = json.loads((AUDIT / 'freeze.json').read_text())
+assert approval['owner_message'] == 'Great, do the temperature comparison'
+assert (approval['generation_requests'], approval['overall_seconds'], approval['per_generation_seconds'], approval['num_predict'], approval['retries']) == (2, 600, 180, 4096, 0)
+assert approval['slots'] == ['01-temperature-0', '02-temperature-1']
+assert list(probe.SLOTS) == approval['slots']
+assert approval['temperatures'] == [0, 1]
+assert approval['think'] is True and approval['stream'] is True
+assert approval['expected_length_censor_may_continue'] is True
+assert approval['chief_review_between_requests'] is True
+assert freeze['directory'] == str(OUTPUT)
+pin = freeze['manifest_sha256']
+assert hashlib.sha256((OUTPUT / 'manifest.json').read_bytes()).hexdigest() == pin
+for name, expected in freeze['analysis_source_sha256'].items():
+    assert hashlib.sha256((ANALYSIS / name).read_bytes()).hexdigest() == expected
+assert hashlib.sha256(Path(__file__).read_bytes()).hexdigest() == freeze['launch_source_sha256']
+assert (ANALYSIS / 'launch-script.txt').read_bytes() == Path(__file__).read_bytes()
+assert (ANALYSIS / 'authorization.json').read_bytes() == (AUDIT / 'approval.json').read_bytes()
+assert (ANALYSIS / 'telemetry-script.txt').read_bytes() == (AUDIT / 'telemetry.py').read_bytes()
+assert (ANALYSIS / 'telemetry-config.json').read_bytes() == (AUDIT / 'telemetry-config.json').read_bytes()
+config = json.loads((AUDIT / 'telemetry-config.json').read_text())
+assert hashlib.sha256(Path(config['thermal_helper']).read_bytes()).hexdigest() == config['thermal_helper_sha256']
+head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
+assert head == freeze['published_freeze_commit'], 'Only the exact published freeze may execute'
+assert not (OUTPUT / 'results').exists(), 'Consumed output; no retry or resumption'
+for name in ('execution.json', 'telemetry-ready.json', 'telemetry-stop.json', 'telemetry-final.json'):
+    assert not (AUDIT / name).exists()
+assert not (ANALYSIS / 'telemetry.jsonl').exists()
+with (AUDIT / 'execution-claim.json').open('x') as claim:
+    json.dump({'manifest_sha256': pin, 'approval': approval['owner_message'], 'published_head': head}, claim)
+
+
+def unique_object(pairs):
+    value = {}
+    for key, item in pairs:
+        if key in value:
+            raise ValueError('Duplicate Chief verdict key')
+        value[key] = item
+    return value
+
+
+def assess(slot, result, deadline):
+    result.validate()
+    print('\nCHIEF_REVIEW_REQUIRED ' + slot, flush=True)
+    print(review.render_result(result), flush=True)
+    print('Submit JSON with exactly critical:boolean and assessment:nonblank string.', flush=True)
+    line = bytearray()
+    while True:
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            raise TimeoutError('Shared deadline while awaiting Chief meaning review')
+        ready, _, _ = select.select([sys.stdin.fileno()], [], [], remaining)
+        if not ready:
+            raise TimeoutError('Shared deadline while awaiting Chief meaning review')
+        chunk = os.read(sys.stdin.fileno(), 1)
+        if not chunk:
+            raise EOFError('Chief review unavailable')
+        if chunk == b'\n':
+            break
+        line.extend(chunk)
+        if len(line) > 16384:
+            raise ValueError('Chief review exceeds bounded input size')
+    verdict = json.loads(line.decode('utf-8'), object_pairs_hook=unique_object)
+    if type(verdict) is not dict or set(verdict) != {'critical', 'assessment'}:
+        raise ValueError('Expected one explicit Chief meaning verdict')
+    if type(verdict['critical']) is not bool or type(verdict['assessment']) is not str or not verdict['assessment'].strip():
+        raise ValueError('Invalid Chief meaning verdict')
+    return verdict
+
+
+record = {
+    'manifest_sha256': pin, 'approval': approval['owner_message'], 'published_head': head,
+    'launch_source_sha256': freeze['launch_source_sha256'],
+    'analysis_source_sha256': freeze['analysis_source_sha256'],
+    'telemetry': {},
+}
+launch_started = time.monotonic()
+sampler = None
+primary_error = None
+audit_saved = False
+telemetry_ok = False
+try:
+    with (AUDIT / 'telemetry-stdout.raw').open('xb') as stdout, (AUDIT / 'telemetry-stderr.raw').open('xb') as stderr:
+        sampler = subprocess.Popen([sys.executable, '-I', '-u', str(AUDIT / 'telemetry.py')], stdin=subprocess.DEVNULL, stdout=stdout, stderr=stderr, start_new_session=True)
+        record['telemetry']['owned_process_group'] = sampler.pid
+    readiness_deadline = time.monotonic() + 10
+    while not (AUDIT / 'telemetry-ready.json').exists():
+        if sampler.poll() is not None:
+            raise RuntimeError('Telemetry exited before readiness; no generation')
+        if time.monotonic() >= readiness_deadline:
+            raise TimeoutError('Telemetry readiness deadline; no generation')
+        time.sleep(0.05)
+    readiness = json.loads((AUDIT / 'telemetry-ready.json').read_text())
+    assert not readiness['first_errors'], 'Required thermal/memory channels unavailable; no generation'
+    record['telemetry']['ready'] = readiness
+    started = time.monotonic()
+    record['run_started_monotonic'] = started
+    try:
+        record['return'] = probe.run(
+            OUTPUT,
+            'Owner: Great, do the temperature comparison. Once-only2requests/600seconds/180seconds each/4096tokens/no retries; original clear-commitment control; temperature0then1; thinktrue/streamtrue/context32768. Strict terminal length is censored, never answer/pass; may continue only with exact4096count and gates. Chief meaning review every stop-render; critical/technical timeout stops.',
+            pin,
+            assess,
+        )
+    finally:
+        record['run_ended_monotonic'] = time.monotonic()
+        record['full_run_wall_seconds'] = record['run_ended_monotonic'] - started
+        record['full_run_overrun_seconds'] = max(0.0, record['full_run_wall_seconds'] - 600)
+except BaseException as error:
+    primary_error = error
+    record['error'] = f'{type(error).__name__}: {error}'
+finally:
+    if sampler is not None:
+        try:
+            with (AUDIT / 'telemetry-stop.json').open('x') as stop:
+                json.dump({'monotonic': time.monotonic()}, stop)
+        except BaseException as error:
+            record['telemetry']['stop_error'] = f'{type(error).__name__}: {error}'
+            if primary_error is None and not isinstance(error, Exception):
+                primary_error = error
+        try:
+            record['telemetry']['returncode'] = sampler.wait(timeout=10)
+            record['telemetry']['reaped'] = True
+        except BaseException as error:
+            record['telemetry']['cleanup_error'] = f'{type(error).__name__}: {error}'
+            try:
+                # The sampler starts its own session; only its read-only command children
+                # share this group. The model service and HTTP children do not belong to it.
+                os.killpg(sampler.pid, signal.SIGKILL)
+                record['telemetry']['owned_process_group_killed'] = True
+            except ProcessLookupError:
+                record['telemetry']['owned_process_group_already_gone'] = True
+            except BaseException as cleanup_error:
+                record['telemetry']['kill_error'] = f'{type(cleanup_error).__name__}: {cleanup_error}'
+                if primary_error is None and not isinstance(cleanup_error, Exception):
+                    primary_error = cleanup_error
+            try:
+                sampler.wait(timeout=2)
+                record['telemetry']['reaped'] = True
+            except BaseException as cleanup_error:
+                record['telemetry']['reap_error'] = f'{type(cleanup_error).__name__}: {cleanup_error}'
+                if primary_error is None and not isinstance(cleanup_error, Exception):
+                    primary_error = cleanup_error
+            if primary_error is None and not isinstance(error, Exception):
+                primary_error = error
+    record['launch_wall_including_telemetry_seconds'] = time.monotonic() - launch_started
+    try:
+        telemetry_path = ANALYSIS / 'telemetry.jsonl'
+        telemetry_bytes = telemetry_path.read_bytes()
+        record['telemetry']['file_sha256'] = hashlib.sha256(telemetry_bytes).hexdigest()
+        record['telemetry']['final'] = json.loads((AUDIT / 'telemetry-final.json').read_text())
+        rows = [json.loads(line) for line in telemetry_bytes.splitlines()]
+        assert telemetry_bytes.endswith(b'\n') and rows
+        assert record['telemetry']['final']['rows'] == len(rows)
+        assert record['telemetry']['final']['stopped_by_launcher'] is True
+        assert rows[-1]['closing_sample'] is True
+        assert not any(row['errors'] for row in rows)
+        assert rows[0]['monotonic'] <= record['run_started_monotonic']
+        assert rows[-1]['monotonic'] >= record['run_ended_monotonic']
+        assert not (AUDIT / 'telemetry-stdout.raw').read_bytes()
+        assert not (AUDIT / 'telemetry-stderr.raw').read_bytes()
+        telemetry_ok = (
+            record['telemetry'].get('returncode') == 0
+            and record['telemetry'].get('reaped') is True
+            and not any(key.endswith('_error') for key in record['telemetry'])
+            and 'owned_process_group_killed' not in record['telemetry']
+        )
+    except BaseException as error:
+        record['telemetry']['artifact_error'] = f'{type(error).__name__}: {error}'
+        if primary_error is None and not isinstance(error, Exception):
+            primary_error = error
+    record['telemetry']['complete'] = telemetry_ok
+    try:
+        with (AUDIT / 'execution.json').open('x') as audit:
+            json.dump(record, audit, indent=2, allow_nan=False)
+            audit.write('\n')
+        audit_saved = True
+    except BaseException as error:
+        record['launch_audit_save_error'] = f'{type(error).__name__}: {error}'
+        print(json.dumps(record), flush=True)
+        if primary_error is None and not isinstance(error, Exception):
+            primary_error = error
+
+if primary_error is not None:
+    raise primary_error
+envelope = record['return']
+accounting = envelope['accounting']
+post = envelope['post_seal_observation']
+complete = accounting['capture_complete'] and post['sealed'] and not post['deadline_reached'] and record['full_run_wall_seconds'] < 600 and audit_saved and telemetry_ok
+print(json.dumps({
+    'capture_complete_including_seal_and_wall_observation': complete,
+    'full_run_wall_seconds': record['full_run_wall_seconds'],
+    'launch_wall_including_telemetry_seconds': record['launch_wall_including_telemetry_seconds'],
+    'possibly_sent': accounting['possibly_sent'],
+    'collector_capture_complete': accounting['capture_complete'],
+    'telemetry_complete': telemetry_ok,
+    'accounting': accounting,
+    'telemetry': record['telemetry'],
+}), flush=True)

@@ -1,10 +1,36 @@
-# M10 handoff — 2026-11-26, thinking diagnostic incomplete
+# M10 handoff — 2026-11-26, temperature comparison authorized
 
 Continue `m10/notes-guided-enhancement`, [PR #16](https://github.com/MattMSumner/meeting-notes/pull/16).
 Read AGENTS.md, `.chief/CHIEF.md` and the reviewable-draft section of plan.md. Use the
 [current Chief workflow](.chief/README.md) for delegated work, with a verified `hc`
 parent and `codex --no-daemon` in the existing tab/space. Keep coordination in ignored
 `.chief/STATE.md`; archive useful evidence and retire only completed own workers.
+
+## Current authorization — two-temperature comparison
+
+The owner said **“Great, do the temperature comparison.”** A new isolated diagnostic
+will use the unchanged original `front_loaded_timing` control in order temperature0
+then1, one observation each. Keep accepted prompt/schema/renderer/model/digest/runtime,
+`think:true`, `stream:true`, context32768; both new arms add the same `num_predict=4096`.
+Caps are **2requests/600seconds overall/180seconds generation/10seconds metadata/0retries**.
+The previous uncapped timeout is context only, not a matched control. No live request
+has yet run under this authorization. Chief owns the reviewed freeze/publication,
+once-only execution, bounded meaning reviews and read-only concurrent host telemetry.
+
+A strict terminal length with returned eval_count4096 is expected censored evidence:
+no accepted result/render/meaning callback, and continuation only after post-call
+identity/default/artifact gates. Missing/mismatching counters, other invalid output,
+transport/deadline/storage/identity failure or a critical completed-answer defect stop.
+Every valid stop-render needs explicit Chief source-meaning review, including empty
+selection. Complete capture may coexist with incomplete answers/semantics. Preserve
+all historical evidence, verdicts and production behavior. All older allowances remain
+closed; no retry/resumption/unused-slot transfer or extra format-control generation.
+
+The goal is a bounded diagnostic lead, not reliability or a production fix. Fixed order,
+one familiar control, one observation each, stochastic sequence, cold-load/cache and
+host-state changes limit attribution. Thermal severity and memory/load are observations;
+temperature/GPU-clock channels are unavailable unless separately obtained. M10 remains
+unbuilt and PR16 not ready to merge. Local coordination stays in ignored .chief/STATE.md.
 
 ## Latest diagnostic — thinking stream timeout; all three ungraded
 

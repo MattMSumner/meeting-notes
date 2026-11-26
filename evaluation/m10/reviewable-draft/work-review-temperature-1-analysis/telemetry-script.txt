@@ -1,0 +1,92 @@
+"""Bounded read-only host sampler; no service, model, or collector access."""
+
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import subprocess
+import time
+from datetime import datetime, timezone
+
+ROOT = Path('/Users/matthewsumner/development/meeting-notes')
+AUDIT = ROOT / '.chief/runs/work-review-temperature-20261126'
+ANALYSIS = ROOT / 'evaluation/m10/reviewable-draft/work-review-temperature-1-analysis'
+config = json.loads((AUDIT / 'telemetry-config.json').read_text())
+assert config['interval_seconds'] == 2 and config['limit_seconds'] == 600
+helper = Path(config['thermal_helper'])
+assert helper.is_absolute() and helper.is_file() and not helper.is_symlink()
+assert hashlib.sha256(helper.read_bytes()).hexdigest() == config['thermal_helper_sha256']
+assert hashlib.sha256(Path(__file__).read_bytes()).hexdigest() == config['sampler_source_sha256']
+stop = AUDIT / 'telemetry-stop.json'
+assert not stop.exists()
+
+
+def command(argv):
+    completed = subprocess.run(argv, capture_output=True, text=True, timeout=2, check=False)
+    if completed.returncode != 0:
+        raise OSError(f'{Path(argv[0]).name} returned {completed.returncode}')
+    return completed.stdout
+
+
+started = time.monotonic()
+rows = 0
+with (ANALYSIS / 'telemetry.jsonl').open('x') as output:
+    while time.monotonic() - started < 600:
+        closing_sample = stop.exists()
+        sample_started = time.monotonic()
+        row = {
+            'monotonic': sample_started,
+            'utc': datetime.now(timezone.utc).isoformat(),
+            'elapsed_seconds': sample_started - started,
+            'closing_sample': closing_sample,
+            'load_average': list(os.getloadavg()),
+            'errors': {},
+        }
+        for name, argv in (
+            ('thermal', [str(helper)]),
+            ('vm_stat', ['/usr/bin/vm_stat']),
+            ('swap', ['/usr/sbin/sysctl', '-n', 'vm.swapusage']),
+            ('memory_pressure_level', ['/usr/sbin/sysctl', '-n', 'kern.memorystatus_vm_pressure_level']),
+        ):
+            try:
+                text = command(argv)
+                if name == 'thermal':
+                    row[name] = json.loads(text)
+                elif name == 'vm_stat':
+                    page_size = re.search(r'page size of (\d+) bytes', text)
+                    counters = {
+                        key.strip(): int(value)
+                        for key, value in re.findall(r'^([^:\n]+):\s*(\d+)\.?\s*$', text, re.MULTILINE)
+                    }
+                    if page_size is None or not counters:
+                        raise ValueError('Unrecognized vm_stat output')
+                    row[name] = {'page_size_bytes': int(page_size[1]), 'counters': counters}
+                elif name == 'swap':
+                    fields = re.findall(r'(total|used|free)\s*=\s*([\d.]+)([MG])', text)
+                    if len(fields) != 3:
+                        raise ValueError('Unrecognized swap summary')
+                    row[name] = {key + '_bytes': round(float(value) * (1024 ** (2 if unit == 'M' else 3))) for key, value, unit in fields}
+                else:
+                    row[name] = int(text.strip())
+            except Exception as error:
+                row[name] = None
+                row['errors'][name] = f'{type(error).__name__}: {error}'
+        row['sample_duration_seconds'] = time.monotonic() - sample_started
+        output.write(json.dumps(row, sort_keys=True, allow_nan=False) + '\n')
+        output.flush()
+        rows += 1
+        if rows == 1:
+            temporary_ready = AUDIT / 'telemetry-ready.pending.json'
+            with temporary_ready.open('x') as ready:
+                json.dump({'first_monotonic': sample_started, 'first_errors': row['errors']}, ready)
+            os.link(temporary_ready, AUDIT / 'telemetry-ready.json')
+        if closing_sample:
+            break
+        remaining = min(2 - row['sample_duration_seconds'], 600 - (time.monotonic() - started))
+        until = time.monotonic() + max(0.0, remaining)
+        while not stop.exists() and time.monotonic() < until:
+            time.sleep(min(0.05, max(0.0, until - time.monotonic())))
+
+with (AUDIT / 'telemetry-final.json').open('x') as final:
+    json.dump({'rows': rows, 'elapsed_seconds': time.monotonic() - started, 'stopped_by_launcher': stop.exists()}, final)

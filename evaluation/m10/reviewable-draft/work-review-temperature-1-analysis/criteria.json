@@ -1,0 +1,86 @@
+{
+  "question": "Does changing only request temperature from0 to1 alter completion and output volume on the same original familiar clear-commitment control under equal explicit caps?",
+  "request_budget": {
+    "owner_message": "Great, do the temperature comparison",
+    "base": "dffcb42ced5f4d2bbb5aa9941946c384fa6c052b",
+    "case": "front_loaded_timing",
+    "slots": [
+      "01-temperature-0",
+      "02-temperature-1"
+    ],
+    "temperatures": [
+      0,
+      1
+    ],
+    "generation_requests": 2,
+    "repetitions_per_temperature": 1,
+    "overall_seconds": 600,
+    "per_generation_seconds": 180,
+    "per_metadata_seconds": 10,
+    "num_predict": 4096,
+    "num_ctx": 32768,
+    "model": "qwen3.5:9b-q4_K_M",
+    "think": true,
+    "stream": true,
+    "retries": 0,
+    "chief_review_between_requests": true,
+    "expected_length_censor_may_continue": true,
+    "technical_timeout_stops": true,
+    "critical_meaning_defect_stops": true,
+    "previous_allowances_closed": true,
+    "no_additional_format_control": true,
+    "telemetry": "Read-only concurrent thermal-state/memory/host-load sampling; unavailable channels explicitly recorded. No stress workload or runtime/service changes."
+  },
+  "case": {
+    "id": "front_loaded_timing",
+    "source_transcript": "[00:00:00] Sam: Next Tuesday, I will send the draft.",
+    "separate_writing": "",
+    "criterion": "A completed stop answer must select the whole T1 passage, preserving its NextTuesday timing and separate unchanged original writing. Empty selection misses genuine work. No invented content, owners, due dates or currentness claims. Duplicate normalization follows unchanged decoder."
+  },
+  "completion": {
+    "stop": "Strict valid EOF terminal done=true/stop, then unchanged strict groups decoder, saved-only render and explicit bounded Chief source-meaning review; invalid output or critical defect stops before later slots. Any present returned eval_count above4096 is a technical failure before decode/render/continuation. Absent stop counters remain absent and do not establish an observed cap count.",
+    "length": "Strict valid EOF terminal done=true/length at the fixed4096output-token cap is expected right-censored evidence, not accepted answer; require returned eval_count4096, no render/result/meaning callback, matching post-call identity/default gates and intact artifacts before nextslot. Even parseable partial answer remains incomplete.",
+    "failure": "Transport/status/identity/storage/artifact/unknownterminal/malformedstream/timeout or missing/mismatching capcounter stops. No retry, resumption, replacement or unusedslottransfer.",
+    "capture_vs_semantics": "Both fixed records may be fully captured even if one/both are censored. Keep stop-completed, length-censored, failed and unsent counts distinct; no automatic semanticPASS."
+  },
+  "comparison": {
+    "only_between_arm_difference": "options.temperature0vs1; common num_predict4096, same original messages/schema/model/thinktrue/streamtrue/num_ctx32768; no seedoverride/promptchange/formatcontrol.",
+    "historical_difference": "Both new arms introduce num_predict4096. The prior uncapped timeout is context only, not a matched control.",
+    "metrics": [
+      "terminal_reason",
+      "answer_complete",
+      "Chief_meaning_assessment_if_rendered",
+      "eval_count_if_terminal",
+      "thinking_characters",
+      "answer_characters",
+      "first_thinking_seconds",
+      "first_content_seconds",
+      "HTTP_duration",
+      "server_durations_if_terminal",
+      "load_duration",
+      "prompt_eval_count",
+      "prompt_eval_cached_count",
+      "output_tokens_per_second_if_terminal",
+      "thermal_state_series",
+      "memory_page_and_swap_series",
+      "host_load_series",
+      "telemetry_sample_duration_and_errors"
+    ],
+    "limits": "One familiarcase and one observation pertemperature in fixed0then1order. Cold-load/cache, stochasticsequence, evolving generatedcontext, hoststate/order effects remain. No causal proof, reliability, qualityimprovement, saved effort, model switch, full40/full-draft, historical regrading or M10Built claim."
+  },
+  "telemetry": {
+    "scope": "Read-only thermal-state and aggregate memory/load sampling around the two requests; bounded own sampler only. GPUclock/temperature channels unavailable unless independently obtained without service change; markunavailable, never infer from undocumented budgets.",
+    "binding": "Telemetry source/binary hashes and startup/stop/fullwall retained outside strict capture inventory. No generation/endpoints/inference or modelparameter changes from sampler.",
+    "limits": "Thermalstate is OS pressure severity, not a temperature or frequency measurement. Memory counts/swap observations are not automatically attribution. Sampler overhead measured; missingchannels explicit."
+  },
+  "stopping_and_authority": {
+    "technical_failure": "stopall",
+    "critical_source_meaning_defect": "stopall",
+    "clean_length_censor": "continuewithinremainingnewbudgetonly",
+    "source_immutable": true,
+    "once_only": true,
+    "all_older_allowances_closed": true,
+    "Chief_only_execution": true,
+    "no_production_or_merge": true
+  }
+}
