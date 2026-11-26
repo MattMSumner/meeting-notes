@@ -1865,3 +1865,22 @@ What I want from you in planning:
 - Plan the build as small, shippable milestones, each with tests, so I have something working end-to-end as early as possible
 - Call out macOS permissions I'll need to grant
 - Ask me clarifying questions before finalizing anything
+
+**Schema-grounded prompt diagnostic authorized (2026-11-26).** The owner said
+“Great do it” to the proposed three-case diagnostic: `front_loaded_timing`,
+`partial_coordination_retracted`, then `accepted_status_answer`, once in that order.
+Append the exact existing per-case JSON schema to the accepted system prompt, with
+a neutral label; no expected-answer examples or forced nonempty output. The API
+format schema, original inputs, decoder and renderer stay unchanged. Keep Qwen3.5,
+thinking/streaming true, temperature 1, context 32768 and num_predict 4096 fixed.
+
+Limits are three generation requests maximum, 540 seconds overall, 180 seconds each,
+10 seconds per metadata exchange and zero retries. Chief source-meaning review is
+required after every valid render before the next request. Stop at the first
+identified critical defect, technical/deadline failure or length-censored answer;
+retain raw partial/censored evidence but publish no partial answer as a draft. Freeze
+the reviewed source, request hashes, complete snapshots and prospective criteria
+before one execution. Old allowances remain closed. A single familiar run can test
+feasibility but proves no causal improvement, reliability or saved review effort.
+No service/config/model change, schema relaxation, historical regrading, production
+integration, full40/full-draft/persistence acceptance, M10 Built or merge is authorized.
