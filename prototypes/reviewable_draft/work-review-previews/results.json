@@ -1,0 +1,238 @@
+{
+  "authored": true,
+  "model_generated": false,
+  "model_quality_evidence": false,
+  "saved_effort_evidence": false,
+  "kind": "authored-work-review-preview-data",
+  "results": {
+    "partial_coordination_retracted": {
+      "snapshot": {
+        "title": "Synthetic commitment review",
+        "started_at": "2026-10-20T14:00:00-04:00",
+        "attendees": [
+          "Ravi"
+        ],
+        "my_name": "Sam",
+        "transcript": "[00:00:00] Sam: I will review the draft and send the invoice.\n[00:00:05] Sam: I will not review the draft.",
+        "handwritten_text": ""
+      },
+      "snapshot_id": "28bb22aec3289f904af59b746b6b9e99f9a0f6baa3809e56da172320c0d21a4c",
+      "generation_id": "authored-work-review-41da04cdb6b63a07fb3c0d2d68d4cccf7a0f35ccaae01f229719ed5ad4a196e4/partial_coordination_retracted",
+      "groups": [
+        {
+          "snapshot_id": "28bb22aec3289f904af59b746b6b9e99f9a0f6baa3809e56da172320c0d21a4c",
+          "generation_id": "authored-work-review-41da04cdb6b63a07fb3c0d2d68d4cccf7a0f35ccaae01f229719ed5ad4a196e4/partial_coordination_retracted",
+          "refs": [
+            "T1",
+            "T2"
+          ],
+          "binding": "4d804026ca3d1422df106226b5a4b77299419e86ad7ea0dcb22c8c3553eaa0c5"
+        }
+      ],
+      "state": "draft",
+      "binding": "6bc06b7f9b9077b393ceba1ce60525f276dbc7617393940afb6c04455d51dd99"
+    },
+    "cancellation_with_new_task": {
+      "snapshot": {
+        "title": "Synthetic commitment review",
+        "started_at": "2026-10-20T14:00:00-04:00",
+        "attendees": [
+          "Ravi"
+        ],
+        "my_name": "Sam",
+        "transcript": "[00:00:00] Sam: I will review the draft. Scratch that, I will send the invoice.",
+        "handwritten_text": ""
+      },
+      "snapshot_id": "f00eecd37ceb50fda583de7180e31fdbba01e1d3b9ea74a6942807999b66f41a",
+      "generation_id": "authored-work-review-41da04cdb6b63a07fb3c0d2d68d4cccf7a0f35ccaae01f229719ed5ad4a196e4/cancellation_with_new_task",
+      "groups": [
+        {
+          "snapshot_id": "f00eecd37ceb50fda583de7180e31fdbba01e1d3b9ea74a6942807999b66f41a",
+          "generation_id": "authored-work-review-41da04cdb6b63a07fb3c0d2d68d4cccf7a0f35ccaae01f229719ed5ad4a196e4/cancellation_with_new_task",
+          "refs": [
+            "T1"
+          ],
+          "binding": "ec24130e2cbe3b775134be84baa8cb16dd3d9f9434b2405efafb429654ae8d41"
+        }
+      ],
+      "state": "draft",
+      "binding": "dc34ea630ba9edd7756afd55cb7768feed2a0b591c1c03cd38ecf574e4bdb001"
+    },
+    "qualified_external_timing": {
+      "snapshot": {
+        "title": "Synthetic commitment review",
+        "started_at": "2026-10-20T14:00:00-04:00",
+        "attendees": [
+          "Ravi"
+        ],
+        "my_name": "Sam",
+        "transcript": "[00:00:00] Sam: I will send the invoice.\n[00:00:05] Sam: Not before next Friday unless finance objects.",
+        "handwritten_text": ""
+      },
+      "snapshot_id": "dd4fba6883488580e1614d4422c7de363f198e5d5fabe2148f37482b8c773c4f",
+      "generation_id": "authored-work-review-41da04cdb6b63a07fb3c0d2d68d4cccf7a0f35ccaae01f229719ed5ad4a196e4/qualified_external_timing",
+      "groups": [
+        {
+          "snapshot_id": "dd4fba6883488580e1614d4422c7de363f198e5d5fabe2148f37482b8c773c4f",
+          "generation_id": "authored-work-review-41da04cdb6b63a07fb3c0d2d68d4cccf7a0f35ccaae01f229719ed5ad4a196e4/qualified_external_timing",
+          "refs": [
+            "T1",
+            "T2"
+          ],
+          "binding": "6cf8a426a0340f1c666d2ae74f9e967143b5a11f695ef3fd75d394b266672a67"
+        }
+      ],
+      "state": "draft",
+      "binding": "f12731e1d0cd22c17e97ada3a9b877c9c46c59c6ac357a17b3f6d3852571d803"
+    },
+    "additional": {
+      "snapshot": {
+        "title": "Synthetic release review",
+        "started_at": "2026-10-20T14:00:00-04:00",
+        "attendees": [
+          "Alex"
+        ],
+        "my_name": "Sam",
+        "transcript": "[00:00:00] Sam: I will send the draft Friday.\n[00:00:05] Them: Alex here. I will review it next week.",
+        "handwritten_text": "Personal context: the internal workshop has 40 seats.\nTask for myself: ask the venue about access."
+      },
+      "snapshot_id": "07d92402e6b90ae38333c1a76989a80df8bc8db2ed60415724c793c328cffb0b",
+      "generation_id": "authored-work-review-41da04cdb6b63a07fb3c0d2d68d4cccf7a0f35ccaae01f229719ed5ad4a196e4/additional",
+      "groups": [
+        {
+          "snapshot_id": "07d92402e6b90ae38333c1a76989a80df8bc8db2ed60415724c793c328cffb0b",
+          "generation_id": "authored-work-review-41da04cdb6b63a07fb3c0d2d68d4cccf7a0f35ccaae01f229719ed5ad4a196e4/additional",
+          "refs": [
+            "T1"
+          ],
+          "binding": "52e803ed0077d4ddc2dd6515bf1139aecc96e379a2703f21810710d892c1070a"
+        },
+        {
+          "snapshot_id": "07d92402e6b90ae38333c1a76989a80df8bc8db2ed60415724c793c328cffb0b",
+          "generation_id": "authored-work-review-41da04cdb6b63a07fb3c0d2d68d4cccf7a0f35ccaae01f229719ed5ad4a196e4/additional",
+          "refs": [
+            "T2"
+          ],
+          "binding": "bd57bad688af1df30505d613818c6576a1c4a3745b6016e78d480cbf3e907e5d"
+        }
+      ],
+      "state": "draft",
+      "binding": "b3fdf7a0da26f38c9af24e5fa7409aeb7cc908caafe665a433830add55d78c68"
+    },
+    "accepted_status_answer": {
+      "snapshot": {
+        "title": "Synthetic commitment review",
+        "started_at": "2026-10-20T14:00:00-04:00",
+        "attendees": [
+          "Ravi"
+        ],
+        "my_name": "Sam",
+        "transcript": "[00:00:00] Sam: Will you be away Friday?\n[00:00:05] Ravi: Yes.",
+        "handwritten_text": ""
+      },
+      "snapshot_id": "30273d16397f3d130489c6cf18b5da6aaad56ad876521c3bf9028f1e8fa42f50",
+      "generation_id": "authored-work-review-41da04cdb6b63a07fb3c0d2d68d4cccf7a0f35ccaae01f229719ed5ad4a196e4/accepted_status_answer",
+      "groups": [],
+      "state": "draft",
+      "binding": "5d5e70d567280e7dd1ee226ee5752e0280d968cc5bdfeeebfe6a2d40c0a09455"
+    },
+    "unit_equivalence": {
+      "snapshot": {
+        "title": "Synthetic release review",
+        "started_at": "2026-10-20T14:00:00-04:00",
+        "attendees": [
+          "Alex"
+        ],
+        "my_name": "Sam",
+        "transcript": "[00:00:00] Sam: Support costs 120 dollars.",
+        "handwritten_text": "Support costs 12000 cents."
+      },
+      "snapshot_id": "7231cce9e3a31ebcf930ee372fcf2a2726fad5e7b28efa82b9889fb14e7ecbe6",
+      "generation_id": "authored-work-review-41da04cdb6b63a07fb3c0d2d68d4cccf7a0f35ccaae01f229719ed5ad4a196e4/unit_equivalence",
+      "groups": [],
+      "state": "draft",
+      "binding": "6ffad4a25ec2600b6a9376b4d013953da258fc443e25fc57f07435ae32c7c389"
+    },
+    "authored_longer_context": {
+      "snapshot": {
+        "title": "Synthetic planning catch-up",
+        "started_at": "2026-11-25T09:00:00-05:00",
+        "attendees": [
+          "Casey",
+          "Morgan"
+        ],
+        "my_name": "Rowan",
+        "transcript": "[00:00:00] Rowan: The demo room is on the second floor.\n[00:00:05] Casey: The room's display uses a shared cable.\n[00:00:10] Morgan: Last month's slides had a blue cover.\n[00:00:15] Rowan: I will review the outline and send the sample invoice.\n[00:00:20] Casey: Would you like the outline as a PDF?\n[00:00:25] Rowan: I will not review the outline.\n[00:00:30] Morgan: The sample file is in the training folder.\n[00:00:35] Casey: I'm away on Friday.\n[00:00:40] Morgan: Were the earlier headings all lowercase?\n[00:00:45] Rowan: For sending the sample invoice: not before next Tuesday, unless the mock finance team objects.\n[00:00:50] Casey: I will check the sample checklist next week, after the dummy approval arrives.\n[00:00:55] Morgan: The placeholder logo is a grey square.\n[00:01:00] Rowan: Are the old sample notes still marked draft?\n[00:01:05] Morgan: They were still marked draft yesterday.\n[00:01:10] Casey: The lunch break was at noon last session.\n[00:01:15] Rowan: The mockup uses two columns.",
+        "handwritten_text": "Personal note: the mock room has 18 chairs.\nTask for myself: ask the dummy venue about access."
+      },
+      "snapshot_id": "af31d0d82fafee5d2e928d168c0b6364598ff1e8435c42765ac8bcb6f9747f62",
+      "generation_id": "authored-work-review-41da04cdb6b63a07fb3c0d2d68d4cccf7a0f35ccaae01f229719ed5ad4a196e4/authored_longer_context",
+      "groups": [
+        {
+          "snapshot_id": "af31d0d82fafee5d2e928d168c0b6364598ff1e8435c42765ac8bcb6f9747f62",
+          "generation_id": "authored-work-review-41da04cdb6b63a07fb3c0d2d68d4cccf7a0f35ccaae01f229719ed5ad4a196e4/authored_longer_context",
+          "refs": [
+            "T4",
+            "T6",
+            "T10"
+          ],
+          "binding": "911559e6c829861116ef81351c46fb89d473a00dbe03c44a586faf926cdd6b9f"
+        },
+        {
+          "snapshot_id": "af31d0d82fafee5d2e928d168c0b6364598ff1e8435c42765ac8bcb6f9747f62",
+          "generation_id": "authored-work-review-41da04cdb6b63a07fb3c0d2d68d4cccf7a0f35ccaae01f229719ed5ad4a196e4/authored_longer_context",
+          "refs": [
+            "T11"
+          ],
+          "binding": "56ff9b729b51cd58c1f0ebb33bc24b69dc04f8b0e98bd81f4922c9259c178ea3"
+        }
+      ],
+      "state": "draft",
+      "binding": "7e29ca807109ddfefaf66b8bf9f01befaf66cfcecbdd06ee074c1860b940f8e0"
+    },
+    "incomplete_longer_context": {
+      "snapshot": {
+        "title": "Synthetic planning catch-up",
+        "started_at": "2026-11-25T09:00:00-05:00",
+        "attendees": [
+          "Casey",
+          "Morgan"
+        ],
+        "my_name": "Rowan",
+        "transcript": "[00:00:00] Rowan: The demo room is on the second floor.\n[00:00:05] Casey: The room's display uses a shared cable.\n[00:00:10] Morgan: Last month's slides had a blue cover.\n[00:00:15] Rowan: I will review the outline and send the sample invoice.\n[00:00:20] Casey: Would you like the outline as a PDF?\n[00:00:25] Rowan: I will not review the outline.\n[00:00:30] Morgan: The sample file is in the training folder.\n[00:00:35] Casey: I'm away on Friday.\n[00:00:40] Morgan: Were the earlier headings all lowercase?\n[00:00:45] Rowan: For sending the sample invoice: not before next Tuesday, unless the mock finance team objects.\n[00:00:50] Casey: I will check the sample checklist next week, after the dummy approval arrives.\n[00:00:55] Morgan: The placeholder logo is a grey square.\n[00:01:00] Rowan: Are the old sample notes still marked draft?\n[00:01:05] Morgan: They were still marked draft yesterday.\n[00:01:10] Casey: The lunch break was at noon last session.\n[00:01:15] Rowan: The mockup uses two columns.",
+        "handwritten_text": "Personal note: the mock room has 18 chairs.\nTask for myself: ask the dummy venue about access."
+      },
+      "snapshot_id": "af31d0d82fafee5d2e928d168c0b6364598ff1e8435c42765ac8bcb6f9747f62",
+      "generation_id": "authored-work-review-41da04cdb6b63a07fb3c0d2d68d4cccf7a0f35ccaae01f229719ed5ad4a196e4/authored_longer_context/incomplete",
+      "groups": [
+        {
+          "snapshot_id": "af31d0d82fafee5d2e928d168c0b6364598ff1e8435c42765ac8bcb6f9747f62",
+          "generation_id": "authored-work-review-41da04cdb6b63a07fb3c0d2d68d4cccf7a0f35ccaae01f229719ed5ad4a196e4/authored_longer_context/incomplete",
+          "refs": [
+            "T11"
+          ],
+          "binding": "da55ee75233a0d5577b139dddc03312ed0d7117da63ce52098392c5ff670c396"
+        }
+      ],
+      "state": "incomplete",
+      "binding": "ff72d0e9c84ece08983a2e7156d6b1971cf9747c9247a762fc23c00857f7954d"
+    },
+    "unavailable_additional": {
+      "snapshot": {
+        "title": "Synthetic release review",
+        "started_at": "2026-10-20T14:00:00-04:00",
+        "attendees": [
+          "Alex"
+        ],
+        "my_name": "Sam",
+        "transcript": "[00:00:00] Sam: I will send the draft Friday.\n[00:00:05] Them: Alex here. I will review it next week.",
+        "handwritten_text": "Personal context: the internal workshop has 40 seats.\nTask for myself: ask the venue about access."
+      },
+      "snapshot_id": "07d92402e6b90ae38333c1a76989a80df8bc8db2ed60415724c793c328cffb0b",
+      "generation_id": "authored-work-review-41da04cdb6b63a07fb3c0d2d68d4cccf7a0f35ccaae01f229719ed5ad4a196e4/additional/unavailable",
+      "groups": [],
+      "state": "unavailable",
+      "binding": "178270b77b50c8c56d2cb6c2937e7e4191bcf271ee13514efbdb3bbacba4952e"
+    }
+  }
+}
