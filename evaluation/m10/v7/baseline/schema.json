@@ -1,0 +1,81 @@
+{
+  "$defs": {
+    "ActionItem": {
+      "additionalProperties": false,
+      "properties": {
+        "owner": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Who will do it: a name, \"Them\" if no name was given, or null if unclear",
+          "title": "Owner"
+        },
+        "task": {
+          "title": "Task",
+          "type": "string"
+        },
+        "due": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "When it's due, only if the transcript says",
+          "title": "Due"
+        }
+      },
+      "required": [
+        "owner",
+        "task",
+        "due"
+      ],
+      "title": "ActionItem",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "overview": {
+      "description": "Two or three sentences: what the meeting was about",
+      "title": "Overview",
+      "type": "string"
+    },
+    "key_points": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Key Points",
+      "type": "array"
+    },
+    "decisions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Decisions",
+      "type": "array"
+    },
+    "action_items": {
+      "items": {
+        "$ref": "#/$defs/ActionItem"
+      },
+      "title": "Action Items",
+      "type": "array"
+    }
+  },
+  "required": [
+    "overview",
+    "key_points",
+    "decisions",
+    "action_items"
+  ],
+  "title": "Summary",
+  "type": "object"
+}

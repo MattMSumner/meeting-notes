@@ -1,0 +1,1 @@
+{"candidate_commit": "287d85b2229e0c03c6434337a2337bf777e5a136", "expected_manifest_sha256": "472027ef8be047233a3a8cf75630c922afe28c96b73911b844619c16b33e8bd3", "generation_id": "diagnostic-8d85c4fabc09464c855ed30758f57962", "identity": {"digest": "ad815644918f0eaab341c12b67837cc6dd4562342cdaf118f83d5d554cb37226", "model": "qwen3:30b", "version": "0.40.9"}}

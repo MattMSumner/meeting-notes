@@ -1,0 +1,22 @@
+{
+  "model_digest": "ad815644918f0eaab341c12b67837cc6dd4562342cdaf118f83d5d554cb37226",
+  "ollama_version": "0.40.9",
+  "arms": {
+    "baseline": {
+      "completed": 15,
+      "requests": 15,
+      "correction_requests": 0,
+      "errors": [],
+      "output_sha256": "480aac1b6deb8fa597c53c051eded0aceeee0402b2cce8cbc35b407cebb4dad8"
+    },
+    "proposed": {
+      "completed": 15,
+      "requests": 15,
+      "correction_requests": 0,
+      "errors": [],
+      "output_sha256": "a28ed48e4c0cdee4a6b2689ed8bdcedbd07367fbf273820397df46ac10819427"
+    }
+  },
+  "quality_scoring": "failed: critical unresolved-conflict violations in all 3 proposed conflict outputs",
+  "manual_acceptance": "User reported complete"
+}

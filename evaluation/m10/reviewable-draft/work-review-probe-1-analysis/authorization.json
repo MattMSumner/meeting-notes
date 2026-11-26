@@ -1,0 +1,31 @@
+{
+  "owner_message": "Ok, run those examples and fix CI!",
+  "base": "6698c4382c35d109c1d277a6c33241d88f59249e",
+  "cases": [
+    "partial_coordination_retracted",
+    "cancellation_with_new_task",
+    "qualified_external_timing",
+    "additional",
+    "accepted_status_answer",
+    "unit_equivalence",
+    "authored_longer_context"
+  ],
+  "generation_requests": 7,
+  "repetitions": 1,
+  "overall_seconds": 1500,
+  "per_generation_seconds": 180,
+  "per_metadata_seconds": 10,
+  "retries": 0,
+  "model": "qwen3.5:9b-q4_K_M",
+  "think": false,
+  "stream": true,
+  "temperature": 0,
+  "num_ctx": 32768,
+  "stop_on": [
+    "invalid output",
+    "identified critical selection defect",
+    "transport/identity/storage/deadline failure"
+  ],
+  "previous_allowances_closed": true,
+  "chief_review_between_requests": true
+}

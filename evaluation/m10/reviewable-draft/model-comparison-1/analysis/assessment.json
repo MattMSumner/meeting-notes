@@ -1,0 +1,36 @@
+{
+  "overall": "INCOMPLETE",
+  "name_hidden_records": 18,
+  "names_joined_after_lock": true,
+  "old_baseline_score_unchanged": true,
+  "baseline": {
+    "model": "qwen3:30b",
+    "requests_reused": 6,
+    "new_requests": 0,
+    "pass": 5,
+    "critical": 1
+  },
+  "challengers": [
+    {
+      "model": "qwen3.5:9b-q4_K_M",
+      "requested": 6,
+      "attempted": 2,
+      "pass": 1,
+      "incomplete": 5
+    },
+    {
+      "model": "gemma4:12b-it-q4_K_M",
+      "requested": 6,
+      "attempted": 3,
+      "pass": 2,
+      "incomplete": 4
+    }
+  ],
+  "attribution_verified": true,
+  "no_model_switch_justified": true,
+  "limitations": [
+    "Familiar development cases, one repetition; names hidden, not held out or perfect blinding.",
+    "Three completed challenger outputs are negative controls only; no demonstrated surviving-work/timing coverage.",
+    "Timeouts are operational incompleteness, not proof that missing replies have wrong meaning."
+  ]
+}

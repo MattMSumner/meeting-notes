@@ -1,0 +1,161 @@
+{
+  "kind": "prospective-passage-selection-criteria-1",
+  "date": "2026-11-26",
+  "owner_message": "Ok, run those examples and fix CI!",
+  "contract": "Neutral complete-source review; human resolves current work and writes/promotes tasks.",
+  "cases": [
+    {
+      "case": "partial_coordination_retracted",
+      "snapshot_id": "28bb22aec3289f904af59b746b6b9e99f9a0f6baa3809e56da172320c0d21a4c",
+      "transcript_sha256": "07998397508dfcd644c5c22ec2c9e98eab6aad804ebe48fecf3b2c9f11ebcc5a",
+      "handwritten_text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "necessary_speech_references": [
+        "T1",
+        "T2"
+      ],
+      "must": [
+        "Retain surviving invoice sending and the whole withdrawal in associated review context.",
+        "Original positive compound and later withdrawal are both literal source passages, without a current-task assertion."
+      ]
+    },
+    {
+      "case": "cancellation_with_new_task",
+      "snapshot_id": "f00eecd37ceb50fda583de7180e31fdbba01e1d3b9ea74a6942807999b66f41a",
+      "transcript_sha256": "0a70ba1c1a2714b5317c0c1c9459d9b24d439fb883973e296a7b1b816b2f20ac",
+      "handwritten_text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "necessary_speech_references": [
+        "T1"
+      ],
+      "must": [
+        "Retain the complete inline withdrawal and independent sending undertaking."
+      ]
+    },
+    {
+      "case": "qualified_external_timing",
+      "snapshot_id": "dd4fba6883488580e1614d4422c7de363f198e5d5fabe2148f37482b8c773c4f",
+      "transcript_sha256": "fb55766e7eac9ef0962228edfe0146404c56aeb08096d7887351955b4897105f",
+      "handwritten_text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "necessary_speech_references": [
+        "T1",
+        "T2"
+      ],
+      "must": [
+        "Retain sending together with the full not-before, next-Friday and finance qualifier."
+      ]
+    },
+    {
+      "case": "additional",
+      "snapshot_id": "07d92402e6b90ae38333c1a76989a80df8bc8db2ed60415724c793c328cffb0b",
+      "transcript_sha256": "1c12f628be6074e54281c9cf80eb3e47f6bd5ec4700b47f29e4aebd7338397c6",
+      "handwritten_text_sha256": "9ae4723cc0bf3e52c28d7216dddb332f9eed9f233562fc196d2c8221b1016294",
+      "necessary_speech_references": [
+        "T1",
+        "T2"
+      ],
+      "must": [
+        "Retain BOTH genuine undertakings with their recorded speaker/timing; do not imply one owner.",
+        "Keep both original writing lines separate and unchanged; writing is excluded from model input."
+      ]
+    },
+    {
+      "case": "accepted_status_answer",
+      "snapshot_id": "30273d16397f3d130489c6cf18b5da6aaad56ad876521c3bf9028f1e8fa42f50",
+      "transcript_sha256": "dea5d43a4937d7b247352bbc5b9a17d5687a68ed087d7ea4dfb3229faf80b3a8",
+      "handwritten_text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "necessary_speech_references": [],
+      "must": [
+        "Select no work groups from a question and affirmative availability answer."
+      ]
+    },
+    {
+      "case": "unit_equivalence",
+      "snapshot_id": "7231cce9e3a31ebcf930ee372fcf2a2726fad5e7b28efa82b9889fb14e7ecbe6",
+      "transcript_sha256": "53d2e747b79dac2e37b620f7facb416b448d8a070fefa6021077820ca28f87d2",
+      "handwritten_text_sha256": "41373c849669ce3e3f3cc1a19f10684a023128e192aa3b84929128df2cc5b5ec",
+      "necessary_speech_references": [],
+      "must": [
+        "Select no work groups from the price fact; preserve original writing separately without inventing a conflict."
+      ]
+    },
+    {
+      "case": "authored_longer_context",
+      "snapshot_id": "af31d0d82fafee5d2e928d168c0b6364598ff1e8435c42765ac8bcb6f9747f62",
+      "transcript_sha256": "92f205088d34053c1e43b499015c554120986c7538999835b85fbb8eb35b5f33",
+      "handwritten_text_sha256": "901fc6d720a7d8b4bb72d8f38c12d434ad645f4b271266885a8b77f63ec02db3",
+      "necessary_speech_references": [
+        "T4",
+        "T6",
+        "T10",
+        "T11"
+      ],
+      "must": [
+        "Retain original compound work, later withdrawal and full later invoice timing/finance condition in associated context.",
+        "Retain the independent checklist undertaking with full next-week/after-approval condition and distinct attribution.",
+        "Avoid the twelve distractor turns and indiscriminate transcript selection.",
+        "Preserve both original writing lines separately; do not convert writing into speech."
+      ]
+    }
+  ],
+  "source_pins": {
+    "mapping": "41da04cdb6b63a07fb3c0d2d68d4cccf7a0f35ccaae01f229719ed5ad4a196e4",
+    "original_inputs": "d2c1fc42a6d6e59ad4fd766e226862d1f137e5cd1002b6984a94abcf2bc9d35f",
+    "longer_input": "f84fa2480b11b493ad18639f0f18e1565f47e6e0d2f6d03934a1bf6530d7da1e",
+    "source_annex": "50722c65c6488ff06ccb0e3121494bb1d74890569e525cc26dee936992a3c206"
+  },
+  "critical": [
+    "Missing a genuine independent spoken undertaking from the selected view.",
+    "Omitting or separating withdrawal/timing/condition context so the selected view materially misrepresents the associated work.",
+    "Misleading grouping that materially conflates undertakings/attribution or attaches a condition to unrelated work.",
+    "Changed source meaning, unsupported task/currentness/owner/deadline assertions, or writing attributed as speech.",
+    "Whole-transcript selection or generic warnings used to substitute for focused useful work coverage."
+  ],
+  "noncritical": [
+    "Irrelevant fact/availability/unaccepted-request selection, redundant groups, unnecessary overlap or excessive context without a material meaning defect.",
+    "Record negative-control failures and review burden explicitly; they do not silently become passing criteria."
+  ],
+  "interpretation": [
+    "Required references are source-based coverage anchors, not a demand to reproduce the authored group arrays exactly.",
+    "Judge grouping in actual rendered context; different useful groupings are allowed, with all necessary association and independent work retained.",
+    "Source integrity and schema validity cannot prove relevance, grouping, coverage or usefulness.",
+    "Selecting both original work and withdrawal is appropriate for neutral human review; it is not the old suggested-current-action contract.",
+    "The full transcript annex and generic notices cannot rescue omitted selected work.",
+    "One group with multiple complete turns is allowed if it does not imply one task or owner or materially obscure relationships."
+  ],
+  "stopping_rule": "Chief assesses each saved valid rendered output before advancing; stop on first invalid output, identified critical selection defect, technical/identity/storage/deadline failure. No retry, resumption, replacement or unused-slot transfer.",
+  "limits": [
+    "Seven familiar synthetic examples; longer input is Chief-authored, not held out.",
+    "One repetition; no reliability, saved effort, production/full-draft/full40/M10 acceptance or model-switch claim.",
+    "Prior results and grades remain unchanged."
+  ],
+  "request_budget": {
+    "owner_message": "Ok, run those examples and fix CI!",
+    "base": "6698c4382c35d109c1d277a6c33241d88f59249e",
+    "cases": [
+      "partial_coordination_retracted",
+      "cancellation_with_new_task",
+      "qualified_external_timing",
+      "additional",
+      "accepted_status_answer",
+      "unit_equivalence",
+      "authored_longer_context"
+    ],
+    "generation_requests": 7,
+    "repetitions": 1,
+    "overall_seconds": 1500,
+    "per_generation_seconds": 180,
+    "per_metadata_seconds": 10,
+    "retries": 0,
+    "model": "qwen3.5:9b-q4_K_M",
+    "think": false,
+    "stream": true,
+    "temperature": 0,
+    "num_ctx": 32768,
+    "stop_on": [
+      "invalid output",
+      "identified critical selection defect",
+      "transport/identity/storage/deadline failure"
+    ],
+    "previous_allowances_closed": true,
+    "chief_review_between_requests": true
+  }
+}

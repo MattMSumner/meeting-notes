@@ -1,0 +1,6924 @@
+{
+  "empty": {
+    "comparison": null,
+    "summary": {
+      "$defs": {
+        "Action": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "timing": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Timing"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "timing"
+          ],
+          "title": "Action",
+          "type": "object"
+        },
+        "Dispute": {
+          "additionalProperties": false,
+          "properties": {
+            "topic": {
+              "title": "Topic",
+              "type": "string"
+            },
+            "transcript": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Transcript",
+              "type": "array"
+            },
+            "notes": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 0,
+              "title": "Notes",
+              "type": "array",
+              "maxItems": 0
+            }
+          },
+          "required": [
+            "topic",
+            "transcript",
+            "notes"
+          ],
+          "title": "Dispute",
+          "type": "object"
+        },
+        "SupportedText": {
+          "additionalProperties": false,
+          "properties": {
+            "text": {
+              "title": "Text",
+              "type": "string"
+            },
+            "sources": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Sources",
+              "type": "array"
+            }
+          },
+          "required": [
+            "text",
+            "sources"
+          ],
+          "title": "SupportedText",
+          "type": "object"
+        },
+        "Timing": {
+          "additionalProperties": false,
+          "properties": {
+            "source_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "quote": {
+              "description": "Exact timing phrase from source_id",
+              "minLength": 1,
+              "title": "Quote",
+              "type": "string"
+            }
+          },
+          "required": [
+            "source_id",
+            "quote"
+          ],
+          "title": "Timing",
+          "type": "object"
+        },
+        "TimingUpdate": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "source_ids": {
+              "description": "Later transcript statements clarifying or revising that action's timing",
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Source Ids",
+              "type": "array"
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "source_ids"
+          ],
+          "title": "TimingUpdate",
+          "type": "object"
+        },
+        "SourceID": {
+          "type": "string",
+          "enum": [
+            "T1",
+            "T2",
+            "T3",
+            "T4"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "overview": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Overview",
+          "type": "array"
+        },
+        "key_points": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Key Points",
+          "type": "array"
+        },
+        "decisions": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Decisions",
+          "type": "array"
+        },
+        "action_items": {
+          "items": {
+            "$ref": "#/$defs/Action"
+          },
+          "title": "Action Items",
+          "type": "array"
+        },
+        "timing_updates": {
+          "items": {
+            "$ref": "#/$defs/TimingUpdate"
+          },
+          "title": "Timing Updates",
+          "type": "array"
+        },
+        "notes_context": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Notes Context",
+          "type": "array",
+          "maxItems": 0
+        },
+        "conflicts": {
+          "items": {
+            "$ref": "#/$defs/Dispute"
+          },
+          "title": "Conflicts",
+          "type": "array",
+          "maxItems": 0
+        }
+      },
+      "required": [
+        "overview",
+        "key_points",
+        "decisions",
+        "action_items",
+        "timing_updates",
+        "notes_context",
+        "conflicts"
+      ],
+      "title": "Draft",
+      "type": "object"
+    }
+  },
+  "sparse": {
+    "comparison": {
+      "$defs": {
+        "Account": {
+          "additionalProperties": false,
+          "properties": {
+            "source_id": {
+              "type": "string",
+              "enum": [
+                "T1",
+                "T2",
+                "T3",
+                "T4",
+                "T5",
+                "N1"
+              ]
+            },
+            "quote": {
+              "minLength": 1,
+              "title": "Quote",
+              "type": "string"
+            },
+            "kind": {
+              "enum": [
+                "fact",
+                "commitment",
+                "context",
+                "request"
+              ],
+              "title": "Kind",
+              "type": "string"
+            },
+            "meaning": {
+              "$ref": "#/$defs/Meaning"
+            }
+          },
+          "required": [
+            "source_id",
+            "quote",
+            "kind",
+            "meaning"
+          ],
+          "title": "Account",
+          "type": "object"
+        },
+        "Claim": {
+          "additionalProperties": false,
+          "properties": {
+            "note": {
+              "$ref": "#/$defs/Account"
+            },
+            "transcript": {
+              "items": {
+                "$ref": "#/$defs/Account"
+              },
+              "title": "Transcript",
+              "type": "array"
+            },
+            "outcome": {
+              "enum": [
+                "consistent",
+                "additional",
+                "conflicting",
+                "uncertain"
+              ],
+              "title": "Outcome",
+              "type": "string"
+            },
+            "reason": {
+              "minLength": 1,
+              "title": "Reason",
+              "type": "string"
+            }
+          },
+          "required": [
+            "note",
+            "transcript",
+            "outcome",
+            "reason"
+          ],
+          "title": "Claim",
+          "type": "object"
+        },
+        "Meaning": {
+          "additionalProperties": false,
+          "properties": {
+            "subject": {
+              "minLength": 1,
+              "title": "Subject",
+              "type": "string"
+            },
+            "quantity": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Quantity"
+            },
+            "unit": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Unit"
+            },
+            "period": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Period"
+            },
+            "scope": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Scope"
+            },
+            "status": {
+              "description": "Preserve estimate/proposal/approval/uncertainty",
+              "minLength": 1,
+              "title": "Status",
+              "type": "string"
+            }
+          },
+          "required": [
+            "subject",
+            "quantity",
+            "unit",
+            "period",
+            "scope",
+            "status"
+          ],
+          "title": "Meaning",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "claims": {
+          "items": {
+            "$ref": "#/$defs/Claim"
+          },
+          "title": "Claims",
+          "type": "array"
+        }
+      },
+      "required": [
+        "claims"
+      ],
+      "title": "Comparison",
+      "type": "object"
+    },
+    "summary": {
+      "$defs": {
+        "Action": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "timing": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Timing"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "timing"
+          ],
+          "title": "Action",
+          "type": "object"
+        },
+        "Dispute": {
+          "additionalProperties": false,
+          "properties": {
+            "topic": {
+              "title": "Topic",
+              "type": "string"
+            },
+            "transcript": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Transcript",
+              "type": "array"
+            },
+            "notes": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Notes",
+              "type": "array"
+            }
+          },
+          "required": [
+            "topic",
+            "transcript",
+            "notes"
+          ],
+          "title": "Dispute",
+          "type": "object"
+        },
+        "SupportedText": {
+          "additionalProperties": false,
+          "properties": {
+            "text": {
+              "title": "Text",
+              "type": "string"
+            },
+            "sources": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Sources",
+              "type": "array"
+            }
+          },
+          "required": [
+            "text",
+            "sources"
+          ],
+          "title": "SupportedText",
+          "type": "object"
+        },
+        "Timing": {
+          "additionalProperties": false,
+          "properties": {
+            "source_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "quote": {
+              "description": "Exact timing phrase from source_id",
+              "minLength": 1,
+              "title": "Quote",
+              "type": "string"
+            }
+          },
+          "required": [
+            "source_id",
+            "quote"
+          ],
+          "title": "Timing",
+          "type": "object"
+        },
+        "TimingUpdate": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "source_ids": {
+              "description": "Later transcript statements clarifying or revising that action's timing",
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Source Ids",
+              "type": "array"
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "source_ids"
+          ],
+          "title": "TimingUpdate",
+          "type": "object"
+        },
+        "SourceID": {
+          "type": "string",
+          "enum": [
+            "T1",
+            "T2",
+            "T3",
+            "T4",
+            "T5",
+            "N1"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "overview": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Overview",
+          "type": "array"
+        },
+        "key_points": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Key Points",
+          "type": "array"
+        },
+        "decisions": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Decisions",
+          "type": "array"
+        },
+        "action_items": {
+          "items": {
+            "$ref": "#/$defs/Action"
+          },
+          "title": "Action Items",
+          "type": "array"
+        },
+        "timing_updates": {
+          "items": {
+            "$ref": "#/$defs/TimingUpdate"
+          },
+          "title": "Timing Updates",
+          "type": "array"
+        },
+        "notes_context": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Notes Context",
+          "type": "array"
+        },
+        "conflicts": {
+          "items": {
+            "$ref": "#/$defs/Dispute"
+          },
+          "title": "Conflicts",
+          "type": "array",
+          "maxItems": 0
+        }
+      },
+      "required": [
+        "overview",
+        "key_points",
+        "decisions",
+        "action_items",
+        "timing_updates",
+        "notes_context",
+        "conflicts"
+      ],
+      "title": "Draft",
+      "type": "object"
+    }
+  },
+  "additional": {
+    "comparison": {
+      "$defs": {
+        "Account": {
+          "additionalProperties": false,
+          "properties": {
+            "source_id": {
+              "type": "string",
+              "enum": [
+                "T1",
+                "T2",
+                "T3",
+                "N1",
+                "N2"
+              ]
+            },
+            "quote": {
+              "minLength": 1,
+              "title": "Quote",
+              "type": "string"
+            },
+            "kind": {
+              "enum": [
+                "fact",
+                "commitment",
+                "context",
+                "request"
+              ],
+              "title": "Kind",
+              "type": "string"
+            },
+            "meaning": {
+              "$ref": "#/$defs/Meaning"
+            }
+          },
+          "required": [
+            "source_id",
+            "quote",
+            "kind",
+            "meaning"
+          ],
+          "title": "Account",
+          "type": "object"
+        },
+        "Claim": {
+          "additionalProperties": false,
+          "properties": {
+            "note": {
+              "$ref": "#/$defs/Account"
+            },
+            "transcript": {
+              "items": {
+                "$ref": "#/$defs/Account"
+              },
+              "title": "Transcript",
+              "type": "array"
+            },
+            "outcome": {
+              "enum": [
+                "consistent",
+                "additional",
+                "conflicting",
+                "uncertain"
+              ],
+              "title": "Outcome",
+              "type": "string"
+            },
+            "reason": {
+              "minLength": 1,
+              "title": "Reason",
+              "type": "string"
+            }
+          },
+          "required": [
+            "note",
+            "transcript",
+            "outcome",
+            "reason"
+          ],
+          "title": "Claim",
+          "type": "object"
+        },
+        "Meaning": {
+          "additionalProperties": false,
+          "properties": {
+            "subject": {
+              "minLength": 1,
+              "title": "Subject",
+              "type": "string"
+            },
+            "quantity": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Quantity"
+            },
+            "unit": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Unit"
+            },
+            "period": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Period"
+            },
+            "scope": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Scope"
+            },
+            "status": {
+              "description": "Preserve estimate/proposal/approval/uncertainty",
+              "minLength": 1,
+              "title": "Status",
+              "type": "string"
+            }
+          },
+          "required": [
+            "subject",
+            "quantity",
+            "unit",
+            "period",
+            "scope",
+            "status"
+          ],
+          "title": "Meaning",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "claims": {
+          "items": {
+            "$ref": "#/$defs/Claim"
+          },
+          "title": "Claims",
+          "type": "array"
+        }
+      },
+      "required": [
+        "claims"
+      ],
+      "title": "Comparison",
+      "type": "object"
+    },
+    "summary": {
+      "$defs": {
+        "Action": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "timing": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Timing"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "timing"
+          ],
+          "title": "Action",
+          "type": "object"
+        },
+        "Dispute": {
+          "additionalProperties": false,
+          "properties": {
+            "topic": {
+              "title": "Topic",
+              "type": "string"
+            },
+            "transcript": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Transcript",
+              "type": "array"
+            },
+            "notes": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Notes",
+              "type": "array"
+            }
+          },
+          "required": [
+            "topic",
+            "transcript",
+            "notes"
+          ],
+          "title": "Dispute",
+          "type": "object"
+        },
+        "SupportedText": {
+          "additionalProperties": false,
+          "properties": {
+            "text": {
+              "title": "Text",
+              "type": "string"
+            },
+            "sources": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Sources",
+              "type": "array"
+            }
+          },
+          "required": [
+            "text",
+            "sources"
+          ],
+          "title": "SupportedText",
+          "type": "object"
+        },
+        "Timing": {
+          "additionalProperties": false,
+          "properties": {
+            "source_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "quote": {
+              "description": "Exact timing phrase from source_id",
+              "minLength": 1,
+              "title": "Quote",
+              "type": "string"
+            }
+          },
+          "required": [
+            "source_id",
+            "quote"
+          ],
+          "title": "Timing",
+          "type": "object"
+        },
+        "TimingUpdate": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "source_ids": {
+              "description": "Later transcript statements clarifying or revising that action's timing",
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Source Ids",
+              "type": "array"
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "source_ids"
+          ],
+          "title": "TimingUpdate",
+          "type": "object"
+        },
+        "SourceID": {
+          "type": "string",
+          "enum": [
+            "T1",
+            "T2",
+            "T3",
+            "N1",
+            "N2"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "overview": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Overview",
+          "type": "array"
+        },
+        "key_points": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Key Points",
+          "type": "array"
+        },
+        "decisions": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Decisions",
+          "type": "array"
+        },
+        "action_items": {
+          "items": {
+            "$ref": "#/$defs/Action"
+          },
+          "title": "Action Items",
+          "type": "array"
+        },
+        "timing_updates": {
+          "items": {
+            "$ref": "#/$defs/TimingUpdate"
+          },
+          "title": "Timing Updates",
+          "type": "array"
+        },
+        "notes_context": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Notes Context",
+          "type": "array"
+        },
+        "conflicts": {
+          "items": {
+            "$ref": "#/$defs/Dispute"
+          },
+          "title": "Conflicts",
+          "type": "array",
+          "maxItems": 0
+        }
+      },
+      "required": [
+        "overview",
+        "key_points",
+        "decisions",
+        "action_items",
+        "timing_updates",
+        "notes_context",
+        "conflicts"
+      ],
+      "title": "Draft",
+      "type": "object"
+    }
+  },
+  "conflicting": {
+    "comparison": {
+      "$defs": {
+        "Account": {
+          "additionalProperties": false,
+          "properties": {
+            "source_id": {
+              "type": "string",
+              "enum": [
+                "T1",
+                "T2",
+                "T3",
+                "T4",
+                "T5",
+                "N1",
+                "N2"
+              ]
+            },
+            "quote": {
+              "minLength": 1,
+              "title": "Quote",
+              "type": "string"
+            },
+            "kind": {
+              "enum": [
+                "fact",
+                "commitment",
+                "context",
+                "request"
+              ],
+              "title": "Kind",
+              "type": "string"
+            },
+            "meaning": {
+              "$ref": "#/$defs/Meaning"
+            }
+          },
+          "required": [
+            "source_id",
+            "quote",
+            "kind",
+            "meaning"
+          ],
+          "title": "Account",
+          "type": "object"
+        },
+        "Claim": {
+          "additionalProperties": false,
+          "properties": {
+            "note": {
+              "$ref": "#/$defs/Account"
+            },
+            "transcript": {
+              "items": {
+                "$ref": "#/$defs/Account"
+              },
+              "title": "Transcript",
+              "type": "array"
+            },
+            "outcome": {
+              "enum": [
+                "consistent",
+                "additional",
+                "conflicting",
+                "uncertain"
+              ],
+              "title": "Outcome",
+              "type": "string"
+            },
+            "reason": {
+              "minLength": 1,
+              "title": "Reason",
+              "type": "string"
+            }
+          },
+          "required": [
+            "note",
+            "transcript",
+            "outcome",
+            "reason"
+          ],
+          "title": "Claim",
+          "type": "object"
+        },
+        "Meaning": {
+          "additionalProperties": false,
+          "properties": {
+            "subject": {
+              "minLength": 1,
+              "title": "Subject",
+              "type": "string"
+            },
+            "quantity": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Quantity"
+            },
+            "unit": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Unit"
+            },
+            "period": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Period"
+            },
+            "scope": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Scope"
+            },
+            "status": {
+              "description": "Preserve estimate/proposal/approval/uncertainty",
+              "minLength": 1,
+              "title": "Status",
+              "type": "string"
+            }
+          },
+          "required": [
+            "subject",
+            "quantity",
+            "unit",
+            "period",
+            "scope",
+            "status"
+          ],
+          "title": "Meaning",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "claims": {
+          "items": {
+            "$ref": "#/$defs/Claim"
+          },
+          "title": "Claims",
+          "type": "array"
+        }
+      },
+      "required": [
+        "claims"
+      ],
+      "title": "Comparison",
+      "type": "object"
+    },
+    "summary": {
+      "$defs": {
+        "Action": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "timing": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Timing"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "timing"
+          ],
+          "title": "Action",
+          "type": "object"
+        },
+        "Dispute": {
+          "additionalProperties": false,
+          "properties": {
+            "topic": {
+              "title": "Topic",
+              "type": "string"
+            },
+            "transcript": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Transcript",
+              "type": "array"
+            },
+            "notes": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Notes",
+              "type": "array"
+            }
+          },
+          "required": [
+            "topic",
+            "transcript",
+            "notes"
+          ],
+          "title": "Dispute",
+          "type": "object"
+        },
+        "SupportedText": {
+          "additionalProperties": false,
+          "properties": {
+            "text": {
+              "title": "Text",
+              "type": "string"
+            },
+            "sources": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Sources",
+              "type": "array"
+            }
+          },
+          "required": [
+            "text",
+            "sources"
+          ],
+          "title": "SupportedText",
+          "type": "object"
+        },
+        "Timing": {
+          "additionalProperties": false,
+          "properties": {
+            "source_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "quote": {
+              "description": "Exact timing phrase from source_id",
+              "minLength": 1,
+              "title": "Quote",
+              "type": "string"
+            }
+          },
+          "required": [
+            "source_id",
+            "quote"
+          ],
+          "title": "Timing",
+          "type": "object"
+        },
+        "TimingUpdate": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "source_ids": {
+              "description": "Later transcript statements clarifying or revising that action's timing",
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Source Ids",
+              "type": "array"
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "source_ids"
+          ],
+          "title": "TimingUpdate",
+          "type": "object"
+        },
+        "SourceID": {
+          "type": "string",
+          "enum": [
+            "T1",
+            "T2",
+            "T3",
+            "T4",
+            "T5",
+            "N1",
+            "N2"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "overview": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Overview",
+          "type": "array"
+        },
+        "key_points": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Key Points",
+          "type": "array"
+        },
+        "decisions": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Decisions",
+          "type": "array"
+        },
+        "action_items": {
+          "items": {
+            "$ref": "#/$defs/Action"
+          },
+          "title": "Action Items",
+          "type": "array"
+        },
+        "timing_updates": {
+          "items": {
+            "$ref": "#/$defs/TimingUpdate"
+          },
+          "title": "Timing Updates",
+          "type": "array"
+        },
+        "notes_context": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Notes Context",
+          "type": "array"
+        },
+        "conflicts": {
+          "items": {
+            "$ref": "#/$defs/Dispute"
+          },
+          "title": "Conflicts",
+          "type": "array",
+          "maxItems": 0
+        }
+      },
+      "required": [
+        "overview",
+        "key_points",
+        "decisions",
+        "action_items",
+        "timing_updates",
+        "notes_context",
+        "conflicts"
+      ],
+      "title": "Draft",
+      "type": "object"
+    }
+  },
+  "ambiguous_dates": {
+    "comparison": {
+      "$defs": {
+        "Account": {
+          "additionalProperties": false,
+          "properties": {
+            "source_id": {
+              "type": "string",
+              "enum": [
+                "T1",
+                "T2",
+                "T3",
+                "T4",
+                "N1",
+                "N2"
+              ]
+            },
+            "quote": {
+              "minLength": 1,
+              "title": "Quote",
+              "type": "string"
+            },
+            "kind": {
+              "enum": [
+                "fact",
+                "commitment",
+                "context",
+                "request"
+              ],
+              "title": "Kind",
+              "type": "string"
+            },
+            "meaning": {
+              "$ref": "#/$defs/Meaning"
+            }
+          },
+          "required": [
+            "source_id",
+            "quote",
+            "kind",
+            "meaning"
+          ],
+          "title": "Account",
+          "type": "object"
+        },
+        "Claim": {
+          "additionalProperties": false,
+          "properties": {
+            "note": {
+              "$ref": "#/$defs/Account"
+            },
+            "transcript": {
+              "items": {
+                "$ref": "#/$defs/Account"
+              },
+              "title": "Transcript",
+              "type": "array"
+            },
+            "outcome": {
+              "enum": [
+                "consistent",
+                "additional",
+                "conflicting",
+                "uncertain"
+              ],
+              "title": "Outcome",
+              "type": "string"
+            },
+            "reason": {
+              "minLength": 1,
+              "title": "Reason",
+              "type": "string"
+            }
+          },
+          "required": [
+            "note",
+            "transcript",
+            "outcome",
+            "reason"
+          ],
+          "title": "Claim",
+          "type": "object"
+        },
+        "Meaning": {
+          "additionalProperties": false,
+          "properties": {
+            "subject": {
+              "minLength": 1,
+              "title": "Subject",
+              "type": "string"
+            },
+            "quantity": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Quantity"
+            },
+            "unit": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Unit"
+            },
+            "period": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Period"
+            },
+            "scope": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Scope"
+            },
+            "status": {
+              "description": "Preserve estimate/proposal/approval/uncertainty",
+              "minLength": 1,
+              "title": "Status",
+              "type": "string"
+            }
+          },
+          "required": [
+            "subject",
+            "quantity",
+            "unit",
+            "period",
+            "scope",
+            "status"
+          ],
+          "title": "Meaning",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "claims": {
+          "items": {
+            "$ref": "#/$defs/Claim"
+          },
+          "title": "Claims",
+          "type": "array"
+        }
+      },
+      "required": [
+        "claims"
+      ],
+      "title": "Comparison",
+      "type": "object"
+    },
+    "summary": {
+      "$defs": {
+        "Action": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "timing": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Timing"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "timing"
+          ],
+          "title": "Action",
+          "type": "object"
+        },
+        "Dispute": {
+          "additionalProperties": false,
+          "properties": {
+            "topic": {
+              "title": "Topic",
+              "type": "string"
+            },
+            "transcript": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Transcript",
+              "type": "array"
+            },
+            "notes": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Notes",
+              "type": "array"
+            }
+          },
+          "required": [
+            "topic",
+            "transcript",
+            "notes"
+          ],
+          "title": "Dispute",
+          "type": "object"
+        },
+        "SupportedText": {
+          "additionalProperties": false,
+          "properties": {
+            "text": {
+              "title": "Text",
+              "type": "string"
+            },
+            "sources": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Sources",
+              "type": "array"
+            }
+          },
+          "required": [
+            "text",
+            "sources"
+          ],
+          "title": "SupportedText",
+          "type": "object"
+        },
+        "Timing": {
+          "additionalProperties": false,
+          "properties": {
+            "source_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "quote": {
+              "description": "Exact timing phrase from source_id",
+              "minLength": 1,
+              "title": "Quote",
+              "type": "string"
+            }
+          },
+          "required": [
+            "source_id",
+            "quote"
+          ],
+          "title": "Timing",
+          "type": "object"
+        },
+        "TimingUpdate": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "source_ids": {
+              "description": "Later transcript statements clarifying or revising that action's timing",
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Source Ids",
+              "type": "array"
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "source_ids"
+          ],
+          "title": "TimingUpdate",
+          "type": "object"
+        },
+        "SourceID": {
+          "type": "string",
+          "enum": [
+            "T1",
+            "T2",
+            "T3",
+            "T4",
+            "N1",
+            "N2"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "overview": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Overview",
+          "type": "array"
+        },
+        "key_points": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Key Points",
+          "type": "array"
+        },
+        "decisions": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Decisions",
+          "type": "array"
+        },
+        "action_items": {
+          "items": {
+            "$ref": "#/$defs/Action"
+          },
+          "title": "Action Items",
+          "type": "array"
+        },
+        "timing_updates": {
+          "items": {
+            "$ref": "#/$defs/TimingUpdate"
+          },
+          "title": "Timing Updates",
+          "type": "array"
+        },
+        "notes_context": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Notes Context",
+          "type": "array"
+        },
+        "conflicts": {
+          "items": {
+            "$ref": "#/$defs/Dispute"
+          },
+          "title": "Conflicts",
+          "type": "array",
+          "maxItems": 0
+        }
+      },
+      "required": [
+        "overview",
+        "key_points",
+        "decisions",
+        "action_items",
+        "timing_updates",
+        "notes_context",
+        "conflicts"
+      ],
+      "title": "Draft",
+      "type": "object"
+    }
+  },
+  "same_speaker_tasks": {
+    "comparison": null,
+    "summary": {
+      "$defs": {
+        "Action": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "timing": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Timing"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "timing"
+          ],
+          "title": "Action",
+          "type": "object"
+        },
+        "Dispute": {
+          "additionalProperties": false,
+          "properties": {
+            "topic": {
+              "title": "Topic",
+              "type": "string"
+            },
+            "transcript": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Transcript",
+              "type": "array"
+            },
+            "notes": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 0,
+              "title": "Notes",
+              "type": "array",
+              "maxItems": 0
+            }
+          },
+          "required": [
+            "topic",
+            "transcript",
+            "notes"
+          ],
+          "title": "Dispute",
+          "type": "object"
+        },
+        "SupportedText": {
+          "additionalProperties": false,
+          "properties": {
+            "text": {
+              "title": "Text",
+              "type": "string"
+            },
+            "sources": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Sources",
+              "type": "array"
+            }
+          },
+          "required": [
+            "text",
+            "sources"
+          ],
+          "title": "SupportedText",
+          "type": "object"
+        },
+        "Timing": {
+          "additionalProperties": false,
+          "properties": {
+            "source_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "quote": {
+              "description": "Exact timing phrase from source_id",
+              "minLength": 1,
+              "title": "Quote",
+              "type": "string"
+            }
+          },
+          "required": [
+            "source_id",
+            "quote"
+          ],
+          "title": "Timing",
+          "type": "object"
+        },
+        "TimingUpdate": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "source_ids": {
+              "description": "Later transcript statements clarifying or revising that action's timing",
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Source Ids",
+              "type": "array"
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "source_ids"
+          ],
+          "title": "TimingUpdate",
+          "type": "object"
+        },
+        "SourceID": {
+          "type": "string",
+          "enum": [
+            "T1",
+            "T2"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "overview": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Overview",
+          "type": "array"
+        },
+        "key_points": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Key Points",
+          "type": "array"
+        },
+        "decisions": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Decisions",
+          "type": "array"
+        },
+        "action_items": {
+          "items": {
+            "$ref": "#/$defs/Action"
+          },
+          "title": "Action Items",
+          "type": "array"
+        },
+        "timing_updates": {
+          "items": {
+            "$ref": "#/$defs/TimingUpdate"
+          },
+          "title": "Timing Updates",
+          "type": "array"
+        },
+        "notes_context": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Notes Context",
+          "type": "array",
+          "maxItems": 0
+        },
+        "conflicts": {
+          "items": {
+            "$ref": "#/$defs/Dispute"
+          },
+          "title": "Conflicts",
+          "type": "array",
+          "maxItems": 0
+        }
+      },
+      "required": [
+        "overview",
+        "key_points",
+        "decisions",
+        "action_items",
+        "timing_updates",
+        "notes_context",
+        "conflicts"
+      ],
+      "title": "Draft",
+      "type": "object"
+    }
+  },
+  "coordinated_tasks": {
+    "comparison": null,
+    "summary": {
+      "$defs": {
+        "Action": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "timing": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Timing"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "timing"
+          ],
+          "title": "Action",
+          "type": "object"
+        },
+        "Dispute": {
+          "additionalProperties": false,
+          "properties": {
+            "topic": {
+              "title": "Topic",
+              "type": "string"
+            },
+            "transcript": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Transcript",
+              "type": "array"
+            },
+            "notes": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 0,
+              "title": "Notes",
+              "type": "array",
+              "maxItems": 0
+            }
+          },
+          "required": [
+            "topic",
+            "transcript",
+            "notes"
+          ],
+          "title": "Dispute",
+          "type": "object"
+        },
+        "SupportedText": {
+          "additionalProperties": false,
+          "properties": {
+            "text": {
+              "title": "Text",
+              "type": "string"
+            },
+            "sources": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Sources",
+              "type": "array"
+            }
+          },
+          "required": [
+            "text",
+            "sources"
+          ],
+          "title": "SupportedText",
+          "type": "object"
+        },
+        "Timing": {
+          "additionalProperties": false,
+          "properties": {
+            "source_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "quote": {
+              "description": "Exact timing phrase from source_id",
+              "minLength": 1,
+              "title": "Quote",
+              "type": "string"
+            }
+          },
+          "required": [
+            "source_id",
+            "quote"
+          ],
+          "title": "Timing",
+          "type": "object"
+        },
+        "TimingUpdate": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "source_ids": {
+              "description": "Later transcript statements clarifying or revising that action's timing",
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Source Ids",
+              "type": "array"
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "source_ids"
+          ],
+          "title": "TimingUpdate",
+          "type": "object"
+        },
+        "SourceID": {
+          "type": "string",
+          "enum": [
+            "T1"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "overview": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Overview",
+          "type": "array"
+        },
+        "key_points": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Key Points",
+          "type": "array"
+        },
+        "decisions": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Decisions",
+          "type": "array"
+        },
+        "action_items": {
+          "items": {
+            "$ref": "#/$defs/Action"
+          },
+          "title": "Action Items",
+          "type": "array"
+        },
+        "timing_updates": {
+          "items": {
+            "$ref": "#/$defs/TimingUpdate"
+          },
+          "title": "Timing Updates",
+          "type": "array"
+        },
+        "notes_context": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Notes Context",
+          "type": "array",
+          "maxItems": 0
+        },
+        "conflicts": {
+          "items": {
+            "$ref": "#/$defs/Dispute"
+          },
+          "title": "Conflicts",
+          "type": "array",
+          "maxItems": 0
+        }
+      },
+      "required": [
+        "overview",
+        "key_points",
+        "decisions",
+        "action_items",
+        "timing_updates",
+        "notes_context",
+        "conflicts"
+      ],
+      "title": "Draft",
+      "type": "object"
+    }
+  },
+  "later_timing": {
+    "comparison": null,
+    "summary": {
+      "$defs": {
+        "Action": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "timing": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Timing"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "timing"
+          ],
+          "title": "Action",
+          "type": "object"
+        },
+        "Dispute": {
+          "additionalProperties": false,
+          "properties": {
+            "topic": {
+              "title": "Topic",
+              "type": "string"
+            },
+            "transcript": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Transcript",
+              "type": "array"
+            },
+            "notes": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 0,
+              "title": "Notes",
+              "type": "array",
+              "maxItems": 0
+            }
+          },
+          "required": [
+            "topic",
+            "transcript",
+            "notes"
+          ],
+          "title": "Dispute",
+          "type": "object"
+        },
+        "SupportedText": {
+          "additionalProperties": false,
+          "properties": {
+            "text": {
+              "title": "Text",
+              "type": "string"
+            },
+            "sources": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Sources",
+              "type": "array"
+            }
+          },
+          "required": [
+            "text",
+            "sources"
+          ],
+          "title": "SupportedText",
+          "type": "object"
+        },
+        "Timing": {
+          "additionalProperties": false,
+          "properties": {
+            "source_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "quote": {
+              "description": "Exact timing phrase from source_id",
+              "minLength": 1,
+              "title": "Quote",
+              "type": "string"
+            }
+          },
+          "required": [
+            "source_id",
+            "quote"
+          ],
+          "title": "Timing",
+          "type": "object"
+        },
+        "TimingUpdate": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "source_ids": {
+              "description": "Later transcript statements clarifying or revising that action's timing",
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Source Ids",
+              "type": "array"
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "source_ids"
+          ],
+          "title": "TimingUpdate",
+          "type": "object"
+        },
+        "SourceID": {
+          "type": "string",
+          "enum": [
+            "T1",
+            "T2",
+            "T3"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "overview": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Overview",
+          "type": "array"
+        },
+        "key_points": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Key Points",
+          "type": "array"
+        },
+        "decisions": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Decisions",
+          "type": "array"
+        },
+        "action_items": {
+          "items": {
+            "$ref": "#/$defs/Action"
+          },
+          "title": "Action Items",
+          "type": "array"
+        },
+        "timing_updates": {
+          "items": {
+            "$ref": "#/$defs/TimingUpdate"
+          },
+          "title": "Timing Updates",
+          "type": "array"
+        },
+        "notes_context": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Notes Context",
+          "type": "array",
+          "maxItems": 0
+        },
+        "conflicts": {
+          "items": {
+            "$ref": "#/$defs/Dispute"
+          },
+          "title": "Conflicts",
+          "type": "array",
+          "maxItems": 0
+        }
+      },
+      "required": [
+        "overview",
+        "key_points",
+        "decisions",
+        "action_items",
+        "timing_updates",
+        "notes_context",
+        "conflicts"
+      ],
+      "title": "Draft",
+      "type": "object"
+    }
+  },
+  "revised_timing": {
+    "comparison": null,
+    "summary": {
+      "$defs": {
+        "Action": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "timing": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Timing"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "timing"
+          ],
+          "title": "Action",
+          "type": "object"
+        },
+        "Dispute": {
+          "additionalProperties": false,
+          "properties": {
+            "topic": {
+              "title": "Topic",
+              "type": "string"
+            },
+            "transcript": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Transcript",
+              "type": "array"
+            },
+            "notes": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 0,
+              "title": "Notes",
+              "type": "array",
+              "maxItems": 0
+            }
+          },
+          "required": [
+            "topic",
+            "transcript",
+            "notes"
+          ],
+          "title": "Dispute",
+          "type": "object"
+        },
+        "SupportedText": {
+          "additionalProperties": false,
+          "properties": {
+            "text": {
+              "title": "Text",
+              "type": "string"
+            },
+            "sources": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Sources",
+              "type": "array"
+            }
+          },
+          "required": [
+            "text",
+            "sources"
+          ],
+          "title": "SupportedText",
+          "type": "object"
+        },
+        "Timing": {
+          "additionalProperties": false,
+          "properties": {
+            "source_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "quote": {
+              "description": "Exact timing phrase from source_id",
+              "minLength": 1,
+              "title": "Quote",
+              "type": "string"
+            }
+          },
+          "required": [
+            "source_id",
+            "quote"
+          ],
+          "title": "Timing",
+          "type": "object"
+        },
+        "TimingUpdate": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "source_ids": {
+              "description": "Later transcript statements clarifying or revising that action's timing",
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Source Ids",
+              "type": "array"
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "source_ids"
+          ],
+          "title": "TimingUpdate",
+          "type": "object"
+        },
+        "SourceID": {
+          "type": "string",
+          "enum": [
+            "T1",
+            "T2",
+            "T3"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "overview": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Overview",
+          "type": "array"
+        },
+        "key_points": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Key Points",
+          "type": "array"
+        },
+        "decisions": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Decisions",
+          "type": "array"
+        },
+        "action_items": {
+          "items": {
+            "$ref": "#/$defs/Action"
+          },
+          "title": "Action Items",
+          "type": "array"
+        },
+        "timing_updates": {
+          "items": {
+            "$ref": "#/$defs/TimingUpdate"
+          },
+          "title": "Timing Updates",
+          "type": "array"
+        },
+        "notes_context": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Notes Context",
+          "type": "array",
+          "maxItems": 0
+        },
+        "conflicts": {
+          "items": {
+            "$ref": "#/$defs/Dispute"
+          },
+          "title": "Conflicts",
+          "type": "array",
+          "maxItems": 0
+        }
+      },
+      "required": [
+        "overview",
+        "key_points",
+        "decisions",
+        "action_items",
+        "timing_updates",
+        "notes_context",
+        "conflicts"
+      ],
+      "title": "Draft",
+      "type": "object"
+    }
+  },
+  "shared_numbers": {
+    "comparison": {
+      "$defs": {
+        "Account": {
+          "additionalProperties": false,
+          "properties": {
+            "source_id": {
+              "type": "string",
+              "enum": [
+                "T1",
+                "T2",
+                "T3",
+                "N1"
+              ]
+            },
+            "quote": {
+              "minLength": 1,
+              "title": "Quote",
+              "type": "string"
+            },
+            "kind": {
+              "enum": [
+                "fact",
+                "commitment",
+                "context",
+                "request"
+              ],
+              "title": "Kind",
+              "type": "string"
+            },
+            "meaning": {
+              "$ref": "#/$defs/Meaning"
+            }
+          },
+          "required": [
+            "source_id",
+            "quote",
+            "kind",
+            "meaning"
+          ],
+          "title": "Account",
+          "type": "object"
+        },
+        "Claim": {
+          "additionalProperties": false,
+          "properties": {
+            "note": {
+              "$ref": "#/$defs/Account"
+            },
+            "transcript": {
+              "items": {
+                "$ref": "#/$defs/Account"
+              },
+              "title": "Transcript",
+              "type": "array"
+            },
+            "outcome": {
+              "enum": [
+                "consistent",
+                "additional",
+                "conflicting",
+                "uncertain"
+              ],
+              "title": "Outcome",
+              "type": "string"
+            },
+            "reason": {
+              "minLength": 1,
+              "title": "Reason",
+              "type": "string"
+            }
+          },
+          "required": [
+            "note",
+            "transcript",
+            "outcome",
+            "reason"
+          ],
+          "title": "Claim",
+          "type": "object"
+        },
+        "Meaning": {
+          "additionalProperties": false,
+          "properties": {
+            "subject": {
+              "minLength": 1,
+              "title": "Subject",
+              "type": "string"
+            },
+            "quantity": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Quantity"
+            },
+            "unit": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Unit"
+            },
+            "period": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Period"
+            },
+            "scope": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Scope"
+            },
+            "status": {
+              "description": "Preserve estimate/proposal/approval/uncertainty",
+              "minLength": 1,
+              "title": "Status",
+              "type": "string"
+            }
+          },
+          "required": [
+            "subject",
+            "quantity",
+            "unit",
+            "period",
+            "scope",
+            "status"
+          ],
+          "title": "Meaning",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "claims": {
+          "items": {
+            "$ref": "#/$defs/Claim"
+          },
+          "title": "Claims",
+          "type": "array"
+        }
+      },
+      "required": [
+        "claims"
+      ],
+      "title": "Comparison",
+      "type": "object"
+    },
+    "summary": {
+      "$defs": {
+        "Action": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "timing": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Timing"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "timing"
+          ],
+          "title": "Action",
+          "type": "object"
+        },
+        "Dispute": {
+          "additionalProperties": false,
+          "properties": {
+            "topic": {
+              "title": "Topic",
+              "type": "string"
+            },
+            "transcript": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Transcript",
+              "type": "array"
+            },
+            "notes": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Notes",
+              "type": "array"
+            }
+          },
+          "required": [
+            "topic",
+            "transcript",
+            "notes"
+          ],
+          "title": "Dispute",
+          "type": "object"
+        },
+        "SupportedText": {
+          "additionalProperties": false,
+          "properties": {
+            "text": {
+              "title": "Text",
+              "type": "string"
+            },
+            "sources": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Sources",
+              "type": "array"
+            }
+          },
+          "required": [
+            "text",
+            "sources"
+          ],
+          "title": "SupportedText",
+          "type": "object"
+        },
+        "Timing": {
+          "additionalProperties": false,
+          "properties": {
+            "source_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "quote": {
+              "description": "Exact timing phrase from source_id",
+              "minLength": 1,
+              "title": "Quote",
+              "type": "string"
+            }
+          },
+          "required": [
+            "source_id",
+            "quote"
+          ],
+          "title": "Timing",
+          "type": "object"
+        },
+        "TimingUpdate": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "source_ids": {
+              "description": "Later transcript statements clarifying or revising that action's timing",
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Source Ids",
+              "type": "array"
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "source_ids"
+          ],
+          "title": "TimingUpdate",
+          "type": "object"
+        },
+        "SourceID": {
+          "type": "string",
+          "enum": [
+            "T1",
+            "T2",
+            "T3",
+            "N1"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "overview": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Overview",
+          "type": "array"
+        },
+        "key_points": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Key Points",
+          "type": "array"
+        },
+        "decisions": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Decisions",
+          "type": "array"
+        },
+        "action_items": {
+          "items": {
+            "$ref": "#/$defs/Action"
+          },
+          "title": "Action Items",
+          "type": "array"
+        },
+        "timing_updates": {
+          "items": {
+            "$ref": "#/$defs/TimingUpdate"
+          },
+          "title": "Timing Updates",
+          "type": "array"
+        },
+        "notes_context": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Notes Context",
+          "type": "array"
+        },
+        "conflicts": {
+          "items": {
+            "$ref": "#/$defs/Dispute"
+          },
+          "title": "Conflicts",
+          "type": "array",
+          "maxItems": 0
+        }
+      },
+      "required": [
+        "overview",
+        "key_points",
+        "decisions",
+        "action_items",
+        "timing_updates",
+        "notes_context",
+        "conflicts"
+      ],
+      "title": "Draft",
+      "type": "object"
+    }
+  },
+  "status_conflict": {
+    "comparison": {
+      "$defs": {
+        "Account": {
+          "additionalProperties": false,
+          "properties": {
+            "source_id": {
+              "type": "string",
+              "enum": [
+                "T1",
+                "T2",
+                "N1"
+              ]
+            },
+            "quote": {
+              "minLength": 1,
+              "title": "Quote",
+              "type": "string"
+            },
+            "kind": {
+              "enum": [
+                "fact",
+                "commitment",
+                "context",
+                "request"
+              ],
+              "title": "Kind",
+              "type": "string"
+            },
+            "meaning": {
+              "$ref": "#/$defs/Meaning"
+            }
+          },
+          "required": [
+            "source_id",
+            "quote",
+            "kind",
+            "meaning"
+          ],
+          "title": "Account",
+          "type": "object"
+        },
+        "Claim": {
+          "additionalProperties": false,
+          "properties": {
+            "note": {
+              "$ref": "#/$defs/Account"
+            },
+            "transcript": {
+              "items": {
+                "$ref": "#/$defs/Account"
+              },
+              "title": "Transcript",
+              "type": "array"
+            },
+            "outcome": {
+              "enum": [
+                "consistent",
+                "additional",
+                "conflicting",
+                "uncertain"
+              ],
+              "title": "Outcome",
+              "type": "string"
+            },
+            "reason": {
+              "minLength": 1,
+              "title": "Reason",
+              "type": "string"
+            }
+          },
+          "required": [
+            "note",
+            "transcript",
+            "outcome",
+            "reason"
+          ],
+          "title": "Claim",
+          "type": "object"
+        },
+        "Meaning": {
+          "additionalProperties": false,
+          "properties": {
+            "subject": {
+              "minLength": 1,
+              "title": "Subject",
+              "type": "string"
+            },
+            "quantity": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Quantity"
+            },
+            "unit": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Unit"
+            },
+            "period": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Period"
+            },
+            "scope": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Scope"
+            },
+            "status": {
+              "description": "Preserve estimate/proposal/approval/uncertainty",
+              "minLength": 1,
+              "title": "Status",
+              "type": "string"
+            }
+          },
+          "required": [
+            "subject",
+            "quantity",
+            "unit",
+            "period",
+            "scope",
+            "status"
+          ],
+          "title": "Meaning",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "claims": {
+          "items": {
+            "$ref": "#/$defs/Claim"
+          },
+          "title": "Claims",
+          "type": "array"
+        }
+      },
+      "required": [
+        "claims"
+      ],
+      "title": "Comparison",
+      "type": "object"
+    },
+    "summary": {
+      "$defs": {
+        "Action": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "timing": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Timing"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "timing"
+          ],
+          "title": "Action",
+          "type": "object"
+        },
+        "Dispute": {
+          "additionalProperties": false,
+          "properties": {
+            "topic": {
+              "title": "Topic",
+              "type": "string"
+            },
+            "transcript": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Transcript",
+              "type": "array"
+            },
+            "notes": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Notes",
+              "type": "array"
+            }
+          },
+          "required": [
+            "topic",
+            "transcript",
+            "notes"
+          ],
+          "title": "Dispute",
+          "type": "object"
+        },
+        "SupportedText": {
+          "additionalProperties": false,
+          "properties": {
+            "text": {
+              "title": "Text",
+              "type": "string"
+            },
+            "sources": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Sources",
+              "type": "array"
+            }
+          },
+          "required": [
+            "text",
+            "sources"
+          ],
+          "title": "SupportedText",
+          "type": "object"
+        },
+        "Timing": {
+          "additionalProperties": false,
+          "properties": {
+            "source_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "quote": {
+              "description": "Exact timing phrase from source_id",
+              "minLength": 1,
+              "title": "Quote",
+              "type": "string"
+            }
+          },
+          "required": [
+            "source_id",
+            "quote"
+          ],
+          "title": "Timing",
+          "type": "object"
+        },
+        "TimingUpdate": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "source_ids": {
+              "description": "Later transcript statements clarifying or revising that action's timing",
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Source Ids",
+              "type": "array"
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "source_ids"
+          ],
+          "title": "TimingUpdate",
+          "type": "object"
+        },
+        "SourceID": {
+          "type": "string",
+          "enum": [
+            "T1",
+            "T2",
+            "N1"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "overview": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Overview",
+          "type": "array"
+        },
+        "key_points": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Key Points",
+          "type": "array"
+        },
+        "decisions": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Decisions",
+          "type": "array"
+        },
+        "action_items": {
+          "items": {
+            "$ref": "#/$defs/Action"
+          },
+          "title": "Action Items",
+          "type": "array"
+        },
+        "timing_updates": {
+          "items": {
+            "$ref": "#/$defs/TimingUpdate"
+          },
+          "title": "Timing Updates",
+          "type": "array"
+        },
+        "notes_context": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Notes Context",
+          "type": "array"
+        },
+        "conflicts": {
+          "items": {
+            "$ref": "#/$defs/Dispute"
+          },
+          "title": "Conflicts",
+          "type": "array",
+          "maxItems": 0
+        }
+      },
+      "required": [
+        "overview",
+        "key_points",
+        "decisions",
+        "action_items",
+        "timing_updates",
+        "notes_context",
+        "conflicts"
+      ],
+      "title": "Draft",
+      "type": "object"
+    }
+  },
+  "tentative_task": {
+    "comparison": null,
+    "summary": {
+      "$defs": {
+        "Action": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "timing": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Timing"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "timing"
+          ],
+          "title": "Action",
+          "type": "object"
+        },
+        "Dispute": {
+          "additionalProperties": false,
+          "properties": {
+            "topic": {
+              "title": "Topic",
+              "type": "string"
+            },
+            "transcript": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Transcript",
+              "type": "array"
+            },
+            "notes": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 0,
+              "title": "Notes",
+              "type": "array",
+              "maxItems": 0
+            }
+          },
+          "required": [
+            "topic",
+            "transcript",
+            "notes"
+          ],
+          "title": "Dispute",
+          "type": "object"
+        },
+        "SupportedText": {
+          "additionalProperties": false,
+          "properties": {
+            "text": {
+              "title": "Text",
+              "type": "string"
+            },
+            "sources": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Sources",
+              "type": "array"
+            }
+          },
+          "required": [
+            "text",
+            "sources"
+          ],
+          "title": "SupportedText",
+          "type": "object"
+        },
+        "Timing": {
+          "additionalProperties": false,
+          "properties": {
+            "source_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "quote": {
+              "description": "Exact timing phrase from source_id",
+              "minLength": 1,
+              "title": "Quote",
+              "type": "string"
+            }
+          },
+          "required": [
+            "source_id",
+            "quote"
+          ],
+          "title": "Timing",
+          "type": "object"
+        },
+        "TimingUpdate": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "source_ids": {
+              "description": "Later transcript statements clarifying or revising that action's timing",
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Source Ids",
+              "type": "array"
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "source_ids"
+          ],
+          "title": "TimingUpdate",
+          "type": "object"
+        },
+        "SourceID": {
+          "type": "string",
+          "enum": [
+            "T1",
+            "T2",
+            "T3",
+            "T4"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "overview": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Overview",
+          "type": "array"
+        },
+        "key_points": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Key Points",
+          "type": "array"
+        },
+        "decisions": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Decisions",
+          "type": "array"
+        },
+        "action_items": {
+          "items": {
+            "$ref": "#/$defs/Action"
+          },
+          "title": "Action Items",
+          "type": "array"
+        },
+        "timing_updates": {
+          "items": {
+            "$ref": "#/$defs/TimingUpdate"
+          },
+          "title": "Timing Updates",
+          "type": "array"
+        },
+        "notes_context": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Notes Context",
+          "type": "array",
+          "maxItems": 0
+        },
+        "conflicts": {
+          "items": {
+            "$ref": "#/$defs/Dispute"
+          },
+          "title": "Conflicts",
+          "type": "array",
+          "maxItems": 0
+        }
+      },
+      "required": [
+        "overview",
+        "key_points",
+        "decisions",
+        "action_items",
+        "timing_updates",
+        "notes_context",
+        "conflicts"
+      ],
+      "title": "Draft",
+      "type": "object"
+    }
+  },
+  "front_loaded_timing": {
+    "comparison": null,
+    "summary": {
+      "$defs": {
+        "Action": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "timing": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Timing"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "timing"
+          ],
+          "title": "Action",
+          "type": "object"
+        },
+        "Dispute": {
+          "additionalProperties": false,
+          "properties": {
+            "topic": {
+              "title": "Topic",
+              "type": "string"
+            },
+            "transcript": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Transcript",
+              "type": "array"
+            },
+            "notes": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 0,
+              "title": "Notes",
+              "type": "array",
+              "maxItems": 0
+            }
+          },
+          "required": [
+            "topic",
+            "transcript",
+            "notes"
+          ],
+          "title": "Dispute",
+          "type": "object"
+        },
+        "SupportedText": {
+          "additionalProperties": false,
+          "properties": {
+            "text": {
+              "title": "Text",
+              "type": "string"
+            },
+            "sources": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Sources",
+              "type": "array"
+            }
+          },
+          "required": [
+            "text",
+            "sources"
+          ],
+          "title": "SupportedText",
+          "type": "object"
+        },
+        "Timing": {
+          "additionalProperties": false,
+          "properties": {
+            "source_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "quote": {
+              "description": "Exact timing phrase from source_id",
+              "minLength": 1,
+              "title": "Quote",
+              "type": "string"
+            }
+          },
+          "required": [
+            "source_id",
+            "quote"
+          ],
+          "title": "Timing",
+          "type": "object"
+        },
+        "TimingUpdate": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "source_ids": {
+              "description": "Later transcript statements clarifying or revising that action's timing",
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Source Ids",
+              "type": "array"
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "source_ids"
+          ],
+          "title": "TimingUpdate",
+          "type": "object"
+        },
+        "SourceID": {
+          "type": "string",
+          "enum": [
+            "T1"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "overview": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Overview",
+          "type": "array"
+        },
+        "key_points": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Key Points",
+          "type": "array"
+        },
+        "decisions": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Decisions",
+          "type": "array"
+        },
+        "action_items": {
+          "items": {
+            "$ref": "#/$defs/Action"
+          },
+          "title": "Action Items",
+          "type": "array"
+        },
+        "timing_updates": {
+          "items": {
+            "$ref": "#/$defs/TimingUpdate"
+          },
+          "title": "Timing Updates",
+          "type": "array"
+        },
+        "notes_context": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Notes Context",
+          "type": "array",
+          "maxItems": 0
+        },
+        "conflicts": {
+          "items": {
+            "$ref": "#/$defs/Dispute"
+          },
+          "title": "Conflicts",
+          "type": "array",
+          "maxItems": 0
+        }
+      },
+      "required": [
+        "overview",
+        "key_points",
+        "decisions",
+        "action_items",
+        "timing_updates",
+        "notes_context",
+        "conflicts"
+      ],
+      "title": "Draft",
+      "type": "object"
+    }
+  },
+  "unit_equivalence": {
+    "comparison": {
+      "$defs": {
+        "Account": {
+          "additionalProperties": false,
+          "properties": {
+            "source_id": {
+              "type": "string",
+              "enum": [
+                "T1",
+                "N1"
+              ]
+            },
+            "quote": {
+              "minLength": 1,
+              "title": "Quote",
+              "type": "string"
+            },
+            "kind": {
+              "enum": [
+                "fact",
+                "commitment",
+                "context",
+                "request"
+              ],
+              "title": "Kind",
+              "type": "string"
+            },
+            "meaning": {
+              "$ref": "#/$defs/Meaning"
+            }
+          },
+          "required": [
+            "source_id",
+            "quote",
+            "kind",
+            "meaning"
+          ],
+          "title": "Account",
+          "type": "object"
+        },
+        "Claim": {
+          "additionalProperties": false,
+          "properties": {
+            "note": {
+              "$ref": "#/$defs/Account"
+            },
+            "transcript": {
+              "items": {
+                "$ref": "#/$defs/Account"
+              },
+              "title": "Transcript",
+              "type": "array"
+            },
+            "outcome": {
+              "enum": [
+                "consistent",
+                "additional",
+                "conflicting",
+                "uncertain"
+              ],
+              "title": "Outcome",
+              "type": "string"
+            },
+            "reason": {
+              "minLength": 1,
+              "title": "Reason",
+              "type": "string"
+            }
+          },
+          "required": [
+            "note",
+            "transcript",
+            "outcome",
+            "reason"
+          ],
+          "title": "Claim",
+          "type": "object"
+        },
+        "Meaning": {
+          "additionalProperties": false,
+          "properties": {
+            "subject": {
+              "minLength": 1,
+              "title": "Subject",
+              "type": "string"
+            },
+            "quantity": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Quantity"
+            },
+            "unit": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Unit"
+            },
+            "period": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Period"
+            },
+            "scope": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Scope"
+            },
+            "status": {
+              "description": "Preserve estimate/proposal/approval/uncertainty",
+              "minLength": 1,
+              "title": "Status",
+              "type": "string"
+            }
+          },
+          "required": [
+            "subject",
+            "quantity",
+            "unit",
+            "period",
+            "scope",
+            "status"
+          ],
+          "title": "Meaning",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "claims": {
+          "items": {
+            "$ref": "#/$defs/Claim"
+          },
+          "title": "Claims",
+          "type": "array"
+        }
+      },
+      "required": [
+        "claims"
+      ],
+      "title": "Comparison",
+      "type": "object"
+    },
+    "summary": {
+      "$defs": {
+        "Action": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "timing": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Timing"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "timing"
+          ],
+          "title": "Action",
+          "type": "object"
+        },
+        "Dispute": {
+          "additionalProperties": false,
+          "properties": {
+            "topic": {
+              "title": "Topic",
+              "type": "string"
+            },
+            "transcript": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Transcript",
+              "type": "array"
+            },
+            "notes": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Notes",
+              "type": "array"
+            }
+          },
+          "required": [
+            "topic",
+            "transcript",
+            "notes"
+          ],
+          "title": "Dispute",
+          "type": "object"
+        },
+        "SupportedText": {
+          "additionalProperties": false,
+          "properties": {
+            "text": {
+              "title": "Text",
+              "type": "string"
+            },
+            "sources": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Sources",
+              "type": "array"
+            }
+          },
+          "required": [
+            "text",
+            "sources"
+          ],
+          "title": "SupportedText",
+          "type": "object"
+        },
+        "Timing": {
+          "additionalProperties": false,
+          "properties": {
+            "source_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "quote": {
+              "description": "Exact timing phrase from source_id",
+              "minLength": 1,
+              "title": "Quote",
+              "type": "string"
+            }
+          },
+          "required": [
+            "source_id",
+            "quote"
+          ],
+          "title": "Timing",
+          "type": "object"
+        },
+        "TimingUpdate": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "source_ids": {
+              "description": "Later transcript statements clarifying or revising that action's timing",
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Source Ids",
+              "type": "array"
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "source_ids"
+          ],
+          "title": "TimingUpdate",
+          "type": "object"
+        },
+        "SourceID": {
+          "type": "string",
+          "enum": [
+            "T1",
+            "N1"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "overview": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Overview",
+          "type": "array"
+        },
+        "key_points": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Key Points",
+          "type": "array"
+        },
+        "decisions": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Decisions",
+          "type": "array"
+        },
+        "action_items": {
+          "items": {
+            "$ref": "#/$defs/Action"
+          },
+          "title": "Action Items",
+          "type": "array"
+        },
+        "timing_updates": {
+          "items": {
+            "$ref": "#/$defs/TimingUpdate"
+          },
+          "title": "Timing Updates",
+          "type": "array"
+        },
+        "notes_context": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Notes Context",
+          "type": "array"
+        },
+        "conflicts": {
+          "items": {
+            "$ref": "#/$defs/Dispute"
+          },
+          "title": "Conflicts",
+          "type": "array",
+          "maxItems": 0
+        }
+      },
+      "required": [
+        "overview",
+        "key_points",
+        "decisions",
+        "action_items",
+        "timing_updates",
+        "notes_context",
+        "conflicts"
+      ],
+      "title": "Draft",
+      "type": "object"
+    }
+  },
+  "unit_disagreement": {
+    "comparison": {
+      "$defs": {
+        "Account": {
+          "additionalProperties": false,
+          "properties": {
+            "source_id": {
+              "type": "string",
+              "enum": [
+                "T1",
+                "N1"
+              ]
+            },
+            "quote": {
+              "minLength": 1,
+              "title": "Quote",
+              "type": "string"
+            },
+            "kind": {
+              "enum": [
+                "fact",
+                "commitment",
+                "context",
+                "request"
+              ],
+              "title": "Kind",
+              "type": "string"
+            },
+            "meaning": {
+              "$ref": "#/$defs/Meaning"
+            }
+          },
+          "required": [
+            "source_id",
+            "quote",
+            "kind",
+            "meaning"
+          ],
+          "title": "Account",
+          "type": "object"
+        },
+        "Claim": {
+          "additionalProperties": false,
+          "properties": {
+            "note": {
+              "$ref": "#/$defs/Account"
+            },
+            "transcript": {
+              "items": {
+                "$ref": "#/$defs/Account"
+              },
+              "title": "Transcript",
+              "type": "array"
+            },
+            "outcome": {
+              "enum": [
+                "consistent",
+                "additional",
+                "conflicting",
+                "uncertain"
+              ],
+              "title": "Outcome",
+              "type": "string"
+            },
+            "reason": {
+              "minLength": 1,
+              "title": "Reason",
+              "type": "string"
+            }
+          },
+          "required": [
+            "note",
+            "transcript",
+            "outcome",
+            "reason"
+          ],
+          "title": "Claim",
+          "type": "object"
+        },
+        "Meaning": {
+          "additionalProperties": false,
+          "properties": {
+            "subject": {
+              "minLength": 1,
+              "title": "Subject",
+              "type": "string"
+            },
+            "quantity": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Quantity"
+            },
+            "unit": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Unit"
+            },
+            "period": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Period"
+            },
+            "scope": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Scope"
+            },
+            "status": {
+              "description": "Preserve estimate/proposal/approval/uncertainty",
+              "minLength": 1,
+              "title": "Status",
+              "type": "string"
+            }
+          },
+          "required": [
+            "subject",
+            "quantity",
+            "unit",
+            "period",
+            "scope",
+            "status"
+          ],
+          "title": "Meaning",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "claims": {
+          "items": {
+            "$ref": "#/$defs/Claim"
+          },
+          "title": "Claims",
+          "type": "array"
+        }
+      },
+      "required": [
+        "claims"
+      ],
+      "title": "Comparison",
+      "type": "object"
+    },
+    "summary": {
+      "$defs": {
+        "Action": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "timing": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Timing"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "timing"
+          ],
+          "title": "Action",
+          "type": "object"
+        },
+        "Dispute": {
+          "additionalProperties": false,
+          "properties": {
+            "topic": {
+              "title": "Topic",
+              "type": "string"
+            },
+            "transcript": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Transcript",
+              "type": "array"
+            },
+            "notes": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Notes",
+              "type": "array"
+            }
+          },
+          "required": [
+            "topic",
+            "transcript",
+            "notes"
+          ],
+          "title": "Dispute",
+          "type": "object"
+        },
+        "SupportedText": {
+          "additionalProperties": false,
+          "properties": {
+            "text": {
+              "title": "Text",
+              "type": "string"
+            },
+            "sources": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Sources",
+              "type": "array"
+            }
+          },
+          "required": [
+            "text",
+            "sources"
+          ],
+          "title": "SupportedText",
+          "type": "object"
+        },
+        "Timing": {
+          "additionalProperties": false,
+          "properties": {
+            "source_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "quote": {
+              "description": "Exact timing phrase from source_id",
+              "minLength": 1,
+              "title": "Quote",
+              "type": "string"
+            }
+          },
+          "required": [
+            "source_id",
+            "quote"
+          ],
+          "title": "Timing",
+          "type": "object"
+        },
+        "TimingUpdate": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "source_ids": {
+              "description": "Later transcript statements clarifying or revising that action's timing",
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Source Ids",
+              "type": "array"
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "source_ids"
+          ],
+          "title": "TimingUpdate",
+          "type": "object"
+        },
+        "SourceID": {
+          "type": "string",
+          "enum": [
+            "T1",
+            "N1"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "overview": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Overview",
+          "type": "array"
+        },
+        "key_points": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Key Points",
+          "type": "array"
+        },
+        "decisions": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Decisions",
+          "type": "array"
+        },
+        "action_items": {
+          "items": {
+            "$ref": "#/$defs/Action"
+          },
+          "title": "Action Items",
+          "type": "array"
+        },
+        "timing_updates": {
+          "items": {
+            "$ref": "#/$defs/TimingUpdate"
+          },
+          "title": "Timing Updates",
+          "type": "array"
+        },
+        "notes_context": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Notes Context",
+          "type": "array"
+        },
+        "conflicts": {
+          "items": {
+            "$ref": "#/$defs/Dispute"
+          },
+          "title": "Conflicts",
+          "type": "array",
+          "maxItems": 0
+        }
+      },
+      "required": [
+        "overview",
+        "key_points",
+        "decisions",
+        "action_items",
+        "timing_updates",
+        "notes_context",
+        "conflicts"
+      ],
+      "title": "Draft",
+      "type": "object"
+    }
+  },
+  "periods_separate": {
+    "comparison": {
+      "$defs": {
+        "Account": {
+          "additionalProperties": false,
+          "properties": {
+            "source_id": {
+              "type": "string",
+              "enum": [
+                "T1",
+                "N1"
+              ]
+            },
+            "quote": {
+              "minLength": 1,
+              "title": "Quote",
+              "type": "string"
+            },
+            "kind": {
+              "enum": [
+                "fact",
+                "commitment",
+                "context",
+                "request"
+              ],
+              "title": "Kind",
+              "type": "string"
+            },
+            "meaning": {
+              "$ref": "#/$defs/Meaning"
+            }
+          },
+          "required": [
+            "source_id",
+            "quote",
+            "kind",
+            "meaning"
+          ],
+          "title": "Account",
+          "type": "object"
+        },
+        "Claim": {
+          "additionalProperties": false,
+          "properties": {
+            "note": {
+              "$ref": "#/$defs/Account"
+            },
+            "transcript": {
+              "items": {
+                "$ref": "#/$defs/Account"
+              },
+              "title": "Transcript",
+              "type": "array"
+            },
+            "outcome": {
+              "enum": [
+                "consistent",
+                "additional",
+                "conflicting",
+                "uncertain"
+              ],
+              "title": "Outcome",
+              "type": "string"
+            },
+            "reason": {
+              "minLength": 1,
+              "title": "Reason",
+              "type": "string"
+            }
+          },
+          "required": [
+            "note",
+            "transcript",
+            "outcome",
+            "reason"
+          ],
+          "title": "Claim",
+          "type": "object"
+        },
+        "Meaning": {
+          "additionalProperties": false,
+          "properties": {
+            "subject": {
+              "minLength": 1,
+              "title": "Subject",
+              "type": "string"
+            },
+            "quantity": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Quantity"
+            },
+            "unit": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Unit"
+            },
+            "period": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Period"
+            },
+            "scope": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Scope"
+            },
+            "status": {
+              "description": "Preserve estimate/proposal/approval/uncertainty",
+              "minLength": 1,
+              "title": "Status",
+              "type": "string"
+            }
+          },
+          "required": [
+            "subject",
+            "quantity",
+            "unit",
+            "period",
+            "scope",
+            "status"
+          ],
+          "title": "Meaning",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "claims": {
+          "items": {
+            "$ref": "#/$defs/Claim"
+          },
+          "title": "Claims",
+          "type": "array"
+        }
+      },
+      "required": [
+        "claims"
+      ],
+      "title": "Comparison",
+      "type": "object"
+    },
+    "summary": {
+      "$defs": {
+        "Action": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "timing": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Timing"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "timing"
+          ],
+          "title": "Action",
+          "type": "object"
+        },
+        "Dispute": {
+          "additionalProperties": false,
+          "properties": {
+            "topic": {
+              "title": "Topic",
+              "type": "string"
+            },
+            "transcript": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Transcript",
+              "type": "array"
+            },
+            "notes": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Notes",
+              "type": "array"
+            }
+          },
+          "required": [
+            "topic",
+            "transcript",
+            "notes"
+          ],
+          "title": "Dispute",
+          "type": "object"
+        },
+        "SupportedText": {
+          "additionalProperties": false,
+          "properties": {
+            "text": {
+              "title": "Text",
+              "type": "string"
+            },
+            "sources": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Sources",
+              "type": "array"
+            }
+          },
+          "required": [
+            "text",
+            "sources"
+          ],
+          "title": "SupportedText",
+          "type": "object"
+        },
+        "Timing": {
+          "additionalProperties": false,
+          "properties": {
+            "source_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "quote": {
+              "description": "Exact timing phrase from source_id",
+              "minLength": 1,
+              "title": "Quote",
+              "type": "string"
+            }
+          },
+          "required": [
+            "source_id",
+            "quote"
+          ],
+          "title": "Timing",
+          "type": "object"
+        },
+        "TimingUpdate": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "source_ids": {
+              "description": "Later transcript statements clarifying or revising that action's timing",
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Source Ids",
+              "type": "array"
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "source_ids"
+          ],
+          "title": "TimingUpdate",
+          "type": "object"
+        },
+        "SourceID": {
+          "type": "string",
+          "enum": [
+            "T1",
+            "N1"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "overview": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Overview",
+          "type": "array"
+        },
+        "key_points": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Key Points",
+          "type": "array"
+        },
+        "decisions": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Decisions",
+          "type": "array"
+        },
+        "action_items": {
+          "items": {
+            "$ref": "#/$defs/Action"
+          },
+          "title": "Action Items",
+          "type": "array"
+        },
+        "timing_updates": {
+          "items": {
+            "$ref": "#/$defs/TimingUpdate"
+          },
+          "title": "Timing Updates",
+          "type": "array"
+        },
+        "notes_context": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Notes Context",
+          "type": "array"
+        },
+        "conflicts": {
+          "items": {
+            "$ref": "#/$defs/Dispute"
+          },
+          "title": "Conflicts",
+          "type": "array",
+          "maxItems": 0
+        }
+      },
+      "required": [
+        "overview",
+        "key_points",
+        "decisions",
+        "action_items",
+        "timing_updates",
+        "notes_context",
+        "conflicts"
+      ],
+      "title": "Draft",
+      "type": "object"
+    }
+  },
+  "scope_separate": {
+    "comparison": {
+      "$defs": {
+        "Account": {
+          "additionalProperties": false,
+          "properties": {
+            "source_id": {
+              "type": "string",
+              "enum": [
+                "T1",
+                "N1"
+              ]
+            },
+            "quote": {
+              "minLength": 1,
+              "title": "Quote",
+              "type": "string"
+            },
+            "kind": {
+              "enum": [
+                "fact",
+                "commitment",
+                "context",
+                "request"
+              ],
+              "title": "Kind",
+              "type": "string"
+            },
+            "meaning": {
+              "$ref": "#/$defs/Meaning"
+            }
+          },
+          "required": [
+            "source_id",
+            "quote",
+            "kind",
+            "meaning"
+          ],
+          "title": "Account",
+          "type": "object"
+        },
+        "Claim": {
+          "additionalProperties": false,
+          "properties": {
+            "note": {
+              "$ref": "#/$defs/Account"
+            },
+            "transcript": {
+              "items": {
+                "$ref": "#/$defs/Account"
+              },
+              "title": "Transcript",
+              "type": "array"
+            },
+            "outcome": {
+              "enum": [
+                "consistent",
+                "additional",
+                "conflicting",
+                "uncertain"
+              ],
+              "title": "Outcome",
+              "type": "string"
+            },
+            "reason": {
+              "minLength": 1,
+              "title": "Reason",
+              "type": "string"
+            }
+          },
+          "required": [
+            "note",
+            "transcript",
+            "outcome",
+            "reason"
+          ],
+          "title": "Claim",
+          "type": "object"
+        },
+        "Meaning": {
+          "additionalProperties": false,
+          "properties": {
+            "subject": {
+              "minLength": 1,
+              "title": "Subject",
+              "type": "string"
+            },
+            "quantity": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Quantity"
+            },
+            "unit": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Unit"
+            },
+            "period": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Period"
+            },
+            "scope": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Scope"
+            },
+            "status": {
+              "description": "Preserve estimate/proposal/approval/uncertainty",
+              "minLength": 1,
+              "title": "Status",
+              "type": "string"
+            }
+          },
+          "required": [
+            "subject",
+            "quantity",
+            "unit",
+            "period",
+            "scope",
+            "status"
+          ],
+          "title": "Meaning",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "claims": {
+          "items": {
+            "$ref": "#/$defs/Claim"
+          },
+          "title": "Claims",
+          "type": "array"
+        }
+      },
+      "required": [
+        "claims"
+      ],
+      "title": "Comparison",
+      "type": "object"
+    },
+    "summary": {
+      "$defs": {
+        "Action": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "timing": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Timing"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "timing"
+          ],
+          "title": "Action",
+          "type": "object"
+        },
+        "Dispute": {
+          "additionalProperties": false,
+          "properties": {
+            "topic": {
+              "title": "Topic",
+              "type": "string"
+            },
+            "transcript": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Transcript",
+              "type": "array"
+            },
+            "notes": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Notes",
+              "type": "array"
+            }
+          },
+          "required": [
+            "topic",
+            "transcript",
+            "notes"
+          ],
+          "title": "Dispute",
+          "type": "object"
+        },
+        "SupportedText": {
+          "additionalProperties": false,
+          "properties": {
+            "text": {
+              "title": "Text",
+              "type": "string"
+            },
+            "sources": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Sources",
+              "type": "array"
+            }
+          },
+          "required": [
+            "text",
+            "sources"
+          ],
+          "title": "SupportedText",
+          "type": "object"
+        },
+        "Timing": {
+          "additionalProperties": false,
+          "properties": {
+            "source_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "quote": {
+              "description": "Exact timing phrase from source_id",
+              "minLength": 1,
+              "title": "Quote",
+              "type": "string"
+            }
+          },
+          "required": [
+            "source_id",
+            "quote"
+          ],
+          "title": "Timing",
+          "type": "object"
+        },
+        "TimingUpdate": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "source_ids": {
+              "description": "Later transcript statements clarifying or revising that action's timing",
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Source Ids",
+              "type": "array"
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "source_ids"
+          ],
+          "title": "TimingUpdate",
+          "type": "object"
+        },
+        "SourceID": {
+          "type": "string",
+          "enum": [
+            "T1",
+            "N1"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "overview": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Overview",
+          "type": "array"
+        },
+        "key_points": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Key Points",
+          "type": "array"
+        },
+        "decisions": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Decisions",
+          "type": "array"
+        },
+        "action_items": {
+          "items": {
+            "$ref": "#/$defs/Action"
+          },
+          "title": "Action Items",
+          "type": "array"
+        },
+        "timing_updates": {
+          "items": {
+            "$ref": "#/$defs/TimingUpdate"
+          },
+          "title": "Timing Updates",
+          "type": "array"
+        },
+        "notes_context": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Notes Context",
+          "type": "array"
+        },
+        "conflicts": {
+          "items": {
+            "$ref": "#/$defs/Dispute"
+          },
+          "title": "Conflicts",
+          "type": "array",
+          "maxItems": 0
+        }
+      },
+      "required": [
+        "overview",
+        "key_points",
+        "decisions",
+        "action_items",
+        "timing_updates",
+        "notes_context",
+        "conflicts"
+      ],
+      "title": "Draft",
+      "type": "object"
+    }
+  },
+  "estimate_approval": {
+    "comparison": {
+      "$defs": {
+        "Account": {
+          "additionalProperties": false,
+          "properties": {
+            "source_id": {
+              "type": "string",
+              "enum": [
+                "T1",
+                "N1"
+              ]
+            },
+            "quote": {
+              "minLength": 1,
+              "title": "Quote",
+              "type": "string"
+            },
+            "kind": {
+              "enum": [
+                "fact",
+                "commitment",
+                "context",
+                "request"
+              ],
+              "title": "Kind",
+              "type": "string"
+            },
+            "meaning": {
+              "$ref": "#/$defs/Meaning"
+            }
+          },
+          "required": [
+            "source_id",
+            "quote",
+            "kind",
+            "meaning"
+          ],
+          "title": "Account",
+          "type": "object"
+        },
+        "Claim": {
+          "additionalProperties": false,
+          "properties": {
+            "note": {
+              "$ref": "#/$defs/Account"
+            },
+            "transcript": {
+              "items": {
+                "$ref": "#/$defs/Account"
+              },
+              "title": "Transcript",
+              "type": "array"
+            },
+            "outcome": {
+              "enum": [
+                "consistent",
+                "additional",
+                "conflicting",
+                "uncertain"
+              ],
+              "title": "Outcome",
+              "type": "string"
+            },
+            "reason": {
+              "minLength": 1,
+              "title": "Reason",
+              "type": "string"
+            }
+          },
+          "required": [
+            "note",
+            "transcript",
+            "outcome",
+            "reason"
+          ],
+          "title": "Claim",
+          "type": "object"
+        },
+        "Meaning": {
+          "additionalProperties": false,
+          "properties": {
+            "subject": {
+              "minLength": 1,
+              "title": "Subject",
+              "type": "string"
+            },
+            "quantity": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Quantity"
+            },
+            "unit": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Unit"
+            },
+            "period": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Period"
+            },
+            "scope": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Scope"
+            },
+            "status": {
+              "description": "Preserve estimate/proposal/approval/uncertainty",
+              "minLength": 1,
+              "title": "Status",
+              "type": "string"
+            }
+          },
+          "required": [
+            "subject",
+            "quantity",
+            "unit",
+            "period",
+            "scope",
+            "status"
+          ],
+          "title": "Meaning",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "claims": {
+          "items": {
+            "$ref": "#/$defs/Claim"
+          },
+          "title": "Claims",
+          "type": "array"
+        }
+      },
+      "required": [
+        "claims"
+      ],
+      "title": "Comparison",
+      "type": "object"
+    },
+    "summary": {
+      "$defs": {
+        "Action": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "timing": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Timing"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "timing"
+          ],
+          "title": "Action",
+          "type": "object"
+        },
+        "Dispute": {
+          "additionalProperties": false,
+          "properties": {
+            "topic": {
+              "title": "Topic",
+              "type": "string"
+            },
+            "transcript": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Transcript",
+              "type": "array"
+            },
+            "notes": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Notes",
+              "type": "array"
+            }
+          },
+          "required": [
+            "topic",
+            "transcript",
+            "notes"
+          ],
+          "title": "Dispute",
+          "type": "object"
+        },
+        "SupportedText": {
+          "additionalProperties": false,
+          "properties": {
+            "text": {
+              "title": "Text",
+              "type": "string"
+            },
+            "sources": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Sources",
+              "type": "array"
+            }
+          },
+          "required": [
+            "text",
+            "sources"
+          ],
+          "title": "SupportedText",
+          "type": "object"
+        },
+        "Timing": {
+          "additionalProperties": false,
+          "properties": {
+            "source_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "quote": {
+              "description": "Exact timing phrase from source_id",
+              "minLength": 1,
+              "title": "Quote",
+              "type": "string"
+            }
+          },
+          "required": [
+            "source_id",
+            "quote"
+          ],
+          "title": "Timing",
+          "type": "object"
+        },
+        "TimingUpdate": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "source_ids": {
+              "description": "Later transcript statements clarifying or revising that action's timing",
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Source Ids",
+              "type": "array"
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "source_ids"
+          ],
+          "title": "TimingUpdate",
+          "type": "object"
+        },
+        "SourceID": {
+          "type": "string",
+          "enum": [
+            "T1",
+            "N1"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "overview": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Overview",
+          "type": "array"
+        },
+        "key_points": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Key Points",
+          "type": "array"
+        },
+        "decisions": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Decisions",
+          "type": "array"
+        },
+        "action_items": {
+          "items": {
+            "$ref": "#/$defs/Action"
+          },
+          "title": "Action Items",
+          "type": "array"
+        },
+        "timing_updates": {
+          "items": {
+            "$ref": "#/$defs/TimingUpdate"
+          },
+          "title": "Timing Updates",
+          "type": "array"
+        },
+        "notes_context": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Notes Context",
+          "type": "array"
+        },
+        "conflicts": {
+          "items": {
+            "$ref": "#/$defs/Dispute"
+          },
+          "title": "Conflicts",
+          "type": "array",
+          "maxItems": 0
+        }
+      },
+      "required": [
+        "overview",
+        "key_points",
+        "decisions",
+        "action_items",
+        "timing_updates",
+        "notes_context",
+        "conflicts"
+      ],
+      "title": "Draft",
+      "type": "object"
+    }
+  },
+  "proposal_rejected": {
+    "comparison": {
+      "$defs": {
+        "Account": {
+          "additionalProperties": false,
+          "properties": {
+            "source_id": {
+              "type": "string",
+              "enum": [
+                "T1",
+                "N1"
+              ]
+            },
+            "quote": {
+              "minLength": 1,
+              "title": "Quote",
+              "type": "string"
+            },
+            "kind": {
+              "enum": [
+                "fact",
+                "commitment",
+                "context",
+                "request"
+              ],
+              "title": "Kind",
+              "type": "string"
+            },
+            "meaning": {
+              "$ref": "#/$defs/Meaning"
+            }
+          },
+          "required": [
+            "source_id",
+            "quote",
+            "kind",
+            "meaning"
+          ],
+          "title": "Account",
+          "type": "object"
+        },
+        "Claim": {
+          "additionalProperties": false,
+          "properties": {
+            "note": {
+              "$ref": "#/$defs/Account"
+            },
+            "transcript": {
+              "items": {
+                "$ref": "#/$defs/Account"
+              },
+              "title": "Transcript",
+              "type": "array"
+            },
+            "outcome": {
+              "enum": [
+                "consistent",
+                "additional",
+                "conflicting",
+                "uncertain"
+              ],
+              "title": "Outcome",
+              "type": "string"
+            },
+            "reason": {
+              "minLength": 1,
+              "title": "Reason",
+              "type": "string"
+            }
+          },
+          "required": [
+            "note",
+            "transcript",
+            "outcome",
+            "reason"
+          ],
+          "title": "Claim",
+          "type": "object"
+        },
+        "Meaning": {
+          "additionalProperties": false,
+          "properties": {
+            "subject": {
+              "minLength": 1,
+              "title": "Subject",
+              "type": "string"
+            },
+            "quantity": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Quantity"
+            },
+            "unit": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Unit"
+            },
+            "period": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Period"
+            },
+            "scope": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Scope"
+            },
+            "status": {
+              "description": "Preserve estimate/proposal/approval/uncertainty",
+              "minLength": 1,
+              "title": "Status",
+              "type": "string"
+            }
+          },
+          "required": [
+            "subject",
+            "quantity",
+            "unit",
+            "period",
+            "scope",
+            "status"
+          ],
+          "title": "Meaning",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "claims": {
+          "items": {
+            "$ref": "#/$defs/Claim"
+          },
+          "title": "Claims",
+          "type": "array"
+        }
+      },
+      "required": [
+        "claims"
+      ],
+      "title": "Comparison",
+      "type": "object"
+    },
+    "summary": {
+      "$defs": {
+        "Action": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "timing": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Timing"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "timing"
+          ],
+          "title": "Action",
+          "type": "object"
+        },
+        "Dispute": {
+          "additionalProperties": false,
+          "properties": {
+            "topic": {
+              "title": "Topic",
+              "type": "string"
+            },
+            "transcript": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Transcript",
+              "type": "array"
+            },
+            "notes": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Notes",
+              "type": "array"
+            }
+          },
+          "required": [
+            "topic",
+            "transcript",
+            "notes"
+          ],
+          "title": "Dispute",
+          "type": "object"
+        },
+        "SupportedText": {
+          "additionalProperties": false,
+          "properties": {
+            "text": {
+              "title": "Text",
+              "type": "string"
+            },
+            "sources": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Sources",
+              "type": "array"
+            }
+          },
+          "required": [
+            "text",
+            "sources"
+          ],
+          "title": "SupportedText",
+          "type": "object"
+        },
+        "Timing": {
+          "additionalProperties": false,
+          "properties": {
+            "source_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "quote": {
+              "description": "Exact timing phrase from source_id",
+              "minLength": 1,
+              "title": "Quote",
+              "type": "string"
+            }
+          },
+          "required": [
+            "source_id",
+            "quote"
+          ],
+          "title": "Timing",
+          "type": "object"
+        },
+        "TimingUpdate": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "source_ids": {
+              "description": "Later transcript statements clarifying or revising that action's timing",
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Source Ids",
+              "type": "array"
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "source_ids"
+          ],
+          "title": "TimingUpdate",
+          "type": "object"
+        },
+        "SourceID": {
+          "type": "string",
+          "enum": [
+            "T1",
+            "N1"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "overview": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Overview",
+          "type": "array"
+        },
+        "key_points": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Key Points",
+          "type": "array"
+        },
+        "decisions": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Decisions",
+          "type": "array"
+        },
+        "action_items": {
+          "items": {
+            "$ref": "#/$defs/Action"
+          },
+          "title": "Action Items",
+          "type": "array"
+        },
+        "timing_updates": {
+          "items": {
+            "$ref": "#/$defs/TimingUpdate"
+          },
+          "title": "Timing Updates",
+          "type": "array"
+        },
+        "notes_context": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Notes Context",
+          "type": "array"
+        },
+        "conflicts": {
+          "items": {
+            "$ref": "#/$defs/Dispute"
+          },
+          "title": "Conflicts",
+          "type": "array",
+          "maxItems": 0
+        }
+      },
+      "required": [
+        "overview",
+        "key_points",
+        "decisions",
+        "action_items",
+        "timing_updates",
+        "notes_context",
+        "conflicts"
+      ],
+      "title": "Draft",
+      "type": "object"
+    }
+  },
+  "tentative_confirmed": {
+    "comparison": {
+      "$defs": {
+        "Account": {
+          "additionalProperties": false,
+          "properties": {
+            "source_id": {
+              "type": "string",
+              "enum": [
+                "T1",
+                "N1"
+              ]
+            },
+            "quote": {
+              "minLength": 1,
+              "title": "Quote",
+              "type": "string"
+            },
+            "kind": {
+              "enum": [
+                "fact",
+                "commitment",
+                "context",
+                "request"
+              ],
+              "title": "Kind",
+              "type": "string"
+            },
+            "meaning": {
+              "$ref": "#/$defs/Meaning"
+            }
+          },
+          "required": [
+            "source_id",
+            "quote",
+            "kind",
+            "meaning"
+          ],
+          "title": "Account",
+          "type": "object"
+        },
+        "Claim": {
+          "additionalProperties": false,
+          "properties": {
+            "note": {
+              "$ref": "#/$defs/Account"
+            },
+            "transcript": {
+              "items": {
+                "$ref": "#/$defs/Account"
+              },
+              "title": "Transcript",
+              "type": "array"
+            },
+            "outcome": {
+              "enum": [
+                "consistent",
+                "additional",
+                "conflicting",
+                "uncertain"
+              ],
+              "title": "Outcome",
+              "type": "string"
+            },
+            "reason": {
+              "minLength": 1,
+              "title": "Reason",
+              "type": "string"
+            }
+          },
+          "required": [
+            "note",
+            "transcript",
+            "outcome",
+            "reason"
+          ],
+          "title": "Claim",
+          "type": "object"
+        },
+        "Meaning": {
+          "additionalProperties": false,
+          "properties": {
+            "subject": {
+              "minLength": 1,
+              "title": "Subject",
+              "type": "string"
+            },
+            "quantity": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Quantity"
+            },
+            "unit": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Unit"
+            },
+            "period": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Period"
+            },
+            "scope": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Scope"
+            },
+            "status": {
+              "description": "Preserve estimate/proposal/approval/uncertainty",
+              "minLength": 1,
+              "title": "Status",
+              "type": "string"
+            }
+          },
+          "required": [
+            "subject",
+            "quantity",
+            "unit",
+            "period",
+            "scope",
+            "status"
+          ],
+          "title": "Meaning",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "claims": {
+          "items": {
+            "$ref": "#/$defs/Claim"
+          },
+          "title": "Claims",
+          "type": "array"
+        }
+      },
+      "required": [
+        "claims"
+      ],
+      "title": "Comparison",
+      "type": "object"
+    },
+    "summary": {
+      "$defs": {
+        "Action": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "timing": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Timing"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "timing"
+          ],
+          "title": "Action",
+          "type": "object"
+        },
+        "Dispute": {
+          "additionalProperties": false,
+          "properties": {
+            "topic": {
+              "title": "Topic",
+              "type": "string"
+            },
+            "transcript": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Transcript",
+              "type": "array"
+            },
+            "notes": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Notes",
+              "type": "array"
+            }
+          },
+          "required": [
+            "topic",
+            "transcript",
+            "notes"
+          ],
+          "title": "Dispute",
+          "type": "object"
+        },
+        "SupportedText": {
+          "additionalProperties": false,
+          "properties": {
+            "text": {
+              "title": "Text",
+              "type": "string"
+            },
+            "sources": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Sources",
+              "type": "array"
+            }
+          },
+          "required": [
+            "text",
+            "sources"
+          ],
+          "title": "SupportedText",
+          "type": "object"
+        },
+        "Timing": {
+          "additionalProperties": false,
+          "properties": {
+            "source_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "quote": {
+              "description": "Exact timing phrase from source_id",
+              "minLength": 1,
+              "title": "Quote",
+              "type": "string"
+            }
+          },
+          "required": [
+            "source_id",
+            "quote"
+          ],
+          "title": "Timing",
+          "type": "object"
+        },
+        "TimingUpdate": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "source_ids": {
+              "description": "Later transcript statements clarifying or revising that action's timing",
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Source Ids",
+              "type": "array"
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "source_ids"
+          ],
+          "title": "TimingUpdate",
+          "type": "object"
+        },
+        "SourceID": {
+          "type": "string",
+          "enum": [
+            "T1",
+            "N1"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "overview": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Overview",
+          "type": "array"
+        },
+        "key_points": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Key Points",
+          "type": "array"
+        },
+        "decisions": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Decisions",
+          "type": "array"
+        },
+        "action_items": {
+          "items": {
+            "$ref": "#/$defs/Action"
+          },
+          "title": "Action Items",
+          "type": "array"
+        },
+        "timing_updates": {
+          "items": {
+            "$ref": "#/$defs/TimingUpdate"
+          },
+          "title": "Timing Updates",
+          "type": "array"
+        },
+        "notes_context": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Notes Context",
+          "type": "array"
+        },
+        "conflicts": {
+          "items": {
+            "$ref": "#/$defs/Dispute"
+          },
+          "title": "Conflicts",
+          "type": "array",
+          "maxItems": 0
+        }
+      },
+      "required": [
+        "overview",
+        "key_points",
+        "decisions",
+        "action_items",
+        "timing_updates",
+        "notes_context",
+        "conflicts"
+      ],
+      "title": "Draft",
+      "type": "object"
+    }
+  },
+  "additive_context": {
+    "comparison": {
+      "$defs": {
+        "Account": {
+          "additionalProperties": false,
+          "properties": {
+            "source_id": {
+              "type": "string",
+              "enum": [
+                "T1",
+                "N1",
+                "N2"
+              ]
+            },
+            "quote": {
+              "minLength": 1,
+              "title": "Quote",
+              "type": "string"
+            },
+            "kind": {
+              "enum": [
+                "fact",
+                "commitment",
+                "context",
+                "request"
+              ],
+              "title": "Kind",
+              "type": "string"
+            },
+            "meaning": {
+              "$ref": "#/$defs/Meaning"
+            }
+          },
+          "required": [
+            "source_id",
+            "quote",
+            "kind",
+            "meaning"
+          ],
+          "title": "Account",
+          "type": "object"
+        },
+        "Claim": {
+          "additionalProperties": false,
+          "properties": {
+            "note": {
+              "$ref": "#/$defs/Account"
+            },
+            "transcript": {
+              "items": {
+                "$ref": "#/$defs/Account"
+              },
+              "title": "Transcript",
+              "type": "array"
+            },
+            "outcome": {
+              "enum": [
+                "consistent",
+                "additional",
+                "conflicting",
+                "uncertain"
+              ],
+              "title": "Outcome",
+              "type": "string"
+            },
+            "reason": {
+              "minLength": 1,
+              "title": "Reason",
+              "type": "string"
+            }
+          },
+          "required": [
+            "note",
+            "transcript",
+            "outcome",
+            "reason"
+          ],
+          "title": "Claim",
+          "type": "object"
+        },
+        "Meaning": {
+          "additionalProperties": false,
+          "properties": {
+            "subject": {
+              "minLength": 1,
+              "title": "Subject",
+              "type": "string"
+            },
+            "quantity": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Quantity"
+            },
+            "unit": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Unit"
+            },
+            "period": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Period"
+            },
+            "scope": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Scope"
+            },
+            "status": {
+              "description": "Preserve estimate/proposal/approval/uncertainty",
+              "minLength": 1,
+              "title": "Status",
+              "type": "string"
+            }
+          },
+          "required": [
+            "subject",
+            "quantity",
+            "unit",
+            "period",
+            "scope",
+            "status"
+          ],
+          "title": "Meaning",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "claims": {
+          "items": {
+            "$ref": "#/$defs/Claim"
+          },
+          "title": "Claims",
+          "type": "array"
+        }
+      },
+      "required": [
+        "claims"
+      ],
+      "title": "Comparison",
+      "type": "object"
+    },
+    "summary": {
+      "$defs": {
+        "Action": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "timing": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Timing"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "timing"
+          ],
+          "title": "Action",
+          "type": "object"
+        },
+        "Dispute": {
+          "additionalProperties": false,
+          "properties": {
+            "topic": {
+              "title": "Topic",
+              "type": "string"
+            },
+            "transcript": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Transcript",
+              "type": "array"
+            },
+            "notes": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Notes",
+              "type": "array"
+            }
+          },
+          "required": [
+            "topic",
+            "transcript",
+            "notes"
+          ],
+          "title": "Dispute",
+          "type": "object"
+        },
+        "SupportedText": {
+          "additionalProperties": false,
+          "properties": {
+            "text": {
+              "title": "Text",
+              "type": "string"
+            },
+            "sources": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Sources",
+              "type": "array"
+            }
+          },
+          "required": [
+            "text",
+            "sources"
+          ],
+          "title": "SupportedText",
+          "type": "object"
+        },
+        "Timing": {
+          "additionalProperties": false,
+          "properties": {
+            "source_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "quote": {
+              "description": "Exact timing phrase from source_id",
+              "minLength": 1,
+              "title": "Quote",
+              "type": "string"
+            }
+          },
+          "required": [
+            "source_id",
+            "quote"
+          ],
+          "title": "Timing",
+          "type": "object"
+        },
+        "TimingUpdate": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "source_ids": {
+              "description": "Later transcript statements clarifying or revising that action's timing",
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Source Ids",
+              "type": "array"
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "source_ids"
+          ],
+          "title": "TimingUpdate",
+          "type": "object"
+        },
+        "SourceID": {
+          "type": "string",
+          "enum": [
+            "T1",
+            "N1",
+            "N2"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "overview": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Overview",
+          "type": "array"
+        },
+        "key_points": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Key Points",
+          "type": "array"
+        },
+        "decisions": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Decisions",
+          "type": "array"
+        },
+        "action_items": {
+          "items": {
+            "$ref": "#/$defs/Action"
+          },
+          "title": "Action Items",
+          "type": "array"
+        },
+        "timing_updates": {
+          "items": {
+            "$ref": "#/$defs/TimingUpdate"
+          },
+          "title": "Timing Updates",
+          "type": "array"
+        },
+        "notes_context": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Notes Context",
+          "type": "array"
+        },
+        "conflicts": {
+          "items": {
+            "$ref": "#/$defs/Dispute"
+          },
+          "title": "Conflicts",
+          "type": "array",
+          "maxItems": 0
+        }
+      },
+      "required": [
+        "overview",
+        "key_points",
+        "decisions",
+        "action_items",
+        "timing_updates",
+        "notes_context",
+        "conflicts"
+      ],
+      "title": "Draft",
+      "type": "object"
+    }
+  },
+  "multi_claim_notes": {
+    "comparison": {
+      "$defs": {
+        "Account": {
+          "additionalProperties": false,
+          "properties": {
+            "source_id": {
+              "type": "string",
+              "enum": [
+                "T1",
+                "T2",
+                "T3",
+                "N1"
+              ]
+            },
+            "quote": {
+              "minLength": 1,
+              "title": "Quote",
+              "type": "string"
+            },
+            "kind": {
+              "enum": [
+                "fact",
+                "commitment",
+                "context",
+                "request"
+              ],
+              "title": "Kind",
+              "type": "string"
+            },
+            "meaning": {
+              "$ref": "#/$defs/Meaning"
+            }
+          },
+          "required": [
+            "source_id",
+            "quote",
+            "kind",
+            "meaning"
+          ],
+          "title": "Account",
+          "type": "object"
+        },
+        "Claim": {
+          "additionalProperties": false,
+          "properties": {
+            "note": {
+              "$ref": "#/$defs/Account"
+            },
+            "transcript": {
+              "items": {
+                "$ref": "#/$defs/Account"
+              },
+              "title": "Transcript",
+              "type": "array"
+            },
+            "outcome": {
+              "enum": [
+                "consistent",
+                "additional",
+                "conflicting",
+                "uncertain"
+              ],
+              "title": "Outcome",
+              "type": "string"
+            },
+            "reason": {
+              "minLength": 1,
+              "title": "Reason",
+              "type": "string"
+            }
+          },
+          "required": [
+            "note",
+            "transcript",
+            "outcome",
+            "reason"
+          ],
+          "title": "Claim",
+          "type": "object"
+        },
+        "Meaning": {
+          "additionalProperties": false,
+          "properties": {
+            "subject": {
+              "minLength": 1,
+              "title": "Subject",
+              "type": "string"
+            },
+            "quantity": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Quantity"
+            },
+            "unit": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Unit"
+            },
+            "period": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Period"
+            },
+            "scope": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Scope"
+            },
+            "status": {
+              "description": "Preserve estimate/proposal/approval/uncertainty",
+              "minLength": 1,
+              "title": "Status",
+              "type": "string"
+            }
+          },
+          "required": [
+            "subject",
+            "quantity",
+            "unit",
+            "period",
+            "scope",
+            "status"
+          ],
+          "title": "Meaning",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "claims": {
+          "items": {
+            "$ref": "#/$defs/Claim"
+          },
+          "title": "Claims",
+          "type": "array"
+        }
+      },
+      "required": [
+        "claims"
+      ],
+      "title": "Comparison",
+      "type": "object"
+    },
+    "summary": {
+      "$defs": {
+        "Action": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "timing": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Timing"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "timing"
+          ],
+          "title": "Action",
+          "type": "object"
+        },
+        "Dispute": {
+          "additionalProperties": false,
+          "properties": {
+            "topic": {
+              "title": "Topic",
+              "type": "string"
+            },
+            "transcript": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Transcript",
+              "type": "array"
+            },
+            "notes": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Notes",
+              "type": "array"
+            }
+          },
+          "required": [
+            "topic",
+            "transcript",
+            "notes"
+          ],
+          "title": "Dispute",
+          "type": "object"
+        },
+        "SupportedText": {
+          "additionalProperties": false,
+          "properties": {
+            "text": {
+              "title": "Text",
+              "type": "string"
+            },
+            "sources": {
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Sources",
+              "type": "array"
+            }
+          },
+          "required": [
+            "text",
+            "sources"
+          ],
+          "title": "SupportedText",
+          "type": "object"
+        },
+        "Timing": {
+          "additionalProperties": false,
+          "properties": {
+            "source_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "quote": {
+              "description": "Exact timing phrase from source_id",
+              "minLength": 1,
+              "title": "Quote",
+              "type": "string"
+            }
+          },
+          "required": [
+            "source_id",
+            "quote"
+          ],
+          "title": "Timing",
+          "type": "object"
+        },
+        "TimingUpdate": {
+          "additionalProperties": false,
+          "properties": {
+            "original_commitment_id": {
+              "$ref": "#/$defs/SourceID"
+            },
+            "source_ids": {
+              "description": "Later transcript statements clarifying or revising that action's timing",
+              "items": {
+                "$ref": "#/$defs/SourceID"
+              },
+              "minItems": 1,
+              "title": "Source Ids",
+              "type": "array"
+            }
+          },
+          "required": [
+            "original_commitment_id",
+            "source_ids"
+          ],
+          "title": "TimingUpdate",
+          "type": "object"
+        },
+        "SourceID": {
+          "type": "string",
+          "enum": [
+            "T1",
+            "T2",
+            "T3",
+            "N1"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "overview": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Overview",
+          "type": "array"
+        },
+        "key_points": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Key Points",
+          "type": "array"
+        },
+        "decisions": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Decisions",
+          "type": "array"
+        },
+        "action_items": {
+          "items": {
+            "$ref": "#/$defs/Action"
+          },
+          "title": "Action Items",
+          "type": "array"
+        },
+        "timing_updates": {
+          "items": {
+            "$ref": "#/$defs/TimingUpdate"
+          },
+          "title": "Timing Updates",
+          "type": "array"
+        },
+        "notes_context": {
+          "items": {
+            "$ref": "#/$defs/SupportedText"
+          },
+          "title": "Notes Context",
+          "type": "array"
+        },
+        "conflicts": {
+          "items": {
+            "$ref": "#/$defs/Dispute"
+          },
+          "title": "Conflicts",
+          "type": "array",
+          "maxItems": 0
+        }
+      },
+      "required": [
+        "overview",
+        "key_points",
+        "decisions",
+        "action_items",
+        "timing_updates",
+        "notes_context",
+        "conflicts"
+      ],
+      "title": "Draft",
+      "type": "object"
+    }
+  }
+}

@@ -1,0 +1,1853 @@
+[
+  {
+    "id": "R01",
+    "transcript": "[00:00:00] Sam: I will compare the two deployment options.\n[00:00:05] Them: Alex here. I will test recovery next week.\n[00:00:10] Sam: Monitoring costs 120 dollars. We have not chosen a deployment option.",
+    "notes_supplied": "",
+    "summary": {
+      "overview": "The Synthetic release review meeting discussed deployment options and monitoring costs, with the team still undecided on a deployment option. Alex committed to testing recovery next week.",
+      "key_points": [
+        "Deployment option not chosen.",
+        "Monitoring costs $120."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "Compare the two deployment options",
+          "due": null
+        },
+        {
+          "owner": "Alex",
+          "task": "Test recovery",
+          "due": "next week"
+        }
+      ]
+    },
+    "error": null,
+    "warnings": [],
+    "comparison": null,
+    "attempt_findings": []
+  },
+  {
+    "id": "R02",
+    "transcript": "[00:00:00] Sam: Next Tuesday, I will send the draft.",
+    "notes_supplied": "",
+    "summary": {
+      "overview": "See Action items for spoken commitments and timing.",
+      "key_points": [],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "Next Tuesday, I will send the draft.",
+          "review": [
+            "Timing is unassigned; review the source evidence.",
+            "Original commitment: Next Tuesday, I will send the draft."
+          ],
+          "due": null
+        }
+      ],
+      "notes_context": [],
+      "conflicts": []
+    },
+    "error": null,
+    "warnings": [],
+    "comparison": null,
+    "attempt_findings": [
+      {
+        "stage": "summary",
+        "blocking": [],
+        "warnings": [],
+        "error": null
+      }
+    ]
+  },
+  {
+    "id": "R03",
+    "transcript": "[00:00:00] Sam: Monitoring costs 120 dollars. Support costs 120 dollars too. I will check the monitoring invoice.",
+    "notes_supplied": "",
+    "summary": {
+      "overview": "The meeting reviewed synthetic release costs, focusing on monitoring and support expenses. Sam noted both costs at $120 each and committed to verifying the monitoring invoice.",
+      "key_points": [
+        "Monitoring costs $120, support costs $120.",
+        "Sam will verify the monitoring invoice."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "Check monitoring invoice",
+          "due": null
+        }
+      ]
+    },
+    "error": null,
+    "warnings": [],
+    "comparison": null,
+    "attempt_findings": []
+  },
+  {
+    "id": "R04",
+    "transcript": "[00:00:00] Sam: Monitoring costs 120 dollars. Support costs 120 dollars. I will check the invoice not before next Friday.",
+    "notes_supplied": "Support costs 150 dollars, monitoring costs 120 dollars, and please book a venue.",
+    "summary": null,
+    "error": "Comparison failed; coverage requires review: Incomplete or duplicated claim coverage: N1",
+    "warnings": [],
+    "comparison": null,
+    "attempt_findings": [
+      {
+        "stage": "comparison",
+        "blocking": [
+          "Incomplete or duplicated claim coverage: N1"
+        ],
+        "warnings": [],
+        "error": null
+      },
+      {
+        "stage": "comparison",
+        "blocking": [
+          "Incomplete or duplicated claim coverage: N1"
+        ],
+        "warnings": [],
+        "error": null
+      }
+    ]
+  },
+  {
+    "id": "R05",
+    "transcript": "[00:00:00] Sam: I will send the draft Friday. I will check rollback.",
+    "notes_supplied": "",
+    "summary": {
+      "overview": "The meeting was a brief synthetic release review where Sam outlined two action items. The discussion concluded with Sam committing to send a draft and check rollback by Friday.",
+      "key_points": [
+        "Sam will send the draft by Friday.",
+        "Sam will check rollback."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "Send draft",
+          "due": "Friday"
+        },
+        {
+          "owner": "Sam",
+          "task": "Check rollback",
+          "due": null
+        }
+      ]
+    },
+    "error": null,
+    "warnings": [],
+    "comparison": null,
+    "attempt_findings": []
+  },
+  {
+    "id": "R06",
+    "transcript": "[00:00:00] Sam: I will send the draft Friday.\n[00:00:05] Sam: Actually, Monday instead. I mean the draft.",
+    "notes_supplied": "",
+    "summary": {
+      "overview": "See Action items for spoken commitments and timing.",
+      "key_points": [],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "I will send the draft Friday.",
+          "review": [
+            "Timing is unassigned; review the source evidence.",
+            "Original commitment: I will send the draft Friday.",
+            "Other spoken timing (association unverified): Actually, Monday instead."
+          ],
+          "due": null
+        }
+      ],
+      "notes_context": [],
+      "conflicts": []
+    },
+    "error": null,
+    "warnings": [],
+    "comparison": null,
+    "attempt_findings": [
+      {
+        "stage": "summary",
+        "blocking": [],
+        "warnings": [],
+        "error": null
+      }
+    ]
+  },
+  {
+    "id": "R07",
+    "transcript": "[00:00:00] Sam: The support estimate is 120 dollars.",
+    "notes_supplied": "",
+    "summary": {
+      "overview": "The Synthetic release review meeting focused on the support estimate for the release. Sam stated the support estimate as 120 dollars. The meeting concluded with this figure.",
+      "key_points": [
+        "The support estimate for the synthetic release is 120 dollars."
+      ],
+      "decisions": [],
+      "action_items": []
+    },
+    "error": null,
+    "warnings": [],
+    "comparison": null,
+    "attempt_findings": []
+  },
+  {
+    "id": "R08",
+    "transcript": "[00:00:00] Sam: I will send it next Friday, or the Friday after if review slips.\n[00:00:05] Them: Alex here. Maybe we can launch in spring.\n[00:00:10] Sam: No launch decision yet.",
+    "notes_supplied": "",
+    "summary": {
+      "overview": "The meeting was a synthetic release review. Sam committed to sending the review document next Friday or the following Friday if the review slips, and no launch decision was made.",
+      "key_points": [
+        "Sam will send the review document next Friday or the Friday after if the review slips.",
+        "Alex suggested a spring launch, but Sam stated no launch decision has been made."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "send it next Friday, or the Friday after if review slips",
+          "due": "next Friday"
+        }
+      ]
+    },
+    "error": null,
+    "warnings": [],
+    "comparison": null,
+    "attempt_findings": []
+  },
+  {
+    "id": "R09",
+    "transcript": "[00:00:00] Sam: I will send the draft Friday.\n[00:00:05] Them: Alex here. I will review it next week.",
+    "notes_supplied": "",
+    "summary": {
+      "overview": "The synthetic release review meeting focused on the draft timeline. Sam agreed to send the draft on Friday. Alex agreed to review it next week.",
+      "key_points": [
+        "Sam will send the draft on Friday.",
+        "Alex will review the draft next week."
+      ],
+      "decisions": [
+        "Sam will send the draft on Friday.",
+        "Alex will review the draft next week."
+      ],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "send the draft",
+          "due": "Friday"
+        },
+        {
+          "owner": "Alex",
+          "task": "review the draft",
+          "due": "next week"
+        }
+      ]
+    },
+    "error": null,
+    "warnings": [],
+    "comparison": null,
+    "attempt_findings": []
+  },
+  {
+    "id": "R10",
+    "transcript": "[00:00:00] Sam: Support costs 120 dollars for the east office.",
+    "notes_supplied": "Support costs 150 dollars for the west office.",
+    "summary": null,
+    "error": "Comparison failed; coverage requires review: Additional claim must be unmatched: N1",
+    "warnings": [],
+    "comparison": null,
+    "attempt_findings": [
+      {
+        "stage": "comparison",
+        "blocking": [
+          "Additional claim must be unmatched: N1"
+        ],
+        "warnings": [],
+        "error": null
+      },
+      {
+        "stage": "comparison",
+        "blocking": [
+          "Additional claim must be unmatched: N1"
+        ],
+        "warnings": [],
+        "error": null
+      }
+    ]
+  },
+  {
+    "id": "R11",
+    "transcript": "[00:00:00] Sam: I think the staging environment is ready.",
+    "notes_supplied": "",
+    "summary": {
+      "overview": "The meeting reviewed the synthetic release, focusing on the staging environment readiness. Sam confirmed the staging environment is ready, concluding the discussion.",
+      "key_points": [
+        "Staging environment confirmed ready for synthetic release review."
+      ],
+      "decisions": [],
+      "action_items": []
+    },
+    "error": null,
+    "warnings": [],
+    "comparison": null,
+    "attempt_findings": []
+  },
+  {
+    "id": "R12",
+    "transcript": "[00:00:00] Sam: I will send the draft Friday and check rollback.",
+    "notes_supplied": "",
+    "summary": {
+      "overview": "See Action items for spoken commitments and timing.",
+      "key_points": [],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "I will send the draft Friday and check rollback.",
+          "review": [
+            "Timing is unassigned; review the source evidence.",
+            "Original commitment: I will send the draft Friday and check rollback."
+          ],
+          "due": null
+        }
+      ],
+      "notes_context": [],
+      "conflicts": []
+    },
+    "error": null,
+    "warnings": [],
+    "comparison": null,
+    "attempt_findings": [
+      {
+        "stage": "summary",
+        "blocking": [],
+        "warnings": [],
+        "error": null
+      }
+    ]
+  },
+  {
+    "id": "R13",
+    "transcript": "[00:00:00] Sam: I think the staging environment is ready.",
+    "notes_supplied": "Staging is confirmed ready.",
+    "summary": null,
+    "error": "Comparison failed; coverage requires review: Additional claim must be unmatched: N1",
+    "warnings": [],
+    "comparison": null,
+    "attempt_findings": [
+      {
+        "stage": "comparison",
+        "blocking": [
+          "Additional claim must be unmatched: N1"
+        ],
+        "warnings": [],
+        "error": null
+      },
+      {
+        "stage": "comparison",
+        "blocking": [
+          "Additional claim must be unmatched: N1"
+        ],
+        "warnings": [],
+        "error": null
+      }
+    ]
+  },
+  {
+    "id": "R14",
+    "transcript": "[00:00:00] Sam: Support cost 120 dollars last quarter.",
+    "notes_supplied": "",
+    "summary": {
+      "overview": "The Synthetic release review meeting discussed last quarter's support costs, with Sam stating the figure was $120. The meeting concluded with no further discussion as the transcript is minimal.",
+      "key_points": [
+        "Support cost was $120 last quarter."
+      ],
+      "decisions": [],
+      "action_items": []
+    },
+    "error": null,
+    "warnings": [],
+    "comparison": null,
+    "attempt_findings": []
+  },
+  {
+    "id": "R15",
+    "transcript": "[00:00:00] Sam: Maybe I could check rollback. I am not committing to it yet.\n[00:00:05] Them: Alex here. I will send the checklist tomorrow.",
+    "notes_supplied": "",
+    "summary": {
+      "overview": "The synthetic release review meeting discussed a potential rollback check and a checklist. Sam indicated he would not commit to checking rollback, while Alex agreed to send the checklist the following day.",
+      "key_points": [
+        "Sam considered checking rollback but did not commit to it.",
+        "Alex agreed to send the checklist tomorrow."
+      ],
+      "decisions": [
+        "Alex will send the checklist tomorrow."
+      ],
+      "action_items": [
+        {
+          "owner": "Alex",
+          "task": "Send the checklist",
+          "due": "tomorrow"
+        }
+      ]
+    },
+    "error": null,
+    "warnings": [],
+    "comparison": null,
+    "attempt_findings": []
+  },
+  {
+    "id": "R16",
+    "transcript": "[00:00:00] Sam: The current estimate is 120 thousand dollars.\n[00:00:05] Them: Alex here. I think delivery is in June.\n[00:00:10] Sam: I will verify the estimate. We have not approved the budget.",
+    "notes_supplied": "Estimate: 150 thousand dollars. Delivery: July.",
+    "summary": {
+      "overview": "Cross-source accounts remain unresolved; see Conflicts and review warnings. Sam: \u201cWe have not approved the budget.\u201d See Action items for spoken commitments and timing.",
+      "key_points": [
+        "Cross-source accounts remain unresolved; see Conflicts and review warnings.",
+        "Budget not approved (T5)"
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "I will verify the estimate.",
+          "review": [],
+          "due": null
+        }
+      ],
+      "notes_context": [],
+      "conflicts": [
+        {
+          "topic": "Unresolved cross-source claim",
+          "transcript": "The current estimate is 120 thousand dollars.",
+          "handwritten": "Estimate: 150 thousand dollars."
+        },
+        {
+          "topic": "Unresolved cross-source claim",
+          "transcript": "I think delivery is in June.",
+          "handwritten": "Delivery: July."
+        }
+      ]
+    },
+    "error": null,
+    "warnings": [],
+    "comparison": {
+      "claims": [
+        {
+          "note": {
+            "source_id": "N1",
+            "quote": "Estimate: 150 thousand dollars.",
+            "kind": "fact",
+            "meaning": {
+              "subject": "budget estimate",
+              "quantity": null,
+              "unit": "thousand dollars",
+              "period": null,
+              "scope": "synthetic release",
+              "status": "stated"
+            }
+          },
+          "transcript": [
+            {
+              "source_id": "T1",
+              "quote": "The current estimate is 120 thousand dollars.",
+              "kind": "fact",
+              "meaning": {
+                "subject": "budget estimate",
+                "quantity": "",
+                "unit": "thousand dollars",
+                "period": "current",
+                "scope": "synthetic release",
+                "status": "confirmed"
+              }
+            }
+          ],
+          "outcome": "conflicting",
+          "reason": "The note claims 150 thousand dollars for the estimate, while the transcript states 120 thousand dollars for the current estimate."
+        },
+        {
+          "note": {
+            "source_id": "N2",
+            "quote": "Delivery: July.",
+            "kind": "fact",
+            "meaning": {
+              "subject": "delivery date",
+              "quantity": "July",
+              "unit": "month",
+              "period": null,
+              "scope": "synthetic release",
+              "status": "stated"
+            }
+          },
+          "transcript": [
+            {
+              "source_id": "T3",
+              "quote": "I think delivery is in June.",
+              "kind": "fact",
+              "meaning": {
+                "subject": "delivery date",
+                "quantity": "June",
+                "unit": "month",
+                "period": null,
+                "scope": "synthetic release",
+                "status": "tentative"
+              }
+            }
+          ],
+          "outcome": "conflicting",
+          "reason": "The note claims delivery is in July, while the transcript states (tentatively) delivery is in June."
+        }
+      ]
+    },
+    "attempt_findings": [
+      {
+        "stage": "comparison",
+        "blocking": [],
+        "warnings": [],
+        "error": null
+      },
+      {
+        "stage": "summary",
+        "blocking": [],
+        "warnings": [],
+        "error": null
+      }
+    ]
+  },
+  {
+    "id": "R17",
+    "transcript": "[00:00:00] Sam: I will send it next Friday, or the Friday after if review slips.\n[00:00:05] Them: Alex here. Maybe we can launch in spring.\n[00:00:10] Sam: No launch decision yet.",
+    "notes_supplied": "Follow up after the holiday. Maybe ask Casey to help.",
+    "summary": {
+      "overview": "Sam: \u201cNo launch decision yet.\u201d See Action items for spoken commitments and timing.",
+      "key_points": [
+        "Alex suggested a potential spring launch, but Sam clarified no launch decision has been made."
+      ],
+      "decisions": [
+        "No launch decision has been made regarding the synthetic release."
+      ],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "I will send it",
+          "review": [],
+          "due": "next Friday, or the Friday after if review slips"
+        }
+      ],
+      "notes_context": [
+        "Follow up after the holiday.",
+        "Maybe ask Casey to help."
+      ],
+      "conflicts": []
+    },
+    "error": null,
+    "warnings": [],
+    "comparison": {
+      "claims": [
+        {
+          "note": {
+            "source_id": "N1",
+            "quote": "Follow up after the holiday.",
+            "kind": "request",
+            "meaning": {
+              "subject": "follow-up",
+              "quantity": null,
+              "unit": null,
+              "period": "after the holiday",
+              "scope": null,
+              "status": "request"
+            }
+          },
+          "transcript": [],
+          "outcome": "additional",
+          "reason": "No transcript account matches the request to follow up after the holiday."
+        },
+        {
+          "note": {
+            "source_id": "N2",
+            "quote": "Maybe ask Casey to help.",
+            "kind": "request",
+            "meaning": {
+              "subject": "Casey",
+              "quantity": null,
+              "unit": null,
+              "period": null,
+              "scope": null,
+              "status": "proposal"
+            }
+          },
+          "transcript": [],
+          "outcome": "additional",
+          "reason": "No transcript account matches the proposal to ask Casey to help."
+        }
+      ]
+    },
+    "attempt_findings": [
+      {
+        "stage": "comparison",
+        "blocking": [],
+        "warnings": [],
+        "error": null
+      },
+      {
+        "stage": "summary",
+        "blocking": [],
+        "warnings": [],
+        "error": null
+      }
+    ]
+  },
+  {
+    "id": "R18",
+    "transcript": "[00:00:00] Sam: Support costs 120 dollars.",
+    "notes_supplied": "",
+    "summary": {
+      "overview": "The Synthetic release review meeting discussed support costs, with Sam stating they total 120 dollars. The meeting concluded without further discussion or decisions.",
+      "key_points": [
+        "Support costs 120 dollars."
+      ],
+      "decisions": [],
+      "action_items": []
+    },
+    "error": null,
+    "warnings": [],
+    "comparison": null,
+    "attempt_findings": []
+  },
+  {
+    "id": "R19",
+    "transcript": "[00:00:00] Sam: Support costs 120 dollars.",
+    "notes_supplied": "Support costs 15000 cents.",
+    "summary": {
+      "overview": "Cross-source accounts remain unresolved; see Conflicts and review warnings. See Action items for spoken commitments and timing.",
+      "key_points": [
+        "Cross-source accounts remain unresolved; see Conflicts and review warnings."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": null,
+          "task": "Support costs 120 dollars.",
+          "review": [],
+          "due": null
+        }
+      ],
+      "notes_context": [],
+      "conflicts": [
+        {
+          "topic": "Unresolved cross-source claim",
+          "transcript": "Support costs 120 dollars.",
+          "handwritten": "Support costs 15000 cents."
+        }
+      ]
+    },
+    "error": null,
+    "warnings": [],
+    "comparison": {
+      "claims": [
+        {
+          "note": {
+            "source_id": "N1",
+            "quote": "Support costs 15000 cents.",
+            "kind": "fact",
+            "meaning": {
+              "subject": "Support costs",
+              "quantity": ",15000",
+              "unit": "cents",
+              "period": null,
+              "scope": null,
+              "status": "confirmed"
+            }
+          },
+          "transcript": [
+            {
+              "source_id": "T1",
+              "quote": "Support costs 120 dollars.",
+              "kind": "fact",
+              "meaning": {
+                "subject": "Support costs",
+                "quantity": ",120",
+                "unit": "dollars",
+                "period": null,
+                "scope": null,
+                "status": "confirmed"
+              }
+            }
+          ],
+          "outcome": "conflicting",
+          "reason": "Note states 15000 cents (150 dollars) but transcript states 120 dollars for the same subject."
+        }
+      ]
+    },
+    "attempt_findings": [
+      {
+        "stage": "comparison",
+        "blocking": [],
+        "warnings": [],
+        "error": null
+      },
+      {
+        "stage": "summary",
+        "blocking": [
+          "Invalid transcript source: N1",
+          "Invalid transcript source: N1"
+        ],
+        "warnings": [],
+        "error": null
+      },
+      {
+        "stage": "summary",
+        "blocking": [],
+        "warnings": [],
+        "error": null
+      }
+    ]
+  },
+  {
+    "id": "R20",
+    "transcript": "[00:00:00] Sam: I will send the draft Friday.\n[00:00:05] Them: Alex here. I will review it next week.",
+    "notes_supplied": "Personal context: the internal workshop has 40 seats.\nTask for myself: ask the venue about access.",
+    "summary": {
+      "overview": "See Action items for spoken commitments and timing.",
+      "key_points": [],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "I will send the draft",
+          "review": [],
+          "due": "Friday"
+        },
+        {
+          "owner": "Alex",
+          "task": "I will review it",
+          "review": [],
+          "due": "next week"
+        }
+      ],
+      "notes_context": [
+        "Personal context: ",
+        "the internal workshop has 40 seats.",
+        "Task for myself: ",
+        "ask the venue about access."
+      ],
+      "conflicts": []
+    },
+    "error": null,
+    "warnings": [],
+    "comparison": {
+      "claims": [
+        {
+          "note": {
+            "source_id": "N1",
+            "quote": "Personal context: ",
+            "kind": "context",
+            "meaning": {
+              "subject": "null",
+              "quantity": "null",
+              "unit": "null",
+              "period": "null",
+              "scope": "null",
+              "status": "null"
+            }
+          },
+          "transcript": [],
+          "outcome": "additional",
+          "reason": "The note contains a nonfactual label that is not present in the transcript."
+        },
+        {
+          "note": {
+            "source_id": "N1",
+            "quote": "the internal workshop has 40 seats.",
+            "kind": "fact",
+            "meaning": {
+              "subject": "workshop",
+              "quantity": "",
+              "unit": "seats",
+              "period": "null",
+              "scope": "internal",
+              "status": "null"
+            }
+          },
+          "transcript": [],
+          "outcome": "additional",
+          "reason": "The note states the internal workshop has 40 seats, but the transcript does not mention the workshop or its capacity."
+        },
+        {
+          "note": {
+            "source_id": "N2",
+            "quote": "Task for myself: ",
+            "kind": "context",
+            "meaning": {
+              "subject": "null",
+              "quantity": "null",
+              "unit": "null",
+              "period": "null",
+              "scope": "null",
+              "status": "null"
+            }
+          },
+          "transcript": [],
+          "outcome": "additional",
+          "reason": "The note contains a nonfactual label for a task that is not present in the transcript."
+        },
+        {
+          "note": {
+            "source_id": "N2",
+            "quote": "ask the venue about access.",
+            "kind": "request",
+            "meaning": {
+              "subject": "null",
+              "quantity": "null",
+              "unit": "null",
+              "period": "null",
+              "scope": "null",
+              "status": "null"
+            }
+          },
+          "transcript": [],
+          "outcome": "additional",
+          "reason": "The note states a task to ask the venue about access, but the transcript does not mention any such task."
+        }
+      ]
+    },
+    "attempt_findings": [
+      {
+        "stage": "comparison",
+        "blocking": [],
+        "warnings": [],
+        "error": null
+      },
+      {
+        "stage": "summary",
+        "blocking": [],
+        "warnings": [],
+        "error": null
+      }
+    ]
+  },
+  {
+    "id": "R21",
+    "transcript": "[00:00:00] Sam: The proposal to launch Friday was rejected.",
+    "notes_supplied": "Launch approved Friday.",
+    "summary": {
+      "overview": "See the supported items below.",
+      "key_points": [
+        "Cross-source accounts remain unresolved; see Conflicts and review warnings."
+      ],
+      "decisions": [],
+      "action_items": [],
+      "notes_context": [],
+      "conflicts": [
+        {
+          "topic": "Unresolved cross-source claim",
+          "transcript": "The proposal to launch Friday was rejected.",
+          "handwritten": "Launch approved Friday."
+        }
+      ]
+    },
+    "error": null,
+    "warnings": [],
+    "comparison": {
+      "claims": [
+        {
+          "note": {
+            "source_id": "N1",
+            "quote": "Launch approved Friday.",
+            "kind": "fact",
+            "meaning": {
+              "subject": "launch",
+              "quantity": null,
+              "unit": null,
+              "period": "Friday",
+              "scope": null,
+              "status": "approved"
+            }
+          },
+          "transcript": [
+            {
+              "source_id": "T1",
+              "quote": "The proposal to launch Friday was rejected.",
+              "kind": "fact",
+              "meaning": {
+                "subject": "proposal",
+                "quantity": null,
+                "unit": null,
+                "period": "Friday",
+                "scope": "to launch",
+                "status": "rejected"
+              }
+            }
+          ],
+          "outcome": "conflicting",
+          "reason": "The note claims the launch (event) was approved for Friday, while the transcript states the proposal (request for launch) was rejected, indicating the launch was not approved."
+        }
+      ]
+    },
+    "attempt_findings": [
+      {
+        "stage": "comparison",
+        "blocking": [],
+        "warnings": [],
+        "error": null
+      },
+      {
+        "stage": "summary",
+        "blocking": [
+          "Invalid transcript source: N1"
+        ],
+        "warnings": [],
+        "error": null
+      },
+      {
+        "stage": "summary",
+        "blocking": [],
+        "warnings": [],
+        "error": null
+      }
+    ]
+  },
+  {
+    "id": "R22",
+    "transcript": "[00:00:00] Sam: Monitoring costs 120 dollars. Support costs 120 dollars too. I will check the monitoring invoice.",
+    "notes_supplied": "Support quote: 150 dollars.",
+    "summary": {
+      "overview": "Cross-source accounts remain unresolved; see Conflicts and review warnings. Sam: \u201cMonitoring costs 120 dollars.\u201d See Action items for spoken commitments and timing.",
+      "key_points": [
+        "Monitoring costs $120 (T1).",
+        "Cross-source accounts remain unresolved; see Conflicts and review warnings."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "I will check the monitoring invoice.",
+          "review": [],
+          "due": null
+        }
+      ],
+      "notes_context": [],
+      "conflicts": [
+        {
+          "topic": "Unresolved cross-source claim",
+          "transcript": "Support costs 120 dollars too.",
+          "handwritten": "Support quote: 150 dollars."
+        }
+      ]
+    },
+    "error": null,
+    "warnings": [],
+    "comparison": {
+      "claims": [
+        {
+          "note": {
+            "source_id": "N1",
+            "quote": "Support quote: 150 dollars.",
+            "kind": "fact",
+            "meaning": {
+              "subject": "Support",
+              "quantity": "150",
+              "unit": "dollars",
+              "period": null,
+              "scope": null,
+              "status": "proposal"
+            }
+          },
+          "transcript": [
+            {
+              "source_id": "T2",
+              "quote": "Support costs 120 dollars too.",
+              "kind": "fact",
+              "meaning": {
+                "subject": "Support",
+                "quantity": "120",
+                "unit": "dollars",
+                "period": null,
+                "scope": null,
+                "status": "confirmed"
+              }
+            }
+          ],
+          "outcome": "conflicting",
+          "reason": "Note claims support quote is 150 dollars (proposal), transcript T2 states support costs are 120 dollars (confirmed). Same subject (Support) and unit (dollars) but different quantities (150 vs 120)."
+        }
+      ]
+    },
+    "attempt_findings": [
+      {
+        "stage": "comparison",
+        "blocking": [],
+        "warnings": [],
+        "error": null
+      },
+      {
+        "stage": "summary",
+        "blocking": [],
+        "warnings": [],
+        "error": null
+      }
+    ]
+  },
+  {
+    "id": "R23",
+    "transcript": "[00:00:00] Sam: I will compare the two deployment options.\n[00:00:05] Them: Alex here. I will test recovery next week.\n[00:00:10] Sam: Monitoring costs 120 dollars. We have not chosen a deployment option.",
+    "notes_supplied": "Focus on deployment options.",
+    "summary": {
+      "overview": "Sam: \u201cMonitoring costs 120 dollars.\u201d Sam: \u201cWe have not chosen a deployment option.\u201d See Action items for spoken commitments and timing.",
+      "key_points": [
+        "Monitoring costs 120 dollars (T4).",
+        "We have not chosen a deployment option (T5)."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "I will compare the two deployment options.",
+          "review": [],
+          "due": null
+        },
+        {
+          "owner": "Alex",
+          "task": "I will test recovery next week.",
+          "review": [
+            "Timing is unassigned; review the source evidence.",
+            "Original commitment: I will test recovery next week."
+          ],
+          "due": null
+        }
+      ],
+      "notes_context": [
+        "Focus on deployment options."
+      ],
+      "conflicts": []
+    },
+    "error": null,
+    "warnings": [],
+    "comparison": {
+      "claims": [
+        {
+          "note": {
+            "source_id": "N1",
+            "quote": "Focus on deployment options.",
+            "kind": "request",
+            "meaning": {
+              "subject": "deployment options",
+              "quantity": null,
+              "unit": null,
+              "period": null,
+              "scope": null,
+              "status": "request"
+            }
+          },
+          "transcript": [],
+          "outcome": "additional",
+          "reason": "The note is a request to focus on deployment options, which is not a factual claim. The transcript contains discussion about deployment options (T1, T5) but does not contain a request to focus on them, so it is an additional request."
+        }
+      ]
+    },
+    "attempt_findings": [
+      {
+        "stage": "comparison",
+        "blocking": [],
+        "warnings": [],
+        "error": null
+      },
+      {
+        "stage": "summary",
+        "blocking": [],
+        "warnings": [],
+        "error": null
+      }
+    ]
+  },
+  {
+    "id": "R24",
+    "transcript": "[00:00:00] Sam: I will check rollback.\n[00:00:05] Them: When?\n[00:00:07] Sam: Friday.",
+    "notes_supplied": "",
+    "summary": {
+      "overview": "See Action items for spoken commitments and timing.",
+      "key_points": [],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "I will check rollback.",
+          "review": [
+            "Timing is unassigned; review the source evidence.",
+            "Original commitment: I will check rollback.",
+            "Other spoken timing (association unverified): Friday."
+          ],
+          "due": null
+        }
+      ],
+      "notes_context": [],
+      "conflicts": []
+    },
+    "error": null,
+    "warnings": [],
+    "comparison": null,
+    "attempt_findings": [
+      {
+        "stage": "summary",
+        "blocking": [],
+        "warnings": [],
+        "error": null
+      }
+    ]
+  },
+  {
+    "id": "R25",
+    "transcript": "[00:00:00] Sam: I will send the draft Friday.\n[00:00:05] Sam: Actually, Monday instead. I mean the draft.",
+    "notes_supplied": "",
+    "summary": {
+      "overview": "Sam corrected the timeline for sending the draft from Friday to Monday. The meeting concluded with this updated deadline for the draft submission.",
+      "key_points": [
+        "Sam changed the draft submission date from Friday to Monday."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "Send draft on Monday",
+          "due": "Monday"
+        }
+      ]
+    },
+    "error": null,
+    "warnings": [],
+    "comparison": null,
+    "attempt_findings": []
+  },
+  {
+    "id": "R26",
+    "transcript": "[00:00:00] Sam: The proposal to launch Friday was rejected.",
+    "notes_supplied": "",
+    "summary": {
+      "overview": "The synthetic release review meeting discussed the proposal to launch on Friday, which was rejected. The meeting concluded with this decision.",
+      "key_points": [
+        "The proposal to launch on Friday was rejected."
+      ],
+      "decisions": [
+        "The proposal to launch on Friday was rejected."
+      ],
+      "action_items": []
+    },
+    "error": null,
+    "warnings": [],
+    "comparison": null,
+    "attempt_findings": []
+  },
+  {
+    "id": "R27",
+    "transcript": "[00:00:00] Sam: I think the staging environment is ready. I will verify the health checks.",
+    "notes_supplied": "",
+    "summary": {
+      "overview": "The meeting discussed the readiness of the staging environment for the synthetic release. Sam confirmed the environment is ready and will verify health checks next.",
+      "key_points": [
+        "The staging environment is ready for the synthetic release."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "verify health checks",
+          "due": null
+        }
+      ]
+    },
+    "error": null,
+    "warnings": [],
+    "comparison": null,
+    "attempt_findings": []
+  },
+  {
+    "id": "R28",
+    "transcript": "[00:00:00] Sam: Support costs 120 dollars.",
+    "notes_supplied": "Support costs 12000 cents.",
+    "summary": {
+      "overview": "See the supported items below.",
+      "key_points": [
+        "Sam stated support costs are 120 dollars (T1)."
+      ],
+      "decisions": [],
+      "action_items": [],
+      "notes_context": [
+        "Support costs 12000 cents."
+      ],
+      "conflicts": []
+    },
+    "error": null,
+    "warnings": [],
+    "comparison": {
+      "claims": [
+        {
+          "note": {
+            "source_id": "N1",
+            "quote": "Support costs 12000 cents.",
+            "kind": "fact",
+            "meaning": {
+              "subject": "support costs",
+              "quantity": "12000",
+              "unit": "cents",
+              "period": null,
+              "scope": null,
+              "status": "confirmed"
+            }
+          },
+          "transcript": [
+            {
+              "source_id": "T1",
+              "quote": "Support costs 120 dollars.",
+              "kind": "fact",
+              "meaning": {
+                "subject": "support costs",
+                "quantity": "120",
+                "unit": "dollars",
+                "period": null,
+                "scope": null,
+                "status": "confirmed"
+              }
+            }
+          ],
+          "outcome": "consistent",
+          "reason": "12000 cents equals 120 dollars (1 dollar = 100 cents), so the amounts are equivalent."
+        }
+      ]
+    },
+    "attempt_findings": [
+      {
+        "stage": "comparison",
+        "blocking": [],
+        "warnings": [],
+        "error": null
+      },
+      {
+        "stage": "summary",
+        "blocking": [],
+        "warnings": [],
+        "error": null
+      }
+    ]
+  },
+  {
+    "id": "R29",
+    "transcript": "[00:00:00] Sam: Maybe I could check rollback. I am not committing to it yet.\n[00:00:05] Them: Alex here. I will send the checklist tomorrow.",
+    "notes_supplied": "",
+    "summary": {
+      "overview": "See Action items for spoken commitments and timing.",
+      "key_points": [],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Alex",
+          "task": "I will send the checklist",
+          "review": [],
+          "due": "tomorrow"
+        }
+      ],
+      "notes_context": [],
+      "conflicts": []
+    },
+    "error": null,
+    "warnings": [],
+    "comparison": null,
+    "attempt_findings": [
+      {
+        "stage": "summary",
+        "blocking": [],
+        "warnings": [],
+        "error": null
+      }
+    ]
+  },
+  {
+    "id": "R30",
+    "transcript": "[00:00:00] Sam: Support costs 120 dollars for the east office.",
+    "notes_supplied": "",
+    "summary": {
+      "overview": "The meeting was a synthetic release review where Sam noted the east office support cost. The discussion concluded with this single point as no further details were provided.",
+      "key_points": [
+        "Support costs $120 for the east office."
+      ],
+      "decisions": [],
+      "action_items": []
+    },
+    "error": null,
+    "warnings": [],
+    "comparison": null,
+    "attempt_findings": []
+  },
+  {
+    "id": "R31",
+    "transcript": "[00:00:00] Sam: The current estimate is 120 thousand dollars.\n[00:00:05] Them: Alex here. I think delivery is in June.\n[00:00:10] Sam: I will verify the estimate. We have not approved the budget.",
+    "notes_supplied": "",
+    "summary": {
+      "overview": "The meeting reviewed the synthetic release budget estimate and delivery timeline. The budget estimate of $120,000 has not been approved, and Sam will verify it; Alex stated delivery is expected in June.",
+      "key_points": [
+        "The budget estimate for the synthetic release is $120,000 and has not been approved.",
+        "Alex mentioned delivery is expected in June.",
+        "Sam will verify the budget estimate."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "verify the estimate",
+          "due": null
+        }
+      ]
+    },
+    "error": null,
+    "warnings": [],
+    "comparison": null,
+    "attempt_findings": []
+  },
+  {
+    "id": "R32",
+    "transcript": "[00:00:00] Sam: Monitoring costs 120 dollars. Support costs 120 dollars. I will check the invoice not before next Friday.",
+    "notes_supplied": "",
+    "summary": {
+      "overview": "The meeting reviewed synthetic release costs, noting monitoring and support each cost $120. Sam committed to checking the invoice no earlier than next Friday.",
+      "key_points": [
+        "Monitoring costs $120.",
+        "Support costs $120.",
+        "Sam will check the invoice not before next Friday."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "check invoice",
+          "due": "next Friday"
+        }
+      ]
+    },
+    "error": null,
+    "warnings": [],
+    "comparison": null,
+    "attempt_findings": []
+  },
+  {
+    "id": "R33",
+    "transcript": "[00:00:00] Sam: I think the staging environment is ready. I will verify the health checks.",
+    "notes_supplied": "Staging is paused pending repairs.",
+    "summary": {
+      "overview": "Cross-source accounts remain unresolved; see Conflicts and review warnings. See Action items for spoken commitments and timing.",
+      "key_points": [],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "I will verify the health checks.",
+          "review": [],
+          "due": null
+        }
+      ],
+      "notes_context": [],
+      "conflicts": [
+        {
+          "topic": "Unresolved cross-source claim",
+          "transcript": "I think the staging environment is ready.",
+          "handwritten": "Staging is paused pending repairs."
+        }
+      ]
+    },
+    "error": null,
+    "warnings": [],
+    "comparison": {
+      "claims": [
+        {
+          "note": {
+            "source_id": "N1",
+            "quote": "Staging is paused pending repairs.",
+            "kind": "fact",
+            "meaning": {
+              "subject": "staging environment",
+              "quantity": null,
+              "unit": null,
+              "period": null,
+              "scope": null,
+              "status": "stated"
+            }
+          },
+          "transcript": [
+            {
+              "source_id": "T1",
+              "quote": "I think the staging environment is ready.",
+              "kind": "fact",
+              "meaning": {
+                "subject": "staging environment",
+                "quantity": null,
+                "unit": null,
+                "period": null,
+                "scope": null,
+                "status": "opinion"
+              }
+            }
+          ],
+          "outcome": "conflicting",
+          "reason": "The note states the staging environment is paused (not ready) while the transcript (T1) states it is ready."
+        }
+      ]
+    },
+    "attempt_findings": [
+      {
+        "stage": "comparison",
+        "blocking": [],
+        "warnings": [],
+        "error": null
+      },
+      {
+        "stage": "summary",
+        "blocking": [
+          "Invalid transcript source: N1"
+        ],
+        "warnings": [],
+        "error": null
+      },
+      {
+        "stage": "summary",
+        "blocking": [],
+        "warnings": [],
+        "error": null
+      }
+    ]
+  },
+  {
+    "id": "R34",
+    "transcript": "[00:00:00] Sam: Support cost 120 dollars last quarter.",
+    "notes_supplied": "Support costs 150 dollars this quarter.",
+    "summary": null,
+    "error": "Enhancement failed evidence validation: Invalid transcript source: N1; key_points: number 150 absent from cited evidence (in the other source)",
+    "warnings": [],
+    "comparison": {
+      "claims": [
+        {
+          "note": {
+            "source_id": "N1",
+            "quote": "Support costs 150 dollars this quarter.",
+            "kind": "fact",
+            "meaning": {
+              "subject": "support costs",
+              "quantity": "150",
+              "unit": "dollars",
+              "period": "this quarter",
+              "scope": null,
+              "status": "confirmed"
+            }
+          },
+          "transcript": [],
+          "outcome": "additional",
+          "reason": "The note claims support costs for 'this quarter' while the transcript reports support costs for 'last quarter'. The distinct time periods ('this quarter' vs. 'last quarter') indicate no matching account exists in the transcript for the note's claim."
+        }
+      ]
+    },
+    "attempt_findings": [
+      {
+        "stage": "comparison",
+        "blocking": [
+          "Additional claim must be unmatched: N1"
+        ],
+        "warnings": [],
+        "error": null
+      },
+      {
+        "stage": "comparison",
+        "blocking": [],
+        "warnings": [],
+        "error": null
+      },
+      {
+        "stage": "summary",
+        "blocking": [
+          "Invalid transcript source: N1"
+        ],
+        "warnings": [
+          "key_points: number $150 absent from cited evidence (in the other source)"
+        ],
+        "error": null
+      },
+      {
+        "stage": "summary",
+        "blocking": [
+          "Invalid transcript source: N1"
+        ],
+        "warnings": [
+          "key_points: number 150 absent from cited evidence (in the other source)"
+        ],
+        "error": null
+      }
+    ]
+  },
+  {
+    "id": "R35",
+    "transcript": "[00:00:00] Sam: Next Tuesday, I will send the draft.",
+    "notes_supplied": "",
+    "summary": {
+      "overview": "The meeting was a brief synthetic release review where Sam confirmed sending a draft next Tuesday. No other topics were discussed as the transcript is very short.",
+      "key_points": [
+        "Sam will send the draft next Tuesday."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "Send draft",
+          "due": "next Tuesday"
+        }
+      ]
+    },
+    "error": null,
+    "warnings": [],
+    "comparison": null,
+    "attempt_findings": []
+  },
+  {
+    "id": "R36",
+    "transcript": "[00:00:00] Sam: Support costs 120 dollars.",
+    "notes_supplied": "Support costs 120 dollars. The training room has 40 seats.",
+    "summary": {
+      "overview": "The support cost was stated as $120 (T1).",
+      "key_points": [
+        "Support cost: $120 (T1)."
+      ],
+      "decisions": [],
+      "action_items": [],
+      "notes_context": [
+        "Support costs 120 dollars.",
+        "The training room has 40 seats."
+      ],
+      "conflicts": []
+    },
+    "error": null,
+    "warnings": [],
+    "comparison": {
+      "claims": [
+        {
+          "note": {
+            "source_id": "N1",
+            "quote": "Support costs 120 dollars.",
+            "kind": "fact",
+            "meaning": {
+              "subject": "Support costs",
+              "quantity": null,
+              "unit": null,
+              "period": null,
+              "scope": null,
+              "status": "confirmed"
+            }
+          },
+          "transcript": [
+            {
+              "source_id": "T1",
+              "quote": "Support costs 120 dollars.",
+              "kind": "fact",
+              "meaning": {
+                "subject": "Support costs",
+                "quantity": null,
+                "unit": null,
+                "period": null,
+                "scope": null,
+                "status": "confirmed"
+              }
+            }
+          ],
+          "outcome": "consistent",
+          "reason": "The transcript T1 matches the note N1 exactly in subject, quantity, unit, and epistemic status."
+        },
+        {
+          "note": {
+            "source_id": "N2",
+            "quote": "The training room has 40 seats.",
+            "kind": "fact",
+            "meaning": {
+              "subject": "The training room",
+              "quantity": null,
+              "unit": null,
+              "period": null,
+              "scope": null,
+              "status": "confirmed"
+            }
+          },
+          "transcript": [],
+          "outcome": "additional",
+          "reason": "No matching transcript account found for the claim about the training room seats."
+        }
+      ]
+    },
+    "attempt_findings": [
+      {
+        "stage": "comparison",
+        "blocking": [],
+        "warnings": [],
+        "error": null
+      },
+      {
+        "stage": "summary",
+        "blocking": [],
+        "warnings": [],
+        "error": null
+      }
+    ]
+  },
+  {
+    "id": "R37",
+    "transcript": "[00:00:00] Sam: I will tag the release Friday.\n[00:00:05] Them: Alex here. I will check the rollback procedure.\n[00:00:10] Sam: Agreed, release Friday.",
+    "notes_supplied": "",
+    "summary": {
+      "overview": "Sam: \u201cAgreed, release Friday.\u201d See Action items for spoken commitments and timing.",
+      "key_points": [
+        "Sam: \u201cAgreed, release Friday.\u201d"
+      ],
+      "decisions": [
+        "Sam: \u201cAgreed, release Friday.\u201d"
+      ],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "I will tag the release",
+          "review": [],
+          "due": "Friday"
+        },
+        {
+          "owner": "Alex",
+          "task": "I will check the rollback procedure.",
+          "review": [
+            "Timing is unassigned; review the source evidence.",
+            "Original commitment: I will check the rollback procedure."
+          ],
+          "due": null
+        }
+      ],
+      "notes_context": [],
+      "conflicts": []
+    },
+    "error": null,
+    "warnings": [],
+    "comparison": null,
+    "attempt_findings": [
+      {
+        "stage": "summary",
+        "blocking": [],
+        "warnings": [],
+        "error": null
+      }
+    ]
+  },
+  {
+    "id": "R38",
+    "transcript": "[00:00:00] Sam: I will send the draft Friday and check rollback.",
+    "notes_supplied": "",
+    "summary": {
+      "overview": "The Synthetic release review meeting focused on finalizing the release process. Sam committed to sending the draft by Friday and checking rollback procedures.",
+      "key_points": [
+        "Sam will send the draft on Friday.",
+        "Sam will check rollback procedures."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "Send draft",
+          "due": "Friday"
+        },
+        {
+          "owner": "Sam",
+          "task": "Check rollback",
+          "due": null
+        }
+      ]
+    },
+    "error": null,
+    "warnings": [],
+    "comparison": null,
+    "attempt_findings": []
+  },
+  {
+    "id": "R39",
+    "transcript": "[00:00:00] Sam: I will tag the release Friday.\n[00:00:05] Them: Alex here. I will check the rollback procedure.\n[00:00:10] Sam: Agreed, release Friday.",
+    "notes_supplied": "",
+    "summary": {
+      "overview": "The meeting reviewed the synthetic release schedule and confirmed the release date. Alex agreed to check the rollback procedure, and the team finalized the release tagging for Friday.",
+      "key_points": [
+        "Release tagging scheduled for Friday.",
+        "Alex will check the rollback procedure.",
+        "Team agreed to release on Friday."
+      ],
+      "decisions": [
+        "Release scheduled for Friday."
+      ],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "tag the release",
+          "due": "Friday"
+        },
+        {
+          "owner": "Alex",
+          "task": "check the rollback procedure",
+          "due": null
+        }
+      ]
+    },
+    "error": null,
+    "warnings": [],
+    "comparison": null,
+    "attempt_findings": []
+  },
+  {
+    "id": "R40",
+    "transcript": "[00:00:00] Sam: I will send the draft Friday. I will check rollback.",
+    "notes_supplied": "",
+    "summary": {
+      "overview": "See Action items for spoken commitments and timing.",
+      "key_points": [],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "I will send the draft",
+          "review": [],
+          "due": "Friday"
+        },
+        {
+          "owner": "Sam",
+          "task": "I will check rollback.",
+          "review": [],
+          "due": null
+        }
+      ],
+      "notes_context": [],
+      "conflicts": []
+    },
+    "error": null,
+    "warnings": [],
+    "comparison": null,
+    "attempt_findings": [
+      {
+        "stage": "summary",
+        "blocking": [],
+        "warnings": [],
+        "error": null
+      }
+    ]
+  },
+  {
+    "id": "R41",
+    "transcript": "[00:00:00] Sam: The support estimate is 120 dollars.",
+    "notes_supplied": "The approved support budget is 150 dollars.",
+    "summary": null,
+    "error": "Enhancement failed evidence validation: Invalid transcript source: N1",
+    "warnings": [],
+    "comparison": {
+      "claims": [
+        {
+          "note": {
+            "source_id": "N1",
+            "quote": "The approved support budget is 150 dollars.",
+            "kind": "fact",
+            "meaning": {
+              "subject": "support budget",
+              "quantity": null,
+              "unit": "dollars",
+              "period": null,
+              "scope": null,
+              "status": "approved"
+            }
+          },
+          "transcript": [],
+          "outcome": "additional",
+          "reason": "The note claims an approved budget of 150 dollars (confirmed fact), while the transcript reports a support estimate of 120 dollars (tentative figure). The subjects differ: 'approved budget' versus 'estimate', making them distinct facts."
+        }
+      ]
+    },
+    "attempt_findings": [
+      {
+        "stage": "comparison",
+        "blocking": [],
+        "warnings": [],
+        "error": null
+      },
+      {
+        "stage": "summary",
+        "blocking": [
+          "Invalid transcript source: N1",
+          "Invalid transcript source: N1"
+        ],
+        "warnings": [
+          "overview: number 150 absent from cited evidence (in the other source)"
+        ],
+        "error": null
+      },
+      {
+        "stage": "summary",
+        "blocking": [
+          "Invalid transcript source: N1"
+        ],
+        "warnings": [],
+        "error": null
+      }
+    ]
+  },
+  {
+    "id": "R42",
+    "transcript": "[00:00:00] Sam: Support costs 120 dollars.",
+    "notes_supplied": "",
+    "summary": {
+      "overview": "The synthetic release review meeting discussed support costs. Sam reported the support cost as $120.",
+      "key_points": [
+        "Support costs $120."
+      ],
+      "decisions": [],
+      "action_items": []
+    },
+    "error": null,
+    "warnings": [],
+    "comparison": null,
+    "attempt_findings": []
+  },
+  {
+    "id": "R43",
+    "transcript": "[00:00:00] Sam: I will check rollback.\n[00:00:05] Them: When?\n[00:00:07] Sam: Friday.",
+    "notes_supplied": "",
+    "summary": {
+      "overview": "The Synthetic release review meeting discussed the timing for checking the rollback. Sam committed to checking the rollback on Friday, which was the main topic of the meeting.",
+      "key_points": [
+        "Sam committed to checking the rollback on Friday."
+      ],
+      "decisions": [
+        "Sam will check the rollback on Friday."
+      ],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "check rollback",
+          "due": "Friday"
+        }
+      ]
+    },
+    "error": null,
+    "warnings": [],
+    "comparison": null,
+    "attempt_findings": []
+  },
+  {
+    "id": "R44",
+    "transcript": "[00:00:00] Sam: Support costs 120 dollars.",
+    "notes_supplied": "",
+    "summary": {
+      "overview": "The Synthetic release review meeting discussed support costs, with Sam stating they total 120 dollars. The meeting concluded without further discussion or decisions.",
+      "key_points": [
+        "Support costs 120 dollars."
+      ],
+      "decisions": [],
+      "action_items": []
+    },
+    "error": null,
+    "warnings": [],
+    "comparison": null,
+    "attempt_findings": []
+  }
+]

@@ -1,0 +1,204 @@
+{
+  "manifest_sha256": "24676d89c8a68db18a9d78d732a3089caffd85c74dc6526f07a560c511f1fdbd",
+  "approval": "Great, run the experiment",
+  "published_head": "9dba7187037592d2898f773932d48f7a70c9fd76",
+  "launch_source_sha256": "9628e22e50b9b318709ac0fc149cf5b63a562f84ba1f7139d30e8f6e044662f7",
+  "return": {
+    "accounting": {
+      "authoritative": true,
+      "accounting_boundary": "after final.json save and inventory hashing; before manifest.json write",
+      "capture_complete": false,
+      "possibly_sent": 3,
+      "slots": [
+        {
+          "slot": "01-partial_coordination_retracted",
+          "case": "partial_coordination_retracted",
+          "think": false,
+          "state": "complete",
+          "possibly_sent": true,
+          "request_sha256": "1936f87f816e3ba2c734abce7b84908821abacb1e2485857fc783c983a3d7114",
+          "generation_id": "retention-probe-8c62fdd2301f4b8695e81a55c5424188/partial_coordination_retracted",
+          "snapshot_id": "28bb22aec3289f904af59b746b6b9e99f9a0f6baa3809e56da172320c0d21a4c",
+          "snapshot_sha256": "6ed4698adf5b0c4b87dd8f43a54c541222d7d34fd8b507f2c5638bd7f42f226f",
+          "internal_baseline_decoder_request_sha256": "0c73082b395042f096d6587c000efe4080eff27c5c4b2e114e6f2bc01eb3607b",
+          "manifest_sha256": "24676d89c8a68db18a9d78d732a3089caffd85c74dc6526f07a560c511f1fdbd",
+          "generation_deadline_monotonic": 309526.33360325,
+          "elapsed": 7.696511542017106,
+          "exchange": {
+            "deadline_monotonic": 309526.33360325,
+            "elapsed": 7.062032499990892,
+            "error": null,
+            "killed": false,
+            "overrun_seconds": 0.0,
+            "reaped": true,
+            "returncode": 0,
+            "server_compute_cancellation_guaranteed": false,
+            "started_monotonic": 309346.333655458,
+            "timed_out": false
+          },
+          "progress": {
+            "complete_events": 37,
+            "content_characters": 139,
+            "error": null,
+            "first_byte_seconds": 6.007960667018779,
+            "first_content_seconds": 6.007960667018779,
+            "first_thinking_seconds": null,
+            "returned": {
+              "eval_count": 37,
+              "eval_duration": 980444000,
+              "load_duration": 4897088750,
+              "prompt_eval_cached_count": 0,
+              "prompt_eval_count": 428,
+              "prompt_eval_duration": 1096115000,
+              "total_duration": 6985156250
+            },
+            "sizes_are_tokens": false,
+            "terminal_seen": true,
+            "thinking_characters": 0,
+            "timing_basis": "received complete event relative to child monotonic origin; not GPU time",
+            "trailing_bytes": 0,
+            "valid": true
+          }
+        },
+        {
+          "slot": "02-cancellation_with_new_task",
+          "case": "cancellation_with_new_task",
+          "think": false,
+          "state": "complete",
+          "possibly_sent": true,
+          "request_sha256": "27137409d45e2fb4c57a44754d7691031177ba97c086cabbd1b1b892be6d4da2",
+          "generation_id": "retention-probe-8c62fdd2301f4b8695e81a55c5424188/cancellation_with_new_task",
+          "snapshot_id": "f00eecd37ceb50fda583de7180e31fdbba01e1d3b9ea74a6942807999b66f41a",
+          "snapshot_sha256": "c0790bbd276141152bf1cfbd95ba7ea673adec902c295c027f5ef113b0365feb",
+          "internal_baseline_decoder_request_sha256": "da65769f4831dcdd7808cba9f4d3e2452dc1a29e51959bd0e9124d4c938ba124",
+          "manifest_sha256": "24676d89c8a68db18a9d78d732a3089caffd85c74dc6526f07a560c511f1fdbd",
+          "generation_deadline_monotonic": 309534.011502958,
+          "elapsed": 3.8967893330263905,
+          "exchange": {
+            "deadline_monotonic": 309534.011502958,
+            "elapsed": 3.274214666977059,
+            "error": null,
+            "killed": false,
+            "overrun_seconds": 0.0,
+            "reaped": true,
+            "returncode": 0,
+            "server_compute_cancellation_guaranteed": false,
+            "started_monotonic": 309354.011557291,
+            "timed_out": false
+          },
+          "progress": {
+            "complete_events": 56,
+            "content_characters": 222,
+            "error": null,
+            "first_byte_seconds": 1.0843290410120972,
+            "first_content_seconds": 1.0843290410120972,
+            "first_thinking_seconds": null,
+            "returned": {
+              "eval_count": 81,
+              "eval_duration": 2144315000,
+              "load_duration": 1607375,
+              "prompt_eval_cached_count": 0,
+              "prompt_eval_count": 394,
+              "prompt_eval_duration": 1071444999,
+              "total_duration": 3225823208
+            },
+            "sizes_are_tokens": false,
+            "terminal_seen": true,
+            "thinking_characters": 0,
+            "timing_basis": "received complete event relative to child monotonic origin; not GPU time",
+            "trailing_bytes": 0,
+            "valid": true
+          }
+        },
+        {
+          "slot": "03-qualified_external_timing",
+          "case": "qualified_external_timing",
+          "think": false,
+          "state": "failed",
+          "possibly_sent": true,
+          "request_sha256": "fb6a56fa79892a890c2f967f4a7ac8568d8d2b3003fe7e3456360017dedd1509",
+          "generation_id": "retention-probe-8c62fdd2301f4b8695e81a55c5424188/qualified_external_timing",
+          "snapshot_id": "dd4fba6883488580e1614d4422c7de363f198e5d5fabe2148f37482b8c773c4f",
+          "snapshot_sha256": "1de381cf518468a489b91c2eb97c95cb1de0ac95de532ed45994074960bf1b76",
+          "internal_baseline_decoder_request_sha256": "771f47b97aa569f75ab115f5e2d762145d52e600da09fff31085ee575c77ba44",
+          "manifest_sha256": "24676d89c8a68db18a9d78d732a3089caffd85c74dc6526f07a560c511f1fdbd",
+          "generation_deadline_monotonic": 309537.9232345,
+          "error": "ValueError: Literal selection failure; see preserved result issues",
+          "elapsed": 4.2123108329833485,
+          "exchange": {
+            "deadline_monotonic": 309537.9232345,
+            "elapsed": 3.6289939589914866,
+            "error": null,
+            "killed": false,
+            "overrun_seconds": 0.0,
+            "reaped": true,
+            "returncode": 0,
+            "server_compute_cancellation_guaranteed": false,
+            "started_monotonic": 309357.923286416,
+            "timed_out": false
+          },
+          "progress": {
+            "complete_events": 64,
+            "content_characters": 255,
+            "error": null,
+            "first_byte_seconds": 1.1120601250440814,
+            "first_content_seconds": 1.1120601250440814,
+            "first_thinking_seconds": null,
+            "returned": {
+              "eval_count": 93,
+              "eval_duration": 2466291000,
+              "load_duration": 1582583,
+              "prompt_eval_cached_count": 0,
+              "prompt_eval_count": 425,
+              "prompt_eval_duration": 1097402000,
+              "total_duration": 3575648042
+            },
+            "sizes_are_tokens": false,
+            "terminal_seen": true,
+            "thinking_characters": 0,
+            "timing_basis": "received complete event relative to child monotonic origin; not GPU time",
+            "trailing_bytes": 0,
+            "valid": true
+          }
+        },
+        {
+          "slot": "04-additional",
+          "case": "additional",
+          "think": false,
+          "state": "unsent",
+          "possibly_sent": false,
+          "request_sha256": "0f3b71b385dccd18d5e28938527ed27f24c811b277f2015776311d8cb0785eec",
+          "generation_id": "retention-probe-8c62fdd2301f4b8695e81a55c5424188/additional",
+          "snapshot_id": "07d92402e6b90ae38333c1a76989a80df8bc8db2ed60415724c793c328cffb0b",
+          "snapshot_sha256": "4e519763aa25d200fbef8cc3777060324c00ad0b6b644d93e0320ee09f548f52",
+          "internal_baseline_decoder_request_sha256": "ad8ccc80bd9cc003f546cb308e1a7eac215dae03813d48dc482f03ae48bd2f88",
+          "manifest_sha256": "24676d89c8a68db18a9d78d732a3089caffd85c74dc6526f07a560c511f1fdbd"
+        }
+      ],
+      "completed": [
+        "01-partial_coordination_retracted",
+        "02-cancellation_with_new_task"
+      ],
+      "failed": [
+        "03-qualified_external_timing"
+      ],
+      "unsent": [
+        "04-additional"
+      ],
+      "stop_reason": "ValueError: Literal selection failure; see preserved result issues",
+      "artifact_errors": [],
+      "elapsed": 15.867515916994307,
+      "overrun_seconds": 0.0,
+      "server_compute_cancellation_guaranteed": false
+    },
+    "post_seal_observation": {
+      "boundary": "after manifest write attempt; separate from sealed accounting",
+      "sealed": true,
+      "elapsed": 15.867707958968822,
+      "overrun_seconds": 0.0,
+      "deadline_reached": false
+    }
+  },
+  "full_run_wall_seconds": 15.867782917048316,
+  "full_run_overrun_seconds": 0.0
+}

@@ -1,0 +1,36 @@
+{
+  "capture_manifest_sha256": "e434da3270e6af2f0c0b27952128a483fed0a5a229d531dbe053d903190bcaa2",
+  "criterion": "Availability is not work: no invented action or scheduling",
+  "date": "2026-11-25",
+  "freeze_manifest_sha256": "d459841b61df3ed2ecdab8e9866b7da280b2744707c56b4d2b574e7d1e4b22f2",
+  "independent_capture_audit": "PASS",
+  "independent_reviewer_handoff_location": "Chief private archive: .chief/results/runtime-probe-capture-review-20261125.txt",
+  "independent_reviewer_handoff_sha256": "1624feeacf39e4d53192456ac17f975846f946d8ad0cc3540059bdd43b337eab",
+  "limits": [
+    "One ordered negative-control pair",
+    "New service version and streaming setup",
+    "Different load/cache conditions and returned prompt counts",
+    "No historical-cause, reliability, work-retention, model-switch or M10-readiness claim"
+  ],
+  "remaining_generation_allowance": 0,
+  "review_mode": "Read-only saved evidence; no HTTP, writes or inference; not blinded to thinking setting",
+  "rows": [
+    {
+      "actions": 0,
+      "criterion_met": true,
+      "critical_findings": [],
+      "invented_scheduling": false,
+      "slot": "01-think-false",
+      "unnecessary_review_passages": 2
+    },
+    {
+      "actions": 0,
+      "criterion_met": true,
+      "critical_findings": [],
+      "invented_scheduling": false,
+      "slot": "02-think-true",
+      "unnecessary_review_passages": 0
+    }
+  ],
+  "source_candidate": "58bf14f216aa642bc3ab4d14022b17469724f787"
+}

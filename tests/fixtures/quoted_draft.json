@@ -1,0 +1,114 @@
+{
+  "authored": true,
+  "description": "New authored selectors and summary/review prose for the six unchanged synthetic inputs. No model replies or converted old outputs; these demonstrate the mechanical contract, not model quality.",
+  "cases": [
+    {
+      "id": "additional",
+      "response": {
+        "summary": {
+          "state": "draft",
+          "items": [{"text": "Sam will send the draft Friday. Alex will review it next week.", "sources": ["T1", "T2"]}],
+          "notice": "",
+          "review_sources": []
+        },
+        "decisions": {"state": "draft", "items": [], "review_sources": []},
+        "actions": {
+          "state": "draft",
+          "items": [
+            {"source": "T1", "quote": "I will send the draft Friday.", "context_sources": []},
+            {"source": "T2", "quote": "Alex here. I will review it next week.", "context_sources": ["T1"]}
+          ],
+          "review_sources": []
+        },
+        "review": {"state": "draft", "items": [], "notice": "", "review_sources": []}
+      }
+    },
+    {
+      "id": "unit_equivalence",
+      "response": {
+        "summary": {
+          "state": "draft",
+          "items": [{"text": "Sam stated the support price as 120 dollars.", "sources": ["T1"]}],
+          "notice": "",
+          "review_sources": []
+        },
+        "decisions": {"state": "draft", "items": [], "review_sources": []},
+        "actions": {"state": "draft", "items": [], "review_sources": []},
+        "review": {
+          "state": "needs_review",
+          "items": [],
+          "notice": "Inspect the original spoken price and the separately written price.",
+          "review_sources": ["T1", "N1"]
+        }
+      }
+    },
+    {
+      "id": "accepted_status_answer",
+      "response": {
+        "summary": {
+          "state": "draft",
+          "items": [{"text": "Sam asked whether Ravi would be away Friday; Ravi answered yes.", "sources": ["T1", "T2"]}],
+          "notice": "",
+          "review_sources": []
+        },
+        "decisions": {"state": "draft", "items": [], "review_sources": []},
+        "actions": {"state": "draft", "items": [], "review_sources": []},
+        "review": {"state": "draft", "items": [], "notice": "", "review_sources": []}
+      }
+    },
+    {
+      "id": "cancellation_with_new_task",
+      "response": {
+        "summary": {
+          "state": "draft",
+          "items": [{"text": "Sam withdrew draft review and said they would send the invoice instead.", "sources": ["T1"]}],
+          "notice": "",
+          "review_sources": []
+        },
+        "decisions": {"state": "draft", "items": [], "review_sources": []},
+        "actions": {
+          "state": "draft",
+          "items": [{"source": "T1", "quote": "I will send the invoice.", "context_sources": []}],
+          "review_sources": []
+        },
+        "review": {"state": "draft", "items": [], "notice": "", "review_sources": []}
+      }
+    },
+    {
+      "id": "partial_coordination_retracted",
+      "response": {
+        "summary": {
+          "state": "draft",
+          "items": [{"text": "Sam offered draft review and invoice sending, then withdrew draft review.", "sources": ["T1", "T2"]}],
+          "notice": "",
+          "review_sources": []
+        },
+        "decisions": {"state": "draft", "items": [], "review_sources": []},
+        "actions": {
+          "state": "needs_review",
+          "items": [{"source": "T1", "quote": "send the invoice", "context_sources": ["T2"]}],
+          "review_sources": ["T1", "T2"]
+        },
+        "review": {"state": "draft", "items": [], "notice": "", "review_sources": []}
+      }
+    },
+    {
+      "id": "qualified_external_timing",
+      "response": {
+        "summary": {
+          "state": "draft",
+          "items": [{"text": "Sam said they would send the invoice, then added: “Not before next Friday unless finance objects.”", "sources": ["T1", "T2"]}],
+          "notice": "",
+          "review_sources": []
+        },
+        "decisions": {"state": "draft", "items": [], "review_sources": []},
+        "actions": {
+          "state": "needs_review",
+          "items": [{"source": "T1", "quote": "I will send the invoice.", "context_sources": ["T2"]}],
+          "review_sources": ["T1", "T2"]
+        },
+        "review": {"state": "draft", "items": [], "notice": "", "review_sources": []}
+      }
+    }
+  ]
+}

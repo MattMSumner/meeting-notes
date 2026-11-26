@@ -1,0 +1,113 @@
+{
+  "historical_manifest_entries": 396,
+  "wrapper9_replays": 17,
+  "compatibility_kind": "Strict unchanged archived replies; no field conversion",
+  "counts": {
+    "comparison_attempts": {
+      "compiled": 0,
+      "blocked": 0,
+      "unmappable": 19
+    },
+    "summary_attempts": {
+      "compiled": 0,
+      "blocked": 0,
+      "unmappable": 24
+    },
+    "cases": {
+      "compiled": 0,
+      "blocked": 0,
+      "unmappable": 22
+    }
+  },
+  "cases": [
+    {
+      "case": "empty",
+      "strict_v11_status": "unmappable"
+    },
+    {
+      "case": "sparse",
+      "strict_v11_status": "unmappable"
+    },
+    {
+      "case": "additional",
+      "strict_v11_status": "unmappable"
+    },
+    {
+      "case": "conflicting",
+      "strict_v11_status": "unmappable"
+    },
+    {
+      "case": "ambiguous_dates",
+      "strict_v11_status": "unmappable"
+    },
+    {
+      "case": "same_speaker_tasks",
+      "strict_v11_status": "unmappable"
+    },
+    {
+      "case": "coordinated_tasks",
+      "strict_v11_status": "unmappable"
+    },
+    {
+      "case": "later_timing",
+      "strict_v11_status": "unmappable"
+    },
+    {
+      "case": "revised_timing",
+      "strict_v11_status": "unmappable"
+    },
+    {
+      "case": "shared_numbers",
+      "strict_v11_status": "unmappable"
+    },
+    {
+      "case": "status_conflict",
+      "strict_v11_status": "unmappable"
+    },
+    {
+      "case": "tentative_task",
+      "strict_v11_status": "unmappable"
+    },
+    {
+      "case": "front_loaded_timing",
+      "strict_v11_status": "unmappable"
+    },
+    {
+      "case": "unit_equivalence",
+      "strict_v11_status": "unmappable"
+    },
+    {
+      "case": "unit_disagreement",
+      "strict_v11_status": "unmappable"
+    },
+    {
+      "case": "periods_separate",
+      "strict_v11_status": "unmappable"
+    },
+    {
+      "case": "scope_separate",
+      "strict_v11_status": "unmappable"
+    },
+    {
+      "case": "estimate_approval",
+      "strict_v11_status": "unmappable"
+    },
+    {
+      "case": "proposal_rejected",
+      "strict_v11_status": "unmappable"
+    },
+    {
+      "case": "tentative_confirmed",
+      "strict_v11_status": "unmappable"
+    },
+    {
+      "case": "additive_context",
+      "strict_v11_status": "unmappable"
+    },
+    {
+      "case": "multi_claim_notes",
+      "strict_v11_status": "unmappable"
+    }
+  ],
+  "limitations": "Schema incompatibility is not a semantic repair. Authored V11 fake responses and fresh model quality evaluation are separate evidence."
+}

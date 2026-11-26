@@ -1,0 +1,122 @@
+{
+  "manifest_sha256": "d459841b61df3ed2ecdab8e9866b7da280b2744707c56b4d2b574e7d1e4b22f2",
+  "approval": "Great, run the test",
+  "published_head": "a5f0e64e00adb8e09be61834b8bfa8d0351d57d6",
+  "launch_source_sha256": "49ea4f3d427f5da41be401028d4352d32d076992bd39353608c2216ce5f2ce35",
+  "return": {
+    "accounting": {
+      "authoritative": true,
+      "accounting_boundary": "after final.json save and inventory hashing; before manifest.json write",
+      "capture_complete": true,
+      "possibly_sent": 2,
+      "slots": [
+        {
+          "slot": "01-think-false",
+          "think": false,
+          "state": "complete",
+          "possibly_sent": true,
+          "generation_deadline_monotonic": 303126.179771125,
+          "elapsed": 12.222029666998424,
+          "exchange": {
+            "deadline_monotonic": 303126.179771125,
+            "elapsed": 11.538596833997872,
+            "error": null,
+            "killed": false,
+            "overrun_seconds": 0.0,
+            "reaped": true,
+            "returncode": 0,
+            "server_compute_cancellation_guaranteed": false,
+            "started_monotonic": 302946.179820166,
+            "timed_out": false
+          },
+          "progress": {
+            "complete_events": 22,
+            "content_characters": 65,
+            "error": null,
+            "first_byte_seconds": 10.605370500008576,
+            "first_content_seconds": 10.605370500008576,
+            "first_thinking_seconds": null,
+            "returned": {
+              "eval_count": 33,
+              "eval_duration": 863868000,
+              "load_duration": 9384157375,
+              "prompt_eval_cached_count": 0,
+              "prompt_eval_count": 420,
+              "prompt_eval_duration": 1202620000,
+              "total_duration": 11466029791
+            },
+            "sizes_are_tokens": false,
+            "terminal_seen": true,
+            "thinking_characters": 0,
+            "timing_basis": "received complete event relative to child monotonic origin; not GPU time",
+            "trailing_bytes": 0,
+            "valid": true
+          }
+        },
+        {
+          "slot": "02-think-true",
+          "think": true,
+          "state": "complete",
+          "possibly_sent": true,
+          "generation_deadline_monotonic": 303138.322010416,
+          "elapsed": 92.39104470901657,
+          "exchange": {
+            "deadline_monotonic": 303138.322010416,
+            "elapsed": 91.68682283302769,
+            "error": null,
+            "killed": false,
+            "overrun_seconds": 0.0,
+            "reaped": true,
+            "returncode": 0,
+            "server_compute_cancellation_guaranteed": false,
+            "started_monotonic": 302958.322058125,
+            "timed_out": false
+          },
+          "progress": {
+            "complete_events": 2788,
+            "content_characters": 43,
+            "error": null,
+            "first_byte_seconds": 0.07986341702053323,
+            "first_content_seconds": 91.18952304200502,
+            "first_thinking_seconds": 0.07986341702053323,
+            "returned": {
+              "eval_count": 3110,
+              "eval_duration": 91565607000,
+              "load_duration": 2591083,
+              "prompt_eval_cached_count": 416,
+              "prompt_eval_count": 418,
+              "prompt_eval_duration": 54943000,
+              "total_duration": 91643534583
+            },
+            "sizes_are_tokens": false,
+            "terminal_seen": true,
+            "thinking_characters": 13509,
+            "timing_basis": "received complete event relative to child monotonic origin; not GPU time",
+            "trailing_bytes": 0,
+            "valid": true
+          }
+        }
+      ],
+      "completed": [
+        "01-think-false",
+        "02-think-true"
+      ],
+      "failed": [],
+      "unsent": [],
+      "stop_reason": "capture complete; separate semantic assessment pending",
+      "artifact_errors": [],
+      "elapsed": 104.67589629197028,
+      "overrun_seconds": 0.0,
+      "server_compute_cancellation_guaranteed": false
+    },
+    "post_seal_observation": {
+      "boundary": "after manifest write attempt; separate from sealed accounting",
+      "sealed": true,
+      "elapsed": 104.67610087495996,
+      "overrun_seconds": 0.0,
+      "deadline_reached": false
+    }
+  },
+  "full_run_wall_seconds": 104.67619766696589,
+  "full_run_overrun_seconds": 0.0
+}

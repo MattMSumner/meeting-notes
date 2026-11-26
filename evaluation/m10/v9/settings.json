@@ -1,0 +1,20 @@
+{
+  "baseline_commit": "199dd62858b6bda6c13dc749424f6bd9de03f8ba",
+  "model": "qwen3:30b",
+  "temperature": 0,
+  "think": true,
+  "num_ctx": 32768,
+  "repetitions": 1,
+  "request_budget": 78,
+  "status": "frozen before the explicitly authorized one-repetition evaluation",
+  "freeze": "v9",
+  "previous_freeze": "../v8/sha256.json",
+  "proposed_max_requests_per_case": 2,
+  "baseline_max_requests_per_case": 4,
+  "changes": [
+    "Single flat source-ID vocabulary, with source kinds checked at runtime",
+    "Explicit agreement omission diagnostic and mixed task/fact conflict diagnostic",
+    "Prompt clarifies independent decisions and directly disputed accounts",
+    "Retains post-V8 timing qualifier fixes; new wrapper version 8 preserves prior validators"
+  ]
+}

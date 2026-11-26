@@ -1,0 +1,13 @@
+{
+  "started_at": "2026-11-13T16:27:36.200412+00:00",
+  "pid": 46429,
+  "freeze_commit": "77fd9d3526ce8759ab9915c852209be820d84c0b",
+  "expected_manifest_sha256": "0cbaafa34c9f538eaa6b5cc43158d1f21429e7e85c197fc79372bc0f24ad28bf",
+  "approval": {
+    "owner_reply": "Approve six requests",
+    "scope": "frozen quoted-selection diagnostic; same six synthetic cases once, no retries",
+    "max_requests": 6,
+    "max_elapsed_seconds": 900,
+    "recorded_at": "2026-11-13T16:27:36.200096+00:00"
+  }
+}

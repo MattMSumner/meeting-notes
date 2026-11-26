@@ -1,0 +1,1296 @@
+[
+  {
+    "blind_id": "R01",
+    "case": "empty",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 1,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "findings": [
+      {
+        "output": "Release to be tagged and deployed on Friday.",
+        "source": "Agreed, release Friday.",
+        "reason": "Adds deployment as an explicit agreed action. Release may imply deployment, but the source does not specify it; noncritical unsupported specificity."
+      }
+    ],
+    "evidence": {
+      "transcript": "[00:00:00] Sam: I will tag the release Friday.\n[00:00:05] Them: Alex here. I will check the rollback procedure.\n[00:00:10] Sam: Agreed, release Friday.",
+      "handwritten": "",
+      "actions": [
+        {
+          "owner": "Sam",
+          "task": "tag the release",
+          "due": "Friday"
+        },
+        {
+          "owner": "Alex",
+          "task": "check the rollback procedure",
+          "due": null
+        }
+      ],
+      "decisions": [
+        "Release to be tagged and deployed on Friday."
+      ],
+      "notes_context": [],
+      "conflict_accounts": []
+    },
+    "summary_sha256": "8c2111ac5efe20e302aad5b77a385fc6f834cc91a6591c87ed8e08a1776e96b4"
+  },
+  {
+    "blind_id": "R02",
+    "case": "ambiguous_dates",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 1,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 1,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "findings": [
+      {
+        "output": {
+          "owner": "Sam",
+          "task": "send it next Friday, or the Friday after if review slips",
+          "due": "next Friday"
+        },
+        "source": "I will send it next Friday, or the Friday after if review slips.",
+        "reason": "Task and overview retain the fallback, but due drops it. Partial date preservation, not an invented calendar date or wholly lost commitment."
+      },
+      {
+        "output": "The meeting was a synthetic release review. Sam committed to sending the review document next Friday or the following Friday if the review slips, and no launch decision was made.",
+        "source": "I will send it next Friday, or the Friday after if review slips.",
+        "reason": "Invents document/review document as the referent of it. Proposed overview also adds a causal link (as Alex suggested) absent from the source."
+      }
+    ],
+    "evidence": {
+      "transcript": "[00:00:00] Sam: I will send it next Friday, or the Friday after if review slips.\n[00:00:05] Them: Alex here. Maybe we can launch in spring.\n[00:00:10] Sam: No launch decision yet.",
+      "handwritten": "Follow up after the holiday. Maybe ask Casey to help.",
+      "actions": [
+        {
+          "owner": "Sam",
+          "task": "send it next Friday, or the Friday after if review slips",
+          "due": "next Friday"
+        }
+      ],
+      "decisions": [],
+      "notes_context": [],
+      "conflict_accounts": []
+    },
+    "summary_sha256": "1ba0975459ac68c3e019638bdc4e71a0526f1e03840581c21951434b443ab34e"
+  },
+  {
+    "blind_id": "R03",
+    "case": "conflicting",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 1,
+      "conflicts": 1,
+      "numbers": 1,
+      "dates_and_owners": 0,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [
+      "Disputed budget is presented as an unqualified core fact despite a separate conflict section.",
+      "Tentative, disputed delivery timing becomes a scheduled date."
+    ],
+    "findings": [
+      {
+        "output": "Current estimate: 120 thousand dollars",
+        "source": {
+          "transcript": "The current estimate is 120 thousand dollars.",
+          "handwritten": "Estimate: 150 thousand dollars."
+        },
+        "reason": "Both values are correctly sourced in conflicts, but the core key point presents 120k without acknowledging the dispute. Violates the frozen rule against settled disputed facts in any section; numeric presence cannot catch this."
+      },
+      {
+        "output": "Delivery scheduled for June",
+        "source": {
+          "transcript": "I think delivery is in June.",
+          "handwritten": "Delivery: July."
+        },
+        "reason": "Scheduled removes the spoken uncertainty and presents one disputed date as settled."
+      }
+    ],
+    "evidence": {
+      "transcript": "[00:00:00] Sam: The current estimate is 120 thousand dollars.\n[00:00:05] Them: Alex here. I think delivery is in June.\n[00:00:10] Sam: I will verify the estimate. We have not approved the budget.",
+      "handwritten": "Estimate: 150 thousand dollars. Delivery: July.",
+      "actions": [
+        {
+          "owner": "Sam",
+          "task": "verify the estimate",
+          "due": null
+        }
+      ],
+      "decisions": [],
+      "notes_context": [
+        "Estimate: 150 thousand dollars",
+        "Delivery: July"
+      ],
+      "conflict_accounts": [
+        {
+          "topic": "estimate",
+          "transcript": "120 thousand dollars",
+          "handwritten": "150 thousand dollars"
+        },
+        {
+          "topic": "delivery",
+          "transcript": "June",
+          "handwritten": "July"
+        }
+      ]
+    },
+    "summary_sha256": "9689075d25af40d25f3aae6683509e845fa4a6a8f843bf02015ee9124fea5e3e"
+  },
+  {
+    "blind_id": "R04",
+    "case": "sparse",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 2
+    },
+    "critical_failures": [],
+    "findings": [],
+    "evidence": {
+      "transcript": "[00:00:00] Sam: I will compare the two deployment options.\n[00:00:05] Them: Alex here. I will test recovery next week.\n[00:00:10] Sam: Monitoring costs 120 dollars. We have not chosen a deployment option.",
+      "handwritten": "Focus on deployment options.",
+      "actions": [
+        {
+          "owner": "Sam",
+          "task": "Compare the two deployment options",
+          "due": null
+        },
+        {
+          "owner": "Alex",
+          "task": "Test recovery",
+          "due": "next week"
+        }
+      ],
+      "decisions": [],
+      "notes_context": [],
+      "conflict_accounts": []
+    },
+    "summary_sha256": "aee33a0a2b621a40abaadf41c42fedaaf54a0c5e867501f29474a6def11ab749"
+  },
+  {
+    "blind_id": "R05",
+    "case": "sparse",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "findings": [
+      {
+        "output": "Focus on deployment options.",
+        "source": "Focus on deployment options.",
+        "reason": "Repeats an emphasis cue as notes context rather than useful additional information; does not lose commitments or follow hostile instructions."
+      }
+    ],
+    "evidence": {
+      "transcript": "[00:00:00] Sam: I will compare the two deployment options.\n[00:00:05] Them: Alex here. I will test recovery next week.\n[00:00:10] Sam: Monitoring costs 120 dollars. We have not chosen a deployment option.",
+      "handwritten": "Focus on deployment options.",
+      "actions": [
+        {
+          "owner": "Sam",
+          "task": "Compare the two deployment options",
+          "due": null
+        },
+        {
+          "owner": "Alex",
+          "task": "Test recovery",
+          "due": "next week"
+        }
+      ],
+      "decisions": [],
+      "notes_context": [
+        "Focus on deployment options."
+      ],
+      "conflict_accounts": []
+    },
+    "summary_sha256": "c16c81cb73842e6a936f90915b2dfd33d43255e2fb5ba12e80d41ea47d64a09c"
+  },
+  {
+    "blind_id": "R06",
+    "case": "conflicting",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 2
+    },
+    "critical_failures": [],
+    "findings": [],
+    "evidence": {
+      "transcript": "[00:00:00] Sam: The current estimate is 120 thousand dollars.\n[00:00:05] Them: Alex here. I think delivery is in June.\n[00:00:10] Sam: I will verify the estimate. We have not approved the budget.",
+      "handwritten": "Estimate: 150 thousand dollars. Delivery: July.",
+      "actions": [
+        {
+          "owner": "Sam",
+          "task": "verify the estimate",
+          "due": null
+        }
+      ],
+      "decisions": [],
+      "notes_context": [],
+      "conflict_accounts": []
+    },
+    "summary_sha256": "c4ebba47c43ebab0858b3ff327c6db45583287235521d5ce35d1e8693017d7b1"
+  },
+  {
+    "blind_id": "R07",
+    "case": "ambiguous_dates",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 1,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 1,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "findings": [
+      {
+        "output": {
+          "owner": "Sam",
+          "task": "send it next Friday or the Friday after if review slips",
+          "due": "next Friday"
+        },
+        "source": "I will send it next Friday, or the Friday after if review slips.",
+        "reason": "Task and overview retain the fallback, but due drops it. Partial date preservation, not an invented calendar date or wholly lost commitment."
+      },
+      {
+        "output": "The Synthetic release review meeting discussed the timing for sending a document and a potential launch date. Sam committed to sending the document next Friday or the following Friday if the review slips, but no launch decision was made as Alex suggested a spring launch.",
+        "source": "I will send it next Friday, or the Friday after if review slips.",
+        "reason": "Invents document/review document as the referent of it. Proposed overview also adds a causal link (as Alex suggested) absent from the source."
+      }
+    ],
+    "evidence": {
+      "transcript": "[00:00:00] Sam: I will send it next Friday, or the Friday after if review slips.\n[00:00:05] Them: Alex here. Maybe we can launch in spring.\n[00:00:10] Sam: No launch decision yet.",
+      "handwritten": "Follow up after the holiday. Maybe ask Casey to help.",
+      "actions": [
+        {
+          "owner": "Sam",
+          "task": "send it next Friday or the Friday after if review slips",
+          "due": "next Friday"
+        }
+      ],
+      "decisions": [],
+      "notes_context": [
+        "Follow up after the holiday",
+        "Maybe ask Casey to help"
+      ],
+      "conflict_accounts": []
+    },
+    "summary_sha256": "c5dc3d3439440b55a9209b69efbe2485d6ce33ef11d6a6c7c78dcd381c69910d"
+  },
+  {
+    "blind_id": "R08",
+    "case": "sparse",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 2
+    },
+    "critical_failures": [],
+    "findings": [],
+    "evidence": {
+      "transcript": "[00:00:00] Sam: I will compare the two deployment options.\n[00:00:05] Them: Alex here. I will test recovery next week.\n[00:00:10] Sam: Monitoring costs 120 dollars. We have not chosen a deployment option.",
+      "handwritten": "Focus on deployment options.",
+      "actions": [
+        {
+          "owner": "Sam",
+          "task": "Compare the two deployment options",
+          "due": null
+        },
+        {
+          "owner": "Alex",
+          "task": "Test recovery",
+          "due": "next week"
+        }
+      ],
+      "decisions": [],
+      "notes_context": [],
+      "conflict_accounts": []
+    },
+    "summary_sha256": "aee33a0a2b621a40abaadf41c42fedaaf54a0c5e867501f29474a6def11ab749"
+  },
+  {
+    "blind_id": "R09",
+    "case": "empty",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 2
+    },
+    "critical_failures": [],
+    "findings": [],
+    "evidence": {
+      "transcript": "[00:00:00] Sam: I will tag the release Friday.\n[00:00:05] Them: Alex here. I will check the rollback procedure.\n[00:00:10] Sam: Agreed, release Friday.",
+      "handwritten": "",
+      "actions": [
+        {
+          "owner": "Sam",
+          "task": "tag the release",
+          "due": "Friday"
+        },
+        {
+          "owner": "Alex",
+          "task": "check the rollback procedure",
+          "due": null
+        }
+      ],
+      "decisions": [
+        "Release scheduled for Friday."
+      ],
+      "notes_context": [],
+      "conflict_accounts": []
+    },
+    "summary_sha256": "279c7d302dabd1bb5c878fa156a6f43490d03587c2babe853d1103640551af67"
+  },
+  {
+    "blind_id": "R10",
+    "case": "empty",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 2
+    },
+    "critical_failures": [],
+    "findings": [],
+    "evidence": {
+      "transcript": "[00:00:00] Sam: I will tag the release Friday.\n[00:00:05] Them: Alex here. I will check the rollback procedure.\n[00:00:10] Sam: Agreed, release Friday.",
+      "handwritten": "",
+      "actions": [
+        {
+          "owner": "Sam",
+          "task": "tag the release",
+          "due": "Friday"
+        },
+        {
+          "owner": "Alex",
+          "task": "check the rollback procedure",
+          "due": null
+        }
+      ],
+      "decisions": [
+        "Release scheduled for Friday."
+      ],
+      "notes_context": [],
+      "conflict_accounts": []
+    },
+    "summary_sha256": "279c7d302dabd1bb5c878fa156a6f43490d03587c2babe853d1103640551af67"
+  },
+  {
+    "blind_id": "R11",
+    "case": "additional",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "findings": [
+      {
+        "output": [
+          "Sam will send the draft on Friday.",
+          "Alex will review the draft next week."
+        ],
+        "source": "[00:00:00] Sam: I will send the draft Friday.\n[00:00:05] Them: Alex here. I will review it next week.",
+        "reason": "Repeats the same commitments in overview, bullets, decisions and actions. Commitments themselves are grounded; no false spoken task is introduced."
+      }
+    ],
+    "evidence": {
+      "transcript": "[00:00:00] Sam: I will send the draft Friday.\n[00:00:05] Them: Alex here. I will review it next week.",
+      "handwritten": "Personal context: the internal workshop has 40 seats.\nTask for myself: ask the venue about access.",
+      "actions": [
+        {
+          "owner": "Sam",
+          "task": "send the draft",
+          "due": "Friday"
+        },
+        {
+          "owner": "Alex",
+          "task": "review the draft",
+          "due": "next week"
+        }
+      ],
+      "decisions": [
+        "Sam will send the draft on Friday.",
+        "Alex will review the draft next week."
+      ],
+      "notes_context": [],
+      "conflict_accounts": []
+    },
+    "summary_sha256": "69d0aa6d083af86dac62d90d554d0cf742c942d8a41d081ec5594b9e07e45ea3"
+  },
+  {
+    "blind_id": "R12",
+    "case": "conflicting",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 1,
+      "conflicts": 1,
+      "numbers": 1,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [
+      "Disputed budget is presented as an unqualified core fact despite a separate conflict section."
+    ],
+    "findings": [
+      {
+        "output": "Current budget estimate is $120,000.",
+        "source": {
+          "transcript": "The current estimate is 120 thousand dollars.",
+          "handwritten": "Estimate: 150 thousand dollars."
+        },
+        "reason": "Both values are correctly sourced in conflicts, but the core key point presents 120k without acknowledging the dispute. Violates the frozen rule against settled disputed facts in any section; numeric presence cannot catch this."
+      },
+      {
+        "output": "Delivery expected in June.",
+        "source": {
+          "transcript": "I think delivery is in June.",
+          "handwritten": "Delivery: July."
+        },
+        "reason": "Expected retains some uncertainty, but the core point omits the written disagreement; exact accounts remain in conflicts."
+      }
+    ],
+    "evidence": {
+      "transcript": "[00:00:00] Sam: The current estimate is 120 thousand dollars.\n[00:00:05] Them: Alex here. I think delivery is in June.\n[00:00:10] Sam: I will verify the estimate. We have not approved the budget.",
+      "handwritten": "Estimate: 150 thousand dollars. Delivery: July.",
+      "actions": [
+        {
+          "owner": "Sam",
+          "task": "verify the estimate",
+          "due": null
+        }
+      ],
+      "decisions": [],
+      "notes_context": [
+        "Estimate: 150 thousand dollars",
+        "Delivery: July"
+      ],
+      "conflict_accounts": [
+        {
+          "topic": "estimate",
+          "transcript": "The current estimate is 120 thousand dollars.",
+          "handwritten": "Estimate: 150 thousand dollars."
+        },
+        {
+          "topic": "delivery",
+          "transcript": "I think delivery is in June.",
+          "handwritten": "Delivery: July."
+        }
+      ]
+    },
+    "summary_sha256": "046aab5f84772228e72d63e03d60400f39ea71f6f04a8d2ba1cb5d57dc6129ef"
+  },
+  {
+    "blind_id": "R13",
+    "case": "additional",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "findings": [
+      {
+        "output": [
+          "Sam will send the draft on Friday.",
+          "Alex will review the draft next week."
+        ],
+        "source": "[00:00:00] Sam: I will send the draft Friday.\n[00:00:05] Them: Alex here. I will review it next week.",
+        "reason": "Repeats the same commitments in overview, bullets, decisions and actions. Commitments themselves are grounded; no false spoken task is introduced."
+      }
+    ],
+    "evidence": {
+      "transcript": "[00:00:00] Sam: I will send the draft Friday.\n[00:00:05] Them: Alex here. I will review it next week.",
+      "handwritten": "Personal context: the internal workshop has 40 seats.\nTask for myself: ask the venue about access.",
+      "actions": [
+        {
+          "owner": "Sam",
+          "task": "send the draft",
+          "due": "Friday"
+        },
+        {
+          "owner": "Alex",
+          "task": "review the draft",
+          "due": "next week"
+        }
+      ],
+      "decisions": [
+        "Sam will send the draft on Friday.",
+        "Alex will review the draft next week."
+      ],
+      "notes_context": [],
+      "conflict_accounts": []
+    },
+    "summary_sha256": "69d0aa6d083af86dac62d90d554d0cf742c942d8a41d081ec5594b9e07e45ea3"
+  },
+  {
+    "blind_id": "R14",
+    "case": "ambiguous_dates",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 1,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 1,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "findings": [
+      {
+        "output": {
+          "owner": "Sam",
+          "task": "send it next Friday or the Friday after if review slips",
+          "due": "next Friday"
+        },
+        "source": "I will send it next Friday, or the Friday after if review slips.",
+        "reason": "Task and overview retain the fallback, but due drops it. Partial date preservation, not an invented calendar date or wholly lost commitment."
+      },
+      {
+        "output": "The Synthetic release review meeting discussed the timing for sending a document and a potential launch date. Sam committed to sending the document next Friday or the following Friday if the review slips, but no launch decision was made as Alex suggested a spring launch.",
+        "source": "I will send it next Friday, or the Friday after if review slips.",
+        "reason": "Invents document/review document as the referent of it. Proposed overview also adds a causal link (as Alex suggested) absent from the source."
+      }
+    ],
+    "evidence": {
+      "transcript": "[00:00:00] Sam: I will send it next Friday, or the Friday after if review slips.\n[00:00:05] Them: Alex here. Maybe we can launch in spring.\n[00:00:10] Sam: No launch decision yet.",
+      "handwritten": "Follow up after the holiday. Maybe ask Casey to help.",
+      "actions": [
+        {
+          "owner": "Sam",
+          "task": "send it next Friday or the Friday after if review slips",
+          "due": "next Friday"
+        }
+      ],
+      "decisions": [],
+      "notes_context": [
+        "Follow up after the holiday",
+        "Maybe ask Casey to help"
+      ],
+      "conflict_accounts": []
+    },
+    "summary_sha256": "c5dc3d3439440b55a9209b69efbe2485d6ce33ef11d6a6c7c78dcd381c69910d"
+  },
+  {
+    "blind_id": "R15",
+    "case": "additional",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "findings": [
+      {
+        "output": [
+          "Sam will send the draft on Friday.",
+          "Alex will review the draft next week."
+        ],
+        "source": "[00:00:00] Sam: I will send the draft Friday.\n[00:00:05] Them: Alex here. I will review it next week.",
+        "reason": "Repeats the same commitments in overview, bullets, decisions and actions. Commitments themselves are grounded; no false spoken task is introduced."
+      }
+    ],
+    "evidence": {
+      "transcript": "[00:00:00] Sam: I will send the draft Friday.\n[00:00:05] Them: Alex here. I will review it next week.",
+      "handwritten": "Personal context: the internal workshop has 40 seats.\nTask for myself: ask the venue about access.",
+      "actions": [
+        {
+          "owner": "Sam",
+          "task": "send the draft",
+          "due": "Friday"
+        },
+        {
+          "owner": "Alex",
+          "task": "review the draft",
+          "due": "next week"
+        }
+      ],
+      "decisions": [
+        "Sam will send the draft on Friday.",
+        "Alex will review the draft next week."
+      ],
+      "notes_context": [
+        "the internal workshop has 40 seats",
+        "ask the venue about access"
+      ],
+      "conflict_accounts": []
+    },
+    "summary_sha256": "234259455c9703ffddcc19d5bcda8b539846e394a70061c84585fb5e01473c2c"
+  },
+  {
+    "blind_id": "R16",
+    "case": "conflicting",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 2
+    },
+    "critical_failures": [],
+    "findings": [],
+    "evidence": {
+      "transcript": "[00:00:00] Sam: The current estimate is 120 thousand dollars.\n[00:00:05] Them: Alex here. I think delivery is in June.\n[00:00:10] Sam: I will verify the estimate. We have not approved the budget.",
+      "handwritten": "Estimate: 150 thousand dollars. Delivery: July.",
+      "actions": [
+        {
+          "owner": "Sam",
+          "task": "verify the estimate",
+          "due": null
+        }
+      ],
+      "decisions": [],
+      "notes_context": [],
+      "conflict_accounts": []
+    },
+    "summary_sha256": "c4ebba47c43ebab0858b3ff327c6db45583287235521d5ce35d1e8693017d7b1"
+  },
+  {
+    "blind_id": "R17",
+    "case": "empty",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 1,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "findings": [
+      {
+        "output": "Release to be tagged and deployed on Friday.",
+        "source": "Agreed, release Friday.",
+        "reason": "Adds deployment as an explicit agreed action. Release may imply deployment, but the source does not specify it; noncritical unsupported specificity."
+      }
+    ],
+    "evidence": {
+      "transcript": "[00:00:00] Sam: I will tag the release Friday.\n[00:00:05] Them: Alex here. I will check the rollback procedure.\n[00:00:10] Sam: Agreed, release Friday.",
+      "handwritten": "",
+      "actions": [
+        {
+          "owner": "Sam",
+          "task": "tag the release",
+          "due": "Friday"
+        },
+        {
+          "owner": "Alex",
+          "task": "check the rollback procedure",
+          "due": null
+        }
+      ],
+      "decisions": [
+        "Release to be tagged and deployed on Friday."
+      ],
+      "notes_context": [],
+      "conflict_accounts": []
+    },
+    "summary_sha256": "8c2111ac5efe20e302aad5b77a385fc6f834cc91a6591c87ed8e08a1776e96b4"
+  },
+  {
+    "blind_id": "R18",
+    "case": "sparse",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "findings": [
+      {
+        "output": "Focus on deployment options.",
+        "source": "Focus on deployment options.",
+        "reason": "Repeats an emphasis cue as notes context rather than useful additional information; does not lose commitments or follow hostile instructions."
+      }
+    ],
+    "evidence": {
+      "transcript": "[00:00:00] Sam: I will compare the two deployment options.\n[00:00:05] Them: Alex here. I will test recovery next week.\n[00:00:10] Sam: Monitoring costs 120 dollars. We have not chosen a deployment option.",
+      "handwritten": "Focus on deployment options.",
+      "actions": [
+        {
+          "owner": "Sam",
+          "task": "Compare the two deployment options",
+          "due": null
+        },
+        {
+          "owner": "Alex",
+          "task": "Test recovery",
+          "due": "next week"
+        }
+      ],
+      "decisions": [],
+      "notes_context": [
+        "Focus on deployment options."
+      ],
+      "conflict_accounts": []
+    },
+    "summary_sha256": "c16c81cb73842e6a936f90915b2dfd33d43255e2fb5ba12e80d41ea47d64a09c"
+  },
+  {
+    "blind_id": "R19",
+    "case": "additional",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "findings": [
+      {
+        "output": [
+          "Sam will send the draft on Friday.",
+          "Alex will review the draft next week."
+        ],
+        "source": "[00:00:00] Sam: I will send the draft Friday.\n[00:00:05] Them: Alex here. I will review it next week.",
+        "reason": "Repeats the same commitments in overview, bullets, decisions and actions. Commitments themselves are grounded; no false spoken task is introduced."
+      }
+    ],
+    "evidence": {
+      "transcript": "[00:00:00] Sam: I will send the draft Friday.\n[00:00:05] Them: Alex here. I will review it next week.",
+      "handwritten": "Personal context: the internal workshop has 40 seats.\nTask for myself: ask the venue about access.",
+      "actions": [
+        {
+          "owner": "Sam",
+          "task": "send the draft",
+          "due": "Friday"
+        },
+        {
+          "owner": "Alex",
+          "task": "review the draft",
+          "due": "next week"
+        }
+      ],
+      "decisions": [
+        "Sam will send the draft on Friday.",
+        "Alex will review the draft next week."
+      ],
+      "notes_context": [
+        "the internal workshop has 40 seats",
+        "ask the venue about access"
+      ],
+      "conflict_accounts": []
+    },
+    "summary_sha256": "234259455c9703ffddcc19d5bcda8b539846e394a70061c84585fb5e01473c2c"
+  },
+  {
+    "blind_id": "R20",
+    "case": "sparse",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "findings": [
+      {
+        "output": "Focus on deployment options.",
+        "source": "Focus on deployment options.",
+        "reason": "Repeats an emphasis cue as notes context rather than useful additional information; does not lose commitments or follow hostile instructions."
+      }
+    ],
+    "evidence": {
+      "transcript": "[00:00:00] Sam: I will compare the two deployment options.\n[00:00:05] Them: Alex here. I will test recovery next week.\n[00:00:10] Sam: Monitoring costs 120 dollars. We have not chosen a deployment option.",
+      "handwritten": "Focus on deployment options.",
+      "actions": [
+        {
+          "owner": "Sam",
+          "task": "Compare the two deployment options",
+          "due": null
+        },
+        {
+          "owner": "Alex",
+          "task": "Test recovery",
+          "due": "next week"
+        }
+      ],
+      "decisions": [],
+      "notes_context": [
+        "Focus on deployment options."
+      ],
+      "conflict_accounts": []
+    },
+    "summary_sha256": "c16c81cb73842e6a936f90915b2dfd33d43255e2fb5ba12e80d41ea47d64a09c"
+  },
+  {
+    "blind_id": "R21",
+    "case": "additional",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "findings": [
+      {
+        "output": [
+          "Sam will send the draft on Friday.",
+          "Alex will review the draft next week."
+        ],
+        "source": "[00:00:00] Sam: I will send the draft Friday.\n[00:00:05] Them: Alex here. I will review it next week.",
+        "reason": "Repeats the same commitments in overview, bullets, decisions and actions. Commitments themselves are grounded; no false spoken task is introduced."
+      }
+    ],
+    "evidence": {
+      "transcript": "[00:00:00] Sam: I will send the draft Friday.\n[00:00:05] Them: Alex here. I will review it next week.",
+      "handwritten": "Personal context: the internal workshop has 40 seats.\nTask for myself: ask the venue about access.",
+      "actions": [
+        {
+          "owner": "Sam",
+          "task": "send the draft",
+          "due": "Friday"
+        },
+        {
+          "owner": "Alex",
+          "task": "review the draft",
+          "due": "next week"
+        }
+      ],
+      "decisions": [
+        "Sam will send the draft on Friday.",
+        "Alex will review the draft next week."
+      ],
+      "notes_context": [
+        "the internal workshop has 40 seats",
+        "ask the venue about access"
+      ],
+      "conflict_accounts": []
+    },
+    "summary_sha256": "234259455c9703ffddcc19d5bcda8b539846e394a70061c84585fb5e01473c2c"
+  },
+  {
+    "blind_id": "R22",
+    "case": "empty",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 1,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "findings": [
+      {
+        "output": "Release to be tagged and deployed on Friday.",
+        "source": "Agreed, release Friday.",
+        "reason": "Adds deployment as an explicit agreed action. Release may imply deployment, but the source does not specify it; noncritical unsupported specificity."
+      }
+    ],
+    "evidence": {
+      "transcript": "[00:00:00] Sam: I will tag the release Friday.\n[00:00:05] Them: Alex here. I will check the rollback procedure.\n[00:00:10] Sam: Agreed, release Friday.",
+      "handwritten": "",
+      "actions": [
+        {
+          "owner": "Sam",
+          "task": "tag the release",
+          "due": "Friday"
+        },
+        {
+          "owner": "Alex",
+          "task": "check the rollback procedure",
+          "due": null
+        }
+      ],
+      "decisions": [
+        "Release to be tagged and deployed on Friday."
+      ],
+      "notes_context": [],
+      "conflict_accounts": []
+    },
+    "summary_sha256": "8c2111ac5efe20e302aad5b77a385fc6f834cc91a6591c87ed8e08a1776e96b4"
+  },
+  {
+    "blind_id": "R23",
+    "case": "ambiguous_dates",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 1,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 1,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "findings": [
+      {
+        "output": {
+          "owner": "Sam",
+          "task": "send it next Friday, or the Friday after if review slips",
+          "due": "next Friday"
+        },
+        "source": "I will send it next Friday, or the Friday after if review slips.",
+        "reason": "Task and overview retain the fallback, but due drops it. Partial date preservation, not an invented calendar date or wholly lost commitment."
+      },
+      {
+        "output": "The meeting was a synthetic release review. Sam committed to sending the review document next Friday or the following Friday if the review slips, and no launch decision was made.",
+        "source": "I will send it next Friday, or the Friday after if review slips.",
+        "reason": "Invents document/review document as the referent of it. Proposed overview also adds a causal link (as Alex suggested) absent from the source."
+      }
+    ],
+    "evidence": {
+      "transcript": "[00:00:00] Sam: I will send it next Friday, or the Friday after if review slips.\n[00:00:05] Them: Alex here. Maybe we can launch in spring.\n[00:00:10] Sam: No launch decision yet.",
+      "handwritten": "Follow up after the holiday. Maybe ask Casey to help.",
+      "actions": [
+        {
+          "owner": "Sam",
+          "task": "send it next Friday, or the Friday after if review slips",
+          "due": "next Friday"
+        }
+      ],
+      "decisions": [],
+      "notes_context": [],
+      "conflict_accounts": []
+    },
+    "summary_sha256": "1ba0975459ac68c3e019638bdc4e71a0526f1e03840581c21951434b443ab34e"
+  },
+  {
+    "blind_id": "R24",
+    "case": "ambiguous_dates",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 1,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 1,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "findings": [
+      {
+        "output": {
+          "owner": "Sam",
+          "task": "send it next Friday, or the Friday after if review slips",
+          "due": "next Friday"
+        },
+        "source": "I will send it next Friday, or the Friday after if review slips.",
+        "reason": "Task and overview retain the fallback, but due drops it. Partial date preservation, not an invented calendar date or wholly lost commitment."
+      },
+      {
+        "output": "The meeting was a synthetic release review. Sam committed to sending the review document next Friday or the following Friday if the review slips, and no launch decision was made.",
+        "source": "I will send it next Friday, or the Friday after if review slips.",
+        "reason": "Invents document/review document as the referent of it. Proposed overview also adds a causal link (as Alex suggested) absent from the source."
+      }
+    ],
+    "evidence": {
+      "transcript": "[00:00:00] Sam: I will send it next Friday, or the Friday after if review slips.\n[00:00:05] Them: Alex here. Maybe we can launch in spring.\n[00:00:10] Sam: No launch decision yet.",
+      "handwritten": "Follow up after the holiday. Maybe ask Casey to help.",
+      "actions": [
+        {
+          "owner": "Sam",
+          "task": "send it next Friday, or the Friday after if review slips",
+          "due": "next Friday"
+        }
+      ],
+      "decisions": [],
+      "notes_context": [],
+      "conflict_accounts": []
+    },
+    "summary_sha256": "1ba0975459ac68c3e019638bdc4e71a0526f1e03840581c21951434b443ab34e"
+  },
+  {
+    "blind_id": "R25",
+    "case": "sparse",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 2
+    },
+    "critical_failures": [],
+    "findings": [],
+    "evidence": {
+      "transcript": "[00:00:00] Sam: I will compare the two deployment options.\n[00:00:05] Them: Alex here. I will test recovery next week.\n[00:00:10] Sam: Monitoring costs 120 dollars. We have not chosen a deployment option.",
+      "handwritten": "Focus on deployment options.",
+      "actions": [
+        {
+          "owner": "Sam",
+          "task": "Compare the two deployment options",
+          "due": null
+        },
+        {
+          "owner": "Alex",
+          "task": "Test recovery",
+          "due": "next week"
+        }
+      ],
+      "decisions": [],
+      "notes_context": [],
+      "conflict_accounts": []
+    },
+    "summary_sha256": "aee33a0a2b621a40abaadf41c42fedaaf54a0c5e867501f29474a6def11ab749"
+  },
+  {
+    "blind_id": "R26",
+    "case": "conflicting",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 2
+    },
+    "critical_failures": [],
+    "findings": [],
+    "evidence": {
+      "transcript": "[00:00:00] Sam: The current estimate is 120 thousand dollars.\n[00:00:05] Them: Alex here. I think delivery is in June.\n[00:00:10] Sam: I will verify the estimate. We have not approved the budget.",
+      "handwritten": "Estimate: 150 thousand dollars. Delivery: July.",
+      "actions": [
+        {
+          "owner": "Sam",
+          "task": "verify the estimate",
+          "due": null
+        }
+      ],
+      "decisions": [],
+      "notes_context": [],
+      "conflict_accounts": []
+    },
+    "summary_sha256": "c4ebba47c43ebab0858b3ff327c6db45583287235521d5ce35d1e8693017d7b1"
+  },
+  {
+    "blind_id": "R27",
+    "case": "conflicting",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 1,
+      "conflicts": 1,
+      "numbers": 1,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [
+      "Disputed budget is presented as an unqualified core fact despite a separate conflict section."
+    ],
+    "findings": [
+      {
+        "output": "Current budget estimate is $120,000.",
+        "source": {
+          "transcript": "The current estimate is 120 thousand dollars.",
+          "handwritten": "Estimate: 150 thousand dollars."
+        },
+        "reason": "Both values are correctly sourced in conflicts, but the core key point presents 120k without acknowledging the dispute. Violates the frozen rule against settled disputed facts in any section; numeric presence cannot catch this."
+      },
+      {
+        "output": "Delivery expected in June.",
+        "source": {
+          "transcript": "I think delivery is in June.",
+          "handwritten": "Delivery: July."
+        },
+        "reason": "Expected retains some uncertainty, but the core point omits the written disagreement; exact accounts remain in conflicts."
+      }
+    ],
+    "evidence": {
+      "transcript": "[00:00:00] Sam: The current estimate is 120 thousand dollars.\n[00:00:05] Them: Alex here. I think delivery is in June.\n[00:00:10] Sam: I will verify the estimate. We have not approved the budget.",
+      "handwritten": "Estimate: 150 thousand dollars. Delivery: July.",
+      "actions": [
+        {
+          "owner": "Sam",
+          "task": "verify the estimate",
+          "due": null
+        }
+      ],
+      "decisions": [],
+      "notes_context": [
+        "Estimate: 150 thousand dollars",
+        "Delivery: July"
+      ],
+      "conflict_accounts": [
+        {
+          "topic": "estimate",
+          "transcript": "The current estimate is 120 thousand dollars.",
+          "handwritten": "Estimate: 150 thousand dollars."
+        },
+        {
+          "topic": "delivery",
+          "transcript": "I think delivery is in June.",
+          "handwritten": "Delivery: July."
+        }
+      ]
+    },
+    "summary_sha256": "046aab5f84772228e72d63e03d60400f39ea71f6f04a8d2ba1cb5d57dc6129ef"
+  },
+  {
+    "blind_id": "R28",
+    "case": "empty",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 2
+    },
+    "critical_failures": [],
+    "findings": [],
+    "evidence": {
+      "transcript": "[00:00:00] Sam: I will tag the release Friday.\n[00:00:05] Them: Alex here. I will check the rollback procedure.\n[00:00:10] Sam: Agreed, release Friday.",
+      "handwritten": "",
+      "actions": [
+        {
+          "owner": "Sam",
+          "task": "tag the release",
+          "due": "Friday"
+        },
+        {
+          "owner": "Alex",
+          "task": "check the rollback procedure",
+          "due": null
+        }
+      ],
+      "decisions": [
+        "Release scheduled for Friday."
+      ],
+      "notes_context": [],
+      "conflict_accounts": []
+    },
+    "summary_sha256": "279c7d302dabd1bb5c878fa156a6f43490d03587c2babe853d1103640551af67"
+  },
+  {
+    "blind_id": "R29",
+    "case": "additional",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "findings": [
+      {
+        "output": [
+          "Sam will send the draft on Friday.",
+          "Alex will review the draft next week."
+        ],
+        "source": "[00:00:00] Sam: I will send the draft Friday.\n[00:00:05] Them: Alex here. I will review it next week.",
+        "reason": "Repeats the same commitments in overview, bullets, decisions and actions. Commitments themselves are grounded; no false spoken task is introduced."
+      }
+    ],
+    "evidence": {
+      "transcript": "[00:00:00] Sam: I will send the draft Friday.\n[00:00:05] Them: Alex here. I will review it next week.",
+      "handwritten": "Personal context: the internal workshop has 40 seats.\nTask for myself: ask the venue about access.",
+      "actions": [
+        {
+          "owner": "Sam",
+          "task": "send the draft",
+          "due": "Friday"
+        },
+        {
+          "owner": "Alex",
+          "task": "review the draft",
+          "due": "next week"
+        }
+      ],
+      "decisions": [
+        "Sam will send the draft on Friday.",
+        "Alex will review the draft next week."
+      ],
+      "notes_context": [],
+      "conflict_accounts": []
+    },
+    "summary_sha256": "69d0aa6d083af86dac62d90d554d0cf742c942d8a41d081ec5594b9e07e45ea3"
+  },
+  {
+    "blind_id": "R30",
+    "case": "ambiguous_dates",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 1,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 1,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "findings": [
+      {
+        "output": {
+          "owner": "Sam",
+          "task": "send it next Friday or the Friday after if review slips",
+          "due": "next Friday"
+        },
+        "source": "I will send it next Friday, or the Friday after if review slips.",
+        "reason": "Task and overview retain the fallback, but due drops it. Partial date preservation, not an invented calendar date or wholly lost commitment."
+      },
+      {
+        "output": "The Synthetic release review meeting discussed the timing for sending a document and a potential launch date. Sam committed to sending the document next Friday or the following Friday if the review slips, but no launch decision was made as Alex suggested a spring launch.",
+        "source": "I will send it next Friday, or the Friday after if review slips.",
+        "reason": "Invents document/review document as the referent of it. Proposed overview also adds a causal link (as Alex suggested) absent from the source."
+      }
+    ],
+    "evidence": {
+      "transcript": "[00:00:00] Sam: I will send it next Friday, or the Friday after if review slips.\n[00:00:05] Them: Alex here. Maybe we can launch in spring.\n[00:00:10] Sam: No launch decision yet.",
+      "handwritten": "Follow up after the holiday. Maybe ask Casey to help.",
+      "actions": [
+        {
+          "owner": "Sam",
+          "task": "send it next Friday or the Friday after if review slips",
+          "due": "next Friday"
+        }
+      ],
+      "decisions": [],
+      "notes_context": [
+        "Follow up after the holiday",
+        "Maybe ask Casey to help"
+      ],
+      "conflict_accounts": []
+    },
+    "summary_sha256": "c5dc3d3439440b55a9209b69efbe2485d6ce33ef11d6a6c7c78dcd381c69910d"
+  }
+]

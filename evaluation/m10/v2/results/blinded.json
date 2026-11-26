@@ -1,0 +1,828 @@
+[
+  {
+    "id": "R01",
+    "case": "empty",
+    "summary": {
+      "overview": "The Synthetic release review meeting confirmed the release date as Friday and assigned two tasks: tagging the release and checking the rollback procedure.",
+      "key_points": [
+        "Release date set for Friday.",
+        "Alex to check rollback procedure."
+      ],
+      "decisions": [
+        "Release date set for Friday."
+      ],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "Tag the release",
+          "due": "Friday"
+        },
+        {
+          "owner": "Alex",
+          "task": "Check the rollback procedure",
+          "due": "Friday"
+        }
+      ],
+      "notes_context": [],
+      "conflicts": []
+    },
+    "error": null
+  },
+  {
+    "id": "R02",
+    "case": "additional",
+    "summary": {
+      "overview": "The synthetic release review meeting focused on the draft timeline. Sam agreed to send the draft on Friday. Alex agreed to review it next week.",
+      "key_points": [
+        "Sam will send the draft on Friday.",
+        "Alex will review the draft next week."
+      ],
+      "decisions": [
+        "Sam will send the draft on Friday.",
+        "Alex will review the draft next week."
+      ],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "send the draft",
+          "due": "Friday"
+        },
+        {
+          "owner": "Alex",
+          "task": "review the draft",
+          "due": "next week"
+        }
+      ]
+    },
+    "error": null
+  },
+  {
+    "id": "R03",
+    "case": "additional",
+    "summary": {
+      "overview": "The Synthetic release review meeting discussed the timeline for sending and reviewing the draft. Sam committed to sending the draft on Friday, and Alex committed to reviewing it next week.",
+      "key_points": [
+        "Sam will send the draft on Friday.",
+        "Alex will review the draft next week."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "Send the draft",
+          "due": "Friday"
+        },
+        {
+          "owner": "Alex",
+          "task": "Review the draft",
+          "due": "next week"
+        }
+      ],
+      "notes_context": [
+        "the internal workshop has 40 seats",
+        "ask the venue about access"
+      ],
+      "conflicts": []
+    },
+    "error": null
+  },
+  {
+    "id": "R04",
+    "case": "additional",
+    "summary": {
+      "overview": "The synthetic release review meeting focused on the draft timeline. Sam agreed to send the draft on Friday. Alex agreed to review it next week.",
+      "key_points": [
+        "Sam will send the draft on Friday.",
+        "Alex will review the draft next week."
+      ],
+      "decisions": [
+        "Sam will send the draft on Friday.",
+        "Alex will review the draft next week."
+      ],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "send the draft",
+          "due": "Friday"
+        },
+        {
+          "owner": "Alex",
+          "task": "review the draft",
+          "due": "next week"
+        }
+      ]
+    },
+    "error": null
+  },
+  {
+    "id": "R05",
+    "case": "sparse",
+    "summary": {
+      "overview": "The Synthetic release review meeting discussed deployment options and monitoring costs, with the team still undecided on a deployment option. Alex committed to testing recovery next week.",
+      "key_points": [
+        "Deployment option not chosen.",
+        "Monitoring costs $120."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "Compare the two deployment options",
+          "due": null
+        },
+        {
+          "owner": "Alex",
+          "task": "Test recovery",
+          "due": "next week"
+        }
+      ]
+    },
+    "error": null
+  },
+  {
+    "id": "R06",
+    "case": "sparse",
+    "summary": {
+      "overview": "The synthetic release review meeting discussed deployment options and monitoring costs. Sam will compare the two deployment options, and Alex will test recovery next week. The deployment option remains unchosen.",
+      "key_points": [
+        "Sam will compare the two deployment options.",
+        "Alex will test recovery next week.",
+        "Monitoring costs 120 dollars.",
+        "The deployment option has not been chosen."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "Compare the two deployment options",
+          "due": null
+        },
+        {
+          "owner": "Alex",
+          "task": "Test recovery",
+          "due": "next week"
+        }
+      ],
+      "notes_context": [
+        "Focus on deployment options."
+      ],
+      "conflicts": []
+    },
+    "error": null
+  },
+  {
+    "id": "R07",
+    "case": "ambiguous_dates",
+    "summary": {
+      "overview": "The meeting was a synthetic release review. Sam committed to sending the review document next Friday or the following Friday if the review slips, and no launch decision was made.",
+      "key_points": [
+        "Sam will send the review document next Friday or the Friday after if the review slips.",
+        "Alex suggested a spring launch, but Sam stated no launch decision has been made."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "send it next Friday, or the Friday after if review slips",
+          "due": "next Friday"
+        }
+      ]
+    },
+    "error": null
+  },
+  {
+    "id": "R08",
+    "case": "additional",
+    "summary": {
+      "overview": "The Synthetic release review meeting discussed the timeline for sending and reviewing the draft. Sam committed to sending the draft on Friday, and Alex committed to reviewing it next week.",
+      "key_points": [
+        "Sam will send the draft on Friday.",
+        "Alex will review the draft next week."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "Send the draft",
+          "due": "Friday"
+        },
+        {
+          "owner": "Alex",
+          "task": "Review the draft",
+          "due": "next week"
+        }
+      ],
+      "notes_context": [
+        "the internal workshop has 40 seats",
+        "ask the venue about access"
+      ],
+      "conflicts": []
+    },
+    "error": null
+  },
+  {
+    "id": "R09",
+    "case": "empty",
+    "summary": {
+      "overview": "The meeting reviewed the synthetic release schedule and confirmed the release date. Alex agreed to check the rollback procedure, and the team finalized the release tagging for Friday.",
+      "key_points": [
+        "Release tagging scheduled for Friday.",
+        "Alex will check the rollback procedure.",
+        "Team agreed to release on Friday."
+      ],
+      "decisions": [
+        "Release scheduled for Friday."
+      ],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "tag the release",
+          "due": "Friday"
+        },
+        {
+          "owner": "Alex",
+          "task": "check the rollback procedure",
+          "due": null
+        }
+      ]
+    },
+    "error": null
+  },
+  {
+    "id": "R10",
+    "case": "conflicting",
+    "summary": {
+      "overview": "The synthetic release review meeting discussed the current estimate of $120,000 and June delivery, with Sam noting the budget has not been approved. Sam committed to verifying the estimate; the estimate and delivery date differ between the transcript and handwritten notes (see Conflicts).",
+      "key_points": [
+        "The current estimate is $120,000.",
+        "Delivery is expected in June.",
+        "The budget has not been approved."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "verify the estimate",
+          "due": null
+        }
+      ],
+      "notes_context": [
+        "Estimate: 150 thousand dollars.",
+        "Delivery: July"
+      ],
+      "conflicts": [
+        {
+          "topic": "estimate",
+          "transcript": "120 thousand dollars",
+          "handwritten": "150 thousand dollars"
+        },
+        {
+          "topic": "delivery",
+          "transcript": "June",
+          "handwritten": "July"
+        }
+      ]
+    },
+    "error": null
+  },
+  {
+    "id": "R11",
+    "case": "sparse",
+    "summary": {
+      "overview": "The meeting reviewed synthetic release options, focusing on deployment choices and monitoring costs. Sam will compare deployment options, and Alex will test recovery next week. The team has not yet selected a deployment option.",
+      "key_points": [
+        "Monitoring costs $120.",
+        "The team has not chosen a deployment option.",
+        "Sam will compare the two deployment options.",
+        "Alex will test recovery next week."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "Compare the two deployment options",
+          "due": null
+        },
+        {
+          "owner": "Alex",
+          "task": "Test recovery",
+          "due": "next week"
+        }
+      ],
+      "notes_context": [
+        "Focus on deployment options."
+      ],
+      "conflicts": []
+    },
+    "error": null
+  },
+  {
+    "id": "R12",
+    "case": "conflicting",
+    "summary": {
+      "overview": "The meeting reviewed the synthetic release budget estimate and delivery timeline. The budget estimate of $120,000 has not been approved, and Sam will verify it; Alex stated delivery is expected in June.",
+      "key_points": [
+        "The budget estimate for the synthetic release is $120,000 and has not been approved.",
+        "Alex mentioned delivery is expected in June.",
+        "Sam will verify the budget estimate."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "verify the estimate",
+          "due": null
+        }
+      ]
+    },
+    "error": null
+  },
+  {
+    "id": "R13",
+    "case": "additional",
+    "summary": {
+      "overview": "The Synthetic release review meeting discussed the timeline for sending and reviewing the draft. Sam committed to sending the draft on Friday, and Alex committed to reviewing it next week.",
+      "key_points": [
+        "Sam will send the draft on Friday.",
+        "Alex will review the draft next week."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "Send the draft",
+          "due": "Friday"
+        },
+        {
+          "owner": "Alex",
+          "task": "Review the draft",
+          "due": "next week"
+        }
+      ],
+      "notes_context": [
+        "the internal workshop has 40 seats",
+        "ask the venue about access"
+      ],
+      "conflicts": []
+    },
+    "error": null
+  },
+  {
+    "id": "R14",
+    "case": "sparse",
+    "summary": {
+      "overview": "The Synthetic release review meeting discussed deployment options and monitoring costs, with the team still undecided on a deployment option. Alex committed to testing recovery next week.",
+      "key_points": [
+        "Deployment option not chosen.",
+        "Monitoring costs $120."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "Compare the two deployment options",
+          "due": null
+        },
+        {
+          "owner": "Alex",
+          "task": "Test recovery",
+          "due": "next week"
+        }
+      ]
+    },
+    "error": null
+  },
+  {
+    "id": "R15",
+    "case": "conflicting",
+    "summary": {
+      "overview": "The synthetic release review meeting discussed the current estimate of $120,000 and June delivery, with Sam noting the budget has not been approved. Sam committed to verifying the estimate; the estimate and delivery date differ between the transcript and handwritten notes (see Conflicts).",
+      "key_points": [
+        "The current estimate is $120,000.",
+        "Delivery is expected in June.",
+        "The budget has not been approved."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "verify the estimate",
+          "due": null
+        }
+      ],
+      "notes_context": [
+        "Estimate: 150 thousand dollars.",
+        "Delivery: July"
+      ],
+      "conflicts": [
+        {
+          "topic": "estimate",
+          "transcript": "120 thousand dollars",
+          "handwritten": "150 thousand dollars"
+        },
+        {
+          "topic": "delivery",
+          "transcript": "June",
+          "handwritten": "July"
+        }
+      ]
+    },
+    "error": null
+  },
+  {
+    "id": "R16",
+    "case": "conflicting",
+    "summary": {
+      "overview": "The meeting reviewed the synthetic release budget and delivery timeline. Sam stated the current estimate is 120 thousand dollars and the budget has not been approved, while Alex mentioned delivery in June. Sam will verify the estimate.",
+      "key_points": [
+        "The current budget estimate is 120 thousand dollars.",
+        "Alex stated delivery is expected in June.",
+        "The budget has not been approved."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "verify the estimate",
+          "due": null
+        }
+      ],
+      "notes_context": [
+        "Estimate: 150 thousand dollars",
+        "Delivery: July"
+      ],
+      "conflicts": [
+        {
+          "topic": "estimate",
+          "transcript": "120 thousand dollars",
+          "handwritten": "150 thousand dollars"
+        },
+        {
+          "topic": "delivery",
+          "transcript": "June",
+          "handwritten": "July"
+        }
+      ]
+    },
+    "error": null
+  },
+  {
+    "id": "R17",
+    "case": "empty",
+    "summary": {
+      "overview": "The Synthetic release review meeting confirmed the release date as Friday and assigned two tasks: tagging the release and checking the rollback procedure.",
+      "key_points": [
+        "Release date set for Friday.",
+        "Alex to check rollback procedure."
+      ],
+      "decisions": [
+        "Release date set for Friday."
+      ],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "Tag the release",
+          "due": "Friday"
+        },
+        {
+          "owner": "Alex",
+          "task": "Check the rollback procedure",
+          "due": "Friday"
+        }
+      ],
+      "notes_context": [],
+      "conflicts": []
+    },
+    "error": null
+  },
+  {
+    "id": "R18",
+    "case": "sparse",
+    "summary": {
+      "overview": "The Synthetic release review meeting discussed deployment options and monitoring costs, with the team still undecided on a deployment option. Alex committed to testing recovery next week.",
+      "key_points": [
+        "Deployment option not chosen.",
+        "Monitoring costs $120."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "Compare the two deployment options",
+          "due": null
+        },
+        {
+          "owner": "Alex",
+          "task": "Test recovery",
+          "due": "next week"
+        }
+      ]
+    },
+    "error": null
+  },
+  {
+    "id": "R19",
+    "case": "conflicting",
+    "summary": {
+      "overview": "The meeting reviewed the synthetic release budget estimate and delivery timeline. The budget estimate of $120,000 has not been approved, and Sam will verify it; Alex stated delivery is expected in June.",
+      "key_points": [
+        "The budget estimate for the synthetic release is $120,000 and has not been approved.",
+        "Alex mentioned delivery is expected in June.",
+        "Sam will verify the budget estimate."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "verify the estimate",
+          "due": null
+        }
+      ]
+    },
+    "error": null
+  },
+  {
+    "id": "R20",
+    "case": "ambiguous_dates",
+    "summary": {
+      "overview": "The meeting was a synthetic release review. Sam committed to sending the review document next Friday or the following Friday if the review slips, and no launch decision was made.",
+      "key_points": [
+        "Sam will send the review document next Friday or the Friday after if the review slips.",
+        "Alex suggested a spring launch, but Sam stated no launch decision has been made."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "send it next Friday, or the Friday after if review slips",
+          "due": "next Friday"
+        }
+      ]
+    },
+    "error": null
+  },
+  {
+    "id": "R21",
+    "case": "empty",
+    "summary": {
+      "overview": "The meeting reviewed the synthetic release schedule and confirmed the release date. Alex agreed to check the rollback procedure, and the team finalized the release tagging for Friday.",
+      "key_points": [
+        "Release tagging scheduled for Friday.",
+        "Alex will check the rollback procedure.",
+        "Team agreed to release on Friday."
+      ],
+      "decisions": [
+        "Release scheduled for Friday."
+      ],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "tag the release",
+          "due": "Friday"
+        },
+        {
+          "owner": "Alex",
+          "task": "check the rollback procedure",
+          "due": null
+        }
+      ]
+    },
+    "error": null
+  },
+  {
+    "id": "R22",
+    "case": "additional",
+    "summary": {
+      "overview": "The synthetic release review meeting focused on the draft timeline. Sam agreed to send the draft on Friday. Alex agreed to review it next week.",
+      "key_points": [
+        "Sam will send the draft on Friday.",
+        "Alex will review the draft next week."
+      ],
+      "decisions": [
+        "Sam will send the draft on Friday.",
+        "Alex will review the draft next week."
+      ],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "send the draft",
+          "due": "Friday"
+        },
+        {
+          "owner": "Alex",
+          "task": "review the draft",
+          "due": "next week"
+        }
+      ]
+    },
+    "error": null
+  },
+  {
+    "id": "R23",
+    "case": "empty",
+    "summary": {
+      "overview": "The Synthetic release review meeting confirmed the release date as Friday and assigned tasks for tagging the release and checking the rollback procedure. The meeting concluded with agreement on the release schedule.",
+      "key_points": [
+        "The release is scheduled for Friday.",
+        "Sam will tag the release on Friday.",
+        "Alex will check the rollback procedure."
+      ],
+      "decisions": [
+        "The release is scheduled for Friday."
+      ],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "tag the release",
+          "due": "Friday"
+        },
+        {
+          "owner": "Alex",
+          "task": "check the rollback procedure",
+          "due": null
+        }
+      ],
+      "notes_context": [],
+      "conflicts": []
+    },
+    "error": null
+  },
+  {
+    "id": "R24",
+    "case": "sparse",
+    "summary": {
+      "overview": "The synthetic release review meeting discussed deployment options and monitoring costs. Sam will compare the two deployment options, and Alex will test recovery next week. The deployment option remains unchosen.",
+      "key_points": [
+        "Sam will compare the two deployment options.",
+        "Alex will test recovery next week.",
+        "Monitoring costs 120 dollars.",
+        "The deployment option has not been chosen."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "Compare the two deployment options",
+          "due": null
+        },
+        {
+          "owner": "Alex",
+          "task": "Test recovery",
+          "due": "next week"
+        }
+      ],
+      "notes_context": [
+        "Focus on deployment options."
+      ],
+      "conflicts": []
+    },
+    "error": null
+  },
+  {
+    "id": "R25",
+    "case": "ambiguous_dates",
+    "summary": {
+      "overview": "The Synthetic release review meeting discussed the timeline for sending a document and the potential launch window. Sam committed to sending the document next Friday or the Friday after if review slips, and stated that no launch decision has been made despite Alex's suggestion of a spring launch.",
+      "key_points": [
+        "Sam will send the document next Friday or the Friday after if review slips.",
+        "Alex suggested a spring launch for the release.",
+        "No launch decision has been made yet."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "Send it next Friday, or the Friday after if review slips",
+          "due": "next Friday, or the Friday after if review slips"
+        }
+      ],
+      "notes_context": [
+        "Follow up after the holiday",
+        "Maybe ask Casey to help"
+      ],
+      "conflicts": []
+    },
+    "error": null
+  },
+  {
+    "id": "R26",
+    "case": "conflicting",
+    "summary": {
+      "overview": "The meeting reviewed the synthetic release budget estimate and delivery timeline. The budget estimate of $120,000 has not been approved, and Sam will verify it; Alex stated delivery is expected in June.",
+      "key_points": [
+        "The budget estimate for the synthetic release is $120,000 and has not been approved.",
+        "Alex mentioned delivery is expected in June.",
+        "Sam will verify the budget estimate."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "verify the estimate",
+          "due": null
+        }
+      ]
+    },
+    "error": null
+  },
+  {
+    "id": "R27",
+    "case": "ambiguous_dates",
+    "summary": {
+      "overview": "The Synthetic release review meeting discussed the timeline for sending a document and the potential launch window. Sam committed to sending the document next Friday or the Friday after if review slips, and stated that no launch decision has been made despite Alex's suggestion of a spring launch.",
+      "key_points": [
+        "Sam will send the document next Friday or the Friday after if review slips.",
+        "Alex suggested a spring launch for the release.",
+        "No launch decision has been made yet."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "Send it next Friday, or the Friday after if review slips",
+          "due": "next Friday, or the Friday after if review slips"
+        }
+      ],
+      "notes_context": [
+        "Follow up after the holiday",
+        "Maybe ask Casey to help"
+      ],
+      "conflicts": []
+    },
+    "error": null
+  },
+  {
+    "id": "R28",
+    "case": "ambiguous_dates",
+    "summary": {
+      "overview": "The meeting was a synthetic release review. Sam committed to sending the review document next Friday or the following Friday if the review slips, and no launch decision was made.",
+      "key_points": [
+        "Sam will send the review document next Friday or the Friday after if the review slips.",
+        "Alex suggested a spring launch, but Sam stated no launch decision has been made."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "send it next Friday, or the Friday after if review slips",
+          "due": "next Friday"
+        }
+      ]
+    },
+    "error": null
+  },
+  {
+    "id": "R29",
+    "case": "empty",
+    "summary": {
+      "overview": "The meeting reviewed the synthetic release schedule and confirmed the release date. Alex agreed to check the rollback procedure, and the team finalized the release tagging for Friday.",
+      "key_points": [
+        "Release tagging scheduled for Friday.",
+        "Alex will check the rollback procedure.",
+        "Team agreed to release on Friday."
+      ],
+      "decisions": [
+        "Release scheduled for Friday."
+      ],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "tag the release",
+          "due": "Friday"
+        },
+        {
+          "owner": "Alex",
+          "task": "check the rollback procedure",
+          "due": null
+        }
+      ]
+    },
+    "error": null
+  },
+  {
+    "id": "R30",
+    "case": "ambiguous_dates",
+    "summary": {
+      "overview": "The Synthetic release review meeting discussed the timeline for sending a document and the potential launch window. Sam committed to sending the document next Friday or the Friday after if review slips, and stated that no launch decision has been made despite Alex's suggestion of a spring launch.",
+      "key_points": [
+        "Sam will send the document next Friday or the Friday after if review slips.",
+        "Alex suggested a spring launch for the release.",
+        "No launch decision has been made yet."
+      ],
+      "decisions": [],
+      "action_items": [
+        {
+          "owner": "Sam",
+          "task": "Send it next Friday, or the Friday after if review slips",
+          "due": "next Friday, or the Friday after if review slips"
+        }
+      ],
+      "notes_context": [
+        "Follow up after the holiday",
+        "Maybe ask Casey to help"
+      ],
+      "conflicts": []
+    },
+    "error": null
+  }
+]

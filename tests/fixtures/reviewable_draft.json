@@ -1,0 +1,447 @@
+{
+  "authored": true,
+  "description": "Chief-authored synthetic design responses for an offline prototype. No model generation or response conversion. Inputs are ten familiar V11 cases; this is not model-quality or held-out evidence.",
+  "cases": [
+    {
+      "id": "empty",
+      "sections": {
+        "summary": {
+          "state": "draft",
+          "items": [
+            {
+              "text": "Sam will tag the release Friday; Alex will check the rollback procedure.",
+              "sources": [
+                "T1",
+                "T2"
+              ]
+            }
+          ],
+          "notice": "",
+          "review_sources": []
+        },
+        "decisions": {
+          "state": "draft",
+          "items": [
+            {
+              "text": "Sam agreed to release Friday.",
+              "sources": [
+                "T3"
+              ]
+            }
+          ],
+          "notice": "",
+          "review_sources": []
+        },
+        "actions": {
+          "state": "draft",
+          "items": [
+            {
+              "text": "Sam — tag the release Friday.",
+              "sources": [
+                "T1"
+              ]
+            },
+            {
+              "text": "Alex — check the rollback procedure.",
+              "sources": [
+                "T2"
+              ]
+            }
+          ],
+          "notice": "",
+          "review_sources": []
+        },
+        "review": {
+          "state": "draft",
+          "items": [],
+          "notice": "",
+          "review_sources": []
+        }
+      }
+    },
+    {
+      "id": "additional",
+      "sections": {
+        "summary": {
+          "state": "draft",
+          "items": [
+            {
+              "text": "Sam will send the draft Friday; Alex will review it next week.",
+              "sources": [
+                "T1",
+                "T2"
+              ]
+            }
+          ],
+          "notice": "",
+          "review_sources": []
+        },
+        "decisions": {
+          "state": "draft",
+          "items": [],
+          "notice": "",
+          "review_sources": []
+        },
+        "actions": {
+          "state": "draft",
+          "items": [
+            {
+              "text": "Sam — send the draft Friday.",
+              "sources": [
+                "T1"
+              ]
+            },
+            {
+              "text": "Alex — review it next week.",
+              "sources": [
+                "T1",
+                "T2"
+              ]
+            }
+          ],
+          "notice": "",
+          "review_sources": []
+        },
+        "review": {
+          "state": "draft",
+          "items": [],
+          "notice": "",
+          "review_sources": []
+        }
+      }
+    },
+    {
+      "id": "unit_equivalence",
+      "sections": {
+        "summary": {
+          "state": "draft",
+          "items": [
+            {
+              "text": "The spoken support price is 120 dollars.",
+              "sources": [
+                "T1"
+              ]
+            }
+          ],
+          "notice": "",
+          "review_sources": []
+        },
+        "decisions": {
+          "state": "draft",
+          "items": [],
+          "notice": "",
+          "review_sources": []
+        },
+        "actions": {
+          "state": "draft",
+          "items": [],
+          "notice": "",
+          "review_sources": []
+        },
+        "review": {
+          "state": "needs_review",
+          "items": [],
+          "notice": "Review the two original price passages. No relationship between them has been assigned.",
+          "review_sources": [
+            "T1",
+            "N1"
+          ]
+        }
+      }
+    },
+    {
+      "id": "multi_claim_notes",
+      "sections": {
+        "summary": {
+          "state": "draft",
+          "items": [
+            {
+              "text": "Monitoring and support were each stated as costing 120 dollars.",
+              "sources": [
+                "T1"
+              ]
+            }
+          ],
+          "notice": "",
+          "review_sources": []
+        },
+        "decisions": {
+          "state": "draft",
+          "items": [],
+          "notice": "",
+          "review_sources": []
+        },
+        "actions": {
+          "state": "draft",
+          "items": [
+            {
+              "text": "Sam — check the invoice not before next Friday.",
+              "sources": [
+                "T1"
+              ]
+            }
+          ],
+          "notice": "",
+          "review_sources": []
+        },
+        "review": {
+          "state": "unavailable",
+          "items": [],
+          "notice": "Written-note comparison is unavailable. Review the price and venue passages; the independent invoice suggestion remains available above.",
+          "review_sources": [
+            "T1",
+            "N1"
+          ]
+        }
+      }
+    },
+    {
+      "id": "tentative_confirmed",
+      "sections": {
+        "summary": {
+          "state": "draft",
+          "items": [
+            {
+              "text": "Sam thinks the staging environment is ready.",
+              "sources": [
+                "T1"
+              ]
+            }
+          ],
+          "notice": "",
+          "review_sources": []
+        },
+        "decisions": {
+          "state": "draft",
+          "items": [],
+          "notice": "",
+          "review_sources": []
+        },
+        "actions": {
+          "state": "draft",
+          "items": [],
+          "notice": "",
+          "review_sources": []
+        },
+        "review": {
+          "state": "needs_review",
+          "items": [],
+          "notice": "The spoken readiness statement is tentative. Keep the written statement separate while reviewing the status.",
+          "review_sources": [
+            "T1",
+            "N1"
+          ]
+        }
+      }
+    },
+    {
+      "id": "accepted_status_answer",
+      "sections": {
+        "summary": {
+          "state": "draft",
+          "items": [
+            {
+              "text": "Sam asked whether Ravi would be away Friday; Ravi answered “Yes.”",
+              "sources": [
+                "T1",
+                "T2"
+              ]
+            }
+          ],
+          "notice": "",
+          "review_sources": []
+        },
+        "decisions": {
+          "state": "draft",
+          "items": [],
+          "notice": "",
+          "review_sources": []
+        },
+        "actions": {
+          "state": "draft",
+          "items": [],
+          "notice": "",
+          "review_sources": []
+        },
+        "review": {
+          "state": "draft",
+          "items": [],
+          "notice": "",
+          "review_sources": []
+        }
+      }
+    },
+    {
+      "id": "accepted_request_retracted",
+      "sections": {
+        "summary": {
+          "state": "draft",
+          "items": [
+            {
+              "text": "Ravi accepted the invoice-sending request and later said they would not send it.",
+              "sources": [
+                "T1",
+                "T2",
+                "T3"
+              ]
+            }
+          ],
+          "notice": "",
+          "review_sources": []
+        },
+        "decisions": {
+          "state": "draft",
+          "items": [],
+          "notice": "",
+          "review_sources": []
+        },
+        "actions": {
+          "state": "draft",
+          "items": [],
+          "notice": "",
+          "review_sources": []
+        },
+        "review": {
+          "state": "needs_review",
+          "items": [],
+          "notice": "Review the request, acceptance and later withdrawal together. Sending is not listed as a current action suggestion.",
+          "review_sources": [
+            "T1",
+            "T2",
+            "T3"
+          ]
+        }
+      }
+    },
+    {
+      "id": "cancellation_with_new_task",
+      "sections": {
+        "summary": {
+          "state": "draft",
+          "items": [
+            {
+              "text": "Sam withdrew draft review and instead offered to send the invoice.",
+              "sources": [
+                "T1"
+              ]
+            }
+          ],
+          "notice": "",
+          "review_sources": []
+        },
+        "decisions": {
+          "state": "draft",
+          "items": [],
+          "notice": "",
+          "review_sources": []
+        },
+        "actions": {
+          "state": "draft",
+          "items": [
+            {
+              "text": "Sam — send the invoice.",
+              "sources": [
+                "T1"
+              ]
+            }
+          ],
+          "notice": "",
+          "review_sources": []
+        },
+        "review": {
+          "state": "draft",
+          "items": [],
+          "notice": "",
+          "review_sources": []
+        }
+      }
+    },
+    {
+      "id": "partial_coordination_retracted",
+      "sections": {
+        "summary": {
+          "state": "draft",
+          "items": [
+            {
+              "text": "Sam initially offered draft review and invoice sending, then withdrew draft review.",
+              "sources": [
+                "T1",
+                "T2"
+              ]
+            }
+          ],
+          "notice": "",
+          "review_sources": []
+        },
+        "decisions": {
+          "state": "draft",
+          "items": [],
+          "notice": "",
+          "review_sources": []
+        },
+        "actions": {
+          "state": "needs_review",
+          "items": [],
+          "notice": "Draft review was withdrawn. Review the still-relevant invoice-sending work with the original statement and cancellation.",
+          "review_sources": [
+            "T1",
+            "T2"
+          ]
+        },
+        "review": {
+          "state": "draft",
+          "items": [],
+          "notice": "",
+          "review_sources": []
+        }
+      }
+    },
+    {
+      "id": "qualified_external_timing",
+      "sections": {
+        "summary": {
+          "state": "draft",
+          "items": [
+            {
+              "text": "Sam offered to send the invoice, then added a separate qualified timing statement.",
+              "sources": [
+                "T1",
+                "T2"
+              ]
+            }
+          ],
+          "notice": "",
+          "review_sources": []
+        },
+        "decisions": {
+          "state": "draft",
+          "items": [],
+          "notice": "",
+          "review_sources": []
+        },
+        "actions": {
+          "state": "needs_review",
+          "items": [
+            {
+              "text": "Sam — send the invoice; timing needs review.",
+              "sources": [
+                "T1"
+              ]
+            }
+          ],
+          "notice": "Keep the entire later timing statement with this suggestion: “Not before next Friday unless finance objects.” Confirm the association before assigning a due date.",
+          "review_sources": [
+            "T1",
+            "T2"
+          ]
+        },
+        "review": {
+          "state": "draft",
+          "items": [],
+          "notice": "",
+          "review_sources": []
+        }
+      }
+    }
+  ]
+}

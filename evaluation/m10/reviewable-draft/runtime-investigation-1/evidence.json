@@ -1,0 +1,431 @@
+{
+  "date": "2026-11-25",
+  "hash_checks": [
+    {
+      "entries": 30,
+      "path": "evaluation/m10/reviewable-draft/model-comparison-1/manifest.json",
+      "sha256": "0c08baba4e1a1524f7ba8fa8b8c74e1a2b4b38fb8cc6798dd3c28c356d450c7d",
+      "verified": true
+    },
+    {
+      "entries": 125,
+      "path": "evaluation/m10/reviewable-draft/model-comparison-1/results/manifest.json",
+      "sha256": "1da63d1cde30f2bf09d337bf334737155fa1d84231a3e33c455cdfe0a90773dc",
+      "verified": true
+    },
+    {
+      "entries": 173,
+      "path": "evaluation/m10/reviewable-draft/model-comparison-1/seal.json",
+      "sha256": "6cd12d1901440e11cd561b509b14beb13dd7fc4bcc7cb27dac36a564b4cb0282",
+      "verified": true
+    },
+    {
+      "entries": 20,
+      "path": "evaluation/m10/reviewable-draft/diagnostic-3/manifest.json",
+      "sha256": "472027ef8be047233a3a8cf75630c922afe28c96b73911b844619c16b33e8bd3",
+      "verified": true
+    },
+    {
+      "entries": 157,
+      "path": "evaluation/m10/reviewable-draft/diagnostic-3/results/manifest.json",
+      "sha256": "9a88959f821a186293492003fef40d80a11fd955c4cbc5115877c45ad83be77f",
+      "verified": true
+    }
+  ],
+  "kind": "offline-counts-only",
+  "live_ollama_requests": 0,
+  "rows": [
+    {
+      "answer_characters": 37,
+      "done": true,
+      "done_reason": "stop",
+      "exchange_error": null,
+      "exchange_timeout_seconds": 600,
+      "group": "cached_baseline",
+      "http_elapsed_seconds": 31.447048000060022,
+      "model": "qwen3:30b",
+      "path": "evaluation/m10/reviewable-draft/diagnostic-3/results/01-unit_equivalence",
+      "request_bytes": 2400,
+      "request_sha256": "22fa2367162ae3c173861a44445ce3f9d1181a602f73dee6ba6e394ca7e07266",
+      "response_bytes": 5430,
+      "response_headers_present": true,
+      "response_sha256": "6f64f104ace2b986de4436d29cfed42a9891bb5e564bb4bbc3b02282f4f6f62b",
+      "settings": {
+        "options": {
+          "num_ctx": 32768,
+          "temperature": 0
+        },
+        "stream": false,
+        "think": true
+      },
+      "slot": "01-unit_equivalence",
+      "slot_elapsed_seconds": 32.01121012493968,
+      "thinking_characters": 4960,
+      "thinking_size_unit": "Python len: Unicode code points; not token counts",
+      "timings": {
+        "eval_count": 1085,
+        "eval_duration": 15496569000,
+        "load_duration": 15419908291,
+        "prompt_eval_cached_count": 0,
+        "prompt_eval_count": 375,
+        "prompt_eval_duration": 479895000,
+        "total_duration": 31403800833
+      }
+    },
+    {
+      "answer_characters": 37,
+      "done": true,
+      "done_reason": "stop",
+      "exchange_error": null,
+      "exchange_timeout_seconds": 600,
+      "group": "cached_baseline",
+      "http_elapsed_seconds": 22.142626874963753,
+      "model": "qwen3:30b",
+      "path": "evaluation/m10/reviewable-draft/diagnostic-3/results/02-accepted_status_answer",
+      "request_bytes": 2512,
+      "request_sha256": "9e92d32a4ff46e26662de66f7a73fcc2116bf013da488051e41a243ee4506eaf",
+      "response_bytes": 7633,
+      "response_headers_present": true,
+      "response_sha256": "5da7139774d116155fd406a49bdb0d1f0cf511ede3458f197c48c3dfd5762102",
+      "settings": {
+        "options": {
+          "num_ctx": 32768,
+          "temperature": 0
+        },
+        "stream": false,
+        "think": true
+      },
+      "slot": "02-accepted_status_answer",
+      "slot_elapsed_seconds": 22.68126566603314,
+      "thinking_characters": 7123,
+      "thinking_size_unit": "Python len: Unicode code points; not token counts",
+      "timings": {
+        "eval_count": 1510,
+        "eval_duration": 21814802000,
+        "load_duration": 1788625,
+        "prompt_eval_cached_count": 277,
+        "prompt_eval_count": 409,
+        "prompt_eval_duration": 252703000,
+        "total_duration": 22100079375
+      }
+    },
+    {
+      "answer_characters": 37,
+      "done": true,
+      "done_reason": "stop",
+      "exchange_error": null,
+      "exchange_timeout_seconds": 600,
+      "group": "cached_baseline",
+      "http_elapsed_seconds": 19.084601999958977,
+      "model": "qwen3:30b",
+      "path": "evaluation/m10/reviewable-draft/diagnostic-3/results/03-partial_coordination_retracted",
+      "request_bytes": 2556,
+      "request_sha256": "0c73082b395042f096d6587c000efe4080eff27c5c4b2e114e6f2bc01eb3607b",
+      "response_bytes": 6237,
+      "response_headers_present": true,
+      "response_sha256": "05bf5fd5ef6490025fc298f1de35bb8833e126034888db104c4e9a9138bf799e",
+      "settings": {
+        "options": {
+          "num_ctx": 32768,
+          "temperature": 0
+        },
+        "stream": false,
+        "think": true
+      },
+      "slot": "03-partial_coordination_retracted",
+      "slot_elapsed_seconds": 19.59421062504407,
+      "thinking_characters": 5771,
+      "thinking_size_unit": "Python len: Unicode code points; not token counts",
+      "timings": {
+        "eval_count": 1304,
+        "eval_duration": 18799627000,
+        "load_duration": 1632334,
+        "prompt_eval_cached_count": 347,
+        "prompt_eval_count": 417,
+        "prompt_eval_duration": 190863000,
+        "total_duration": 19019452000
+      }
+    },
+    {
+      "answer_characters": 109,
+      "done": true,
+      "done_reason": "stop",
+      "exchange_error": null,
+      "exchange_timeout_seconds": 600,
+      "group": "cached_baseline",
+      "http_elapsed_seconds": 46.16841754200868,
+      "model": "qwen3:30b",
+      "path": "evaluation/m10/reviewable-draft/diagnostic-3/results/04-cancellation_with_new_task",
+      "request_bytes": 2440,
+      "request_sha256": "da65769f4831dcdd7808cba9f4d3e2452dc1a29e51959bd0e9124d4c938ba124",
+      "response_bytes": 14871,
+      "response_headers_present": true,
+      "response_sha256": "e089f2107b6dd4e4de11b85dbc3396a390caa3003fcbb7c2a85427e5bc082e07",
+      "settings": {
+        "options": {
+          "num_ctx": 32768,
+          "temperature": 0
+        },
+        "stream": false,
+        "think": true
+      },
+      "slot": "04-cancellation_with_new_task",
+      "slot_elapsed_seconds": 46.72536525002215,
+      "thinking_characters": 14037,
+      "thinking_size_unit": "Python len: Unicode code points; not token counts",
+      "timings": {
+        "eval_count": 3051,
+        "eval_duration": 45891773000,
+        "load_duration": 1757292,
+        "prompt_eval_cached_count": 352,
+        "prompt_eval_count": 383,
+        "prompt_eval_duration": 185426000,
+        "total_duration": 46108831375
+      }
+    },
+    {
+      "answer_characters": 120,
+      "done": true,
+      "done_reason": "stop",
+      "exchange_error": null,
+      "exchange_timeout_seconds": 600,
+      "group": "cached_baseline",
+      "http_elapsed_seconds": 65.9119505409617,
+      "model": "qwen3:30b",
+      "path": "evaluation/m10/reviewable-draft/diagnostic-3/results/05-qualified_external_timing",
+      "request_bytes": 2553,
+      "request_sha256": "771f47b97aa569f75ab115f5e2d762145d52e600da09fff31085ee575c77ba44",
+      "response_bytes": 17970,
+      "response_headers_present": true,
+      "response_sha256": "03c589f3fa1f01100b070c8d73dcc43e3eda7b125d6fc06041663f933c7917a6",
+      "settings": {
+        "options": {
+          "num_ctx": 32768,
+          "temperature": 0
+        },
+        "stream": false,
+        "think": true
+      },
+      "slot": "05-qualified_external_timing",
+      "slot_elapsed_seconds": 66.48310462501831,
+      "thinking_characters": 16989,
+      "thinking_size_unit": "Python len: Unicode code points; not token counts",
+      "timings": {
+        "eval_count": 3930,
+        "eval_duration": 65610316999,
+        "load_duration": 3435709,
+        "prompt_eval_cached_count": 349,
+        "prompt_eval_count": 414,
+        "prompt_eval_duration": 204278000,
+        "total_duration": 65854692625
+      }
+    },
+    {
+      "answer_characters": 204,
+      "done": true,
+      "done_reason": "stop",
+      "exchange_error": null,
+      "exchange_timeout_seconds": 600,
+      "group": "cached_baseline",
+      "http_elapsed_seconds": 59.15083299996331,
+      "model": "qwen3:30b",
+      "path": "evaluation/m10/reviewable-draft/diagnostic-3/results/06-additional",
+      "request_bytes": 2548,
+      "request_sha256": "ad8ccc80bd9cc003f546cb308e1a7eac215dae03813d48dc482f03ae48bd2f88",
+      "response_bytes": 15365,
+      "response_headers_present": true,
+      "response_sha256": "696421173ed8792c785d9737abef68b02c85fd20a7cf6515b0af94093f7bec2d",
+      "settings": {
+        "options": {
+          "num_ctx": 32768,
+          "temperature": 0
+        },
+        "stream": false,
+        "think": true
+      },
+      "slot": "06-additional",
+      "slot_elapsed_seconds": 59.6664671250619,
+      "thinking_characters": 14364,
+      "thinking_size_unit": "Python len: Unicode code points; not token counts",
+      "timings": {
+        "eval_count": 3317,
+        "eval_duration": 58796924000,
+        "load_duration": 1888750,
+        "prompt_eval_cached_count": 277,
+        "prompt_eval_count": 416,
+        "prompt_eval_duration": 260079000,
+        "total_duration": 59105624583
+      }
+    },
+    {
+      "answer_characters": 37,
+      "done": true,
+      "done_reason": "stop",
+      "exchange_error": null,
+      "exchange_timeout_seconds": 600,
+      "group": "challenger",
+      "http_elapsed_seconds": 115.98970516596455,
+      "model": "qwen3.5:9b-q4_K_M",
+      "path": "evaluation/m10/reviewable-draft/model-comparison-1/results/01-01-unit_equivalence",
+      "request_bytes": 2408,
+      "request_sha256": "6fd6593b2bcf19eb1f82343f55a142ff561ac6162ce5a823042a9fcbffd5f5b4",
+      "response_bytes": 17936,
+      "response_headers_present": true,
+      "response_sha256": "4a74b6690f811cede003bec35b3465f013069f8554d34c25ede5ba7bf09a926f",
+      "settings": {
+        "options": {
+          "num_ctx": 32768,
+          "temperature": 0
+        },
+        "stream": false,
+        "think": true
+      },
+      "slot": "01-01-unit_equivalence",
+      "slot_elapsed_seconds": 117.6231857080711,
+      "thinking_characters": 17084,
+      "thinking_size_unit": "Python len: Unicode code points; not token counts",
+      "timings": {
+        "eval_count": 4080,
+        "eval_duration": 110345844000,
+        "load_duration": 4594726083,
+        "prompt_eval_cached_count": 0,
+        "prompt_eval_count": 384,
+        "prompt_eval_duration": 955293000,
+        "total_duration": 115909888375
+      }
+    },
+    {
+      "answer_characters": null,
+      "done": null,
+      "done_reason": null,
+      "exchange_error": "TimeoutExpired: Command '['/Users/matthewsumner/development/meeting-notes/.venv/bin/python', '-B', '/Users/matthewsumner/development/meeting-notes/prototypes/reviewable_draft/_http.py', 'POST', '/api/chat', 'evaluation/m10/reviewable-draft/model-comparison-1/results/01-02-accepted_status_answer/request.json', '/Users/matthewsumner/development/meeting-notes/evaluation/m10/reviewable-draft/model-comparison-1/results/01-02-accepted_status_answer/response', '600', '31830bb17204c729a13ae2ad6bd422c7ad7e0554f4522419fdef121b71843c9e']' timed out after 600 seconds",
+      "exchange_timeout_seconds": 600,
+      "group": "challenger",
+      "http_elapsed_seconds": 600.0118356249295,
+      "model": "qwen3.5:9b-q4_K_M",
+      "path": "evaluation/m10/reviewable-draft/model-comparison-1/results/01-02-accepted_status_answer",
+      "request_bytes": 2520,
+      "request_sha256": "31830bb17204c729a13ae2ad6bd422c7ad7e0554f4522419fdef121b71843c9e",
+      "response_bytes": 0,
+      "response_headers_present": false,
+      "response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "settings": {
+        "options": {
+          "num_ctx": 32768,
+          "temperature": 0
+        },
+        "stream": false,
+        "think": true
+      },
+      "slot": "01-02-accepted_status_answer",
+      "slot_elapsed_seconds": 601.4869967919076,
+      "thinking_characters": null,
+      "thinking_size_unit": "Python len: Unicode code points; not token counts",
+      "timings": {}
+    },
+    {
+      "answer_characters": 43,
+      "done": true,
+      "done_reason": "stop",
+      "exchange_error": null,
+      "exchange_timeout_seconds": 600,
+      "group": "challenger",
+      "http_elapsed_seconds": 26.574992208974436,
+      "model": "gemma4:12b-it-q4_K_M",
+      "path": "evaluation/m10/reviewable-draft/model-comparison-1/results/02-01-unit_equivalence",
+      "request_bytes": 2411,
+      "request_sha256": "4ee379e0c737ecc4812e153ae95010df9e30bd8358236db0de71635a14acd7d7",
+      "response_bytes": 2498,
+      "response_headers_present": true,
+      "response_sha256": "1f4c0ca9c770cf854a51942af2ea88d2289f973124beedc781b31f1b3f13bf45",
+      "settings": {
+        "options": {
+          "num_ctx": 32768,
+          "temperature": 0
+        },
+        "stream": false,
+        "think": true
+      },
+      "slot": "02-01-unit_equivalence",
+      "slot_elapsed_seconds": 28.007156166946515,
+      "thinking_characters": 2024,
+      "thinking_size_unit": "Python len: Unicode code points; not token counts",
+      "timings": {
+        "eval_count": 551,
+        "eval_duration": 13957392000,
+        "load_duration": 10773017958,
+        "prompt_eval_cached_count": 0,
+        "prompt_eval_count": 384,
+        "prompt_eval_duration": 1764662000,
+        "total_duration": 26506784500
+      }
+    },
+    {
+      "answer_characters": 43,
+      "done": true,
+      "done_reason": "stop",
+      "exchange_error": null,
+      "exchange_timeout_seconds": 600,
+      "group": "challenger",
+      "http_elapsed_seconds": 30.253790291957557,
+      "model": "gemma4:12b-it-q4_K_M",
+      "path": "evaluation/m10/reviewable-draft/model-comparison-1/results/02-02-accepted_status_answer",
+      "request_bytes": 2523,
+      "request_sha256": "bf5cba8b8b571664fd7e3d5535097daa21b020c0682cff766499d81b355c2038",
+      "response_bytes": 5070,
+      "response_headers_present": true,
+      "response_sha256": "8585457c1516c921bc048db541b5cd5a3fa59459d000e58e51a5cebbd6142e5a",
+      "settings": {
+        "options": {
+          "num_ctx": 32768,
+          "temperature": 0
+        },
+        "stream": false,
+        "think": true
+      },
+      "slot": "02-02-accepted_status_answer",
+      "slot_elapsed_seconds": 31.73953087499831,
+      "thinking_characters": 4472,
+      "thinking_size_unit": "Python len: Unicode code points; not token counts",
+      "timings": {
+        "eval_count": 1184,
+        "eval_duration": 28528493000,
+        "load_duration": 1608542,
+        "prompt_eval_cached_count": 0,
+        "prompt_eval_count": 418,
+        "prompt_eval_duration": 1592677000,
+        "total_duration": 30164841500
+      }
+    },
+    {
+      "answer_characters": null,
+      "done": null,
+      "done_reason": null,
+      "exchange_error": "TimeoutExpired: Command '['/Users/matthewsumner/development/meeting-notes/.venv/bin/python', '-B', '/Users/matthewsumner/development/meeting-notes/prototypes/reviewable_draft/_http.py', 'POST', '/api/chat', 'evaluation/m10/reviewable-draft/model-comparison-1/results/02-03-partial_coordination_retracted/request.json', '/Users/matthewsumner/development/meeting-notes/evaluation/m10/reviewable-draft/model-comparison-1/results/02-03-partial_coordination_retracted/response', '600', '8fdee41ddcb8fee1fc2732164987907355fbaa84c7b70622812d1220d94ad4bb']' timed out after 600 seconds",
+      "exchange_timeout_seconds": 600,
+      "group": "challenger",
+      "http_elapsed_seconds": 600.0037153749727,
+      "model": "gemma4:12b-it-q4_K_M",
+      "path": "evaluation/m10/reviewable-draft/model-comparison-1/results/02-03-partial_coordination_retracted",
+      "request_bytes": 2567,
+      "request_sha256": "8fdee41ddcb8fee1fc2732164987907355fbaa84c7b70622812d1220d94ad4bb",
+      "response_bytes": 0,
+      "response_headers_present": false,
+      "response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "settings": {
+        "options": {
+          "num_ctx": 32768,
+          "temperature": 0
+        },
+        "stream": false,
+        "think": true
+      },
+      "slot": "02-03-partial_coordination_retracted",
+      "slot_elapsed_seconds": 601.5025309580378,
+      "thinking_characters": null,
+      "thinking_size_unit": "Python len: Unicode code points; not token counts",
+      "timings": {}
+    }
+  ],
+  "source_commit": "920ef107188d79f2e07a6ffefb71edd1c5121029"
+}

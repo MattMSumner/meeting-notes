@@ -1,0 +1,23 @@
+{
+  "owner_message": "Great, do it!",
+  "proposal": "Three synthetic cases, thinking enabled; fixed prompt/schema/renderer; three requests/180s each/600s overall/no retries; stop critical or technical failure.",
+  "base": "7028c1efa4e4df78eda5d85dc9aa68939af48242",
+  "cases": [
+    "front_loaded_timing",
+    "partial_coordination_retracted",
+    "accepted_status_answer"
+  ],
+  "generation_requests": 3,
+  "repetitions": 1,
+  "overall_seconds": 600,
+  "per_generation_seconds": 180,
+  "per_metadata_seconds": 10,
+  "retries": 0,
+  "model": "qwen3.5:9b-q4_K_M",
+  "think": true,
+  "stream": true,
+  "temperature": 0,
+  "num_ctx": 32768,
+  "chief_review_between_requests": true,
+  "previous_allowances_closed": true
+}

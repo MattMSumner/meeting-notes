@@ -48,3 +48,28 @@ def test_open_note_encodes_absolute_path_and_requests_new_tab(monkeypatch: pytes
     MacDesktop().open_note(path)
     assert seen[0] == "open"
     assert parse_qs(urlsplit(seen[1]).query) == {"path": [str(path.resolve())], "paneType": ["tab"]}
+
+
+def test_chooser_disambiguates_duplicate_labels_and_returns_original_id(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    def run(args: list[str], **kwargs: Any) -> subprocess.CompletedProcess[str]:
+        script = args[-1]
+        assert '"1. Same"' in script and '"2. Same"' in script
+        assert 'if selected is false then return ""' in script
+        assert "multiple selections allowed false" in script
+        return subprocess.CompletedProcess(args, 0, "2. Same\n", "")
+
+    monkeypatch.setattr(subprocess, "run", run)
+    assert MacDesktop().choose_meeting([("first-id", "Same"), ("stable-id", "Same")]) == "stable-id"
+
+
+def test_chooser_cancellation_returns_none(monkeypatch: pytest.MonkeyPatch):
+    fake_osascript(monkeypatch, 0, "\n", "")
+    assert MacDesktop().choose_meeting([("id", "Label")]) is None
+
+
+def test_chooser_failure_is_readable(monkeypatch: pytest.MonkeyPatch):
+    fake_osascript(monkeypatch, 1, "", "Not authorized")
+    with pytest.raises(DesktopError, match="Not authorized"):
+        MacDesktop().choose_meeting([("id", "Label")])

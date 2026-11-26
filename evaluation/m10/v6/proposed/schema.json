@@ -1,0 +1,195 @@
+{
+  "$defs": {
+    "Action": {
+      "additionalProperties": false,
+      "properties": {
+        "original_commitment_id": {
+          "description": "Transcript ID of the original task, never a later timing correction",
+          "title": "Original Commitment Id",
+          "type": "string"
+        },
+        "timing": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Timing"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "original_commitment_id",
+        "timing"
+      ],
+      "title": "Action",
+      "type": "object"
+    },
+    "Dispute": {
+      "additionalProperties": false,
+      "properties": {
+        "topic": {
+          "title": "Topic",
+          "type": "string"
+        },
+        "transcript": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Transcript",
+          "type": "array"
+        },
+        "notes": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Notes",
+          "type": "array"
+        }
+      },
+      "required": [
+        "topic",
+        "transcript",
+        "notes"
+      ],
+      "title": "Dispute",
+      "type": "object"
+    },
+    "SupportedText": {
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "sources": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Sources",
+          "type": "array"
+        }
+      },
+      "required": [
+        "text",
+        "sources"
+      ],
+      "title": "SupportedText",
+      "type": "object"
+    },
+    "Timing": {
+      "additionalProperties": false,
+      "properties": {
+        "source_id": {
+          "description": "Transcript source ID containing the exact timing quote",
+          "title": "Source Id",
+          "type": "string"
+        },
+        "quote": {
+          "description": "Exact timing phrase from source_id",
+          "minLength": 1,
+          "title": "Quote",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_id",
+        "quote"
+      ],
+      "title": "Timing",
+      "type": "object"
+    },
+    "TimingUpdate": {
+      "additionalProperties": false,
+      "properties": {
+        "original_commitment_id": {
+          "description": "ID of an existing original action being updated",
+          "title": "Original Commitment Id",
+          "type": "string"
+        },
+        "source_ids": {
+          "description": "Later transcript statements clarifying or revising that action's timing",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "original_commitment_id",
+        "source_ids"
+      ],
+      "title": "TimingUpdate",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "overview": {
+      "items": {
+        "$ref": "#/$defs/SupportedText"
+      },
+      "title": "Overview",
+      "type": "array"
+    },
+    "key_points": {
+      "items": {
+        "$ref": "#/$defs/SupportedText"
+      },
+      "title": "Key Points",
+      "type": "array"
+    },
+    "decisions": {
+      "items": {
+        "$ref": "#/$defs/SupportedText"
+      },
+      "title": "Decisions",
+      "type": "array"
+    },
+    "action_items": {
+      "items": {
+        "$ref": "#/$defs/Action"
+      },
+      "title": "Action Items",
+      "type": "array"
+    },
+    "timing_updates": {
+      "items": {
+        "$ref": "#/$defs/TimingUpdate"
+      },
+      "title": "Timing Updates",
+      "type": "array"
+    },
+    "notes_context": {
+      "items": {
+        "$ref": "#/$defs/SupportedText"
+      },
+      "title": "Notes Context",
+      "type": "array"
+    },
+    "conflicts": {
+      "items": {
+        "$ref": "#/$defs/Dispute"
+      },
+      "title": "Conflicts",
+      "type": "array"
+    }
+  },
+  "required": [
+    "overview",
+    "key_points",
+    "decisions",
+    "action_items",
+    "timing_updates",
+    "notes_context",
+    "conflicts"
+  ],
+  "title": "Draft",
+  "type": "object"
+}

@@ -1,0 +1,17 @@
+{"case": "empty", "wrapper_version": 9, "summary_matches": true, "warnings": []}
+{"case": "sparse", "wrapper_version": 9, "summary_matches": true, "warnings": []}
+{"case": "additional", "wrapper_version": 9, "summary_matches": true, "warnings": []}
+{"case": "conflicting", "wrapper_version": 9, "summary_matches": true, "warnings": []}
+{"case": "ambiguous_dates", "wrapper_version": 9, "summary_matches": true, "warnings": []}
+{"case": "same_speaker_tasks", "wrapper_version": 9, "summary_matches": true, "warnings": []}
+{"case": "coordinated_tasks", "wrapper_version": 9, "summary_matches": true, "warnings": []}
+{"case": "later_timing", "wrapper_version": 9, "summary_matches": true, "warnings": []}
+{"case": "revised_timing", "wrapper_version": 9, "summary_matches": true, "warnings": []}
+{"case": "shared_numbers", "wrapper_version": 9, "summary_matches": true, "warnings": []}
+{"case": "status_conflict", "wrapper_version": 9, "summary_matches": true, "warnings": []}
+{"case": "tentative_task", "wrapper_version": 9, "summary_matches": true, "warnings": []}
+{"case": "front_loaded_timing", "wrapper_version": 9, "summary_matches": true, "warnings": []}
+{"case": "unit_equivalence", "wrapper_version": 9, "summary_matches": true, "warnings": []}
+{"case": "unit_disagreement", "wrapper_version": 9, "summary_matches": true, "warnings": []}
+{"case": "proposal_rejected", "wrapper_version": 9, "summary_matches": true, "warnings": []}
+{"case": "additive_context", "wrapper_version": 9, "summary_matches": true, "warnings": []}

@@ -1,0 +1,825 @@
+[
+  {
+    "id": "R001",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "Source 'Support is approved. I will check the invoice.' becomes support approval prose and Sam's 'Check the invoice' action, without a fabricated deadline."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R002",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 1,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 1,
+      "timing_owners": 2,
+      "usefulness_completion": 1
+    },
+    "critical_failures": [
+      {
+        "kind": "lost_uncertainty",
+        "source_quote": "I think the staging environment is ready.",
+        "output_quote": "Sam confirmed the environment is ready and will verify health checks next.",
+        "reason": "Tentative readiness is published as confirmed readiness; the health-check task remains correct."
+      }
+    ],
+    "observations": [
+      "Source 'I think the staging environment is ready.' becomes 'Sam confirmed the environment is ready'; tentative status is lost. The independent 'verify health checks' action survives."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R003",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "'around Friday', 'no sooner than Monday' and 'shortly after Tuesday' survive verbatim in the three Sam actions and full-source timing review; all due fields remain null."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R004",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "'I will send the draft Friday and check rollback.' survives as one complete action with full-source timing review and null due, preserving both tasks without imposing Friday on rollback."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R005",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "Source 'I will send the contract Friday if legal approves.' becomes 'Send contract if legal approves' with due 'Friday'; the condition stays in the same action. 'Check invoice' has null due."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R006",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 1,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "'The support estimate is 120 dollars.' and written 'The approved support budget is 150 dollars.' retain their distinct statuses and source separation. The selected relation is 'related-distinct', rather than the declared 'uncertain'; 'Comparison review required' preserves review, avoiding a hard conflict."
+    ],
+    "intermediate_findings": [
+      "Initial overview included '2026-10-20'; validation rejected metadata-only numbers in cited prose. The selected correction removed the date."
+    ]
+  },
+  {
+    "id": "R007",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 0,
+      "quantities": 0,
+      "timing_owners": 2,
+      "usefulness_completion": 1
+    },
+    "critical_failures": [
+      {
+        "kind": "invented_conflict",
+        "source_quote": "Support costs 12000 cents.",
+        "output_quote": "The units (cents vs dollars) and the numerical values (12000 vs 120) are different, leading to a conflict in the representation.",
+        "reason": "The selected comparison incorrectly treats 12000 cents and 120 dollars as conflicting; the final summary retains that false conflict."
+      }
+    ],
+    "observations": [
+      "Written 'Support costs 12000 cents.' equals spoken 'Support costs 120 dollars.' Exact accounts survive in Conflicts, but equivalent amounts are presented as unresolved disagreement."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R008",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "Written 'Support is not approved' is compared only with spoken 'Support is approved.'; 'please book a room' stays in notes_context. The ', and ' connector remains in resolved gaps. Sam's 'I will check the invoice.' survives independently."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R009",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 1
+    },
+    "critical_failures": [],
+    "observations": [
+      "Both estimate accounts and 'I think delivery is in June.' versus 'Delivery: July.' remain separately quoted as unresolved, and 'I will verify the estimate.' remains Sam's action. Source 'We have not approved the budget.' is absent from the final summary, reducing usefulness without inventing approval."
+    ],
+    "intermediate_findings": [
+      "Initial action used 'I will verify the estimate.' as a timing anchor and was rejected for lacking a timing expression. The selected correction uses null timing and retains the verification action."
+    ]
+  },
+  {
+    "id": "R010",
+    "complete": false,
+    "scores": {
+      "commitments": 0,
+      "sources": 0,
+      "coverage": 0,
+      "comparison": 0,
+      "quantities": 0,
+      "timing_owners": 0,
+      "usefulness_completion": 0
+    },
+    "critical_failures": [
+      {
+        "kind": "incomplete_publication",
+        "source_quote": "Monitoring costs 120 dollars.",
+        "output_quote": null,
+        "reason": "Both comparison attempts failed validation, so the agreed output never completed."
+      },
+      {
+        "kind": "lost_commitment_unpublished",
+        "source_quote": "I will check the monitoring invoice.",
+        "output_quote": null,
+        "reason": "The genuine invoice-checking undertaking has no published output because comparison blocked the slot; this is unavailable output, not a published hallucination."
+      }
+    ],
+    "observations": [
+      "No summary was published: comparison failed with 'Unresolved dimension quantity must have null value' and 'Unresolved extraction requires an uncertain relation'. Monitoring facts, the support dispute and invoice checking are consequently unavailable."
+    ],
+    "intermediate_findings": [
+      "Initial extraction used ': 150' and ': 120' while marking quantity unresolved. Correction used '150'/'120' but kept contradictory unresolved flags; comparison remained blocked."
+    ]
+  },
+  {
+    "id": "R011",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "Source question 'Will you be away Friday?' followed by Ravi's 'Yes.' becomes 'Ravi confirmed he will be away on Friday.' with an empty action_items list; factual availability creates no task."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R012",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "Sam's 'I will compare the two deployment options.' and Alex's 'I will test recovery next week.' both survive, with Alex identified by 'Alex here.' Recovery timing stays in full-source review. 'Monitoring costs $120' and 'Deployment option not chosen' survive; written 'Focus on deployment options.' stays separate."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R013",
+    "complete": false,
+    "scores": {
+      "commitments": 0,
+      "sources": 0,
+      "coverage": 0,
+      "comparison": 0,
+      "quantities": 0,
+      "timing_owners": 0,
+      "usefulness_completion": 0
+    },
+    "critical_failures": [
+      {
+        "kind": "incomplete_publication",
+        "source_quote": "Will you be away Friday?",
+        "output_quote": null,
+        "reason": "Both summary attempts were blocked; a usable factual-availability summary was not published."
+      }
+    ],
+    "observations": [
+      "No summary was published; final error includes 'Timing anchor has no recognized timing expression' and 'No supported content was generated'. The source availability question and 'Yes.' contain no genuine executable task."
+    ],
+    "intermediate_findings": [
+      "Both unpublished attempts treated Ravi's factual 'Yes.' as basis 'accepted-request' and disposition 'committed'. The first used preceding question timing; the second used 'Yes.' as timing. Both failed validation; no invented task was published."
+    ]
+  },
+  {
+    "id": "R014",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "'I will send the contract Friday if legal approves.' survives intact with full-source timing review; the separate 'I will check the invoice.' has no borrowed timing. Both owners are Sam."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R015",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 1,
+      "usefulness_completion": 1
+    },
+    "critical_failures": [
+      {
+        "kind": "invented_deadline",
+        "source_quote": "I will check rollback.",
+        "output_quote": "The discussion concluded with Sam committing to send a draft and check rollback by Friday.",
+        "reason": "Friday belongs only to the preceding draft-sending commitment; the final overview extends it to rollback despite the correct null action due."
+      }
+    ],
+    "observations": [
+      "Both actions and Sam's ownership survive. Action 'Check rollback' correctly has null due, but the overview says 'send a draft and check rollback by Friday', inventing timing for rollback."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R016",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "Source 'Could you review the draft and send the invoice?' / 'Yes.' / 'I will not send the invoice.' becomes the full request in key_points, 'Ravi agreed to review the draft.' and explicit refusal of invoice sending. This preserves remaining review work non-executably and publishes no cancelled action."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R017",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "Spoken 'Support costs 120 dollars.' remains 'Support cost is 120 dollars.'; 'I will check the invoice.' remains Sam's 'Check invoice' action. No notes were supplied, so repeated-note coverage is inapplicable."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R018",
+    "complete": true,
+    "scores": {
+      "commitments": 1,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 1,
+      "usefulness_completion": 1
+    },
+    "critical_failures": [
+      {
+        "kind": "lost_timing_qualifier",
+        "source_quote": "I will check the invoice not before next Friday.",
+        "output_quote": "next Friday",
+        "reason": "The action due strips 'not before' and turns an earliest time into an assigned due date; faithful overview/key_points do not repair the contradictory action."
+      }
+    ],
+    "observations": [
+      "Both '$120' costs and the invoice task survive. Prose retains 'not before next Friday', but executable 'check invoice' has bare due 'next Friday', contradicting the lower-bound timing."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R019",
+    "complete": true,
+    "scores": {
+      "commitments": 1,
+      "sources": 1,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 1
+    },
+    "critical_failures": [],
+    "observations": [
+      "Overview retains 'Could Alex check the invoice?' and 'No one has accepted that task.'; only Sam's 'I will send the contract.' is executable. However, key point 'Alex to check invoice (T1)' states the unaccepted proposal as assigned work, making the non-executable account misleading."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R020",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "Original 'I will send the draft Friday.' remains with null due and timing review quoting 'Actually, Monday instead.'; 'I mean the draft.' and the Monday correction remain visible. Friday is not assigned unqualified."
+    ],
+    "intermediate_findings": [
+      "Initial undertaking incorrectly anchored 'Actually, Monday instead.' rather than the original commitment and was blocked. Selected correction anchors the original sending sentence and retains both correction and subject clarification."
+    ]
+  },
+  {
+    "id": "R021",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "Spoken 'The proposal to launch Friday was rejected.' and written 'Launch approved Friday.' remain separate unresolved conflict accounts; neither becomes an unqualified decision or action."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R022",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "'I will send the draft Friday.' becomes Sam's action due 'Friday'; separate 'I will check rollback.' remains Sam's action with null due."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R023",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "'120 thousand dollars' becomes '$120,000'; 'We have not approved the budget.' remains 'has not been approved'. Alex's 'I think delivery is in June.' becomes attributed 'delivery is expected in June'. Sam's verification task survives without invented timing."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R024",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "'Support cost 120 dollars last quarter.' remains 'Support cost was $120 last quarter.' with no action or conflict. No notes were supplied, so no absent cross-period comparison is required."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R025",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 1,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "The full 'next Friday, or the Friday after if review slips' commitment survives in action/review; 'No launch decision yet.' remains explicit. Written 'Follow up after the holiday.' and 'Maybe ask Casey to help.' remain separate. Extraction sets all six dimensions unresolved, conflating absent quantity/unit with unresolved extraction and failing to extract the explicit holiday timing/tentative status; the full quotations prevent silent textual loss."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R026",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "'I will send the draft Friday and check rollback.' becomes two Sam actions: 'Send draft' due 'Friday' and 'Check rollback' with null due. Both tasks survive and Friday is not borrowed for rollback."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R027",
+    "complete": false,
+    "scores": {
+      "commitments": 0,
+      "sources": 0,
+      "coverage": 0,
+      "comparison": 0,
+      "quantities": 0,
+      "timing_owners": 0,
+      "usefulness_completion": 0
+    },
+    "critical_failures": [
+      {
+        "kind": "incomplete_publication",
+        "source_quote": "I think the staging environment is ready.",
+        "output_quote": null,
+        "reason": "Comparison remained blocked, preventing a usable output for the tentative spoken versus confirmed written readiness accounts."
+      }
+    ],
+    "observations": [
+      "No summary was published: corrected comparison still failed 'T1: Dimension status must be extracted literally from its account'. Neither source account was published as settled readiness."
+    ],
+    "intermediate_findings": [
+      "Initial comparison called 'I think' versus 'confirmed' 'conflicting'; correction changed the relation to 'uncertain'. Both attempts extracted nonliteral status 'tentative', so validation still blocked publication."
+    ]
+  },
+  {
+    "id": "R028",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "'Leave the invoice review to me.' is faithfully represented as Sam's 'handle the invoice review' action with null due, preserving the implied undertaking."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R029",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "'Actually, Monday instead. I mean the draft.' correctly updates 'I will send the draft Friday.' to 'Send draft on Monday', due 'Monday'; the overview retains the Friday-to-Monday correction."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R030",
+    "complete": true,
+    "scores": {
+      "commitments": 1,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 1,
+      "usefulness_completion": 1
+    },
+    "critical_failures": [
+      {
+        "kind": "lost_timing_qualifier",
+        "source_quote": "I will send the invoice around Friday.",
+        "output_quote": "Friday",
+        "reason": "The invoice action assigns an exact Friday due date, stripping the explicit approximation despite correct key-point wording."
+      },
+      {
+        "kind": "lost_timing_qualifier",
+        "source_quote": "I will review the draft no sooner than Monday.",
+        "output_quote": "Monday",
+        "reason": "The draft action converts a not-before constraint into a Monday deadline despite correct key-point wording."
+      }
+    ],
+    "observations": [
+      "All three undertakings and owners survive; key_points retain 'around Friday', 'no sooner than Monday' and 'shortly after Tuesday'. Executable invoice/draft due fields nevertheless become bare 'Friday'/'Monday'; rollback has null due with its complete timing still in key_points."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R031",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "'Alex will review the deployment checklist tomorrow.' survives verbatim with owner Alex, null due and full-source timing review; Sam is not assigned the third-person undertaking."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R032",
+    "complete": false,
+    "scores": {
+      "commitments": 0,
+      "sources": 0,
+      "coverage": 0,
+      "comparison": 0,
+      "quantities": 0,
+      "timing_owners": 0,
+      "usefulness_completion": 0
+    },
+    "critical_failures": [
+      {
+        "kind": "incomplete_publication",
+        "source_quote": "I will not send the invoice.",
+        "output_quote": null,
+        "reason": "Both summary attempts failed, leaving the agreed output incomplete; the cancellation was protected from publication as an executable task."
+      }
+    ],
+    "observations": [
+      "No summary was published; final validation rejected 'Same-speaker retraction or example disclaimer'. Source 'I will not send the invoice.' cancels the prior accepted request, so there is no surviving sending commitment to count as lost."
+    ],
+    "intermediate_findings": [
+      "Initial unpublished action retained Ravi's 'Yes.' as committed, used it as invalid timing and misfiled the retraction as a timing update. Correction removed timing/update errors but kept the cancelled action; retraction validation blocked it."
+    ]
+  },
+  {
+    "id": "R033",
+    "complete": true,
+    "scores": {
+      "commitments": 1,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 1,
+      "usefulness_completion": 1
+    },
+    "critical_failures": [
+      {
+        "kind": "lost_timing_qualifiers",
+        "source_quote": "Not before next Friday unless finance objects.",
+        "output_quote": "Sam will send the invoice next Friday unless finance objects.",
+        "reason": "No final text retains 'Not before'; the executable action additionally drops 'unless finance objects' and assigns bare next Friday rather than preserving the complete later timing statement."
+      }
+    ],
+    "observations": [
+      "Source 'Not before next Friday unless finance objects.' becomes 'Sam will send the invoice next Friday unless finance objects.' in prose, losing the lower bound; action 'Send the invoice' due 'next Friday' also omits the finance qualification."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R034",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "'Support costs 120 dollars.' remains the same factual key point with no action. No notes were supplied, so room-capacity coverage is inapplicable."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R035",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 1,
+      "usefulness_completion": 1
+    },
+    "critical_failures": [
+      {
+        "kind": "invented_deadline",
+        "source_quote": "Scratch that, I will send the invoice.",
+        "output_quote": "The discussion concluded with Sam confirming they would send the invoice immediately.",
+        "reason": "The new undertaking survives cancellation correctly, but final prose invents an immediate sending commitment."
+      }
+    ],
+    "observations": [
+      "'Scratch that, I will send the invoice.' correctly replaces draft review with Sam's 'Send invoice' action. The overview adds 'immediately', although no source timing supports it and action due is null."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R036",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "'Next Tuesday, I will send the draft.' becomes Sam's 'Send draft' action due 'next Tuesday', retaining the complete relative phrase without inventing a calendar date."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R037",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "'For example, someone could say, I will review the invoice. This is only an example.' stays explicitly an example in overview/key_points; action_items remains empty."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R038",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "Spoken monitoring and support costs of '120 dollars' each remain '$120' each, and 'I will check the monitoring invoice.' remains Sam's 'Check monitoring invoice' action. No notes were supplied, so no support-price dispute is required."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R039",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "'I will review the draft and Ravi will send the invoice.' followed by 'Ravi will not send the invoice.' becomes only Sam's 'Review the draft' action, with Ravi's cancellation explicit in key_points/decisions; neither mixed ownership nor cancelled sending is executable."
+    ],
+    "intermediate_findings": []
+  },
+  {
+    "id": "R040",
+    "complete": true,
+    "scores": {
+      "commitments": 2,
+      "sources": 2,
+      "coverage": 2,
+      "comparison": 2,
+      "quantities": 2,
+      "timing_owners": 2,
+      "usefulness_completion": 2
+    },
+    "critical_failures": [],
+    "observations": [
+      "Sam's 'I will compare the two deployment options.' and Alex's 'I will test recovery next week.' survive as separate correctly owned actions, with 'next week' intact. '$120' monitoring and 'Deployment option not chosen.' remain explicit."
+    ],
+    "intermediate_findings": []
+  }
+]

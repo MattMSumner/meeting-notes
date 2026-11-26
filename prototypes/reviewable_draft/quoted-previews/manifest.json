@@ -1,0 +1,15 @@
+{
+  "kind": "authored_quoted_selection_examples",
+  "model_requests": 0,
+  "input_sha256": "d2c1fc42a6d6e59ad4fd766e226862d1f137e5cd1002b6984a94abcf2bc9d35f",
+  "fixture_sha256": "55942762efa78c4301b6f0ca0eb81e8ee778dadf4cd13a54d44fa39d354f1740",
+  "files": {
+    "additional.md": "b05dd31b68968497de0719dad8a7bf07fe761a17644dac419b51f1c6a824982e",
+    "unit_equivalence.md": "5b088e431ed54e0ec40579933c3626685778542b467a6c687900c006e76d2e9b",
+    "accepted_status_answer.md": "e4477f414e6908747a078e5acaa6a7f8924588c5e1ef6520e5a4456601b54df0",
+    "cancellation_with_new_task.md": "f638a98c5487722fc2e85711efc87efeb85e8647a4a98a8d5be0b4afd7ce91a0",
+    "partial_coordination_retracted.md": "9bf70d97c508dbefb826a3a1471d0005b56c19878e077c692aa5175f72f01d0b",
+    "qualified_external_timing.md": "325df2d5cf5e9370a8ffe1af75875481eef4b114028aa349ac53e6218bd3d6be",
+    "index.md": "3ee5ee9cfb157e939b031a68f8d69c919ab28c5ca67206eb8804d7319ed19e08"
+  }
+}

@@ -107,3 +107,41 @@ def unsaid_numbers(summary: Summary, said: str) -> list[str]:
             if value >= SMALLEST_CHECKED and not candidates & heard and written not in unsaid:
                 unsaid.append(written)
     return unsaid
+
+
+def evidence_issues(summary: Summary, transcript: str, notes: str, context: str) -> list[str]:
+    """Presence checks by source; these cannot prove attribution or agreement."""
+    fields = [
+        ("overview", summary.overview, "transcript"),
+        *(("key point", text, "transcript") for text in summary.key_points),
+        *(("decision", text, "transcript") for text in summary.decisions),
+        *(
+            ("action item", f"{a.owner or ''} {a.task} {a.due or ''}", "transcript")
+            for a in summary.action_items
+        ),
+        *(("From your notes", text, "handwritten notes") for text in summary.notes_context),
+    ]
+    for conflict in summary.conflicts:
+        fields.extend(
+            [
+                ("conflict topic", conflict.topic, "either source"),
+                ("conflict transcript", conflict.transcript, "transcript"),
+                ("conflict handwritten", conflict.handwritten, "handwritten notes"),
+            ]
+        )
+    issues: list[str] = []
+    for field, text, source in fields:
+        own, other = (transcript, notes) if source == "transcript" else (notes, transcript)
+        if source == "either source":
+            own, other = transcript + "\n" + notes, ""
+        probe = Summary(overview=text, key_points=[], decisions=[], action_items=[])
+        for number in unsaid_numbers(probe, own):
+            single = Summary(overview=number, key_points=[], decisions=[], action_items=[])
+            if not unsaid_numbers(single, context):
+                reason = "found only in meeting metadata, not evidence from this source"
+            elif not unsaid_numbers(single, other):
+                reason = "found only in the other source"
+            else:
+                reason = "found in neither source nor meeting metadata"
+            issues.append(f"{field}: {number} ({source}; {reason})")
+    return list(dict.fromkeys(issues))

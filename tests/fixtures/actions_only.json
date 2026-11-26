@@ -1,0 +1,45 @@
+{
+  "authored": true,
+  "description": "Six newly authored action-only replies for unchanged synthetic inputs. No model generated these responses; they demonstrate intended selections and inspection, not model quality or repaired historical results.",
+  "cases": [
+    {
+      "id": "unit_equivalence",
+      "response": {"actions": [], "review_sources": ["T1"]}
+    },
+    {
+      "id": "accepted_status_answer",
+      "response": {"actions": [], "review_sources": []}
+    },
+    {
+      "id": "partial_coordination_retracted",
+      "response": {
+        "actions": [{"source": "T1", "quote": "send the invoice", "context_sources": ["T2"]}],
+        "review_sources": ["T1", "T2"]
+      }
+    },
+    {
+      "id": "cancellation_with_new_task",
+      "response": {
+        "actions": [{"source": "T1", "quote": "I will send the invoice.", "context_sources": []}],
+        "review_sources": []
+      }
+    },
+    {
+      "id": "qualified_external_timing",
+      "response": {
+        "actions": [{"source": "T1", "quote": "I will send the invoice.", "context_sources": ["T2"]}],
+        "review_sources": ["T1", "T2"]
+      }
+    },
+    {
+      "id": "additional",
+      "response": {
+        "actions": [
+          {"source": "T1", "quote": "I will send the draft Friday.", "context_sources": []},
+          {"source": "T2", "quote": "Alex here. I will review it next week.", "context_sources": ["T1"]}
+        ],
+        "review_sources": []
+      }
+    }
+  ]
+}

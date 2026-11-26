@@ -1,0 +1,17 @@
+{
+  "implementation_commit": "fb3b130fb0d6a48859b96c7e9e74ffbd6152c878",
+  "baseline_commit": "199dd62858b6bda6c13dc749424f6bd9de03f8ba",
+  "previous_freeze_manifest_sha256": "774c66bb1e3e9b1c643c544ab21b651bd4f3e529af7975974d36151144ca55df",
+  "method": "All current Python modules and prompts copied byte-for-byte from the recorded commit; baseline copied unchanged from frozen V10.",
+  "fixture_count": 40,
+  "preserved_v10_pairs": 22,
+  "new_pairs": 18,
+  "limitations": "Familiar and agent-authored cases; no independent held-out quality result. No V11 model outputs or inference approval.",
+  "offline_test_sources": {
+    "tests/test_v11_commitments.py": "d364ac1e23b94be224512cb18eee2ece0ae1fafeb516be7a5a0ddf0099c26aa0",
+    "tests/test_v11_comparison.py": "2c14b383f1d8f9881443072bf6e81402a49fa0f4236bbb3b4635f6b199b0a0ff",
+    "tests/test_v11_compiler.py": "ad3af9db424568a090098f6141fe96756858595bf2e361ba628a0a01e841c198",
+    "tests/test_v11_review.py": "65c7920b816035a205b4287f9982805458b03e007885ec74a122df0864b8d390",
+    "tests/test_v11_runtime.py": "d3b7ec0c77db7a880baa631b949b15bb4f357fc167ff493e97aa05c8a1da49cc"
+  }
+}

@@ -1,0 +1,296 @@
+{
+  "accounting": {
+    "accounting_boundary": "after final.json save and inventory hashing; before manifest.json write",
+    "artifact_errors": [],
+    "authoritative": true,
+    "capture_complete": true,
+    "completed": [
+      "01-think-false",
+      "02-think-true"
+    ],
+    "elapsed": 104.67589629197028,
+    "failed": [],
+    "overrun_seconds": 0.0,
+    "possibly_sent": 2,
+    "server_compute_cancellation_guaranteed": false,
+    "slots": [
+      {
+        "elapsed": 12.222029666998424,
+        "exchange": {
+          "deadline_monotonic": 303126.179771125,
+          "elapsed": 11.538596833997872,
+          "error": null,
+          "killed": false,
+          "overrun_seconds": 0.0,
+          "reaped": true,
+          "returncode": 0,
+          "server_compute_cancellation_guaranteed": false,
+          "started_monotonic": 302946.179820166,
+          "timed_out": false
+        },
+        "generation_deadline_monotonic": 303126.179771125,
+        "possibly_sent": true,
+        "progress": {
+          "complete_events": 22,
+          "content_characters": 65,
+          "error": null,
+          "first_byte_seconds": 10.605370500008576,
+          "first_content_seconds": 10.605370500008576,
+          "first_thinking_seconds": null,
+          "returned": {
+            "eval_count": 33,
+            "eval_duration": 863868000,
+            "load_duration": 9384157375,
+            "prompt_eval_cached_count": 0,
+            "prompt_eval_count": 420,
+            "prompt_eval_duration": 1202620000,
+            "total_duration": 11466029791
+          },
+          "sizes_are_tokens": false,
+          "terminal_seen": true,
+          "thinking_characters": 0,
+          "timing_basis": "received complete event relative to child monotonic origin; not GPU time",
+          "trailing_bytes": 0,
+          "valid": true
+        },
+        "slot": "01-think-false",
+        "state": "complete",
+        "think": false
+      },
+      {
+        "elapsed": 92.39104470901657,
+        "exchange": {
+          "deadline_monotonic": 303138.322010416,
+          "elapsed": 91.68682283302769,
+          "error": null,
+          "killed": false,
+          "overrun_seconds": 0.0,
+          "reaped": true,
+          "returncode": 0,
+          "server_compute_cancellation_guaranteed": false,
+          "started_monotonic": 302958.322058125,
+          "timed_out": false
+        },
+        "generation_deadline_monotonic": 303138.322010416,
+        "possibly_sent": true,
+        "progress": {
+          "complete_events": 2788,
+          "content_characters": 43,
+          "error": null,
+          "first_byte_seconds": 0.07986341702053323,
+          "first_content_seconds": 91.18952304200502,
+          "first_thinking_seconds": 0.07986341702053323,
+          "returned": {
+            "eval_count": 3110,
+            "eval_duration": 91565607000,
+            "load_duration": 2591083,
+            "prompt_eval_cached_count": 416,
+            "prompt_eval_count": 418,
+            "prompt_eval_duration": 54943000,
+            "total_duration": 91643534583
+          },
+          "sizes_are_tokens": false,
+          "terminal_seen": true,
+          "thinking_characters": 13509,
+          "timing_basis": "received complete event relative to child monotonic origin; not GPU time",
+          "trailing_bytes": 0,
+          "valid": true
+        },
+        "slot": "02-think-true",
+        "state": "complete",
+        "think": true
+      }
+    ],
+    "stop_reason": "capture complete; separate semantic assessment pending",
+    "unsent": []
+  },
+  "capture_inventory_entries": 114,
+  "capture_manifest_sha256": "e434da3270e6af2f0c0b27952128a483fed0a5a229d531dbe053d903190bcaa2",
+  "date": "2026-11-25",
+  "exchanges": [
+    {
+      "elapsed_seconds": 0.04821141704451293,
+      "kind": "metadata",
+      "path": "results/01-think-false/after/show/exchange.json",
+      "status": 200
+    },
+    {
+      "elapsed_seconds": 0.04702512500807643,
+      "kind": "metadata",
+      "path": "results/01-think-false/after/tags/exchange.json",
+      "status": 200
+    },
+    {
+      "elapsed_seconds": 0.04721341701224446,
+      "kind": "metadata",
+      "path": "results/01-think-false/after/version/exchange.json",
+      "status": 200
+    },
+    {
+      "elapsed_seconds": 0.04825308301951736,
+      "kind": "metadata",
+      "path": "results/01-think-false/before/show/exchange.json",
+      "status": 200
+    },
+    {
+      "elapsed_seconds": 0.08585749997291714,
+      "kind": "metadata",
+      "path": "results/01-think-false/before/tags/exchange.json",
+      "status": 200
+    },
+    {
+      "elapsed_seconds": 0.08990395901491866,
+      "kind": "metadata",
+      "path": "results/01-think-false/before/version/exchange.json",
+      "status": 200
+    },
+    {
+      "elapsed_seconds": 11.538596833997872,
+      "kind": "generation",
+      "path": "results/01-think-false/response/exchange.json",
+      "status": 200
+    },
+    {
+      "elapsed_seconds": 0.040741416974924505,
+      "kind": "metadata",
+      "path": "results/02-think-true/after/show/exchange.json",
+      "status": 200
+    },
+    {
+      "elapsed_seconds": 0.08788404200458899,
+      "kind": "metadata",
+      "path": "results/02-think-true/after/tags/exchange.json",
+      "status": 200
+    },
+    {
+      "elapsed_seconds": 0.04841758304974064,
+      "kind": "metadata",
+      "path": "results/02-think-true/after/version/exchange.json",
+      "status": 200
+    },
+    {
+      "elapsed_seconds": 0.04683670896338299,
+      "kind": "metadata",
+      "path": "results/02-think-true/before/show/exchange.json",
+      "status": 200
+    },
+    {
+      "elapsed_seconds": 0.04534520802553743,
+      "kind": "metadata",
+      "path": "results/02-think-true/before/tags/exchange.json",
+      "status": 200
+    },
+    {
+      "elapsed_seconds": 0.04773249995196238,
+      "kind": "metadata",
+      "path": "results/02-think-true/before/version/exchange.json",
+      "status": 200
+    },
+    {
+      "elapsed_seconds": 91.68682283302769,
+      "kind": "generation",
+      "path": "results/02-think-true/response/exchange.json",
+      "status": 200
+    }
+  ],
+  "freeze_entries": 36,
+  "freeze_manifest_sha256": "d459841b61df3ed2ecdab8e9866b7da280b2744707c56b4d2b574e7d1e4b22f2",
+  "full_run_wall_seconds": 104.67619766696589,
+  "generation_requests": 2,
+  "historical_service_version": "0.40.9",
+  "identity_gates_verified": 4,
+  "kind": "once-only-runtime-probe-1",
+  "metadata_requests": 12,
+  "model": "qwen3.5:9b-q4_K_M",
+  "model_digest": "56671c2ab9385f9cfcb404638e32cd62d88e3501d44822208363c010179a3c90",
+  "post_seal_observation": {
+    "boundary": "after manifest write attempt; separate from sealed accounting",
+    "deadline_reached": false,
+    "elapsed": 104.67610087495996,
+    "overrun_seconds": 0.0,
+    "sealed": true
+  },
+  "prior_tracked_files_verified": 1182,
+  "published_freeze_commit": "a5f0e64e00adb8e09be61834b8bfa8d0351d57d6",
+  "retries": 0,
+  "rows": [
+    {
+      "actions_count": 0,
+      "http_elapsed_seconds": 11.538596833997872,
+      "last_content_seconds": 11.441752540995367,
+      "last_thinking_seconds": null,
+      "logged_chunks": 22,
+      "progress": {
+        "complete_events": 22,
+        "content_characters": 65,
+        "error": null,
+        "first_byte_seconds": 10.605370500008576,
+        "first_content_seconds": 10.605370500008576,
+        "first_thinking_seconds": null,
+        "returned": {
+          "eval_count": 33,
+          "eval_duration": 863868000,
+          "load_duration": 9384157375,
+          "prompt_eval_cached_count": 0,
+          "prompt_eval_count": 420,
+          "prompt_eval_duration": 1202620000,
+          "total_duration": 11466029791
+        },
+        "sizes_are_tokens": false,
+        "terminal_seen": true,
+        "thinking_characters": 0,
+        "timing_basis": "received complete event relative to child monotonic origin; not GPU time",
+        "trailing_bytes": 0,
+        "valid": true
+      },
+      "raw_body_bytes": 3142,
+      "review_sources": [
+        "T1",
+        "T2"
+      ],
+      "slot": "01-think-false",
+      "slot_elapsed_seconds": 12.222029666998424,
+      "state": "complete",
+      "think": false
+    },
+    {
+      "actions_count": 0,
+      "http_elapsed_seconds": 91.68682283302769,
+      "last_content_seconds": 91.61782225000206,
+      "last_thinking_seconds": 91.07098516699625,
+      "logged_chunks": 2788,
+      "progress": {
+        "complete_events": 2788,
+        "content_characters": 43,
+        "error": null,
+        "first_byte_seconds": 0.07986341702053323,
+        "first_content_seconds": 91.18952304200502,
+        "first_thinking_seconds": 0.07986341702053323,
+        "returned": {
+          "eval_count": 3110,
+          "eval_duration": 91565607000,
+          "load_duration": 2591083,
+          "prompt_eval_cached_count": 416,
+          "prompt_eval_count": 418,
+          "prompt_eval_duration": 54943000,
+          "total_duration": 91643534583
+        },
+        "sizes_are_tokens": false,
+        "terminal_seen": true,
+        "thinking_characters": 13509,
+        "timing_basis": "received complete event relative to child monotonic origin; not GPU time",
+        "trailing_bytes": 0,
+        "valid": true
+      },
+      "raw_body_bytes": 415078,
+      "review_sources": [],
+      "slot": "02-think-true",
+      "slot_elapsed_seconds": 92.39104470901657,
+      "state": "complete",
+      "think": true
+    }
+  ],
+  "semantic_assessment": "Chief and independent read-only reviewer: both meet the unchanged narrow availability/no-action criterion; false has two unnecessary review passages, true has none",
+  "service_version": "0.40.13",
+  "source_candidate": "58bf14f216aa642bc3ab4d14022b17469724f787"
+}

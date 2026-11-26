@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-11-13T19:16:40.932604+00:00",
+  "candidate_commit": "287d85b2229e0c03c6434337a2337bf777e5a136",
+  "freeze_commit": "7381d8e7316bfe2e5cdac7277e9cbb789b3bd2e4",
+  "manifest_sha256": "472027ef8be047233a3a8cf75630c922afe28c96b73911b844619c16b33e8bd3",
+  "head": "bf4da04a6402b685672508ed83fef5b87502081f"
+}

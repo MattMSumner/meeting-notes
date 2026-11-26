@@ -1,0 +1,19 @@
+{
+  "capture_complete_including_seal_and_wall_observation": true,
+  "full_run_wall_seconds": 298.3438692090567,
+  "post_audit_observation": {
+    "execution_audit_saved": true,
+    "wall_including_execution_audit_seconds": 298.34412662504474,
+    "deadline_reached": false,
+    "boundary": "After execution.json save/close; this terminal observation is outside capture and the pre-save execution audit"
+  },
+  "possibly_sent": 3,
+  "stop_completed": [
+    "01-front_loaded_timing",
+    "02-partial_coordination_retracted",
+    "03-accepted_status_answer"
+  ],
+  "failed": [],
+  "unsent": [],
+  "stop_reason": "capture complete; host assessments recorded; no automated model-quality PASS"
+}

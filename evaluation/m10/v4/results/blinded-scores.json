@@ -1,0 +1,478 @@
+{
+  "dimension_order": [
+    "commitment_completeness",
+    "source_attribution",
+    "conflicts",
+    "numbers",
+    "dates_and_owners",
+    "useful_emphasis"
+  ],
+  "blocked_scoring": "All zeros indicate missing output, not six observed fabrication errors.",
+  "review": "Single Codex reviewer; shuffled labels withheld until judgments saved. Schema, errors and supplied notes can reveal arm; not independent or fully blinded.",
+  "results": [
+    {
+      "id": "R01",
+      "scores": [
+        2,
+        1,
+        2,
+        2,
+        2,
+        1
+      ],
+      "outcome": "published",
+      "critical_failures": [
+        "Tentative readiness presented as confirmed"
+      ],
+      "acceptance_blockers": [
+        "Tentative readiness presented as confirmed"
+      ],
+      "evidence": [
+        "Source: I think the staging environment is ready. Output: Sam confirmed the environment is ready. Health-check task retained; unseen notes not assessed."
+      ]
+    },
+    {
+      "id": "R02",
+      "scores": [
+        2,
+        1,
+        2,
+        2,
+        1,
+        1
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Conditional wording survives in task but due is only next Friday. Prose invents review document for unspecified it."
+      ]
+    },
+    {
+      "id": "R03",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        1
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Task and next Tuesday retained; unnecessary transcript-is-short commentary."
+      ]
+    },
+    {
+      "id": "R04",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "120k unapproved estimate, expected June and verify commitment retained. No notes supplied."
+      ]
+    },
+    {
+      "id": "R05",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        1,
+        1
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Both tasks remain in grouped original commitment. Friday is quoted for review, due null; no deadline transferred to rollback."
+      ]
+    },
+    {
+      "id": "R06",
+      "scores": [
+        2,
+        2,
+        2,
+        1,
+        2,
+        1
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Both named commitments and next week retained; no option selected. Monitoring costs 120 dollars is absent. Focus on deployment options is copied as written context; (T5) leaks into prose."
+      ]
+    },
+    {
+      "id": "R07",
+      "scores": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "outcome": "blocked",
+      "critical_failures": [],
+      "acceptance_blockers": [
+        "No generated summary; commitment completeness regresses"
+      ],
+      "evidence": [
+        "No conditional sending task or written context delivered.",
+        "Enhancement failed evidence validation: Invalid transcript source: I will send it next Friday, or the Friday after if review slips."
+      ]
+    },
+    {
+      "id": "R08",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Sam tags Friday; Alex checks rollback with due null; Friday release agreement retained."
+      ]
+    },
+    {
+      "id": "R09",
+      "scores": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "outcome": "blocked",
+      "critical_failures": [],
+      "acceptance_blockers": [
+        "No generated summary; commitment completeness regresses"
+      ],
+      "evidence": [
+        "No monitoring invoice commitment or price conflict delivered.",
+        "Enhancement failed evidence validation: Invalid transcript source: N1"
+      ]
+    },
+    {
+      "id": "R10",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        1
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "No Sam rollback commitment; Alex checklist tomorrow retained. Individual task duplicated as decision."
+      ]
+    },
+    {
+      "id": "R11",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        1,
+        1
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Only Alex checklist task retained. Simple tomorrow timing unnecessarily unassigned, source statement repeated as Other spoken timing."
+      ]
+    },
+    {
+      "id": "R12",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        1
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Both owners and dates correct; personal tasks repeated as decisions."
+      ]
+    },
+    {
+      "id": "R13",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        1
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Friday answer correctly attached to Sam rollback; repetition across sections."
+      ]
+    },
+    {
+      "id": "R14",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Monitoring and support both correctly 120 dollars; invoice commitment retained. No notes supplied."
+      ]
+    },
+    {
+      "id": "R15",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        1
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Both estimate accounts and June/July explicitly separated and unresolved, including I think. Verification and unapproved budget retained. (T5) leaks into prose."
+      ]
+    },
+    {
+      "id": "R16",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        1,
+        1
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Both tasks remain; no date transferred to rollback. Sending Friday unnecessarily review-only, with duplicate original evidence."
+      ]
+    },
+    {
+      "id": "R17",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        1,
+        1
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Sending task and Next Tuesday remain quoted for review. Duplicate source quote; due null."
+      ]
+    },
+    {
+      "id": "R18",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Friday explicitly replaced by Monday throughout; sending task and owner retained."
+      ]
+    },
+    {
+      "id": "R19",
+      "scores": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "outcome": "blocked",
+      "critical_failures": [],
+      "acceptance_blockers": [
+        "No generated summary; commitment completeness regresses"
+      ],
+      "evidence": [
+        "No sending commitment or Monday revision delivered.",
+        "Enhancement failed evidence validation: Invalid transcript source: Monday; No supported content was generated"
+      ]
+    },
+    {
+      "id": "R20",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        0,
+        0
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [
+        "Fails explicit later-timing criterion: Friday silently lost"
+      ],
+      "evidence": [
+        "Rollback task retained but Friday omitted from every output field. Review contains only When?, which does not preserve the timing answer."
+      ]
+    },
+    {
+      "id": "R21",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        1
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Both tasks retained; only sending has Friday due. Finalizing the release process adds unsupported framing."
+      ]
+    },
+    {
+      "id": "R22",
+      "scores": [
+        2,
+        1,
+        2,
+        2,
+        0,
+        1
+      ],
+      "outcome": "published",
+      "critical_failures": [
+        "Unsupported rollback deadline in overview"
+      ],
+      "acceptance_blockers": [
+        "Unsupported rollback deadline in overview"
+      ],
+      "evidence": [
+        "Source only assigns Friday to sending. Overview: committing to send a draft and check rollback by Friday. Correct null action due does not repair that claim."
+      ]
+    },
+    {
+      "id": "R23",
+      "scores": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "outcome": "blocked",
+      "critical_failures": [],
+      "acceptance_blockers": [
+        "No generated summary; commitment completeness regresses"
+      ],
+      "evidence": [
+        "No health-check task or status conflict delivered.",
+        "Enhancement failed evidence validation: Invalid transcript source: N1; Invalid transcript source: N1"
+      ]
+    },
+    {
+      "id": "R24",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        1,
+        1
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Both tasks and release agreement retained. Sam Friday unnecessarily review-only; Alex receives spurious timing review despite no date. Raw (T4) in key point and decision."
+      ]
+    },
+    {
+      "id": "R25",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Both named commitments, next week, no selected option and 120 dollars retained."
+      ]
+    },
+    {
+      "id": "R26",
+      "scores": [
+        2,
+        2,
+        2,
+        2,
+        1,
+        1
+      ],
+      "outcome": "published",
+      "critical_failures": [],
+      "acceptance_blockers": [],
+      "evidence": [
+        "Both spoken commitments retained; 40 seats and venue task only notes_context. Both straightforward dates unnecessarily unassigned; each review includes the other task as timing context."
+      ]
+    }
+  ]
+}

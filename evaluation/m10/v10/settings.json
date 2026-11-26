@@ -1,0 +1,22 @@
+{
+  "baseline_commit": "199dd62858b6bda6c13dc749424f6bd9de03f8ba",
+  "model": "qwen3:30b",
+  "temperature": 0,
+  "think": true,
+  "num_ctx": 32768,
+  "repetitions": null,
+  "request_budget": null,
+  "status": "offline candidate frozen; no inference authorized",
+  "freeze": "v10",
+  "previous_freeze": "../v9/sha256.json",
+  "proposed_max_requests_per_case": 4,
+  "baseline_max_requests_per_case": 4,
+  "changes": [
+    "Separate claim comparison with one correction before summary with one correction",
+    "Exact note text partition, stable source IDs and code-assigned claim IDs",
+    "Comparison owns conflicts and visible uncertainty; independent tasks stay code assembled",
+    "Wrapper 9 / grounding-v8; wrappers 1–8 keep their historical validators"
+  ],
+  "proposed_max_requests_empty_notes": 2,
+  "timeout_seconds": 600
+}

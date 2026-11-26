@@ -1,0 +1,21 @@
+{
+  "date": "2026-11-25",
+  "owner_message": "Great, run the experiment",
+  "base": "3315683a0097ef06bdeaedf4aaf20977e964d8a9",
+  "cases": [
+    "partial_coordination_retracted",
+    "cancellation_with_new_task",
+    "qualified_external_timing",
+    "additional"
+  ],
+  "model": "qwen3.5:9b-q4_K_M",
+  "think": false,
+  "stream": true,
+  "generation_requests": 4,
+  "overall_seconds": 900,
+  "per_generation_seconds": 180,
+  "retries": 0,
+  "execute_once": true,
+  "preparation_review_freeze_precede_execution": true,
+  "stopping_rule": "First technical failure/deadline/drift or critical semantic defect once identified; independent meaning assessment may follow capture"
+}

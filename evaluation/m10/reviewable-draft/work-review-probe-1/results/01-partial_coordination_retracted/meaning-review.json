@@ -1,0 +1,1 @@
+{"assessment": "CRITICAL: Empty selection omits surviving invoice sending in T1 and the associated original/withdrawal context in T1/T2. The generic empty-selection notice does not satisfy required work coverage. Stop before all later cases.", "critical": true}

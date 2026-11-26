@@ -1,0 +1,22 @@
+{
+  "baseline_commit": "199dd62858b6bda6c13dc749424f6bd9de03f8ba",
+  "model": "qwen3:30b",
+  "temperature": 0,
+  "think": true,
+  "num_ctx": 32768,
+  "repetitions": null,
+  "request_budget": null,
+  "status": "frozen reference repair; no inference performed",
+  "freeze": "v5",
+  "previous_freeze": "../v4/sha256.json",
+  "proposed_max_requests_per_case": 2,
+  "baseline_max_requests_per_case": 4,
+  "changes": [
+    "Request-specific source-ID enums",
+    "Explicit commitment_id and timing source_id/quote",
+    "Ignore self-referential timing context",
+    "Preserve later timing in review before suppressing prose",
+    "Neutralize redundant known-conflict entries before source-kind rejection",
+    "Wrapper version 4; original version 3 validation retained"
+  ]
+}

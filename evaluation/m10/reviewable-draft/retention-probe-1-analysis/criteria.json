@@ -1,0 +1,75 @@
+{
+  "actions_contract_sha256": "a25b726402daca811a6fc66ddc4455876513d9f33e19d11c9ca4ae4303b6c93d",
+  "assessment": "Source-based independent read-only meaning assessment; capture completion and literal validation are separate; no claim of blinding or held-out cases",
+  "cases": [
+    {
+      "case": "partial_coordination_retracted",
+      "critical_examples": [
+        "Surviving sending absent from both suggestions and focused review",
+        "Cancelled review presented as current work"
+      ],
+      "must": [
+        "Surviving invoice sending remains discoverable as supported work or focused review",
+        "Original and withdrawal context remain visible together",
+        "Cancelled draft review is not presented as current"
+      ]
+    },
+    {
+      "case": "cancellation_with_new_task",
+      "critical_examples": [
+        "Independent sending omitted",
+        "Cancelled review reinstated",
+        "Unsupported owner or timing"
+      ],
+      "must": [
+        "Independent invoice sending survives cancelled review",
+        "Full relevant context remains available",
+        "No invented due date"
+      ]
+    },
+    {
+      "case": "qualified_external_timing",
+      "critical_examples": [
+        "Sending omitted from suggestions and focused review",
+        "Not-before, next or finance qualifier lost or changed",
+        "Invented or misleading deadline"
+      ],
+      "must": [
+        "Sending retains complete not-before, next-Friday and finance context",
+        "Alternatively focused review contains both whole relevant turns without a misleading due"
+      ]
+    },
+    {
+      "case": "additional",
+      "critical_examples": [
+        "Either genuine undertaking absent from both suggestions and focused review",
+        "Wrong owner or altered timing",
+        "Writing converted into invented spoken commitment"
+      ],
+      "must": [
+        "Both genuine spoken undertakings remain discoverable",
+        "Supported attribution and timing are preserved",
+        "Original handwritten work/capacity is preserved separately and excluded from model input"
+      ]
+    }
+  ],
+  "common_critical_defects": [
+    "Invented current commitment",
+    "Changed source meaning or quantities",
+    "Unsupported owner or deadline",
+    "Lost condition or still-current work",
+    "Cancelled work presented as current"
+  ],
+  "date": "2026-11-25",
+  "input_sha256": "d2c1fc42a6d6e59ad4fd766e226862d1f137e5cd1002b6984a94abcf2bc9d35f",
+  "kind": "prospective-work-retention-criteria-1",
+  "limits": [
+    "Familiar development cases",
+    "One repetition",
+    "Action-only; no summary or decisions",
+    "No reliability, full40 regression, model switch, persistence or M10 readiness claim"
+  ],
+  "review_burden": "Record unnecessary review material/repetition separately; generic warnings and whole-transcript dumps alone do not satisfy useful retention",
+  "scope": "One repetition of four familiar action-only synthetic cases; unchanged actions contract",
+  "stopping_rule": "First technical failure/deadline/drift or critical semantic defect once identified; assessment may follow capture and already-captured outputs remain preserved"
+}

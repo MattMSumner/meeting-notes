@@ -1,0 +1,25 @@
+import Foundation
+
+let process = ProcessInfo.processInfo
+let state: String
+switch process.thermalState {
+case .nominal: state = "nominal"
+case .fair: state = "fair"
+case .serious: state = "serious"
+case .critical: state = "critical"
+@unknown default: state = "unknown"
+}
+let row: [String: Any] = [
+    "thermal_state": state,
+    "thermal_state_raw": process.thermalState.rawValue,
+    "low_power_mode": process.isLowPowerModeEnabled,
+    "physical_memory_bytes": process.physicalMemory,
+    "logical_processors": process.processorCount,
+    "active_logical_processors": process.activeProcessorCount,
+    "temperature_celsius": NSNull(),
+    "gpu_clock_hz": NSNull(),
+    "channel_limit": "OS thermal severity only; temperature and GPU frequency unavailable"
+]
+let data = try JSONSerialization.data(withJSONObject: row, options: [.sortedKeys])
+FileHandle.standardOutput.write(data)
+FileHandle.standardOutput.write(Data("\n".utf8))

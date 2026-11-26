@@ -1,0 +1,732 @@
+{
+  "accounting": {
+    "accounting_boundary": "after final.json save and inventory hashing; before manifest.json write",
+    "artifact_errors": [],
+    "authoritative": true,
+    "capture_complete": false,
+    "completed": [
+      "01-partial_coordination_retracted",
+      "02-cancellation_with_new_task"
+    ],
+    "elapsed": 15.867515916994307,
+    "failed": [
+      "03-qualified_external_timing"
+    ],
+    "overrun_seconds": 0.0,
+    "possibly_sent": 3,
+    "server_compute_cancellation_guaranteed": false,
+    "slots": [
+      {
+        "case": "partial_coordination_retracted",
+        "elapsed": 7.696511542017106,
+        "exchange": {
+          "deadline_monotonic": 309526.33360325,
+          "elapsed": 7.062032499990892,
+          "error": null,
+          "killed": false,
+          "overrun_seconds": 0.0,
+          "reaped": true,
+          "returncode": 0,
+          "server_compute_cancellation_guaranteed": false,
+          "started_monotonic": 309346.333655458,
+          "timed_out": false
+        },
+        "generation_deadline_monotonic": 309526.33360325,
+        "generation_id": "retention-probe-8c62fdd2301f4b8695e81a55c5424188/partial_coordination_retracted",
+        "internal_baseline_decoder_request_sha256": "0c73082b395042f096d6587c000efe4080eff27c5c4b2e114e6f2bc01eb3607b",
+        "manifest_sha256": "24676d89c8a68db18a9d78d732a3089caffd85c74dc6526f07a560c511f1fdbd",
+        "possibly_sent": true,
+        "progress": {
+          "complete_events": 37,
+          "content_characters": 139,
+          "error": null,
+          "first_byte_seconds": 6.007960667018779,
+          "first_content_seconds": 6.007960667018779,
+          "first_thinking_seconds": null,
+          "returned": {
+            "eval_count": 37,
+            "eval_duration": 980444000,
+            "load_duration": 4897088750,
+            "prompt_eval_cached_count": 0,
+            "prompt_eval_count": 428,
+            "prompt_eval_duration": 1096115000,
+            "total_duration": 6985156250
+          },
+          "sizes_are_tokens": false,
+          "terminal_seen": true,
+          "thinking_characters": 0,
+          "timing_basis": "received complete event relative to child monotonic origin; not GPU time",
+          "trailing_bytes": 0,
+          "valid": true
+        },
+        "request_sha256": "1936f87f816e3ba2c734abce7b84908821abacb1e2485857fc783c983a3d7114",
+        "slot": "01-partial_coordination_retracted",
+        "snapshot_id": "28bb22aec3289f904af59b746b6b9e99f9a0f6baa3809e56da172320c0d21a4c",
+        "snapshot_sha256": "6ed4698adf5b0c4b87dd8f43a54c541222d7d34fd8b507f2c5638bd7f42f226f",
+        "state": "complete",
+        "think": false
+      },
+      {
+        "case": "cancellation_with_new_task",
+        "elapsed": 3.8967893330263905,
+        "exchange": {
+          "deadline_monotonic": 309534.011502958,
+          "elapsed": 3.274214666977059,
+          "error": null,
+          "killed": false,
+          "overrun_seconds": 0.0,
+          "reaped": true,
+          "returncode": 0,
+          "server_compute_cancellation_guaranteed": false,
+          "started_monotonic": 309354.011557291,
+          "timed_out": false
+        },
+        "generation_deadline_monotonic": 309534.011502958,
+        "generation_id": "retention-probe-8c62fdd2301f4b8695e81a55c5424188/cancellation_with_new_task",
+        "internal_baseline_decoder_request_sha256": "da65769f4831dcdd7808cba9f4d3e2452dc1a29e51959bd0e9124d4c938ba124",
+        "manifest_sha256": "24676d89c8a68db18a9d78d732a3089caffd85c74dc6526f07a560c511f1fdbd",
+        "possibly_sent": true,
+        "progress": {
+          "complete_events": 56,
+          "content_characters": 222,
+          "error": null,
+          "first_byte_seconds": 1.0843290410120972,
+          "first_content_seconds": 1.0843290410120972,
+          "first_thinking_seconds": null,
+          "returned": {
+            "eval_count": 81,
+            "eval_duration": 2144315000,
+            "load_duration": 1607375,
+            "prompt_eval_cached_count": 0,
+            "prompt_eval_count": 394,
+            "prompt_eval_duration": 1071444999,
+            "total_duration": 3225823208
+          },
+          "sizes_are_tokens": false,
+          "terminal_seen": true,
+          "thinking_characters": 0,
+          "timing_basis": "received complete event relative to child monotonic origin; not GPU time",
+          "trailing_bytes": 0,
+          "valid": true
+        },
+        "request_sha256": "27137409d45e2fb4c57a44754d7691031177ba97c086cabbd1b1b892be6d4da2",
+        "slot": "02-cancellation_with_new_task",
+        "snapshot_id": "f00eecd37ceb50fda583de7180e31fdbba01e1d3b9ea74a6942807999b66f41a",
+        "snapshot_sha256": "c0790bbd276141152bf1cfbd95ba7ea673adec902c295c027f5ef113b0365feb",
+        "state": "complete",
+        "think": false
+      },
+      {
+        "case": "qualified_external_timing",
+        "elapsed": 4.2123108329833485,
+        "error": "ValueError: Literal selection failure; see preserved result issues",
+        "exchange": {
+          "deadline_monotonic": 309537.9232345,
+          "elapsed": 3.6289939589914866,
+          "error": null,
+          "killed": false,
+          "overrun_seconds": 0.0,
+          "reaped": true,
+          "returncode": 0,
+          "server_compute_cancellation_guaranteed": false,
+          "started_monotonic": 309357.923286416,
+          "timed_out": false
+        },
+        "generation_deadline_monotonic": 309537.9232345,
+        "generation_id": "retention-probe-8c62fdd2301f4b8695e81a55c5424188/qualified_external_timing",
+        "internal_baseline_decoder_request_sha256": "771f47b97aa569f75ab115f5e2d762145d52e600da09fff31085ee575c77ba44",
+        "manifest_sha256": "24676d89c8a68db18a9d78d732a3089caffd85c74dc6526f07a560c511f1fdbd",
+        "possibly_sent": true,
+        "progress": {
+          "complete_events": 64,
+          "content_characters": 255,
+          "error": null,
+          "first_byte_seconds": 1.1120601250440814,
+          "first_content_seconds": 1.1120601250440814,
+          "first_thinking_seconds": null,
+          "returned": {
+            "eval_count": 93,
+            "eval_duration": 2466291000,
+            "load_duration": 1582583,
+            "prompt_eval_cached_count": 0,
+            "prompt_eval_count": 425,
+            "prompt_eval_duration": 1097402000,
+            "total_duration": 3575648042
+          },
+          "sizes_are_tokens": false,
+          "terminal_seen": true,
+          "thinking_characters": 0,
+          "timing_basis": "received complete event relative to child monotonic origin; not GPU time",
+          "trailing_bytes": 0,
+          "valid": true
+        },
+        "request_sha256": "fb6a56fa79892a890c2f967f4a7ac8568d8d2b3003fe7e3456360017dedd1509",
+        "slot": "03-qualified_external_timing",
+        "snapshot_id": "dd4fba6883488580e1614d4422c7de363f198e5d5fabe2148f37482b8c773c4f",
+        "snapshot_sha256": "1de381cf518468a489b91c2eb97c95cb1de0ac95de532ed45994074960bf1b76",
+        "state": "failed",
+        "think": false
+      },
+      {
+        "case": "additional",
+        "generation_id": "retention-probe-8c62fdd2301f4b8695e81a55c5424188/additional",
+        "internal_baseline_decoder_request_sha256": "ad8ccc80bd9cc003f546cb308e1a7eac215dae03813d48dc482f03ae48bd2f88",
+        "manifest_sha256": "24676d89c8a68db18a9d78d732a3089caffd85c74dc6526f07a560c511f1fdbd",
+        "possibly_sent": false,
+        "request_sha256": "0f3b71b385dccd18d5e28938527ed27f24c811b277f2015776311d8cb0785eec",
+        "slot": "04-additional",
+        "snapshot_id": "07d92402e6b90ae38333c1a76989a80df8bc8db2ed60415724c793c328cffb0b",
+        "snapshot_sha256": "4e519763aa25d200fbef8cc3777060324c00ad0b6b644d93e0320ee09f548f52",
+        "state": "unsent",
+        "think": false
+      }
+    ],
+    "stop_reason": "ValueError: Literal selection failure; see preserved result issues",
+    "unsent": [
+      "04-additional"
+    ]
+  },
+  "assessment_file": "assessment.json",
+  "capture_complete_including_seal_and_wall": false,
+  "capture_inventory_entries": 171,
+  "capture_manifest_sha256": "64b673d748447c087d4d58254f113f25d435ec370a1d2c6f39366892458d6943",
+  "conservative_generation_attempts": 3,
+  "date": "2026-11-25",
+  "exchanges": [
+    {
+      "kind": "metadata",
+      "path": "results/01-partial_coordination_retracted/after/show/exchange.json",
+      "state": {
+        "deadline_monotonic": 309363.569546916,
+        "elapsed": 0.04832787497434765,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 309353.569605458,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/01-partial_coordination_retracted/after/tags/exchange.json",
+      "state": {
+        "deadline_monotonic": 309363.526128791,
+        "elapsed": 0.042806750047020614,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 309353.526171,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/01-partial_coordination_retracted/after/version/exchange.json",
+      "state": {
+        "deadline_monotonic": 309363.477446291,
+        "elapsed": 0.0479678749688901,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 309353.477546208,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/01-partial_coordination_retracted/before/show/exchange.json",
+      "state": {
+        "deadline_monotonic": 309356.161315333,
+        "elapsed": 0.04820191697217524,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 309346.161381416,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/01-partial_coordination_retracted/before/tags/exchange.json",
+      "state": {
+        "deadline_monotonic": 309356.1145205,
+        "elapsed": 0.046102833992335945,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 309346.114560541,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/01-partial_coordination_retracted/before/version/exchange.json",
+      "state": {
+        "deadline_monotonic": 309356.068667708,
+        "elapsed": 0.0453065829933621,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 309346.068754125,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "generation",
+      "path": "results/01-partial_coordination_retracted/response/exchange.json",
+      "state": {
+        "deadline_monotonic": 309526.33360325,
+        "elapsed": 7.062032499990892,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 309346.333655458,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/02-cancellation_with_new_task/after/show/exchange.json",
+      "state": {
+        "deadline_monotonic": 309367.460221625,
+        "elapsed": 0.046000750036910176,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 309357.460275666,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/02-cancellation_with_new_task/after/tags/exchange.json",
+      "state": {
+        "deadline_monotonic": 309367.414483041,
+        "elapsed": 0.045038458018098027,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 309357.41452775,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/02-cancellation_with_new_task/after/version/exchange.json",
+      "state": {
+        "deadline_monotonic": 309367.366596875,
+        "elapsed": 0.04712016700068489,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 309357.366705166,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/02-cancellation_with_new_task/before/show/exchange.json",
+      "state": {
+        "deadline_monotonic": 309363.85761825,
+        "elapsed": 0.048176166019402444,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 309353.8576715,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/02-cancellation_with_new_task/before/tags/exchange.json",
+      "state": {
+        "deadline_monotonic": 309363.815979541,
+        "elapsed": 0.04098712495760992,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 309353.81601975,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/02-cancellation_with_new_task/before/version/exchange.json",
+      "state": {
+        "deadline_monotonic": 309363.768516958,
+        "elapsed": 0.04661429102998227,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 309353.768629875,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "generation",
+      "path": "results/02-cancellation_with_new_task/response/exchange.json",
+      "state": {
+        "deadline_monotonic": 309534.011502958,
+        "elapsed": 3.274214666977059,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 309354.011557291,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/03-qualified_external_timing/after/show/exchange.json",
+      "state": {
+        "deadline_monotonic": 309371.722635958,
+        "elapsed": 0.04815287503879517,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 309361.7226915,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/03-qualified_external_timing/after/tags/exchange.json",
+      "state": {
+        "deadline_monotonic": 309371.674078958,
+        "elapsed": 0.04796404199441895,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 309361.674117958,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/03-qualified_external_timing/after/version/exchange.json",
+      "state": {
+        "deadline_monotonic": 309371.633550125,
+        "elapsed": 0.03981887502595782,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 309361.633667333,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/03-qualified_external_timing/before/show/exchange.json",
+      "state": {
+        "deadline_monotonic": 309367.765963541,
+        "elapsed": 0.046758416981901973,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 309357.766018291,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/03-qualified_external_timing/before/tags/exchange.json",
+      "state": {
+        "deadline_monotonic": 309367.717542833,
+        "elapsed": 0.047753540973644704,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 309357.7175885,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/03-qualified_external_timing/before/version/exchange.json",
+      "state": {
+        "deadline_monotonic": 309367.668697541,
+        "elapsed": 0.04815679101739079,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 309357.66880625,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "generation",
+      "path": "results/03-qualified_external_timing/response/exchange.json",
+      "state": {
+        "deadline_monotonic": 309537.9232345,
+        "elapsed": 3.6289939589914866,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 309357.923286416,
+        "timed_out": false
+      },
+      "status": 200
+    }
+  ],
+  "freeze_entries": 48,
+  "freeze_manifest_sha256": "24676d89c8a68db18a9d78d732a3089caffd85c74dc6526f07a560c511f1fdbd",
+  "full_run_wall_seconds": 15.867782917048316,
+  "gates": [
+    {
+      "matched": true,
+      "phase": "before",
+      "slot": "01-partial_coordination_retracted"
+    },
+    {
+      "matched": true,
+      "phase": "after",
+      "slot": "01-partial_coordination_retracted"
+    },
+    {
+      "matched": true,
+      "phase": "before",
+      "slot": "02-cancellation_with_new_task"
+    },
+    {
+      "matched": true,
+      "phase": "after",
+      "slot": "02-cancellation_with_new_task"
+    },
+    {
+      "matched": true,
+      "phase": "before",
+      "slot": "03-qualified_external_timing"
+    },
+    {
+      "matched": true,
+      "phase": "after",
+      "slot": "03-qualified_external_timing"
+    }
+  ],
+  "identity_gates_verified": 6,
+  "kind": "once-only-work-retention-probe-1",
+  "model": "qwen3.5:9b-q4_K_M",
+  "model_digest": "56671c2ab9385f9cfcb404638e32cd62d88e3501d44822208363c010179a3c90",
+  "post_seal_observation": {
+    "boundary": "after manifest write attempt; separate from sealed accounting",
+    "deadline_reached": false,
+    "elapsed": 15.867707958968822,
+    "overrun_seconds": 0.0,
+    "sealed": true
+  },
+  "prior_tracked_files_verified": 1347,
+  "prospective_criteria_sha256": "4c9f4f238b0a57470d0cd9ba1134db4c002a4acf0565ab8a41c4210f40a7fecb",
+  "published_freeze_commit": "9dba7187037592d2898f773932d48f7a70c9fd76",
+  "retries": 0,
+  "rows": [
+    {
+      "actions_count": 1,
+      "case": "partial_coordination_retracted",
+      "http_elapsed_seconds": 7.062032499990892,
+      "literal_issue_count": 0,
+      "possibly_sent": true,
+      "progress": {
+        "complete_events": 37,
+        "content_characters": 139,
+        "error": null,
+        "first_byte_seconds": 6.007960667018779,
+        "first_content_seconds": 6.007960667018779,
+        "first_thinking_seconds": null,
+        "returned": {
+          "eval_count": 37,
+          "eval_duration": 980444000,
+          "load_duration": 4897088750,
+          "prompt_eval_cached_count": 0,
+          "prompt_eval_count": 428,
+          "prompt_eval_duration": 1096115000,
+          "total_duration": 6985156250
+        },
+        "sizes_are_tokens": false,
+        "terminal_seen": true,
+        "thinking_characters": 0,
+        "timing_basis": "received complete event relative to child monotonic origin; not GPU time",
+        "trailing_bytes": 0,
+        "valid": true
+      },
+      "raw_body_bytes": 5168,
+      "review_sources": [
+        "T1"
+      ],
+      "slot": "01-partial_coordination_retracted",
+      "slot_elapsed_seconds": 7.696511542017106,
+      "state": "complete",
+      "think": false
+    },
+    {
+      "actions_count": 1,
+      "case": "cancellation_with_new_task",
+      "http_elapsed_seconds": 3.274214666977059,
+      "literal_issue_count": 0,
+      "possibly_sent": true,
+      "progress": {
+        "complete_events": 56,
+        "content_characters": 222,
+        "error": null,
+        "first_byte_seconds": 1.0843290410120972,
+        "first_content_seconds": 1.0843290410120972,
+        "first_thinking_seconds": null,
+        "returned": {
+          "eval_count": 81,
+          "eval_duration": 2144315000,
+          "load_duration": 1607375,
+          "prompt_eval_cached_count": 0,
+          "prompt_eval_count": 394,
+          "prompt_eval_duration": 1071444999,
+          "total_duration": 3225823208
+        },
+        "sizes_are_tokens": false,
+        "terminal_seen": true,
+        "thinking_characters": 0,
+        "timing_basis": "received complete event relative to child monotonic origin; not GPU time",
+        "trailing_bytes": 0,
+        "valid": true
+      },
+      "raw_body_bytes": 7731,
+      "review_sources": [
+        "T1"
+      ],
+      "slot": "02-cancellation_with_new_task",
+      "slot_elapsed_seconds": 3.8967893330263905,
+      "state": "complete",
+      "think": false
+    },
+    {
+      "actions_count": 0,
+      "case": "qualified_external_timing",
+      "http_elapsed_seconds": 3.6289939589914866,
+      "literal_issue_count": 1,
+      "possibly_sent": true,
+      "progress": {
+        "complete_events": 64,
+        "content_characters": 255,
+        "error": null,
+        "first_byte_seconds": 1.1120601250440814,
+        "first_content_seconds": 1.1120601250440814,
+        "first_thinking_seconds": null,
+        "returned": {
+          "eval_count": 93,
+          "eval_duration": 2466291000,
+          "load_duration": 1582583,
+          "prompt_eval_cached_count": 0,
+          "prompt_eval_count": 425,
+          "prompt_eval_duration": 1097402000,
+          "total_duration": 3575648042
+        },
+        "sizes_are_tokens": false,
+        "terminal_seen": true,
+        "thinking_characters": 0,
+        "timing_basis": "received complete event relative to child monotonic origin; not GPU time",
+        "trailing_bytes": 0,
+        "valid": true
+      },
+      "raw_body_bytes": 8808,
+      "review_sources": [
+        "T1",
+        "T2"
+      ],
+      "slot": "03-qualified_external_timing",
+      "slot_elapsed_seconds": 4.2123108329833485,
+      "state": "failed",
+      "think": false
+    },
+    {
+      "case": "additional",
+      "possibly_sent": false,
+      "slot": "04-additional",
+      "slot_elapsed_seconds": null,
+      "state": "unsent",
+      "think": false
+    }
+  ],
+  "semantic_assessment": "Chief and independent read-only reviewer agree: partial withdrawal critical cancelled-work suggestion; replacement criterion met with noncritical review burden; qualified timing literal failure/incomplete; additional unsent/incomplete. No overall quality acceptance.",
+  "service_version": "0.40.13",
+  "source_candidate": "af210c01b803bc885d24c2ed78f7c7fb725108b4"
+}

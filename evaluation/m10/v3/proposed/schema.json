@@ -1,0 +1,208 @@
+{
+  "$defs": {
+    "Claim": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/Span"
+          },
+          "minItems": 1,
+          "title": "Evidence",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "text",
+        "evidence"
+      ],
+      "title": "Claim",
+      "type": "object"
+    },
+    "Dispute": {
+      "additionalProperties": false,
+      "properties": {
+        "topic": {
+          "title": "Topic",
+          "type": "string"
+        },
+        "transcript_claim": {
+          "title": "Transcript Claim",
+          "type": "string"
+        },
+        "notes_claim": {
+          "title": "Notes Claim",
+          "type": "string"
+        }
+      },
+      "required": [
+        "topic",
+        "transcript_claim",
+        "notes_claim"
+      ],
+      "title": "Dispute",
+      "type": "object"
+    },
+    "Span": {
+      "additionalProperties": false,
+      "properties": {
+        "passage": {
+          "title": "Passage",
+          "type": "string"
+        },
+        "quote": {
+          "description": "Exact contiguous text from this passage",
+          "minLength": 1,
+          "title": "Quote",
+          "type": "string"
+        }
+      },
+      "required": [
+        "passage",
+        "quote"
+      ],
+      "title": "Span",
+      "type": "object"
+    },
+    "Task": {
+      "additionalProperties": false,
+      "properties": {
+        "claim": {
+          "title": "Claim",
+          "type": "string"
+        },
+        "commitment": {
+          "$ref": "#/$defs/Span",
+          "description": "The complete single statement making this commitment"
+        },
+        "owner": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Owner"
+        },
+        "owner_evidence": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Span"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Spoken name evidence when owner differs from speaker"
+        },
+        "timing": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Span"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Complete timing phrase within commitment, otherwise null"
+        },
+        "timing_link": {
+          "description": "Separate timing exchange needing review; never auto-assign",
+          "items": {
+            "$ref": "#/$defs/Span"
+          },
+          "title": "Timing Link",
+          "type": "array"
+        }
+      },
+      "required": [
+        "claim",
+        "commitment",
+        "owner",
+        "owner_evidence",
+        "timing",
+        "timing_link"
+      ],
+      "title": "Task",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "claims": {
+      "items": {
+        "$ref": "#/$defs/Claim"
+      },
+      "title": "Claims",
+      "type": "array"
+    },
+    "overview": {
+      "description": "Claim IDs, not prose",
+      "items": {
+        "type": "string"
+      },
+      "title": "Overview",
+      "type": "array"
+    },
+    "key_points": {
+      "description": "Claim IDs, not prose",
+      "items": {
+        "type": "string"
+      },
+      "title": "Key Points",
+      "type": "array"
+    },
+    "decisions": {
+      "description": "Spoken agreement claim IDs",
+      "items": {
+        "type": "string"
+      },
+      "title": "Decisions",
+      "type": "array"
+    },
+    "action_items": {
+      "items": {
+        "$ref": "#/$defs/Task"
+      },
+      "title": "Action Items",
+      "type": "array"
+    },
+    "notes_context": {
+      "description": "Written-only claim IDs",
+      "items": {
+        "type": "string"
+      },
+      "title": "Notes Context",
+      "type": "array"
+    },
+    "conflicts": {
+      "items": {
+        "$ref": "#/$defs/Dispute"
+      },
+      "title": "Conflicts",
+      "type": "array"
+    }
+  },
+  "required": [
+    "claims",
+    "overview",
+    "key_points",
+    "decisions",
+    "action_items",
+    "notes_context",
+    "conflicts"
+  ],
+  "title": "Draft",
+  "type": "object"
+}

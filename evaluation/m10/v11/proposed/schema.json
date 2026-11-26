@@ -1,0 +1,190 @@
+{
+  "$defs": {
+    "Action": {
+      "additionalProperties": false,
+      "properties": {
+        "original_commitment_id": {
+          "title": "Original Commitment Id",
+          "type": "string"
+        },
+        "undertaking": {
+          "$ref": "#/$defs/Anchor"
+        },
+        "context": {
+          "items": {
+            "$ref": "#/$defs/Anchor"
+          },
+          "title": "Context",
+          "type": "array"
+        },
+        "basis": {
+          "enum": [
+            "explicit",
+            "third-person",
+            "accepted-request",
+            "implied",
+            "coordinated"
+          ],
+          "title": "Basis",
+          "type": "string"
+        },
+        "disposition": {
+          "enum": [
+            "committed",
+            "uncertain"
+          ],
+          "title": "Disposition",
+          "type": "string"
+        },
+        "timing": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Anchor"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "original_commitment_id",
+        "undertaking",
+        "context",
+        "basis",
+        "disposition",
+        "timing"
+      ],
+      "title": "Action",
+      "type": "object"
+    },
+    "Anchor": {
+      "additionalProperties": false,
+      "properties": {
+        "source_id": {
+          "title": "Source Id",
+          "type": "string"
+        },
+        "quote": {
+          "minLength": 1,
+          "title": "Quote",
+          "type": "string"
+        },
+        "occurrence": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "One-based literal occurrence; required for repeated text",
+          "title": "Occurrence"
+        }
+      },
+      "required": [
+        "source_id",
+        "quote"
+      ],
+      "title": "Anchor",
+      "type": "object"
+    },
+    "SupportedText": {
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "sources": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Sources",
+          "type": "array"
+        }
+      },
+      "required": [
+        "text",
+        "sources"
+      ],
+      "title": "SupportedText",
+      "type": "object"
+    },
+    "TimingUpdate": {
+      "additionalProperties": false,
+      "properties": {
+        "original_commitment_id": {
+          "title": "Original Commitment Id",
+          "type": "string"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/Anchor"
+          },
+          "minItems": 1,
+          "title": "Evidence",
+          "type": "array"
+        }
+      },
+      "required": [
+        "original_commitment_id",
+        "evidence"
+      ],
+      "title": "TimingUpdate",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "overview": {
+      "items": {
+        "$ref": "#/$defs/SupportedText"
+      },
+      "title": "Overview",
+      "type": "array"
+    },
+    "key_points": {
+      "items": {
+        "$ref": "#/$defs/SupportedText"
+      },
+      "title": "Key Points",
+      "type": "array"
+    },
+    "decisions": {
+      "items": {
+        "$ref": "#/$defs/SupportedText"
+      },
+      "title": "Decisions",
+      "type": "array"
+    },
+    "action_items": {
+      "items": {
+        "$ref": "#/$defs/Action"
+      },
+      "title": "Action Items",
+      "type": "array"
+    },
+    "timing_updates": {
+      "items": {
+        "$ref": "#/$defs/TimingUpdate"
+      },
+      "title": "Timing Updates",
+      "type": "array"
+    }
+  },
+  "required": [
+    "overview",
+    "key_points",
+    "decisions",
+    "action_items",
+    "timing_updates"
+  ],
+  "title": "Draft",
+  "type": "object"
+}

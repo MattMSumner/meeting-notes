@@ -1,0 +1,594 @@
+[
+  {
+    "id": "R01",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 2
+    },
+    "critical_failures": [],
+    "evidence": "Both tasks and next-week recovery retained; monitoring 120 and undecided deployment option preserved."
+  },
+  {
+    "id": "R02",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 1,
+      "useful_emphasis": 2
+    },
+    "critical_failures": [],
+    "evidence": "Original sending commitment and full Next Tuesday wording retained in unassigned review; conservative timing gets partial credit."
+  },
+  {
+    "id": "R03",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 2
+    },
+    "critical_failures": [],
+    "evidence": "Monitoring and support each 120 correctly attributed; invoice task retained. No handwritten input supplied."
+  },
+  {
+    "id": "R04",
+    "scores": {
+      "commitment_completeness": 0,
+      "source_attribution": 0,
+      "conflicts": 0,
+      "numbers": 0,
+      "dates_and_owners": 0,
+      "useful_emphasis": 0
+    },
+    "critical_failures": [
+      "incomplete output"
+    ],
+    "evidence": "Both comparison attempts fail exact N1 coverage; no summary, invoice commitment or review result published."
+  },
+  {
+    "id": "R05",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 1,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 0,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [
+      "unsupported rollback deadline"
+    ],
+    "evidence": "Overview says send a draft and check rollback by Friday, although only sending is dated; action due itself is correctly null for rollback."
+  },
+  {
+    "id": "R06",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 1,
+      "useful_emphasis": 2
+    },
+    "critical_failures": [],
+    "evidence": "Original sending task, Friday and later Monday correction retained in review; no obsolete unqualified due."
+  },
+  {
+    "id": "R07",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Support estimate remains an estimate at 120. Boilerplate conclusion adds little."
+  },
+  {
+    "id": "R08",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 1,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 1,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Conditional alternative preserved in action text, but due contains next Friday alone; review document referent is inferred from it."
+  },
+  {
+    "id": "R09",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 1,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Both tasks and dates preserved; individual commitments repeated as Decisions without separate agreement."
+  },
+  {
+    "id": "R10",
+    "scores": {
+      "commitment_completeness": 0,
+      "source_attribution": 0,
+      "conflicts": 0,
+      "numbers": 0,
+      "dates_and_owners": 0,
+      "useful_emphasis": 0
+    },
+    "critical_failures": [
+      "incomplete output"
+    ],
+    "evidence": "Both comparison attempts label additional while citing transcript, blocking output despite distinct office scopes."
+  },
+  {
+    "id": "R11",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 1,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [
+      "tentative readiness stated as confirmed"
+    ],
+    "evidence": "I think becomes Sam confirmed and Staging environment confirmed ready; no certainty was spoken."
+  },
+  {
+    "id": "R12",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 1,
+      "useful_emphasis": 2
+    },
+    "critical_failures": [],
+    "evidence": "Both coordinated tasks and Friday retained together under review; no rollback due invented."
+  },
+  {
+    "id": "R13",
+    "scores": {
+      "commitment_completeness": 0,
+      "source_attribution": 0,
+      "conflicts": 0,
+      "numbers": 0,
+      "dates_and_owners": 0,
+      "useful_emphasis": 0
+    },
+    "critical_failures": [
+      "incomplete output"
+    ],
+    "evidence": "Comparison twice violates additional/no-match contract; no visible uncertainty result published for tentative versus confirmed readiness."
+  },
+  {
+    "id": "R14",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Last-quarter support 120 retained, with unnecessary transcript-is-minimal conclusion."
+  },
+  {
+    "id": "R15",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 1,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Only Alex checklist tomorrow becomes action; noncommitment respected. Individual checklist task also appears as Decision."
+  },
+  {
+    "id": "R16",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 1,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Both price/date conflicts unresolved; I think and budget not approved survive; verification task independent. Comparison estimate quantities are null/empty and status confirmed overstates estimate; final quoted accounts remain correct."
+  },
+  {
+    "id": "R17",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Complete next Friday/or Friday after if review slips due preserved; notes requests separate. No-launch-decision repeated as a Decision and in prose."
+  },
+  {
+    "id": "R18",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Spoken support 120 correct; boilerplate ending repeats absence of discussion."
+  },
+  {
+    "id": "R19",
+    "scores": {
+      "commitment_completeness": 0,
+      "source_attribution": 1,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 0
+    },
+    "critical_failures": [
+      "factual price statement invented as action"
+    ],
+    "evidence": "Conflict correctly pairs 120 dollars with 15000 cents, but correction selects factual T1 as action: Support costs 120 dollars. No task was spoken."
+  },
+  {
+    "id": "R20",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 1,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Both spoken tasks/dates intact; 40 seats and venue request remain written-only. Heading fragments become separate bullets; comparison quantity for 40 seats is empty and absent dimensions contain literal null strings."
+  },
+  {
+    "id": "R21",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Rejected launch versus approved launch explicitly unresolved; no invented action or unqualified approval. Generic unresolved topic/fallback prose reduce usefulness."
+  },
+  {
+    "id": "R22",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Support 120 versus quote 150 explicitly unresolved; unrelated monitoring 120 and invoice action survive without review. Repetition and T1 marker remain."
+  },
+  {
+    "id": "R23",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 1,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Both tasks, monitoring 120 and no selected option survive; focus request stays notes. Simple next-week timing unnecessarily unassigned; repeated quotes and source IDs reduce polish."
+  },
+  {
+    "id": "R24",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 1,
+      "useful_emphasis": 2
+    },
+    "critical_failures": [],
+    "evidence": "Original rollback task plus later Friday retained in unverified review, due null."
+  },
+  {
+    "id": "R25",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 2
+    },
+    "critical_failures": [],
+    "evidence": "Sending task correctly retains Monday correction rather than obsolete Friday."
+  },
+  {
+    "id": "R26",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Explicit rejection of Friday launch retained in overview/key point/decision; no approval inferred, but repetitive."
+  },
+  {
+    "id": "R27",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 1,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [
+      "tentative readiness stated as confirmed"
+    ],
+    "evidence": "I think staging is ready becomes Sam confirmed ready and unqualified key point. Health-check action survives."
+  },
+  {
+    "id": "R28",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "120 dollars and 12000 cents correctly consistent, with both exact amounts source-separated and no false conflict. T1 marker and fallback overview remain."
+  },
+  {
+    "id": "R29",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 2
+    },
+    "critical_failures": [],
+    "evidence": "Only actual checklist commitment tomorrow retained; explicit rollback noncommitment not promoted."
+  },
+  {
+    "id": "R30",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "East-office support 120 preserved; synthetic-review/no-further-details filler adds little."
+  },
+  {
+    "id": "R31",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 2
+    },
+    "critical_failures": [],
+    "evidence": "Estimate 120 thousand, unapproved budget, tentative expected June and independent verification retained."
+  },
+  {
+    "id": "R32",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 0,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [
+      "not-before timing qualifier lost in assigned due"
+    ],
+    "evidence": "Task due is next Friday, dropping not before; overview/key point preserve qualifier, leaving conflicting deadline meaning in action field."
+  },
+  {
+    "id": "R33",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Tentative ready quote versus paused-for-repair note unresolved; independent health-check task preserved without unrelated review after source-kind correction."
+  },
+  {
+    "id": "R34",
+    "scores": {
+      "commitment_completeness": 0,
+      "source_attribution": 0,
+      "conflicts": 0,
+      "numbers": 0,
+      "dates_and_owners": 0,
+      "useful_emphasis": 0
+    },
+    "critical_failures": [
+      "incomplete output"
+    ],
+    "evidence": "Comparison correction correctly treats different quarters as unmatched additional. Both summary drafts still cite N1 in spoken core and attach 150 to transcript evidence; no output published."
+  },
+  {
+    "id": "R35",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Sending next Tuesday and Sam owner correct; short-transcript boilerplate reduces usefulness."
+  },
+  {
+    "id": "R36",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 1,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Consistent support 120 and unmatched training-room 40 seats retained separately; comparison quantities/units all null despite explicit numbers and units. T1 leakage and repetition remain."
+  },
+  {
+    "id": "R37",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Both tasks and independent Agreed, release Friday survive. Agreement repeats three times; undated rollback has unnecessary timing review."
+  },
+  {
+    "id": "R38",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 2
+    },
+    "critical_failures": [],
+    "evidence": "Both coordinated tasks preserved, Friday only on sending and rollback undated."
+  },
+  {
+    "id": "R39",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 2
+    },
+    "critical_failures": [],
+    "evidence": "Both tasks and independent release-Friday agreement retained with correct owners/dates."
+  },
+  {
+    "id": "R40",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 2
+    },
+    "critical_failures": [],
+    "evidence": "Both same-speaker tasks preserved; Friday only belongs to sending."
+  },
+  {
+    "id": "R41",
+    "scores": {
+      "commitment_completeness": 0,
+      "source_attribution": 0,
+      "conflicts": 0,
+      "numbers": 0,
+      "dates_and_owners": 0,
+      "useful_emphasis": 0
+    },
+    "critical_failures": [
+      "incomplete output"
+    ],
+    "evidence": "Comparison chooses unmatched additional rather than frozen expected uncertainty for estimate versus approved budget. Summary drafts cite N1 in spoken core and never publish."
+  },
+  {
+    "id": "R42",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 2
+    },
+    "critical_failures": [],
+    "evidence": "Support 120 preserved concisely with no tasks or decisions invented."
+  },
+  {
+    "id": "R43",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 1,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Original rollback commitment and later Friday correctly linked, but individual commitment repeated as a collective Decision."
+  },
+  {
+    "id": "R44",
+    "scores": {
+      "commitment_completeness": 2,
+      "source_attribution": 2,
+      "conflicts": 2,
+      "numbers": 2,
+      "dates_and_owners": 2,
+      "useful_emphasis": 1
+    },
+    "critical_failures": [],
+    "evidence": "Spoken support 120 correct; boilerplate conclusion about no further discussion adds little."
+  }
+]

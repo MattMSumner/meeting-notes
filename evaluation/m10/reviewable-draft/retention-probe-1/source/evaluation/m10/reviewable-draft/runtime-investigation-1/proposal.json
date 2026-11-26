@@ -1,0 +1,31 @@
+{
+  "case": "accepted_status_answer",
+  "digest": "56671c2ab9385f9cfcb404638e32cd62d88e3501d44822208363c010179a3c90",
+  "generation_requests": 2,
+  "instrumentation_change_from_history": {
+    "stream": true
+  },
+  "model": "qwen3.5:9b-q4_K_M",
+  "only_within_pair_variable": "think",
+  "original_request": "evaluation/m10/reviewable-draft/model-comparison-1/results/01-02-accepted_status_answer/request.json",
+  "original_request_sha256": "31830bb17204c729a13ae2ad6bd422c7ad7e0554f4522419fdef121b71843c9e",
+  "overall_seconds": 420,
+  "per_generation_seconds": 180,
+  "requests": [
+    {
+      "path": "proposed-requests/01-think-false.json",
+      "sha256": "0a3f588c7f5958786e32b3034168bc1efea09f800a5da1fb806447bd7d99301b",
+      "think": false
+    },
+    {
+      "path": "proposed-requests/02-think-true.json",
+      "sha256": "444a5b8ba57e17dd54b7e57da2d00f3c6c8934c0b3582bfaf961ea77d7e4bd18",
+      "think": true
+    }
+  ],
+  "retries": 0,
+  "server_compute_cancellation_guaranteed": false,
+  "service_version": "0.40.9",
+  "status": "proposal only; not approved or executed; runner not prepared",
+  "stop_on_timeout_or_transport_or_validation_or_identity_error": true
+}

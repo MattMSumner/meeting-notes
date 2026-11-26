@@ -1,0 +1,1 @@
+{"content": "{\n  \"actions\": [\n    {\n      \"context_sources\": [\n        \"T1\",\n        \"T2\"\n      ],\n      \"quote\": \"I will send the invoice.\\nNot before next Friday unless finance objects.\",\n      \"source\": \"T1\"\n    }\n  ],\n  \"review_sources\": [\n    \"T1\",\n    \"T2\"\n  ]\n}", "thinking": ""}

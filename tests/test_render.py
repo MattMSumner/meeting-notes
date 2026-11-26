@@ -111,7 +111,7 @@ def test_note_says_none_for_empty_sections():
 def test_note_without_a_summary_says_how_to_write_one():
     note = render_note(MEETING, None, "2026-10-20-1405-weekly-sync")
 
-    assert "`notes summarize 2026-10-20-1405-weekly-sync`" in note
+    assert "`notes enhance 2026-10-20-1405-weekly-sync`" in note
     assert "Transcript: [[" in note
 
 

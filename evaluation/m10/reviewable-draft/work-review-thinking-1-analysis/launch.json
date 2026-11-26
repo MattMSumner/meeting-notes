@@ -1,0 +1,111 @@
+{
+  "manifest_sha256": "d4a4f25240850bd46a3066d755d34989b09528703b35727faa1f376b3485a858",
+  "approval": "Great, do it!",
+  "published_head": "10e099b5b8a1a4d34e3ce7700a4eb8497dc3d1b7",
+  "launch_source_sha256": "c80f2fef771270066f6ab3655fa1fcea7ad1ea068fc97f4f0ec25514b9492469",
+  "criteria_sha256": "fda568e380a60fa36ecd4c4942075db42ceee19268999cb43d9ae24b4c16e084",
+  "return": {
+    "accounting": {
+      "authoritative": true,
+      "accounting_boundary": "after final.json save and inventory hashing; before manifest.json write",
+      "capture_complete": false,
+      "possibly_sent": 1,
+      "slots": [
+        {
+          "slot": "01-front_loaded_timing",
+          "case": "front_loaded_timing",
+          "think": true,
+          "state": "failed",
+          "possibly_sent": true,
+          "request_sha256": "7077e49f9defd360609878c371fbf47a62aefbba81955faec7ae4ea147c6b2d5",
+          "generation_id": "work-review-thinking-bed213a915044b4baa8c6caf6c12fa26/front_loaded_timing",
+          "snapshot_id": "3d54314b779aa5a291dce8c64ccb415dbcef546c144d7254c31a5211361dfe15",
+          "snapshot_sha256": "b244f4c7f1d971f554aeeef5337639ac46e1d5d55e2945b8222f8468f9fabe19",
+          "model_neutral_payload_sha256": "eb80a5cdf302759432ed92b562665ea5057d6576447ff8502e33c41b5f8e4c13",
+          "prepared_binding": "0879b54e68d31efe601571b45ddb28a9b77e299a0306c5925353cd0d812ce968",
+          "manifest_sha256": "d4a4f25240850bd46a3066d755d34989b09528703b35727faa1f376b3485a858",
+          "generation_deadline_monotonic": 365851.99028925,
+          "error": "OSError: Exchange failed: {'started_monotonic': 365671.990339291, 'deadline_monotonic': 365851.99028925, 'killed': True, 'reaped': True, 'timed_out': True, 'returncode': -9, 'error': \"TimeoutExpired: Command '['/Users/matthewsumner/development/meeting-notes/.venv/bin/python', '-I', '-u', '/Users/matthewsumner/development/meeting-notes/prototypes/reviewable_draft/_work_review_thinking_http.py', 'POST', '/api/chat', '/Users/matthewsumner/development/meeting-notes/evaluation/m10/reviewable-draft/work-review-thinking-1/results/01-front_loaded_timing/request.json', '/Users/matthewsumner/development/meeting-notes/evaluation/m10/reviewable-draft/work-review-thinking-1/results/01-front_loaded_timing/response', '179.99994945898652', '7077e49f9defd360609878c371fbf47a62aefbba81955faec7ae4ea147c6b2d5']' timed out after 179.99847341695568 seconds\", 'server_compute_cancellation_guaranteed': False, 'elapsed': 180.00668391701765, 'overrun_seconds': 0.006733958027325571}",
+          "elapsed": 180.38889804203063,
+          "exchange": {
+            "deadline_monotonic": 365851.99028925,
+            "elapsed": 180.00668391701765,
+            "error": "TimeoutExpired: Command '['/Users/matthewsumner/development/meeting-notes/.venv/bin/python', '-I', '-u', '/Users/matthewsumner/development/meeting-notes/prototypes/reviewable_draft/_work_review_thinking_http.py', 'POST', '/api/chat', '/Users/matthewsumner/development/meeting-notes/evaluation/m10/reviewable-draft/work-review-thinking-1/results/01-front_loaded_timing/request.json', '/Users/matthewsumner/development/meeting-notes/evaluation/m10/reviewable-draft/work-review-thinking-1/results/01-front_loaded_timing/response', '179.99994945898652', '7077e49f9defd360609878c371fbf47a62aefbba81955faec7ae4ea147c6b2d5']' timed out after 179.99847341695568 seconds",
+            "killed": true,
+            "overrun_seconds": 0.006733958027325571,
+            "reaped": true,
+            "returncode": -9,
+            "server_compute_cancellation_guaranteed": false,
+            "started_monotonic": 365671.990339291,
+            "timed_out": true
+          },
+          "progress": {
+            "complete_events": 5700,
+            "content_characters": 0,
+            "error": "Incomplete NDJSON stream",
+            "first_byte_seconds": 7.942607874982059,
+            "first_content_seconds": null,
+            "first_thinking_seconds": 7.942607874982059,
+            "returned": {},
+            "sizes_are_tokens": false,
+            "terminal_seen": false,
+            "thinking_characters": 26184,
+            "timing_basis": "received complete event relative to child monotonic origin; not GPU time",
+            "trailing_bytes": 0,
+            "valid": false
+          }
+        },
+        {
+          "slot": "02-partial_coordination_retracted",
+          "case": "partial_coordination_retracted",
+          "think": true,
+          "state": "unsent",
+          "possibly_sent": false,
+          "request_sha256": "3596c4769826ff0ebc621ff165045886504cec229d87a8ad0a02fbd60b371a01",
+          "generation_id": "work-review-thinking-bed213a915044b4baa8c6caf6c12fa26/partial_coordination_retracted",
+          "snapshot_id": "28bb22aec3289f904af59b746b6b9e99f9a0f6baa3809e56da172320c0d21a4c",
+          "snapshot_sha256": "6ed4698adf5b0c4b87dd8f43a54c541222d7d34fd8b507f2c5638bd7f42f226f",
+          "model_neutral_payload_sha256": "b7a7e8e5a12a2de03cf0944565237840456cee767671bcd4f74c64aecb2a23f8",
+          "prepared_binding": "0924dafa2f9f79013b7f1eb169dd6f1f04fc8be0529326ccfc2f8356f01be92a",
+          "manifest_sha256": "d4a4f25240850bd46a3066d755d34989b09528703b35727faa1f376b3485a858"
+        },
+        {
+          "slot": "03-accepted_status_answer",
+          "case": "accepted_status_answer",
+          "think": true,
+          "state": "unsent",
+          "possibly_sent": false,
+          "request_sha256": "c79cb46a274500e1ed80062166c6feda77661f7aff83019e0a1107e8b507d73f",
+          "generation_id": "work-review-thinking-bed213a915044b4baa8c6caf6c12fa26/accepted_status_answer",
+          "snapshot_id": "30273d16397f3d130489c6cf18b5da6aaad56ad876521c3bf9028f1e8fa42f50",
+          "snapshot_sha256": "af155f5524a510a041b8f0b7501913225b20ca5ac4d11beeed0d0b9478e0b42b",
+          "model_neutral_payload_sha256": "0bd76ba7e5df20680044e7ed588a5b3b0d5fafbeac529c535f9fcfd02d2d4229",
+          "prepared_binding": "361be102f09a8d6f432bad7117ad7a3803fb45474264191fd5459c0c0e4d0c08",
+          "manifest_sha256": "d4a4f25240850bd46a3066d755d34989b09528703b35727faa1f376b3485a858"
+        }
+      ],
+      "completed": [],
+      "failed": [
+        "01-front_loaded_timing"
+      ],
+      "unsent": [
+        "02-partial_coordination_retracted",
+        "03-accepted_status_answer"
+      ],
+      "stop_reason": "OSError: Exchange failed: {'started_monotonic': 365671.990339291, 'deadline_monotonic': 365851.99028925, 'killed': True, 'reaped': True, 'timed_out': True, 'returncode': -9, 'error': \"TimeoutExpired: Command '['/Users/matthewsumner/development/meeting-notes/.venv/bin/python', '-I', '-u', '/Users/matthewsumner/development/meeting-notes/prototypes/reviewable_draft/_work_review_thinking_http.py', 'POST', '/api/chat', '/Users/matthewsumner/development/meeting-notes/evaluation/m10/reviewable-draft/work-review-thinking-1/results/01-front_loaded_timing/request.json', '/Users/matthewsumner/development/meeting-notes/evaluation/m10/reviewable-draft/work-review-thinking-1/results/01-front_loaded_timing/response', '179.99994945898652', '7077e49f9defd360609878c371fbf47a62aefbba81955faec7ae4ea147c6b2d5']' timed out after 179.99847341695568 seconds\", 'server_compute_cancellation_guaranteed': False, 'elapsed': 180.00668391701765, 'overrun_seconds': 0.006733958027325571}",
+      "artifact_errors": [],
+      "elapsed": 180.45398779201787,
+      "overrun_seconds": 0.0,
+      "server_compute_cancellation_guaranteed": false
+    },
+    "post_seal_observation": {
+      "boundary": "after manifest write attempt; separate from sealed accounting",
+      "sealed": true,
+      "elapsed": 180.45415062498068,
+      "overrun_seconds": 0.0,
+      "deadline_reached": false
+    }
+  },
+  "full_run_wall_seconds": 180.45419412496267,
+  "full_run_overrun_seconds": 0.0
+}

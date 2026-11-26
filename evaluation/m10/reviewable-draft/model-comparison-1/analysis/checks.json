@@ -1,0 +1,10 @@
+{
+  "format": "pass",
+  "ruff": "pass",
+  "strict_pyright": "pass",
+  "offline_tests_passed": 1386,
+  "integration_tests_excluded": 6,
+  "shallow_checkout_new_tests_collected": 51,
+  "fixture_fix_commit": "0e349218915d722c14e9d5e9385f826899dd7ab3",
+  "runtime_or_request_changed_by_fixture_fix": false
+}

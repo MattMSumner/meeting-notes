@@ -1,0 +1,152 @@
+{
+  "R01": {
+    "arm": "proposed",
+    "case": "empty",
+    "repetition": 1
+  },
+  "R02": {
+    "arm": "baseline",
+    "case": "additional",
+    "repetition": 3
+  },
+  "R03": {
+    "arm": "proposed",
+    "case": "additional",
+    "repetition": 1
+  },
+  "R04": {
+    "arm": "baseline",
+    "case": "additional",
+    "repetition": 1
+  },
+  "R05": {
+    "arm": "baseline",
+    "case": "sparse",
+    "repetition": 3
+  },
+  "R06": {
+    "arm": "proposed",
+    "case": "sparse",
+    "repetition": 2
+  },
+  "R07": {
+    "arm": "baseline",
+    "case": "ambiguous_dates",
+    "repetition": 1
+  },
+  "R08": {
+    "arm": "proposed",
+    "case": "additional",
+    "repetition": 3
+  },
+  "R09": {
+    "arm": "baseline",
+    "case": "empty",
+    "repetition": 3
+  },
+  "R10": {
+    "arm": "proposed",
+    "case": "conflicting",
+    "repetition": 1
+  },
+  "R11": {
+    "arm": "proposed",
+    "case": "sparse",
+    "repetition": 1
+  },
+  "R12": {
+    "arm": "baseline",
+    "case": "conflicting",
+    "repetition": 3
+  },
+  "R13": {
+    "arm": "proposed",
+    "case": "additional",
+    "repetition": 2
+  },
+  "R14": {
+    "arm": "baseline",
+    "case": "sparse",
+    "repetition": 2
+  },
+  "R15": {
+    "arm": "proposed",
+    "case": "conflicting",
+    "repetition": 3
+  },
+  "R16": {
+    "arm": "proposed",
+    "case": "conflicting",
+    "repetition": 2
+  },
+  "R17": {
+    "arm": "proposed",
+    "case": "empty",
+    "repetition": 3
+  },
+  "R18": {
+    "arm": "baseline",
+    "case": "sparse",
+    "repetition": 1
+  },
+  "R19": {
+    "arm": "baseline",
+    "case": "conflicting",
+    "repetition": 1
+  },
+  "R20": {
+    "arm": "baseline",
+    "case": "ambiguous_dates",
+    "repetition": 3
+  },
+  "R21": {
+    "arm": "baseline",
+    "case": "empty",
+    "repetition": 1
+  },
+  "R22": {
+    "arm": "baseline",
+    "case": "additional",
+    "repetition": 2
+  },
+  "R23": {
+    "arm": "proposed",
+    "case": "empty",
+    "repetition": 2
+  },
+  "R24": {
+    "arm": "proposed",
+    "case": "sparse",
+    "repetition": 3
+  },
+  "R25": {
+    "arm": "proposed",
+    "case": "ambiguous_dates",
+    "repetition": 1
+  },
+  "R26": {
+    "arm": "baseline",
+    "case": "conflicting",
+    "repetition": 2
+  },
+  "R27": {
+    "arm": "proposed",
+    "case": "ambiguous_dates",
+    "repetition": 2
+  },
+  "R28": {
+    "arm": "baseline",
+    "case": "ambiguous_dates",
+    "repetition": 2
+  },
+  "R29": {
+    "arm": "baseline",
+    "case": "empty",
+    "repetition": 2
+  },
+  "R30": {
+    "arm": "proposed",
+    "case": "ambiguous_dates",
+    "repetition": 3
+  }
+}

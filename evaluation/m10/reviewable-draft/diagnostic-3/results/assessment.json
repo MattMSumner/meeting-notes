@@ -1,0 +1,79 @@
+{
+  "overall": "DEFECTS_FOUND",
+  "meets_case_criteria": 5,
+  "critical_case_count": 1,
+  "incomplete_case_count": 0,
+  "assessor": "Independent read-only Codex assessor actions-only-assessor; Chief transcribed terminal findings and separately checked source evidence.",
+  "independent_from_implementation": true,
+  "blinded": false,
+  "held_out": false,
+  "criteria_prepared_before_output_inspection": true,
+  "post_capture": true,
+  "criteria": "../EXPERIMENT.md",
+  "cases": [
+    {
+      "case": "unit_equivalence",
+      "assessment": "MEETS_CRITERIA",
+      "critical": [],
+      "partial": [],
+      "evidence": "No action or computed relationship. Spoken price remains in saved snapshot; written price remains separately displayed and excluded from model input. Summary/comparison quality is outside this task."
+    },
+    {
+      "case": "accepted_status_answer",
+      "assessment": "MEETS_CRITERIA",
+      "critical": [],
+      "partial": [],
+      "evidence": "Availability question and affirmation yield no action or rescheduling; empty writing renders correctly."
+    },
+    {
+      "case": "partial_coordination_retracted",
+      "assessment": "DEFECTS",
+      "critical": [
+        "Surviving invoice sending is omitted from actions and focused review after only draft review is withdrawn. Rendered output supplies a generic notice without spoken source excerpts."
+      ],
+      "partial": [],
+      "evidence": "T1 undertakes review and invoice sending; T2 withdraws review only. Raw actions/review_sources are both empty; faithful rendering preserves the omission. Complete backend snapshot does not satisfy useful retention."
+    },
+    {
+      "case": "cancellation_with_new_task",
+      "assessment": "MEETS_CRITERIA",
+      "critical": [],
+      "partial": [],
+      "evidence": "Invoice sending selected; full primary passage preserves cancellation. No current cancelled review or invented due. Redundant primary context canonicalized according to frozen contract."
+    },
+    {
+      "case": "qualified_external_timing",
+      "assessment": "MEETS_CRITERIA",
+      "critical": [],
+      "partial": [],
+      "evidence": "Selected sending retains complete not-before/next-Friday/finance turn as context; both whole turns in focused review. No misleading due."
+    },
+    {
+      "case": "additional",
+      "assessment": "MEETS_CRITERIA",
+      "critical": [],
+      "partial": [
+        "Alex self-identifies in the literal quote, while its channel attribution remains Them.",
+        "Reciprocal context links add repetition."
+      ],
+      "evidence": "Both undertakings, owners and timing retained; workshop capacity/venue task remain separate writing excluded from model input."
+    }
+  ],
+  "accounting": {
+    "requests": 6,
+    "metadata_gets": 24,
+    "completed": 6,
+    "failed": 0,
+    "unsent": 0,
+    "mechanically_incomplete": 0,
+    "retries": 0,
+    "elapsed_seconds": 247.31033712497447,
+    "overrun_seconds": 0
+  },
+  "limitations": [
+    "Six familiar development cases and one repetition, not blinded/held out/reliability evidence.",
+    "Scope is actions alone, not summary/decision quality or full-draft acceptance.",
+    "No full regression, measured editing-time benefit, current Obsidian usefulness or Built/merge readiness.",
+    "All existing failed verdicts remain unchanged; no further inference authorized."
+  ]
+}

@@ -1,0 +1,371 @@
+{
+  "checked_at": "2026-11-12T21:02:18.251352-05:00",
+  "scores_changed": false,
+  "critical_finding_count": 19,
+  "method": "Chief inspected every critical finding and all noncritical partial findings against opaque sources/output before lock; after the key join this script records literal source spans and raw/final evidence locations. Matching text does not establish meaning by itself. Original assessor judgments remain unchanged.",
+  "findings": [
+    {
+      "id": "R002",
+      "arm": "baseline",
+      "case": "status_conflict",
+      "kind": "lost_uncertainty",
+      "source_quote": "I think the staging environment is ready.",
+      "source_spans": [
+        {
+          "source": "transcript",
+          "start": 16,
+          "end": 57
+        }
+      ],
+      "output_quote": "Sam confirmed the environment is ready and will verify health checks next.",
+      "output_evidence_paths": [
+        "summary.overview",
+        "transport[0].reply.overview"
+      ],
+      "chief_agrees_with_finding": true
+    },
+    {
+      "id": "R007",
+      "arm": "proposed",
+      "case": "unit_equivalence",
+      "kind": "invented_conflict",
+      "source_quote": "Support costs 12000 cents.",
+      "source_spans": [
+        {
+          "source": "notes",
+          "start": 0,
+          "end": 26
+        }
+      ],
+      "output_quote": "The units (cents vs dollars) and the numerical values (12000 vs 120) are different, leading to a conflict in the representation.",
+      "output_evidence_paths": [
+        "transport[0].reply.claims[0].reason"
+      ],
+      "chief_agrees_with_finding": true
+    },
+    {
+      "id": "R010",
+      "arm": "proposed",
+      "case": "shared_numbers",
+      "kind": "incomplete_publication",
+      "source_quote": "Monitoring costs 120 dollars.",
+      "source_spans": [
+        {
+          "source": "transcript",
+          "start": 16,
+          "end": 45
+        }
+      ],
+      "output_quote": null,
+      "output_evidence_paths": [],
+      "chief_agrees_with_finding": true
+    },
+    {
+      "id": "R010",
+      "arm": "proposed",
+      "case": "shared_numbers",
+      "kind": "lost_commitment_unpublished",
+      "source_quote": "I will check the monitoring invoice.",
+      "source_spans": [
+        {
+          "source": "transcript",
+          "start": 77,
+          "end": 113
+        }
+      ],
+      "output_quote": null,
+      "output_evidence_paths": [],
+      "chief_agrees_with_finding": true
+    },
+    {
+      "id": "R013",
+      "arm": "proposed",
+      "case": "accepted_status_answer",
+      "kind": "incomplete_publication",
+      "source_quote": "Will you be away Friday?",
+      "source_spans": [
+        {
+          "source": "transcript",
+          "start": 16,
+          "end": 40
+        }
+      ],
+      "output_quote": null,
+      "output_evidence_paths": [],
+      "chief_agrees_with_finding": true
+    },
+    {
+      "id": "R015",
+      "arm": "baseline",
+      "case": "same_speaker_tasks",
+      "kind": "invented_deadline",
+      "source_quote": "I will check rollback.",
+      "source_spans": [
+        {
+          "source": "transcript",
+          "start": 46,
+          "end": 68
+        }
+      ],
+      "output_quote": "The discussion concluded with Sam committing to send a draft and check rollback by Friday.",
+      "output_evidence_paths": [
+        "summary.overview",
+        "transport[0].reply.overview"
+      ],
+      "chief_agrees_with_finding": true
+    },
+    {
+      "id": "R018",
+      "arm": "baseline",
+      "case": "multi_claim_notes",
+      "kind": "lost_timing_qualifier",
+      "source_quote": "I will check the invoice not before next Friday.",
+      "source_spans": [
+        {
+          "source": "transcript",
+          "start": 73,
+          "end": 121
+        }
+      ],
+      "output_quote": "next Friday",
+      "output_evidence_paths": [
+        "summary.overview",
+        "summary.key_points[2]",
+        "summary.action_items[0].due",
+        "transport[0].reply.overview",
+        "transport[0].reply.key_points[2]",
+        "transport[0].reply.action_items[0].due"
+      ],
+      "chief_agrees_with_finding": true
+    },
+    {
+      "id": "R027",
+      "arm": "proposed",
+      "case": "tentative_confirmed",
+      "kind": "incomplete_publication",
+      "source_quote": "I think the staging environment is ready.",
+      "source_spans": [
+        {
+          "source": "transcript",
+          "start": 16,
+          "end": 57
+        }
+      ],
+      "output_quote": null,
+      "output_evidence_paths": [],
+      "chief_agrees_with_finding": true
+    },
+    {
+      "id": "R030",
+      "arm": "baseline",
+      "case": "approximate_timing",
+      "kind": "lost_timing_qualifier",
+      "source_quote": "I will send the invoice around Friday.",
+      "source_spans": [
+        {
+          "source": "transcript",
+          "start": 16,
+          "end": 54
+        }
+      ],
+      "output_quote": "Friday",
+      "output_evidence_paths": [
+        "summary.key_points[0]",
+        "summary.action_items[0].due",
+        "transport[0].reply.key_points[0]",
+        "transport[0].reply.action_items[0].due"
+      ],
+      "chief_agrees_with_finding": true
+    },
+    {
+      "id": "R030",
+      "arm": "baseline",
+      "case": "approximate_timing",
+      "kind": "lost_timing_qualifier",
+      "source_quote": "I will review the draft no sooner than Monday.",
+      "source_spans": [
+        {
+          "source": "transcript",
+          "start": 55,
+          "end": 101
+        }
+      ],
+      "output_quote": "Monday",
+      "output_evidence_paths": [
+        "summary.key_points[1]",
+        "summary.action_items[1].due",
+        "transport[0].reply.key_points[1]",
+        "transport[0].reply.action_items[1].due"
+      ],
+      "chief_agrees_with_finding": true
+    },
+    {
+      "id": "R032",
+      "arm": "proposed",
+      "case": "accepted_request_retracted",
+      "kind": "incomplete_publication",
+      "source_quote": "I will not send the invoice.",
+      "source_spans": [
+        {
+          "source": "transcript",
+          "start": 83,
+          "end": 111
+        }
+      ],
+      "output_quote": null,
+      "output_evidence_paths": [],
+      "chief_agrees_with_finding": true
+    },
+    {
+      "id": "R033",
+      "arm": "baseline",
+      "case": "qualified_external_timing",
+      "kind": "lost_timing_qualifiers",
+      "source_quote": "Not before next Friday unless finance objects.",
+      "source_spans": [
+        {
+          "source": "transcript",
+          "start": 57,
+          "end": 103
+        }
+      ],
+      "output_quote": "Sam will send the invoice next Friday unless finance objects.",
+      "output_evidence_paths": [
+        "summary.key_points[0]",
+        "summary.decisions[0]",
+        "transport[0].reply.key_points[0]",
+        "transport[0].reply.decisions[0]"
+      ],
+      "chief_agrees_with_finding": true
+    },
+    {
+      "id": "R035",
+      "arm": "baseline",
+      "case": "cancellation_with_new_task",
+      "kind": "invented_deadline",
+      "source_quote": "Scratch that, I will send the invoice.",
+      "source_spans": [
+        {
+          "source": "transcript",
+          "start": 41,
+          "end": 79
+        }
+      ],
+      "output_quote": "The discussion concluded with Sam confirming they would send the invoice immediately.",
+      "output_evidence_paths": [
+        "summary.overview",
+        "transport[0].reply.overview"
+      ],
+      "chief_agrees_with_finding": true
+    },
+    {
+      "id": "R051",
+      "arm": "baseline",
+      "case": "partial_coordination_retracted",
+      "kind": "cancelled_undertaking_executable",
+      "source_quote": "I will not review the draft.",
+      "source_spans": [
+        {
+          "source": "transcript",
+          "start": 78,
+          "end": 106
+        }
+      ],
+      "output_quote": "Review the draft and send the invoice",
+      "output_evidence_paths": [
+        "summary.action_items[0].task",
+        "transport[0].reply.action_items[0].task"
+      ],
+      "chief_agrees_with_finding": true
+    },
+    {
+      "id": "R057",
+      "arm": "proposed",
+      "case": "partial_coordination_retracted",
+      "kind": "incomplete_publication",
+      "source_quote": "I will review the draft and send the invoice.",
+      "source_spans": [
+        {
+          "source": "transcript",
+          "start": 16,
+          "end": 61
+        }
+      ],
+      "output_quote": null,
+      "output_evidence_paths": [],
+      "chief_agrees_with_finding": true
+    },
+    {
+      "id": "R057",
+      "arm": "proposed",
+      "case": "partial_coordination_retracted",
+      "kind": "undertaking_unavailable_with_blocked_output",
+      "source_quote": "I will review the draft and send the invoice.",
+      "source_spans": [
+        {
+          "source": "transcript",
+          "start": 16,
+          "end": 61
+        }
+      ],
+      "output_quote": null,
+      "output_evidence_paths": [],
+      "chief_agrees_with_finding": true
+    },
+    {
+      "id": "R065",
+      "arm": "baseline",
+      "case": "tentative_confirmed",
+      "kind": "tentative_status_promoted_to_confirmation",
+      "source_quote": "I think the staging environment is ready.",
+      "source_spans": [
+        {
+          "source": "transcript",
+          "start": 16,
+          "end": 57
+        }
+      ],
+      "output_quote": "Sam confirmed the staging environment is ready, concluding the discussion.",
+      "output_evidence_paths": [
+        "summary.overview",
+        "transport[0].reply.overview"
+      ],
+      "chief_agrees_with_finding": true
+    },
+    {
+      "id": "R080",
+      "arm": "proposed",
+      "case": "multi_claim_notes",
+      "kind": "incomplete_publication",
+      "source_quote": "Support costs 150 dollars, monitoring costs 120 dollars, and please book a venue.",
+      "source_spans": [
+        {
+          "source": "notes",
+          "start": 0,
+          "end": 81
+        }
+      ],
+      "output_quote": null,
+      "output_evidence_paths": [],
+      "chief_agrees_with_finding": true
+    },
+    {
+      "id": "R080",
+      "arm": "proposed",
+      "case": "multi_claim_notes",
+      "kind": "undertaking_unavailable_with_blocked_output",
+      "source_quote": "I will check the invoice not before next Friday.",
+      "source_spans": [
+        {
+          "source": "transcript",
+          "start": 73,
+          "end": 121
+        }
+      ],
+      "output_quote": null,
+      "output_evidence_paths": [],
+      "chief_agrees_with_finding": true
+    }
+  ],
+  "partial_findings_note": "Misleading unaccepted-task prose is recorded as partial where the explicit nonacceptance remains visible and no executable task was added. Wrong comparison enum with retained uncertainty review is partial. Neither case is silently treated as fully correct."
+}

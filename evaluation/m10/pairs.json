@@ -1,0 +1,95 @@
+[
+  {
+    "id": "empty",
+    "meeting": {
+      "title": "Synthetic release review",
+      "started_at": "2026-10-20T14:00:00-04:00",
+      "attendees": [
+        "Alex"
+      ],
+      "my_name": "Sam"
+    },
+    "transcript": "[00:00:00] Sam: I will tag the release Friday.\n[00:00:05] Them: Alex here. I will check the rollback procedure.\n[00:00:10] Sam: Agreed, release Friday.",
+    "handwritten_text": "",
+    "criteria": [
+      "Sam tags Friday",
+      "Alex checks rollback, no deadline",
+      "Friday release agreed"
+    ]
+  },
+  {
+    "id": "sparse",
+    "meeting": {
+      "title": "Synthetic release review",
+      "started_at": "2026-10-20T14:00:00-04:00",
+      "attendees": [
+        "Alex"
+      ],
+      "my_name": "Sam"
+    },
+    "transcript": "[00:00:00] Sam: I will compare the two deployment options.\n[00:00:05] Them: Alex here. I will test recovery next week.\n[00:00:10] Sam: Monitoring costs 120 dollars. We have not chosen a deployment option.",
+    "handwritten_text": "Focus on deployment options.",
+    "criteria": [
+      "Both commitments retained despite sparse notes",
+      "No option selected",
+      "120 dollars monitoring"
+    ]
+  },
+  {
+    "id": "additional",
+    "meeting": {
+      "title": "Synthetic release review",
+      "started_at": "2026-10-20T14:00:00-04:00",
+      "attendees": [
+        "Alex"
+      ],
+      "my_name": "Sam"
+    },
+    "transcript": "[00:00:00] Sam: I will send the draft Friday.\n[00:00:05] Them: Alex here. I will review it next week.",
+    "handwritten_text": "Personal context: the internal workshop has 40 seats.\nTask for myself: ask the venue about access.",
+    "criteria": [
+      "Spoken draft and review commitments",
+      "40 seats and venue task only in From your notes",
+      "No invented spoken agreement about venue"
+    ]
+  },
+  {
+    "id": "conflicting",
+    "meeting": {
+      "title": "Synthetic release review",
+      "started_at": "2026-10-20T14:00:00-04:00",
+      "attendees": [
+        "Alex"
+      ],
+      "my_name": "Sam"
+    },
+    "transcript": "[00:00:00] Sam: The current estimate is 120 thousand dollars.\n[00:00:05] Them: Alex here. I think delivery is in June.\n[00:00:10] Sam: I will verify the estimate. We have not approved the budget.",
+    "handwritten_text": "Estimate: 150 thousand dollars. Delivery: July.",
+    "criteria": [
+      "Both 120k spoken and 150k written identified",
+      "June spoken versus July written unresolved",
+      "Sam verifies estimate",
+      "No approved budget or settled delivery"
+    ]
+  },
+  {
+    "id": "ambiguous_dates",
+    "meeting": {
+      "title": "Synthetic release review",
+      "started_at": "2026-10-20T14:00:00-04:00",
+      "attendees": [
+        "Alex"
+      ],
+      "my_name": "Sam"
+    },
+    "transcript": "[00:00:00] Sam: I will send it next Friday, or the Friday after if review slips.\n[00:00:05] Them: Alex here. Maybe we can launch in spring.\n[00:00:10] Sam: No launch decision yet.",
+    "handwritten_text": "Follow up after the holiday. Maybe ask Casey to help.",
+    "criteria": [
+      "Conditional relative due wording retained",
+      "No precise dates inferred from meeting date",
+      "No launch decision",
+      "Casey is not assigned a spoken task",
+      "Written follow-up stays in From your notes"
+    ]
+  }
+]

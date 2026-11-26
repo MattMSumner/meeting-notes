@@ -1,0 +1,146 @@
+{
+  "authored": true,
+  "authored_input_sha256": "f84fa2480b11b493ad18639f0f18e1565f47e6e0d2f6d03934a1bf6530d7da1e",
+  "candidate_runtime_implemented": false,
+  "date": "2026-11-25",
+  "examples": [
+    {
+      "case": "partial_coordination_retracted",
+      "groups": [
+        [
+          "T1",
+          "T2"
+        ]
+      ],
+      "handwritten_text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "input_provenance": "Unchanged familiar development input",
+      "preview": "partial-withdrawal.md",
+      "preview_sha256": "a9f78b5333b59bd7b84b424bb9b1ef9c03b6f3a4e480c73c2a7f70ade3ccac32",
+      "selected_source_sha256": {
+        "T1": "df7b215891b62c02bff3795a97e65a94b9bd2f052574bb6126f9725b3bc553f1",
+        "T2": "0911adad85b70f2454548eca155ceb432f7213df05a6e50d868917ef8563a17c"
+      },
+      "snapshot_id": "28bb22aec3289f904af59b746b6b9e99f9a0f6baa3809e56da172320c0d21a4c",
+      "transcript_sha256": "07998397508dfcd644c5c22ec2c9e98eab6aad804ebe48fecf3b2c9f11ebcc5a"
+    },
+    {
+      "case": "cancellation_with_new_task",
+      "groups": [
+        [
+          "T1"
+        ]
+      ],
+      "handwritten_text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "input_provenance": "Unchanged familiar development input",
+      "preview": "replacement.md",
+      "preview_sha256": "db5a82b6ff602d6b16b06080066fd07e2cd47fe7e4af620ef78aa3f927698465",
+      "selected_source_sha256": {
+        "T1": "76c249e944c5c115c7c754391749cc1753ef684a3a4eb833f50b3debef44ad5c"
+      },
+      "snapshot_id": "f00eecd37ceb50fda583de7180e31fdbba01e1d3b9ea74a6942807999b66f41a",
+      "transcript_sha256": "0a70ba1c1a2714b5317c0c1c9459d9b24d439fb883973e296a7b1b816b2f20ac"
+    },
+    {
+      "case": "qualified_external_timing",
+      "groups": [
+        [
+          "T1",
+          "T2"
+        ]
+      ],
+      "handwritten_text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "input_provenance": "Unchanged familiar development input",
+      "preview": "qualified-timing.md",
+      "preview_sha256": "780a0660ab0f05d672502d4050f4cbbdbbb68242bf3f872fc1eac3edb18f3b19",
+      "selected_source_sha256": {
+        "T1": "e193b5cc599b558342190faaf9488cad99e89cfbb60ad192820b7d76e79b938d",
+        "T2": "b1830768c766a53092a1907eb951b4fee974b1629f439e6dbc557b31851e40a2"
+      },
+      "snapshot_id": "dd4fba6883488580e1614d4422c7de363f198e5d5fabe2148f37482b8c773c4f",
+      "transcript_sha256": "fb55766e7eac9ef0962228edfe0146404c56aeb08096d7887351955b4897105f"
+    },
+    {
+      "case": "additional",
+      "groups": [
+        [
+          "T1"
+        ],
+        [
+          "T2"
+        ]
+      ],
+      "handwritten_text_sha256": "9ae4723cc0bf3e52c28d7216dddb332f9eed9f233562fc196d2c8221b1016294",
+      "input_provenance": "Unchanged familiar development input",
+      "preview": "additional.md",
+      "preview_sha256": "8ec848a274bc6185a16c405b1e9c04c2b0c1499c018aa2b6021620388a4333b9",
+      "selected_source_sha256": {
+        "T1": "d7ee65e43926e476ea3e4bb361d1624647a42c873f738bbf340e7a64492a7852",
+        "T2": "7706487216142485e07c482ebd95d61388d31ddbb9700abf9001eec7cef24f6b"
+      },
+      "snapshot_id": "07d92402e6b90ae38333c1a76989a80df8bc8db2ed60415724c793c328cffb0b",
+      "transcript_sha256": "1c12f628be6074e54281c9cf80eb3e47f6bd5ec4700b47f29e4aebd7338397c6"
+    },
+    {
+      "case": "accepted_status_answer",
+      "groups": [],
+      "handwritten_text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "input_provenance": "Unchanged familiar development input",
+      "preview": "availability.md",
+      "preview_sha256": "1dbd9f60c9925e122714ed9c1136418a21aae89d8278dfa9cf0b3d1462f62a90",
+      "selected_source_sha256": {},
+      "snapshot_id": "30273d16397f3d130489c6cf18b5da6aaad56ad876521c3bf9028f1e8fa42f50",
+      "transcript_sha256": "dea5d43a4937d7b247352bbc5b9a17d5687a68ed087d7ea4dfb3229faf80b3a8"
+    },
+    {
+      "case": "unit_equivalence",
+      "groups": [],
+      "handwritten_text_sha256": "41373c849669ce3e3f3cc1a19f10684a023128e192aa3b84929128df2cc5b5ec",
+      "input_provenance": "Unchanged familiar development input",
+      "preview": "price-fact.md",
+      "preview_sha256": "aec2679b432a548f377441f4daf665b104848105e4e34f7adce04b67b8d69062",
+      "selected_source_sha256": {},
+      "snapshot_id": "7231cce9e3a31ebcf930ee372fcf2a2726fad5e7b28efa82b9889fb14e7ecbe6",
+      "transcript_sha256": "53d2e747b79dac2e37b620f7facb416b448d8a070fefa6021077820ca28f87d2"
+    },
+    {
+      "case": "authored_longer_context",
+      "groups": [
+        [
+          "T4",
+          "T6",
+          "T10"
+        ],
+        [
+          "T11"
+        ]
+      ],
+      "handwritten_text_sha256": "901fc6d720a7d8b4bb72d8f38c12d434ad645f4b271266885a8b77f63ec02db3",
+      "input_provenance": "Chief-authored synthetic proposal input; not held out",
+      "preview": "longer-context.md",
+      "preview_sha256": "4dcf9af419f8ff7f2128261f60de8a0368efaec1f913cc444136082d772dd9d2",
+      "selected_source_sha256": {
+        "T10": "1193d768fb6385709990d3c6e339bdcf3ead9bc5c27345d9a626228a36ce3181",
+        "T11": "9cf0e8de67a2392ce12ee5a79a9a15df0c3f68dd62c04f7b3d17a3fd2ea6153a",
+        "T4": "7a0b179d6119986f24af382eaa9ce9fcc1a940020baf3e5aa23273c461e3e5ad",
+        "T6": "21142b89cd95f3bdd09b2a6256da8c522d7f047628d681625d6c4dc362166a54"
+      },
+      "snapshot_id": "af31d0d82fafee5d2e928d168c0b6364598ff1e8435c42765ac8bcb6f9747f62",
+      "transcript_sha256": "92f205088d34053c1e43b499015c554120986c7538999835b85fbb8eb35b5f33"
+    }
+  ],
+  "input_sha256": "d2c1fc42a6d6e59ad4fd766e226862d1f137e5cd1002b6984a94abcf2bc9d35f",
+  "kind": "authored-work-review-design-1",
+  "mapping": "All source groups manually selected; text copied by existing literal Markdown helpers",
+  "model_generated": false,
+  "proposed_reply_shape": {
+    "groups": [
+      [
+        "T1",
+        "T2"
+      ]
+    ]
+  },
+  "scope": "Six familiar examples plus one Chief-authored longer synthetic example; work section only, no model-quality evidence",
+  "source_input": "evaluation/m10/v11/pairs.json",
+  "sources_annex_sha256": "50722c65c6488ff06ccb0e3121494bb1d74890569e525cc26dee936992a3c206"
+}

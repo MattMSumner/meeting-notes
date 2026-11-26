@@ -1,0 +1,54 @@
+{
+  "kind": "prospective-two-temperature-source-meaning-assessment",
+  "verdict": "FAILED_INCOMPLETE",
+  "criteria_sha256": "f47c1d05f38586cd05ff12b514ef954a00332c3923793eb09886006ace238f3a",
+  "source_candidate": "8a1c6827ce8e193a970b87c994a22f119c922bd1",
+  "generation_id": "work-review-temperature-db0372417d2c40439a297f3833a61372",
+  "counts": {
+    "completed_answer_critical": 1,
+    "criterion_met": 0,
+    "length_censored_ungraded": 1,
+    "technical_generation_failures": 0,
+    "unsent": 0
+  },
+  "rows": [
+    {
+      "slot": "01-temperature-0",
+      "temperature": 0,
+      "case": "front_loaded_timing",
+      "answer_status": "CENSORED_LENGTH",
+      "semantic_grade": null,
+      "criterion_met": null,
+      "reason": "Terminal length at exactly4096 returned outputtokens, with no answer content. No result/render/meaning callback. Incomplete/ungraded, not an omission grade.",
+      "evidence": [
+        "../work-review-temperature-1/results/01-temperature-0/progress.json",
+        "../work-review-temperature-1/results/01-temperature-0/outcome.json"
+      ]
+    },
+    {
+      "slot": "02-temperature-1",
+      "temperature": 1,
+      "case": "front_loaded_timing",
+      "answer_status": "STOP_COMPLETED",
+      "semantic_grade": "CRITICAL",
+      "criterion_met": false,
+      "reason": "Completed groups=[] selects no passage for the explicit wholeT1 undertaking and its NextTuesday timing. Complete source reached the model and remains frozen. No withdrawal or competing context. The generic empty-selection notice cannot satisfy selected-work coverage. This is a completed-answer omission, distinct from the first arm censor.",
+      "chief_verdict_saved": true,
+      "evidence": [
+        "../work-review-temperature-1/snapshots/02-temperature-1.json",
+        "../work-review-temperature-1/results/02-temperature-1/result.json",
+        "../work-review-temperature-1/results/02-temperature-1/work-review.md",
+        "../work-review-temperature-1/results/02-temperature-1/meaning-review.json"
+      ]
+    }
+  ],
+  "comparison": "Temperature1 terminated below the cap in this observation but failed the clear-control selection criterion. Temperature0 did not produce an accepted answer within the cap. No quality fix or causal/reliability conclusion.",
+  "limits": [
+    "One familiar control, one observation each, fixed0then1order.",
+    "Both new arms add num_predict4096; older uncapped timeout is not a matched control.",
+    "Cold load/cache/stochastic sequence/host memory changes confound attribution.",
+    "All120 OS thermal severity samples nominal; no temperature or GPU-frequency channel. Memory pressure varied, so host resource stability is not established.",
+    "Prior grades, productionV11, M10unbuilt/merge gates unchanged; allowanceclosed with2attempts/no retries."
+  ],
+  "independent_source_meaning_audit": "Agrees: one completed-answer critical omission, one length-censored/ungraded observation; no further requests."
+}

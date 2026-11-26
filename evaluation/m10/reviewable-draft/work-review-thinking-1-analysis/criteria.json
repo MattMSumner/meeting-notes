@@ -1,0 +1,104 @@
+{
+  "kind": "prospective-thinking-enabled-selection-criteria-1",
+  "date": "2026-11-26",
+  "owner_message": "Great, do it!",
+  "scope": "Three familiar unchanged original synthetic cases, one repetition each, fixed order; only thinking enabled in the same selection contract.",
+  "cases": [
+    {
+      "case": "front_loaded_timing",
+      "snapshot_id": "3d54314b779aa5a291dce8c64ccb415dbcef546c144d7254c31a5211361dfe15",
+      "transcript_sha256": "59aaaa160550838be15f5bd2e8860454b1ce7494eefc683cce57e4d68e9effa3",
+      "handwritten_text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "necessary_speech_references": [
+        "T1"
+      ],
+      "must": [
+        "Select the whole unambiguous sending undertaking, preserving Next Tuesday and recorded speaker/time."
+      ]
+    },
+    {
+      "case": "partial_coordination_retracted",
+      "snapshot_id": "28bb22aec3289f904af59b746b6b9e99f9a0f6baa3809e56da172320c0d21a4c",
+      "transcript_sha256": "07998397508dfcd644c5c22ec2c9e98eab6aad804ebe48fecf3b2c9f11ebcc5a",
+      "handwritten_text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "necessary_speech_references": [
+        "T1",
+        "T2"
+      ],
+      "must": [
+        "Retain surviving invoice sending together with complete original compound and withdrawal context in associated neutral review.",
+        "Human resolves current work; no current-task assertion and no demand to reproduce a single authored group array."
+      ]
+    },
+    {
+      "case": "accepted_status_answer",
+      "snapshot_id": "30273d16397f3d130489c6cf18b5da6aaad56ad876521c3bf9028f1e8fa42f50",
+      "transcript_sha256": "dea5d43a4937d7b247352bbc5b9a17d5687a68ed087d7ea4dfb3229faf80b3a8",
+      "handwritten_text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "necessary_speech_references": [],
+      "must": [
+        "Select no work groups from the availability question and affirmative status answer."
+      ]
+    }
+  ],
+  "request_budget": {
+    "owner_message": "Great, do it!",
+    "proposal": "Three synthetic cases, thinking enabled; fixed prompt/schema/renderer; three requests/180s each/600s overall/no retries; stop critical or technical failure.",
+    "base": "7028c1efa4e4df78eda5d85dc9aa68939af48242",
+    "cases": [
+      "front_loaded_timing",
+      "partial_coordination_retracted",
+      "accepted_status_answer"
+    ],
+    "generation_requests": 3,
+    "repetitions": 1,
+    "overall_seconds": 600,
+    "per_generation_seconds": 180,
+    "per_metadata_seconds": 10,
+    "retries": 0,
+    "model": "qwen3.5:9b-q4_K_M",
+    "think": true,
+    "stream": true,
+    "temperature": 0,
+    "num_ctx": 32768,
+    "chief_review_between_requests": true,
+    "previous_allowances_closed": true
+  },
+  "input_sha256": "d2c1fc42a6d6e59ad4fd766e226862d1f137e5cd1002b6984a94abcf2bc9d35f",
+  "accepted_work_review_source_sha256": "2f942043ae90a892141d81b7d705666d4e15e2907ed09d6ec4c2c4f59c493a68",
+  "prompt_sha256": "abc044f3b3f08bc2699ec0c968610f2ef876f67a60e61954d60abd3cf0e8102f",
+  "critical": [
+    "Omitting the straightforward genuine undertaking from selected review.",
+    "Omitting surviving invoice sending or materially losing/misassociating its original/withdrawal context.",
+    "Materially misleading grouping or changed source meaning/attribution/conditions.",
+    "Invented task/currentness/owner/deadline assertion or writing represented as speech."
+  ],
+  "noncritical": [
+    "Irrelevant availability/fact/request-only selection, unnecessary groups/repetition or review burden without material meaning distortion.",
+    "Availability-only nonempty groups fail that case criterion; neutral source selection alone is not a fabricated task assertion."
+  ],
+  "interpretation": [
+    "All supplied refs validate; normalization and literal rendering establish structure/provenance, not meaning or complete coverage.",
+    "Required refs are source-based coverage anchors, not exact expected array match. Judge actual rendered association and burden.",
+    "A full transcript annex or generic warning cannot rescue missing selected work.",
+    "All original writing stays separate/unchanged and excluded from model input.",
+    "Chief agent assesses each saved valid output before next request, including the final/empty result; no automatic model quality PASS.",
+    "Unsent/missing replies are incomplete and ungraded, never invented wrong-answer evidence."
+  ],
+  "cached_false_comparator": {
+    "case": "partial_coordination_retracted",
+    "request_path": "evaluation/m10/reviewable-draft/work-review-probe-1/results/01-partial_coordination_retracted/request.json",
+    "request_sha256": "19b8a827b51d332b998481a530d7bcb2a36fb0340f799520f4bca11402fd70c6",
+    "observed_sha256": "cbc9a250279af8594cd9f2d99308366e909c7b341b81dc47b19048cf4c9e704f",
+    "capture_manifest_sha256": "74f7d1b164dd21b1fa3901cb259ea71cdb5ba4b4360f88e6d3fb5551c806c6c1",
+    "observed_groups": [],
+    "new_partial_wire_difference": "Only think:false becomes think:true; same complete snapshot, prompt, schema, model, stream and options."
+  },
+  "stopping_rule": "Stop at first critical defect identified by Chief review, invalid output, transport/identity/storage/assessment/deadline failure; no retry, resume, replacement or unused-slot transfer.",
+  "limits": [
+    "Familiar development cases, not held out or blinded.",
+    "One repetition with a cached prior false observation; no reliable causal attribution or general quality estimate.",
+    "Order/load/cache/thinking/version/token/timing limits must be disclosed from actual saved evidence.",
+    "No prompt/schema/renderer change, production integration/model switch, historical regrading, saved effort, full40/full-draft or M10 acceptance."
+  ]
+}

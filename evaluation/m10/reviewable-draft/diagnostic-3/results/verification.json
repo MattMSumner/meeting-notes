@@ -1,0 +1,68 @@
+{
+  "frozen_manifest_sha256": "472027ef8be047233a3a8cf75630c922afe28c96b73911b844619c16b33e8bd3",
+  "candidate_commit": "287d85b2229e0c03c6434337a2337bf777e5a136",
+  "prior_entries_verified": 736,
+  "current_freeze_entries_verified": 20,
+  "http_exchanges": {
+    "POST": 6,
+    "GET": 24
+  },
+  "elapsed_seconds": 247.31033712497447,
+  "requests": 6,
+  "retries": 0,
+  "unsent": 0,
+  "failed": 0,
+  "drafts_replayed": 6,
+  "source_model_identity": "All before/after identities match the exact frozen version/model/digest.",
+  "normalizations": [
+    "cancellation_with_new_task: raw context_sources [T1] excludes primary T1 in decoded selection; raw preserved."
+  ],
+  "rows": [
+    {
+      "case": "unit_equivalence",
+      "reproduces": true,
+      "actions": 0,
+      "review_sources": [],
+      "elapsed_seconds": 32.01121012493968
+    },
+    {
+      "case": "accepted_status_answer",
+      "reproduces": true,
+      "actions": 0,
+      "review_sources": [],
+      "elapsed_seconds": 22.68126566603314
+    },
+    {
+      "case": "partial_coordination_retracted",
+      "reproduces": true,
+      "actions": 0,
+      "review_sources": [],
+      "elapsed_seconds": 19.59421062504407
+    },
+    {
+      "case": "cancellation_with_new_task",
+      "reproduces": true,
+      "actions": 1,
+      "review_sources": [],
+      "elapsed_seconds": 46.72536525002215
+    },
+    {
+      "case": "qualified_external_timing",
+      "reproduces": true,
+      "actions": 1,
+      "review_sources": [
+        "T1",
+        "T2"
+      ],
+      "elapsed_seconds": 66.48310462501831
+    },
+    {
+      "case": "additional",
+      "reproduces": true,
+      "actions": 2,
+      "review_sources": [],
+      "elapsed_seconds": 59.6664671250619
+    }
+  ],
+  "quality_assessment": "Separate source-based assessment; mechanical completion is not quality acceptance."
+}

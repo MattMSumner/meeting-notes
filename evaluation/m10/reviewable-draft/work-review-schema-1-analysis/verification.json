@@ -1,0 +1,792 @@
+{
+  "accounting": {
+    "accounting_boundary": "after final.json save and inventory hashing; before manifest.json write",
+    "answer_complete": true,
+    "artifact_errors": [],
+    "authoritative": true,
+    "automated_quality_pass": false,
+    "capture_complete": true,
+    "counts": {
+      "answers": 3,
+      "failed": 0,
+      "length_censored": 0,
+      "meaning_reviews": 3,
+      "stop_completed": 3,
+      "transport_complete": 3,
+      "unsent": 0
+    },
+    "elapsed": 298.3436193340458,
+    "failed": [],
+    "length_censored": [],
+    "overrun_seconds": 0.0,
+    "possibly_sent": 3,
+    "semantic_complete": true,
+    "server_compute_cancellation_guaranteed": false,
+    "slots": [
+      {
+        "case": "front_loaded_timing",
+        "elapsed": 38.922992250008974,
+        "exchange": {
+          "deadline_monotonic": 378455.109203958,
+          "elapsed": 14.475825499976054,
+          "error": null,
+          "killed": false,
+          "overrun_seconds": 0.0,
+          "reaped": true,
+          "returncode": 0,
+          "server_compute_cancellation_guaranteed": false,
+          "started_monotonic": 378275.109265125,
+          "timed_out": false
+        },
+        "generation_deadline_monotonic": 378455.109203958,
+        "generation_id": "work-review-schema-848970109b774c66ba76b63352f5e686/01-front_loaded_timing",
+        "manifest_sha256": "180b797197a8178db7aefeb467bdcfac8bdc7e007a615336355bde483a2f4876",
+        "meaning_review": {
+          "assessment": "MEETS the clear-commitment criterion: the selected complete T1 preserves Sam\u2019s explicit undertaking to send the draft and the full Next Tuesday timing. The saved source has no withdrawal or competing context; the literal passage is correctly framed for review, with original writing separately unchanged. No critical selection defect identified.",
+          "critical": false
+        },
+        "model_neutral_payload_sha256": "eb80a5cdf302759432ed92b562665ea5057d6576447ff8502e33c41b5f8e4c13",
+        "possibly_sent": true,
+        "prepared_binding": "79c0a0a6f835287c73758239cb169b115cec1431d95d843f354da7ebe25ee812",
+        "progress": {
+          "answer_complete": true,
+          "complete_events": 295,
+          "content_characters": 44,
+          "error": null,
+          "first_byte_seconds": 6.258181583019905,
+          "first_content_seconds": 13.774122625007294,
+          "first_thinking_seconds": 6.258181583019905,
+          "length_cap_match": null,
+          "length_counter_status": "not_applicable",
+          "returned": {
+            "eval_count": 312,
+            "eval_duration": 8145157000,
+            "load_duration": 5360634750,
+            "prompt_eval_cached_count": 0,
+            "prompt_eval_count": 337,
+            "prompt_eval_duration": 884605000,
+            "total_duration": 14400045916
+          },
+          "sizes_are_tokens": false,
+          "terminal_outcome": "stop",
+          "terminal_seen": true,
+          "thinking_characters": 1265,
+          "timing_basis": "received complete event relative to child monotonic origin; not GPU time",
+          "trailing_bytes": 0,
+          "valid": true
+        },
+        "render_saved": true,
+        "request_sha256": "6556b82b67090f38798c89cdb82445a358b65658ba0eeb348127a7ed9655ee3e",
+        "result_binding": "21260b0ad1d0f2905b05fa70520d4e60c9a8ff4be40cf88025f46f6aca39faf9",
+        "slot": "01-front_loaded_timing",
+        "snapshot_id": "3d54314b779aa5a291dce8c64ccb415dbcef546c144d7254c31a5211361dfe15",
+        "snapshot_sha256": "b244f4c7f1d971f554aeeef5337639ac46e1d5d55e2945b8222f8468f9fabe19",
+        "state": "stop_completed",
+        "temperature": 1,
+        "terminal_outcome": "stop",
+        "think": true,
+        "transport_complete": true
+      },
+      {
+        "case": "partial_coordination_retracted",
+        "elapsed": 177.9580766670406,
+        "exchange": {
+          "deadline_monotonic": 378494.042620541,
+          "elapsed": 103.21718479099218,
+          "error": null,
+          "killed": false,
+          "overrun_seconds": 0.0,
+          "reaped": true,
+          "returncode": 0,
+          "server_compute_cancellation_guaranteed": false,
+          "started_monotonic": 378314.042664,
+          "timed_out": false
+        },
+        "generation_deadline_monotonic": 378494.042620541,
+        "generation_id": "work-review-schema-848970109b774c66ba76b63352f5e686/02-partial_coordination_retracted",
+        "manifest_sha256": "180b797197a8178db7aefeb467bdcfac8bdc7e007a615336355bde483a2f4876",
+        "meaning_review": {
+          "assessment": "MEETS the partial-withdrawal criterion: one focused group contains complete T1 and T2 in original order. The surviving invoice-sending undertaking remains visible together with the original compound undertaking and explicit withdrawal of review. These are labeled source passages for a person to resolve, not current-action claims. Full source context and separately preserved empty writing are intact; no critical selection defect identified.",
+          "critical": false
+        },
+        "model_neutral_payload_sha256": "b7a7e8e5a12a2de03cf0944565237840456cee767671bcd4f74c64aecb2a23f8",
+        "possibly_sent": true,
+        "prepared_binding": "5053fd259c0e19a2afd0f00159b1849d43a49162bebfbeb19040d34793e999ed",
+        "progress": {
+          "answer_complete": true,
+          "complete_events": 3458,
+          "content_characters": 26,
+          "error": null,
+          "first_byte_seconds": 0.9804161659558304,
+          "first_content_seconds": 102.79937845800305,
+          "first_thinking_seconds": 0.9804161659558304,
+          "length_cap_match": null,
+          "length_counter_status": "not_applicable",
+          "returned": {
+            "eval_count": 3765,
+            "eval_duration": 102144577000,
+            "load_duration": 2976500,
+            "prompt_eval_cached_count": 0,
+            "prompt_eval_count": 381,
+            "prompt_eval_duration": 950071000,
+            "total_duration": 103122337875
+          },
+          "sizes_are_tokens": false,
+          "terminal_outcome": "stop",
+          "terminal_seen": true,
+          "thinking_characters": 15277,
+          "timing_basis": "received complete event relative to child monotonic origin; not GPU time",
+          "trailing_bytes": 0,
+          "valid": true
+        },
+        "render_saved": true,
+        "request_sha256": "35bd3ba7659a74932ede68812a51c5cb20f30d1044ba57c936108334dedd92c4",
+        "result_binding": "807b9602ebc55ae8060fc17c044b2c456c249a87950a614246f41ecbb81ab3cb",
+        "slot": "02-partial_coordination_retracted",
+        "snapshot_id": "28bb22aec3289f904af59b746b6b9e99f9a0f6baa3809e56da172320c0d21a4c",
+        "snapshot_sha256": "6ed4698adf5b0c4b87dd8f43a54c541222d7d34fd8b507f2c5638bd7f42f226f",
+        "state": "stop_completed",
+        "temperature": 1,
+        "terminal_outcome": "stop",
+        "think": true,
+        "transport_complete": true
+      },
+      {
+        "case": "accepted_status_answer",
+        "elapsed": 81.3922095419839,
+        "exchange": {
+          "deadline_monotonic": 378672.0061815,
+          "elapsed": 59.476626291987486,
+          "error": null,
+          "killed": false,
+          "overrun_seconds": 0.0,
+          "reaped": true,
+          "returncode": 0,
+          "server_compute_cancellation_guaranteed": false,
+          "started_monotonic": 378492.006244666,
+          "timed_out": false
+        },
+        "generation_deadline_monotonic": 378672.0061815,
+        "generation_id": "work-review-schema-848970109b774c66ba76b63352f5e686/03-accepted_status_answer",
+        "manifest_sha256": "180b797197a8178db7aefeb467bdcfac8bdc7e007a615336355bde483a2f4876",
+        "meaning_review": {
+          "assessment": "MEETS the availability-only negative-control criterion: the original T1 asks whether Ravi will be away Friday and T2 answers Yes; neither turn undertakes work. The rendered selection is empty as required, with no unnecessary fact-only passage or invented undertaking. This source-specific assessment does not turn the generic empty-selection notice into a general absence-of-work guarantee. Original empty writing is separately unchanged; no critical defect identified.",
+          "critical": false
+        },
+        "model_neutral_payload_sha256": "0bd76ba7e5df20680044e7ed588a5b3b0d5fafbeac529c535f9fcfd02d2d4229",
+        "possibly_sent": true,
+        "prepared_binding": "7646333d3a0e3010e3243ca13038785b730d01dbd63de0a6502b49f3f3d9ae80",
+        "progress": {
+          "answer_complete": true,
+          "complete_events": 1935,
+          "content_characters": 14,
+          "error": null,
+          "first_byte_seconds": 0.9721195420133881,
+          "first_content_seconds": 59.29057604196714,
+          "first_thinking_seconds": 0.9721195420133881,
+          "length_cap_match": null,
+          "length_counter_status": "not_applicable",
+          "returned": {
+            "eval_count": 2210,
+            "eval_duration": 58457763000,
+            "load_duration": 1608292,
+            "prompt_eval_cached_count": 0,
+            "prompt_eval_count": 373,
+            "prompt_eval_duration": 941692000,
+            "total_duration": 59427175000
+          },
+          "sizes_are_tokens": false,
+          "terminal_outcome": "stop",
+          "terminal_seen": true,
+          "thinking_characters": 8996,
+          "timing_basis": "received complete event relative to child monotonic origin; not GPU time",
+          "trailing_bytes": 0,
+          "valid": true
+        },
+        "render_saved": true,
+        "request_sha256": "a3b65116c2dfe5db7842c9d04160889cb785d8a0921588eae204d3819b44d546",
+        "result_binding": "d67e0a28d2957316fbe633ccceea943f11cbceae110fb350de652d1659b89892",
+        "slot": "03-accepted_status_answer",
+        "snapshot_id": "30273d16397f3d130489c6cf18b5da6aaad56ad876521c3bf9028f1e8fa42f50",
+        "snapshot_sha256": "af155f5524a510a041b8f0b7501913225b20ca5ac4d11beeed0d0b9478e0b42b",
+        "state": "stop_completed",
+        "temperature": 1,
+        "terminal_outcome": "stop",
+        "think": true,
+        "transport_complete": true
+      }
+    ],
+    "stop_completed": [
+      "01-front_loaded_timing",
+      "02-partial_coordination_retracted",
+      "03-accepted_status_answer"
+    ],
+    "stop_reason": "capture complete; host assessments recorded; no automated model-quality PASS",
+    "unsent": []
+  },
+  "assessment_file": "assessment.json",
+  "capture_complete_including_seal_and_wall": true,
+  "capture_inventory_entries": 174,
+  "capture_manifest_sha256": "4674e69b107bceb14d9727818234e07b3addd542738dbe71cb4aa8a8de678cb9",
+  "conservative_generation_attempts": 3,
+  "date": "2026-11-26",
+  "exchanges": [
+    {
+      "kind": "metadata",
+      "path": "results/01-front_loaded_timing/after/show/exchange.json",
+      "state": {
+        "deadline_monotonic": 378299.772751875,
+        "elapsed": 0.04144900001119822,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 378289.772814125,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/01-front_loaded_timing/after/tags/exchange.json",
+      "state": {
+        "deadline_monotonic": 378299.724735,
+        "elapsed": 0.04736850003246218,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 378289.724774208,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/01-front_loaded_timing/after/version/exchange.json",
+      "state": {
+        "deadline_monotonic": 378299.683189083,
+        "elapsed": 0.04092295904411003,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 378289.683296541,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/01-front_loaded_timing/before/show/exchange.json",
+      "state": {
+        "deadline_monotonic": 378284.940334125,
+        "elapsed": 0.048038957989774644,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 378274.940393625,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/01-front_loaded_timing/before/tags/exchange.json",
+      "state": {
+        "deadline_monotonic": 378284.891712416,
+        "elapsed": 0.04800375003833324,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 378274.891757375,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/01-front_loaded_timing/before/version/exchange.json",
+      "state": {
+        "deadline_monotonic": 378284.842917291,
+        "elapsed": 0.048176290991250426,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 378274.84303475,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "generation",
+      "path": "results/01-front_loaded_timing/response/exchange.json",
+      "state": {
+        "deadline_monotonic": 378455.109203958,
+        "elapsed": 14.475825499976054,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 378275.109265125,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/02-partial_coordination_retracted/after/show/exchange.json",
+      "state": {
+        "deadline_monotonic": 378427.483942041,
+        "elapsed": 0.08142012497410178,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 378417.483999416,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/02-partial_coordination_retracted/after/tags/exchange.json",
+      "state": {
+        "deadline_monotonic": 378427.435088791,
+        "elapsed": 0.04819645901443437,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 378417.435126791,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/02-partial_coordination_retracted/after/version/exchange.json",
+      "state": {
+        "deadline_monotonic": 378427.386151083,
+        "elapsed": 0.048311457969248295,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 378417.386258375,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/02-partial_coordination_retracted/before/show/exchange.json",
+      "state": {
+        "deadline_monotonic": 378323.86839875,
+        "elapsed": 0.04815349995624274,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 378313.868454958,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/02-partial_coordination_retracted/before/tags/exchange.json",
+      "state": {
+        "deadline_monotonic": 378323.819741666,
+        "elapsed": 0.04813020798610523,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 378313.81978475,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/02-partial_coordination_retracted/before/version/exchange.json",
+      "state": {
+        "deadline_monotonic": 378323.77095225,
+        "elapsed": 0.04811170796165243,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 378313.7710545,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "generation",
+      "path": "results/02-partial_coordination_retracted/response/exchange.json",
+      "state": {
+        "deadline_monotonic": 378494.042620541,
+        "elapsed": 103.21718479099218,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 378314.042664,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/03-accepted_status_answer/after/show/exchange.json",
+      "state": {
+        "deadline_monotonic": 378561.68520425,
+        "elapsed": 0.04853245796402916,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 378551.68527125,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/03-accepted_status_answer/after/tags/exchange.json",
+      "state": {
+        "deadline_monotonic": 378561.64358675,
+        "elapsed": 0.040841583046130836,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 378551.643630625,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/03-accepted_status_answer/after/version/exchange.json",
+      "state": {
+        "deadline_monotonic": 378561.598989208,
+        "elapsed": 0.04383304197108373,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 378551.599104291,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/03-accepted_status_answer/before/show/exchange.json",
+      "state": {
+        "deadline_monotonic": 378501.824802041,
+        "elapsed": 0.048140082973986864,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 378491.8248615,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/03-accepted_status_answer/before/tags/exchange.json",
+      "state": {
+        "deadline_monotonic": 378501.776605291,
+        "elapsed": 0.047541791980620474,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 378491.776649583,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/03-accepted_status_answer/before/version/exchange.json",
+      "state": {
+        "deadline_monotonic": 378501.727670208,
+        "elapsed": 0.04830262501491234,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 378491.727771708,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "generation",
+      "path": "results/03-accepted_status_answer/response/exchange.json",
+      "state": {
+        "deadline_monotonic": 378672.0061815,
+        "elapsed": 59.476626291987486,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 378492.006244666,
+        "timed_out": false
+      },
+      "status": 200
+    }
+  ],
+  "freeze_entries": 85,
+  "freeze_manifest_sha256": "180b797197a8178db7aefeb467bdcfac8bdc7e007a615336355bde483a2f4876",
+  "full_run_wall_seconds": 298.3438692090567,
+  "gates": [
+    {
+      "matched": true,
+      "phase": "before",
+      "slot": "01-front_loaded_timing"
+    },
+    {
+      "matched": true,
+      "phase": "after",
+      "slot": "01-front_loaded_timing"
+    },
+    {
+      "matched": true,
+      "phase": "before",
+      "slot": "02-partial_coordination_retracted"
+    },
+    {
+      "matched": true,
+      "phase": "after",
+      "slot": "02-partial_coordination_retracted"
+    },
+    {
+      "matched": true,
+      "phase": "before",
+      "slot": "03-accepted_status_answer"
+    },
+    {
+      "matched": true,
+      "phase": "after",
+      "slot": "03-accepted_status_answer"
+    }
+  ],
+  "identity_gates_verified": 6,
+  "kind": "once-only-schema-grounded-prompt-diagnostic-1",
+  "limitations": "Three familiar controls, fixed order, one observation each; no matched causal prompt-benefit/reliability/production/M10 claim. Old outcomes unchanged.",
+  "post_audit_observation": {
+    "boundary": "After execution.json save/close; this terminal observation is outside capture and the pre-save execution audit",
+    "deadline_reached": false,
+    "execution_audit_saved": true,
+    "wall_including_execution_audit_seconds": 298.34412662504474
+  },
+  "post_seal_observation": {
+    "boundary": "after manifest write attempt; separate from sealed accounting",
+    "completion_eligible": true,
+    "deadline_reached": false,
+    "elapsed": 298.3438382089953,
+    "manifest_write_seconds": 0.00020887498976662755,
+    "overrun_seconds": 0.0,
+    "seal_attempt_seconds": 0.00028791697695851326,
+    "sealed": true
+  },
+  "prior_tracked_files_verified": 2099,
+  "prospective_criteria_sha256": "b70b169239a9673526795a3b480913d2dbe53b4e63aed07536d457b9eebeca5e",
+  "published_freeze_commit": "cf02e18b682050691abb2005cb3873d68c2c12ae",
+  "retries": 0,
+  "rows": [
+    {
+      "case": "front_loaded_timing",
+      "groups": [
+        [
+          "T1"
+        ]
+      ],
+      "groups_count": 1,
+      "http_elapsed_seconds": 14.475825499976054,
+      "meaning_review": {
+        "assessment": "MEETS the clear-commitment criterion: the selected complete T1 preserves Sam\u2019s explicit undertaking to send the draft and the full Next Tuesday timing. The saved source has no withdrawal or competing context; the literal passage is correctly framed for review, with original writing separately unchanged. No critical selection defect identified.",
+        "critical": false
+      },
+      "possibly_sent": true,
+      "progress": {
+        "answer_complete": true,
+        "complete_events": 295,
+        "content_characters": 44,
+        "error": null,
+        "first_byte_seconds": 6.258181583019905,
+        "first_content_seconds": 13.774122625007294,
+        "first_thinking_seconds": 6.258181583019905,
+        "length_cap_match": null,
+        "length_counter_status": "not_applicable",
+        "returned": {
+          "eval_count": 312,
+          "eval_duration": 8145157000,
+          "load_duration": 5360634750,
+          "prompt_eval_cached_count": 0,
+          "prompt_eval_count": 337,
+          "prompt_eval_duration": 884605000,
+          "total_duration": 14400045916
+        },
+        "sizes_are_tokens": false,
+        "terminal_outcome": "stop",
+        "terminal_seen": true,
+        "thinking_characters": 1265,
+        "timing_basis": "received complete event relative to child monotonic origin; not GPU time",
+        "trailing_bytes": 0,
+        "valid": true
+      },
+      "raw_body_bytes": 43794,
+      "selected_turns_count": 1,
+      "slot": "01-front_loaded_timing",
+      "slot_elapsed_seconds": 38.922992250008974,
+      "state": "stop_completed"
+    },
+    {
+      "case": "partial_coordination_retracted",
+      "groups": [
+        [
+          "T1",
+          "T2"
+        ]
+      ],
+      "groups_count": 1,
+      "http_elapsed_seconds": 103.21718479099218,
+      "meaning_review": {
+        "assessment": "MEETS the partial-withdrawal criterion: one focused group contains complete T1 and T2 in original order. The surviving invoice-sending undertaking remains visible together with the original compound undertaking and explicit withdrawal of review. These are labeled source passages for a person to resolve, not current-action claims. Full source context and separately preserved empty writing are intact; no critical selection defect identified.",
+        "critical": false
+      },
+      "possibly_sent": true,
+      "progress": {
+        "answer_complete": true,
+        "complete_events": 3458,
+        "content_characters": 26,
+        "error": null,
+        "first_byte_seconds": 0.9804161659558304,
+        "first_content_seconds": 102.79937845800305,
+        "first_thinking_seconds": 0.9804161659558304,
+        "length_cap_match": null,
+        "length_counter_status": "not_applicable",
+        "returned": {
+          "eval_count": 3765,
+          "eval_duration": 102144577000,
+          "load_duration": 2976500,
+          "prompt_eval_cached_count": 0,
+          "prompt_eval_count": 381,
+          "prompt_eval_duration": 950071000,
+          "total_duration": 103122337875
+        },
+        "sizes_are_tokens": false,
+        "terminal_outcome": "stop",
+        "terminal_seen": true,
+        "thinking_characters": 15277,
+        "timing_basis": "received complete event relative to child monotonic origin; not GPU time",
+        "trailing_bytes": 0,
+        "valid": true
+      },
+      "raw_body_bytes": 513565,
+      "selected_turns_count": 2,
+      "slot": "02-partial_coordination_retracted",
+      "slot_elapsed_seconds": 177.9580766670406,
+      "state": "stop_completed"
+    },
+    {
+      "case": "accepted_status_answer",
+      "groups": [],
+      "groups_count": 0,
+      "http_elapsed_seconds": 59.476626291987486,
+      "meaning_review": {
+        "assessment": "MEETS the availability-only negative-control criterion: the original T1 asks whether Ravi will be away Friday and T2 answers Yes; neither turn undertakes work. The rendered selection is empty as required, with no unnecessary fact-only passage or invented undertaking. This source-specific assessment does not turn the generic empty-selection notice into a general absence-of-work guarantee. Original empty writing is separately unchanged; no critical defect identified.",
+        "critical": false
+      },
+      "possibly_sent": true,
+      "progress": {
+        "answer_complete": true,
+        "complete_events": 1935,
+        "content_characters": 14,
+        "error": null,
+        "first_byte_seconds": 0.9721195420133881,
+        "first_content_seconds": 59.29057604196714,
+        "first_thinking_seconds": 0.9721195420133881,
+        "length_cap_match": null,
+        "length_counter_status": "not_applicable",
+        "returned": {
+          "eval_count": 2210,
+          "eval_duration": 58457763000,
+          "load_duration": 1608292,
+          "prompt_eval_cached_count": 0,
+          "prompt_eval_count": 373,
+          "prompt_eval_duration": 941692000,
+          "total_duration": 59427175000
+        },
+        "sizes_are_tokens": false,
+        "terminal_outcome": "stop",
+        "terminal_seen": true,
+        "thinking_characters": 8996,
+        "timing_basis": "received complete event relative to child monotonic origin; not GPU time",
+        "trailing_bytes": 0,
+        "valid": true
+      },
+      "raw_body_bytes": 287937,
+      "selected_turns_count": 0,
+      "slot": "03-accepted_status_answer",
+      "slot_elapsed_seconds": 81.3922095419839,
+      "state": "stop_completed"
+    }
+  ],
+  "semantic_assessment": "Three explicit Chief in-run meaning reviews and independent primary-source assessment agree: all three prospective criteria met, zero critical/noncritical findings and no incomplete cases. This is one observation per familiar control, not broader quality or reliability acceptance.",
+  "source_candidate": "2d48ec947d1676d6901d2fa2ea1d08d924536ed7"
+}

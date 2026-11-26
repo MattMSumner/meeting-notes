@@ -1,0 +1,138 @@
+{
+  "started_at": "2026-11-05T11:01:54.616663-05:00",
+  "revision": "f8bcca9d8ad09cbdcf5ac862623c0d45e1e79fc0",
+  "approved_total_request_cap": 78,
+  "approved_repetitions": 1,
+  "budget_basis": "User requested a new evaluation; same bounded one-repetition scope announced before starting",
+  "stage": 1,
+  "stage_repetitions": 1,
+  "stage_caps": {
+    "baseline": 52,
+    "proposed": 26
+  },
+  "gate": "One repetition only; score all outputs. No further inference authorized.",
+  "frozen_hashes": {
+    "README.md": "4cb2765089bf24da18f0975d7b80ae8fa0bcee6696adf80a8b3238226f967046",
+    "baseline/meeting_notes/__init__.py": "919ef1ac8abe04b1965cf28437f21c34cdeddf202c588b61ab7cc7daa630ac39",
+    "baseline/meeting_notes/figures.py": "239fc023e0c4176164eb2f0009a2e9daff0341b3e39b176e8bed4a683b2a1ce4",
+    "baseline/meeting_notes/meeting.py": "5bf2b35f14500897e76feb8841a34d3462e24b0e3d74d982a17972df9d4bb6be",
+    "baseline/meeting_notes/ollama.py": "622fba9f3e777e9736183e4da4aae7b876050c99c1d9c03c1be9dcfb67883594",
+    "baseline/meeting_notes/prompts/summary.md": "c852a869f224a78216e79d71dad91eafd3bf9adb87730a284639c33a4b0c1c2a",
+    "baseline/meeting_notes/summary.py": "19efab90c2e03afcad7b356d2af24cbb507d04fe8d9876842ebaae6a5a614378",
+    "baseline/schema.json": "a03923835b7f3aec3881f968f818d78b8ac2b3ec6f17c3abe8716fe5e1545e38",
+    "pairs.json": "353a797cdc961297f8ff217f83b3bdb62656372de8f7b267fd3c9a6813652631",
+    "proposed/meeting_notes/__init__.py": "919ef1ac8abe04b1965cf28437f21c34cdeddf202c588b61ab7cc7daa630ac39",
+    "proposed/meeting_notes/audit.py": "4caf9db6962135838bd846b8cf46080607c6591aec6cf08644ee9ac8a8883738",
+    "proposed/meeting_notes/compiler.py": "75b5370c157e4382120cffde114d67b1737ffd9c9941844bf0cbcdc02b5fe0dd",
+    "proposed/meeting_notes/compiler_v4.py": "a5ab19432542c9cb17b8f04766b92d98c15aade8f2de0b6263dc21f13cd47647",
+    "proposed/meeting_notes/contract.py": "8d0cd2c20cf2ae35fcaf7d703800d1386df49f4c7eee3975f3ad61794cf6cc91",
+    "proposed/meeting_notes/contract_v4.py": "25b56cc838c3cc466e5a7fefb719df50704ef26151b88f359d264cd5800d3d03",
+    "proposed/meeting_notes/evidence.py": "6e1e122e7639706df21e291628b0c6f2a2812e9fcab2c2433a8014bfcb2557ce",
+    "proposed/meeting_notes/figures.py": "507c9e09ea1af49605df20fe4a60dd00ae8ca0ebbce5523479f12275d983a456",
+    "proposed/meeting_notes/grounding.py": "35247dfbbb1eeddf710cfd88b79945840da0d38c80d65941bc1ca74e1d9074fc",
+    "proposed/meeting_notes/meeting.py": "5bf2b35f14500897e76feb8841a34d3462e24b0e3d74d982a17972df9d4bb6be",
+    "proposed/meeting_notes/ollama.py": "181d3898a68d2f6959128d3a802d7efc2ee92bc6dee4a16fef6663ee63434ae6",
+    "proposed/meeting_notes/prompts/summary.md": "f153331bf99d6d36ec992656d6307f9cb8ad7f157f2121b46431be538c5e35ba",
+    "proposed/meeting_notes/summary.py": "7515b272644c5f2c20608a9e80fc283f7712367cf6a7f3b66f89f280d15986f5",
+    "proposed/published-schema.json": "c60fe65a0f4c617d788b56d77a4b4b724f8e4bf1c8400c6147ed7a227c3b4041",
+    "proposed/request-schemas.json": "419bbc36c618085b9bf60bdfdb4df48cce7d8b9af192bc218a603b714c18785d",
+    "proposed/schema.json": "382e42b346b8bf3d9db785b1b2a2e126eebbf0cd98bdaf169c581afb0c3645fa",
+    "replay/README.md": "aaf486e7b855777fdccf8e10e837f2d1ead5a9b98df7890b7f69f946cd1ba6e7",
+    "replay/results.jsonl": "e7992fd00d95891ff8edff3a3a7ad02a4d9c87c54dd483bf21425ca35ca26334",
+    "replay.py": "72038d1a6ae30bf53cd317cf9072b02a9b67a292a1e6745173f3ee5c7d1e1cda",
+    "rubric.md": "1ce64ccb6966fa07ea4bf8b2138250e69af424db105dfd879468af7d2af7f5b4",
+    "runner.py": "c1ff5727c3fd0d3632cb202a8e92720af61b01f990a746060f9e4962ba3c0639",
+    "settings.json": "1a10124d8e791a0253895e564c2850f74802ca0dcb1b8912eda2600db87946a6"
+  },
+  "environment_before": {
+    "ollama": {
+      "version": "0.40.9"
+    },
+    "model": {
+      "name": "qwen3:30b",
+      "model": "qwen3:30b",
+      "modified_at": "2026-10-20T13:20:18.92312213-04:00",
+      "size": 18556699314,
+      "digest": "ad815644918f0eaab341c12b67837cc6dd4562342cdaf118f83d5d554cb37226",
+      "details": {
+        "parent_model": "",
+        "format": "gguf",
+        "family": "qwen3moe",
+        "families": [
+          "qwen3moe"
+        ],
+        "parameter_size": "30.5B",
+        "quantization_level": "Q4_K_M",
+        "context_length": 262144,
+        "embedding_length": 2048,
+        "runner": "ggml"
+      },
+      "capabilities": [
+        "completion",
+        "tools",
+        "thinking"
+      ]
+    }
+  },
+  "environment_after_baseline": {
+    "ollama": {
+      "version": "0.40.9"
+    },
+    "model": {
+      "name": "qwen3:30b",
+      "model": "qwen3:30b",
+      "modified_at": "2026-10-20T13:20:18.92312213-04:00",
+      "size": 18556699314,
+      "digest": "ad815644918f0eaab341c12b67837cc6dd4562342cdaf118f83d5d554cb37226",
+      "details": {
+        "parent_model": "",
+        "format": "gguf",
+        "family": "qwen3moe",
+        "families": [
+          "qwen3moe"
+        ],
+        "parameter_size": "30.5B",
+        "quantization_level": "Q4_K_M",
+        "context_length": 262144,
+        "embedding_length": 2048,
+        "runner": "ggml"
+      },
+      "capabilities": [
+        "completion",
+        "tools",
+        "thinking"
+      ]
+    }
+  },
+  "environment_after_proposed": {
+    "ollama": {
+      "version": "0.40.9"
+    },
+    "model": {
+      "name": "qwen3:30b",
+      "model": "qwen3:30b",
+      "modified_at": "2026-10-20T13:20:18.92312213-04:00",
+      "size": 18556699314,
+      "digest": "ad815644918f0eaab341c12b67837cc6dd4562342cdaf118f83d5d554cb37226",
+      "details": {
+        "parent_model": "",
+        "format": "gguf",
+        "family": "qwen3moe",
+        "families": [
+          "qwen3moe"
+        ],
+        "parameter_size": "30.5B",
+        "quantization_level": "Q4_K_M",
+        "context_length": 262144,
+        "embedding_length": 2048,
+        "runner": "ggml"
+      },
+      "capabilities": [
+        "completion",
+        "tools",
+        "thinking"
+      ]
+    }
+  },
+  "finished_at": "2026-11-05T11:18:22.379820-05:00"
+}

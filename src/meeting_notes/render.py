@@ -77,6 +77,10 @@ def render_transcript(meeting: Meeting, lines: Sequence[Line], warnings: Sequenc
 
 def _action_item(item: ActionItem) -> str:
     text = f"**{item.owner}**: {item.task}" if item.owner else item.task
+    if item.review:
+        return f"- [ ] Review required — source commitment: {text}\n" + "\n".join(
+            f"  - {entry}" for entry in item.review
+        )
     return f"- [ ] {text}" + (f" (due {item.due})" if item.due else "")
 
 
@@ -96,7 +100,7 @@ def render_note(
     if summary is None:
         if has_speech:
             out += [
-                f"> [!note] No summary yet. To write one: `notes summarize {meeting_id}`",
+                f"> [!note] Ready to enhance. Run `notes enhance {meeting_id}`",
                 "",
             ]
         else:
@@ -108,6 +112,16 @@ def render_note(
         out += ["## Decisions", "", *_bullets(summary.decisions), ""]
         actions = [_action_item(item) for item in summary.action_items] or ["_None._"]
         out += ["## Action items", "", *actions, ""]
+        if summary.notes_context:
+            out += ["## From your notes", "", *_bullets(summary.notes_context), ""]
+        if summary.conflicts:
+            out += ["## Conflicts", ""]
+            for conflict in summary.conflicts:
+                out += [
+                    f"- **{conflict.topic}** — Transcript: {conflict.transcript} "
+                    f"Handwritten notes: {conflict.handwritten}",
+                    "",
+                ]
     if meeting.handwritten_path is not None:
         out += [f"Handwritten notes: [[{meeting.handwritten_path.stem}]]", ""]
     out.append(f"Transcript: [[{meeting.transcript_stem}]]")

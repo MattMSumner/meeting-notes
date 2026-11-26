@@ -1,0 +1,21 @@
+{
+  "interval_seconds": 2,
+  "limit_seconds": 600,
+  "thermal_helper": "/private/tmp/work-review-temperature-thermal",
+  "thermal_helper_sha256": "c4b8b6a0a5c576a6ff10a71be28a0245be81210ae6d3ed1e7278819d9c1876ac",
+  "thermal_source_sha256": "b6fcc756f8065a4926d2c6b429104df1862f305eb1ae3aad37068b1ba1a2e2de",
+  "sampler_source_sha256": "8dbb50d963ef77a5429efb6feb7193cb6e9de8d6ff22ddbc8beafa90fa67f4bd",
+  "thermal_helper_validation": {
+    "active_logical_processors": 14,
+    "channel_limit": "OS thermal severity only; temperature and GPU frequency unavailable",
+    "gpu_clock_hz": null,
+    "logical_processors": 14,
+    "low_power_mode": false,
+    "physical_memory_bytes": 51539607552,
+    "temperature_celsius": null,
+    "thermal_state": "nominal",
+    "thermal_state_raw": 0
+  },
+  "build_command": "xcrun swiftc -module-cache-path /private/tmp/work-review-temperature-module-cache .chief/runs/work-review-temperature-20261126/thermal.swift -o /private/tmp/work-review-temperature-thermal",
+  "sampling_limit": "OS thermal severity and aggregate memory only; no temperature/GPU frequency; sampler overhead measured."
+}

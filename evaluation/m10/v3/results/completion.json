@@ -1,0 +1,297 @@
+{
+  "finished_at": "2026-11-04T11:41:19.171237-05:00",
+  "quality_scoring": "failed: 8/13 proposed cases blocked; completeness regresses versus baseline",
+  "stage_gate": "Stopped after repetition 1; repetitions 2 and 3 not run",
+  "requests_used": 38,
+  "approved_total_cap": 234,
+  "unused_requests": 196,
+  "arms": {
+    "baseline": {
+      "completed_cases": 13,
+      "published": 13,
+      "blocked": 0,
+      "requests": 13,
+      "correction_requests": 0,
+      "transport_errors": 0,
+      "outcomes": [
+        {
+          "case": "empty",
+          "repetition": 1,
+          "published": true,
+          "requests": 1,
+          "selected_attempt": null,
+          "published_warning_count": 0,
+          "withheld_timing_count": 0,
+          "error": null
+        },
+        {
+          "case": "sparse",
+          "repetition": 1,
+          "published": true,
+          "requests": 1,
+          "selected_attempt": null,
+          "published_warning_count": 0,
+          "withheld_timing_count": 0,
+          "error": null
+        },
+        {
+          "case": "additional",
+          "repetition": 1,
+          "published": true,
+          "requests": 1,
+          "selected_attempt": null,
+          "published_warning_count": 0,
+          "withheld_timing_count": 0,
+          "error": null
+        },
+        {
+          "case": "conflicting",
+          "repetition": 1,
+          "published": true,
+          "requests": 1,
+          "selected_attempt": null,
+          "published_warning_count": 0,
+          "withheld_timing_count": 0,
+          "error": null
+        },
+        {
+          "case": "ambiguous_dates",
+          "repetition": 1,
+          "published": true,
+          "requests": 1,
+          "selected_attempt": null,
+          "published_warning_count": 0,
+          "withheld_timing_count": 0,
+          "error": null
+        },
+        {
+          "case": "same_speaker_tasks",
+          "repetition": 1,
+          "published": true,
+          "requests": 1,
+          "selected_attempt": null,
+          "published_warning_count": 0,
+          "withheld_timing_count": 0,
+          "error": null
+        },
+        {
+          "case": "coordinated_tasks",
+          "repetition": 1,
+          "published": true,
+          "requests": 1,
+          "selected_attempt": null,
+          "published_warning_count": 0,
+          "withheld_timing_count": 0,
+          "error": null
+        },
+        {
+          "case": "later_timing",
+          "repetition": 1,
+          "published": true,
+          "requests": 1,
+          "selected_attempt": null,
+          "published_warning_count": 0,
+          "withheld_timing_count": 0,
+          "error": null
+        },
+        {
+          "case": "revised_timing",
+          "repetition": 1,
+          "published": true,
+          "requests": 1,
+          "selected_attempt": null,
+          "published_warning_count": 0,
+          "withheld_timing_count": 0,
+          "error": null
+        },
+        {
+          "case": "shared_numbers",
+          "repetition": 1,
+          "published": true,
+          "requests": 1,
+          "selected_attempt": null,
+          "published_warning_count": 0,
+          "withheld_timing_count": 0,
+          "error": null
+        },
+        {
+          "case": "status_conflict",
+          "repetition": 1,
+          "published": true,
+          "requests": 1,
+          "selected_attempt": null,
+          "published_warning_count": 0,
+          "withheld_timing_count": 0,
+          "error": null
+        },
+        {
+          "case": "tentative_task",
+          "repetition": 1,
+          "published": true,
+          "requests": 1,
+          "selected_attempt": null,
+          "published_warning_count": 0,
+          "withheld_timing_count": 0,
+          "error": null
+        },
+        {
+          "case": "front_loaded_timing",
+          "repetition": 1,
+          "published": true,
+          "requests": 1,
+          "selected_attempt": null,
+          "published_warning_count": 0,
+          "withheld_timing_count": 0,
+          "error": null
+        }
+      ],
+      "output_sha256": "6efa351d667d7e039e91dfda78a02c9fcdc7b5bbdfeaa73b7e37e60ed9efbd60"
+    },
+    "proposed": {
+      "completed_cases": 13,
+      "published": 5,
+      "blocked": 8,
+      "requests": 25,
+      "correction_requests": 12,
+      "transport_errors": 0,
+      "outcomes": [
+        {
+          "case": "empty",
+          "repetition": 1,
+          "published": false,
+          "requests": 2,
+          "selected_attempt": null,
+          "published_warning_count": 0,
+          "withheld_timing_count": 0,
+          "error": "Enhancement failed evidence validation: action_items.0: cite the complete trailing timing phrase after the task"
+        },
+        {
+          "case": "sparse",
+          "repetition": 1,
+          "published": true,
+          "requests": 2,
+          "selected_attempt": 1,
+          "published_warning_count": 0,
+          "withheld_timing_count": 0,
+          "error": null
+        },
+        {
+          "case": "additional",
+          "repetition": 1,
+          "published": false,
+          "requests": 2,
+          "selected_attempt": null,
+          "published_warning_count": 0,
+          "withheld_timing_count": 0,
+          "error": "Enhancement failed evidence validation: action_items.0: cite the complete trailing timing phrase after the task; action_items.1: cite the complete trailing timing phrase after the task"
+        },
+        {
+          "case": "conflicting",
+          "repetition": 1,
+          "published": false,
+          "requests": 2,
+          "selected_attempt": null,
+          "published_warning_count": 0,
+          "withheld_timing_count": 0,
+          "error": "Enhancement failed evidence validation: conflict: claim_estimate_notes must quote the complete source statement; conflict: claim_delivery_notes must quote the complete source statement"
+        },
+        {
+          "case": "ambiguous_dates",
+          "repetition": 1,
+          "published": true,
+          "requests": 2,
+          "selected_attempt": 1,
+          "published_warning_count": 0,
+          "withheld_timing_count": 0,
+          "error": null
+        },
+        {
+          "case": "same_speaker_tasks",
+          "repetition": 1,
+          "published": true,
+          "requests": 2,
+          "selected_attempt": 1,
+          "published_warning_count": 0,
+          "withheld_timing_count": 0,
+          "error": null
+        },
+        {
+          "case": "coordinated_tasks",
+          "repetition": 1,
+          "published": false,
+          "requests": 2,
+          "selected_attempt": null,
+          "published_warning_count": 0,
+          "withheld_timing_count": 0,
+          "error": "Enhancement failed evidence validation: action_items.0: commitment must cite a complete transcript statement; action_items.0: coordinated commitment is ambiguous; review task/timing association; action_items.0: cite the complete trailing timing phrase after the task; action_items.1: commitment must cite a complete transcript statement; Timing needs review for check rollback: no deadline was assigned. Source statement: I will send the draft Friday and check rollback."
+        },
+        {
+          "case": "later_timing",
+          "repetition": 1,
+          "published": false,
+          "requests": 2,
+          "selected_attempt": null,
+          "published_warning_count": 0,
+          "withheld_timing_count": 0,
+          "error": "Enhancement failed evidence validation: action_items.0: deadline must come from this task's commitment, not another passage"
+        },
+        {
+          "case": "revised_timing",
+          "repetition": 1,
+          "published": false,
+          "requests": 2,
+          "selected_attempt": null,
+          "published_warning_count": 0,
+          "withheld_timing_count": 0,
+          "error": "Enhancement failed evidence validation: action_items.0: cite the complete trailing timing phrase after the task"
+        },
+        {
+          "case": "shared_numbers",
+          "repetition": 1,
+          "published": true,
+          "requests": 1,
+          "selected_attempt": 0,
+          "published_warning_count": 0,
+          "withheld_timing_count": 0,
+          "error": null
+        },
+        {
+          "case": "status_conflict",
+          "repetition": 1,
+          "published": true,
+          "requests": 2,
+          "selected_attempt": 1,
+          "published_warning_count": 0,
+          "withheld_timing_count": 0,
+          "error": null
+        },
+        {
+          "case": "tentative_task",
+          "repetition": 1,
+          "published": false,
+          "requests": 2,
+          "selected_attempt": null,
+          "published_warning_count": 0,
+          "withheld_timing_count": 0,
+          "error": "Enhancement failed evidence validation: action_items.0: cite the complete trailing timing phrase after the task"
+        },
+        {
+          "case": "front_loaded_timing",
+          "repetition": 1,
+          "published": false,
+          "requests": 2,
+          "selected_attempt": null,
+          "published_warning_count": 0,
+          "withheld_timing_count": 0,
+          "error": "Enhancement failed evidence validation: action_items.0: task wording must be an exact phrase in its commitment; Deadline needs review for Sam will send the draft next Tuesday. Timing evidence (association unverified): Next Tuesday"
+        }
+      ],
+      "output_sha256": "b63b16313caa31fb5fe69fb44bfdf9f02474f4ef88f16fc1834e86288ba1c870"
+    }
+  },
+  "ollama_version": "0.40.9",
+  "model_digest": "ad815644918f0eaab341c12b67837cc6dd4562342cdaf118f83d5d554cb37226",
+  "environment_stable": true,
+  "frozen_inputs_and_previous_results_unchanged": true,
+  "manual_acceptance": "Original workflow previously reported complete; new failure/review-warning workflow remains pending"
+}

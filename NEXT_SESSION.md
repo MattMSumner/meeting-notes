@@ -1,0 +1,532 @@
+# M10 handoff — 2026-11-26, three schema-grounded controls met
+
+Continue `m10/notes-guided-enhancement`, [PR 16](https://github.com/MattMSumner/meeting-notes/pull/16).
+Read AGENTS.md, the Chief workflow and latest plan section. The schema-grounded
+prompt diagnostic is complete: **3/3 familiar controls met their prospective criteria**
+in one observation each, with independent primary capture and source-meaning PASS,
+zero critical/noncritical findings. This is initial feasibility, not M10 acceptance.
+
+Read the [report](evaluation/m10/reviewable-draft/work-review-schema-1-analysis/report.md),
+[assessment](evaluation/m10/reviewable-draft/work-review-schema-1-analysis/assessment.json),
+[verification](evaluation/m10/reviewable-draft/work-review-schema-1-analysis/verification.json)
+and [seal](evaluation/m10/reviewable-draft/work-review-schema-1-analysis/seal.json).
+
+- `front_loaded_timing`: [[T1]], preserving the undertaking and Next Tuesday timing.
+- `partial_coordination_retracted`: [[T1, T2]], preserving surviving invoice work
+  plus complete original/withdrawal context as review passages, not current actions.
+- `accepted_status_answer`: [], correctly excluding availability-only facts.
+
+Three attempts, all strict stop below4096, 0failed/unsent/retries/censors/timeouts/overruns.
+Generation HTTP walls14.476/103.217/59.477s; output tokens312/3765/2210. Full probe-call
+wall298.343869209s includes Chief review waits; post-audit wall298.344126625s. All21
+HTTP200 exchanges and6before/after identity/default sets match Ollama0.40.13/digest/
+capabilities/thinking/defaults; all21children reaped. Saved seal equals return, with
+separate postseal and post-audit boundaries. Raw thinking remains machine-only evidence.
+
+The system prompt appends the exact unchanged per-case JSON schema; no answer examples
+or forced nonempty selection. API schema/decoder/renderer/original inputs unchanged,
+Qwen3.5 temp1/thinktrue/streamtrue/context32768/num_predict4096. Source candidate
+2d48ec947d1676d6901d2fa2ea1d08d924536ed7 is integrated unchanged, zero source repairs.
+Targeted218passed109.38s; one exact-source required full2261passed/6excluded635.69s
+and static checks pass. Freeze85artifacts+manifest86 was published at
+cf02e18b682050691abb2005cb3873d68c2c12ae before inference, pin
+180b797197a8178db7aefeb467bdcfac8bdc7e007a615336355bde483a2f4876, generation
+work-review-schema-848970109b774c66ba76b63352f5e686. Capture174artifacts+manifest175,
+pin4674e69b107bceb14d9727818234e07b3addd542738dbe71cb4aa8a8de678cb9.
+Strict inventories stay immutable; sibling analysis holds later meaning/report/launch/seal.
+All2099prior tracked evaluation/prototype files remain exact.
+
+**Allowance CLOSED.** No retry/resumption/replacement/unused-time transfer or further
+model request is authorized. All older allowances remain closed. These familiar
+controls/fixed order/single observations cannot prove causal prompt benefit, reliability
+or saved effort; the cached old clear-control failure is not a fresh matched control.
+No new thermal telemetry was collected. Historical failed/incomplete grades, production
+V11 and M10 unbuilt status remain unchanged; PR16 is not ready to merge. Broader/fresh
+examples and repetitions, full40/full-draft, persistence/edit protection and current
+synthetic Obsidian usefulness require separate work and scope before Built/shipit.
+Do not choose or run another model experiment without new owner steering.
+
+Local cleanup/publication/CI state and full evidence are in ignored .chief/STATE.md and
+.chief/runs/work-review-schema-20261126. Do not turn local state into another roadmap.
+
+---
+
+## Historical authorization — schema-grounded prompt diagnostic
+
+Continue `m10/notes-guided-enhancement`, PR 16. Read AGENTS.md, the Chief workflow and
+the latest plan section. The owner said “Great do it” to the schema-grounded prompt
+diagnostic. Append the unchanged per-case groups JSON schema to the system prompt;
+keep all other model/prompt-format/input/decoder/render behavior fixed.
+
+Fixed order: `front_loaded_timing`, `partial_coordination_retracted`,
+`accepted_status_answer`; one repetition, at most three generation requests, 540 s
+overall, 180 s each, 10 s metadata, no retries. Qwen3.5 unchanged, think/stream true,
+temperature 1, context 32768, num_predict 4096. Each valid render needs Chief source-
+meaning review before continuation. Critical/technical/deadline or length-censored
+output stops later requests. Freeze exact reviewed source/wires/snapshots/criteria
+and publish before the once-only Chief run. Workers/reviewers have zero inference.
+
+[Prospective criteria](evaluation/m10/reviewable-draft/work-review-schema-1-analysis/criteria.json)
+and [authorization](evaluation/m10/reviewable-draft/work-review-schema-1-analysis/authorization.json)
+define this allowance. All older allowances stay closed. No forced nonempty selection,
+schema relaxation, historical regrading, production/model change, M10 Built or merge.
+One familiar observation per case tests feasibility only. Local coordination and
+source/check evidence stay in ignored `.chief/STATE.md` and `.chief/runs/`.
+
+---
+
+# M10 handoff — 2026-11-26, temperature comparison failed/incomplete
+
+Continue `m10/notes-guided-enhancement`, [PR #16](https://github.com/MattMSumner/meeting-notes/pull/16).
+Read AGENTS.md, `.chief/CHIEF.md` and the reviewable-draft section of plan.md. Use the
+[current Chief workflow](.chief/README.md) for delegated work, with a verified `hc`
+parent and `codex --no-daemon` in the existing tab/space. Keep coordination in ignored
+`.chief/STATE.md`; archive useful evidence and retire only completed own workers.
+
+## Latest temperature comparison — one censor, one critical completed answer
+
+The owner-approved two-temperature comparison is **FAILED / INCOMPLETE**. Both requests
+ran on the unchanged original familiar `front_loaded_timing` control, in order0then1,
+with think/stream true, context32768 and a common new num_predict4096. Caps were
+2requests/600seconds overall/180seconds generation/10seconds metadata/0retries. Read the
+[report](evaluation/m10/reviewable-draft/work-review-temperature-1-analysis/report.md),
+[assessment](evaluation/m10/reviewable-draft/work-review-temperature-1-analysis/assessment.json),
+[verification](evaluation/m10/reviewable-draft/work-review-temperature-1-analysis/verification.json)
+and [thermal/memory summary](evaluation/m10/reviewable-draft/work-review-temperature-1-analysis/telemetry-summary.json).
+
+- Temperature0: strict length at4096output tokens,17131thinking characters,0answer
+  characters; HTTP116.868seconds. Censored/incomplete/ungraded, no result/render/callback.
+- Temperature1: strict stop at3130output tokens,13068thinking characters,14answer
+  characters; HTTP86.369seconds. Actual groups=[] and empty render omit the clear
+  wholeT1 undertaking and NextTuesday timing. Complete source reached the model. Chief
+  critical verdict and independent source-meaning assessment agree; a generic empty
+  notice cannot satisfy selected-work coverage. This is a completed-answer omission.
+
+Two attempts,0unsent,0retries or generation timeouts. All14HTTP200 exchanges (2generation/
+12metadata) and4before/after identity/default gate sets verify. Every child reaped; no
+artifact error or deadline overrun. Independent capture/telemetry integrity passes.
+Sealed capture_complete/answer_complete/semantic_complete are false because the final
+meaning gate failed, despite both transport_complete flags being true. Temperature1
+appears in both stop_completed and failed: terminal and failed-gate evidence dimensions.
+Full-call wall238.320249333seconds includes Chief review; launch including telemetry
+is238.460623625seconds. Seal equals returned accounting; final.json is non-authoritative.
+
+The sampler captured120rows, all OS thermal severity nominal, zero errors, bracketing
+the run and closing/reaping normally. Memory pressure codes1/2 vary; Apple published
+dispatch mapping calls these normal/warning, not exact-kernel-source attestation. Swap
+used stayed12449617019bytes with zero extra swapouts. Do not claim all resources were
+normal or prove a thermal/memory cause: no temperature/GPU-frequency channel exists.
+Token throughput37.336/36.316tokens per evaluation second and different output volume
+do not prove a causal temperature effect. One familiar case, one observation each,
+fixed order, cold-load/cache and stochastic/host memory differences limit attribution.
+The earlier uncapped timeout is not matched control.
+
+Exact source8a1c6827ce8e193a970b87c994a22f119c922bd1 is integrated unchanged after one
+consolidated repair round and formal engineering PASS. Targeted189pass74.60s; required
+format/lint/strict types and source-identical full2043pass/6integration excluded552.35s.
+The superseded worker S1 suite was interrupted after1702passes and is not a final PASS.
+Read [WORK_REVIEW_TEMPERATURE.md](prototypes/reviewable_draft/WORK_REVIEW_TEMPERATURE.md).
+
+Freeze70artifacts+manifest71, published f9f7ea4e60b4d84adf01319f12686f8a288830cf before
+inference. Manifest f7947eac68cdab7c0ecaa9d2b2c80c03facb14cb80daf8979a950b079b33360a,
+generation work-review-temperature-db0372417d2c40439a297f3833a61372. Capture114artifacts
+plus manifest31460c0754f4d4835e6eb5c1dc4053031d89ccdf7b86cc79729b6d1386a2b365.
+Both strict inventories are immutable; sibling analysis owns telemetry/launch/report/seal.
+All1895prior tracked evaluation/prototype files remain byte-exact.
+
+**Allowance closed: no retry, resumption, replacement, unused-slot transfer or further
+model request is authorized.** Older allowances stay closed too. No source repair or
+prompt/production/runtime/configuration change follows automatically from this result.
+Temperature1 terminated but did not fix this control's quality. M10 remains unbuilt,
+productionV11 and historical verdicts unchanged, PR16 not ready to merge. Full40,
+full-draft, persistence/edit protection and current Obsidian usefulness remain separate.
+Local task coordination stays in ignored .chief/STATE.md.
+
+## Earlier thinking diagnostic — stream timeout; all three ungraded
+
+The owner said **“Great, do it!”** to thinking enabled on three unchanged original
+synthetic cases, in order: `front_loaded_timing`, `partial_coordination_retracted`,
+`accepted_status_answer`. Fixed work-review prompt/schema/renderer and model/options/
+streaming; only `think:true`. Caps were three requests, 600 seconds overall,
+180 seconds each, no retries, stopping at a critical defect or technical failure.
+
+The once-only diagnostic is **INCOMPLETE** after **one attempted generation in
+180.454 seconds**. Read the [report](evaluation/m10/reviewable-draft/work-review-thinking-1-analysis/report.md),
+[assessment](evaluation/m10/reviewable-draft/work-review-thinking-1-analysis/assessment.json)
+and [verification](evaluation/m10/reviewable-draft/work-review-thinking-1-analysis/verification.json).
+The straightforward commitment control reached its generation deadline while emitting
+thinking, with **zero answer content, no terminal done/stop and no result/render**.
+No Chief callback or meaning review was reached. The other two cases remain unsent.
+**All three semantic grades are incomplete/ungraded**, with no new omission or pass
+finding. Whether thinking helps the prior partial-withdrawal failure remains unresolved
+because that case was not reached. The prepared new partial request differs from its
+cached false request only by think; no new response exists for a matched comparison.
+**This allowance is closed: no retry, resumption, replacement, unused-slot transfer or
+further model request is authorized.** Every older allowance remains closed too.
+
+Independent saved-evidence audit passes. Exact source `78bcaf85e2ed699dbe2c02f35e2b4759c01aafa9`
+is integrated unchanged as an ancestor; engineering review has no findings or repairs.
+Targeted 129 and both source-identical full suites pass **1854 offline tests**, six
+integration tests excluded (Chief 513.20 seconds, worker 518.49 seconds); formatting,
+lint and strict types pass. The new isolated profile/helper leaves all old source and
+policies unchanged. Read [WORK_REVIEW_THINKING.md](prototypes/reviewable_draft/WORK_REVIEW_THINKING.md).
+
+The 76-artifact freeze plus manifest was committed/pushed at
+`10e099b5b8a1a4d34e3ce7700a4eb8497dc3d1b7` before inference. Freeze SHA256
+`d4a4f25240850bd46a3066d755d34989b09528703b35727faa1f376b3485a858`, generation
+`work-review-thinking-bed213a915044b4baa8c6caf6c12fa26`. All 77 files match that head.
+The capture is 38 artifacts plus manifest SHA256
+`3a1b47464faab14dda2aa3967ac8991f609ef908082b957a82e6d5b39ba1ef46`.
+Both strict inventories are immutable; analysis/launch/final seal stay in the sibling
+analysis directory. All 1766 prior evaluation/prototype files remain byte-exact.
+
+The three metadata exchanges completed normally and their single **before** gate set
+matches saved Ollama0.40.13/digest/capabilities/thinking/defaults. Generation received
+HTTP200 headers and streamed 5700 indexed records / 26184 thinking characters / zero
+answer characters; no final server durations or token counts arrived. The parent
+killed and reaped only its HTTP child at the local deadline. All four children reaped;
+after metadata and all later generations were correctly skipped. Server-side compute
+cancellation is not guaranteed; the model service was not stopped or reconfigured.
+Raw thinking remains machine-only evidence; reports contain counts/times.
+
+Generation wall is 180.006684 seconds, reported local cleanup overrun 0.006733958 seconds;
+global overrun is zero. The authoritative pre-manifest boundary is 180.453987792 seconds,
+separate post-seal 180.454150625, full-call wall 180.454194125. Saved seal equals returned
+accounting; final.json is explicitly non-authoritative. The initially reused analysis
+label claiming meaning reviews was corrected without changing metrics or evidence.
+Do not infer a completed-answer error from this technical timeout or fabricate absent
+answers/counters. Existing false-arm critical omission and every old grade stand.
+
+Production remains V11; M10 **unbuilt**, PR #16 **not ready to merge**. This one familiar
+attempt establishes no cause, thinking benefit, reliability, model switch, saved effort,
+full40/full-draft or current Obsidian usefulness. New model work needs fresh explicit
+scope/criteria/budget; persistence/edit protection and production integration are separate.
+
+## Earlier thinking-disabled experiment — critical omission; six cases unsent
+
+The owner said **“Ok, run those examples and fix CI!”** to one pass over the seven
+existing synthetic examples, with seven generation requests maximum,1500seconds overall,
+180seconds each, no retries, and Chief source-meaning review before each continuation.
+The once-only run is **incomplete and fails quality acceptance**. See the
+[report](evaluation/m10/reviewable-draft/work-review-probe-1-analysis/report.md),
+[assessment](evaluation/m10/reviewable-draft/work-review-probe-1-analysis/assessment.json)
+and [verification](evaluation/m10/reviewable-draft/work-review-probe-1-analysis/verification.json).
+
+It stopped after **one generation request in27.252seconds**, including Chief review wait.
+The first reply is valid `{"groups": []}` for partial withdrawal: no selected passage
+retains the surviving invoice-sending undertaking or associated original/withdrawal context.
+The complete input reached the model and remains preserved; the empty-selection warning
+cannot satisfy selected-work coverage. The Chief agent identified this **critical omission**
+at the first in-run gate, saved that verdict and stopped before every later request.
+Independent saved-evidence/source-meaning audit agrees. The other six cases are **unsent /
+incomplete**, with no model answers or quality grades. **This allowance is closed: no
+retry, resumption, replacement, unused-slot transfer or further inference is authorized.**
+
+Capture integrity passes despite its correctly incomplete outcome: exactly one chat and
+six metadata HTTP200 exchanges, both before/after identity sets match, all seven children
+reaped, no timeouts/errors/retries/overruns. Strict stream/progress/result/render replay
+passes. Authoritative manifest accounting equals the saved return; final.json is an
+explicitly non-authoritative snapshot and separate post-seal/full-call wall are preserved.
+Full wall27.252280959s includes generation HTTP6.714660s and the Chief review wait.
+Returned model load5.614344s, zero thinking characters; no causal or reliability claim.
+
+The isolated collector is exact source `67f025148778d6d62dcdde2f76ad770800dc9fda`,
+integrated unchanged as an ancestor. Independent engineering review passes without findings
+or repairs. Formatting/lint/strict types pass; targeted104 and both source-identical full
+suites pass **1725offline tests**, six integration tests excluded (Chief454.81s,
+worker461.32s). Read [WORK_REVIEW_PROBE.md](prototypes/reviewable_draft/WORK_REVIEW_PROBE.md).
+Its own seven-body child policy and required bounded Chief callback leave old collectors
+unchanged. No source repair, prompt change or automatic semantic pass followed the result.
+
+The75artifact freeze plus manifest was committed/pushed at
+`a81f7ddb16ef13a05290208de6873791526074f4` before inference. Manifest SHA256
+`52f0dca1b62063ba09bd0ca0f7d50eca588dc07bdacd2ca1b5d5c99f6c3fa0b7`, generation
+`work-review-probe-d4a32d0153d94bb1a9e2a746da0fd2b4`. All76files match that published
+head. Capture has66artifacts plus manifest SHA256
+`74f7d1b164dd21b1fa3901cb259ea71cdb5ba4b4360f88e6d3fb5551c806c6c1`.
+Never change either strict inventory. Later analysis/launch/final-seal records live only
+in the sibling analysis directory. All1610prior evaluation/prototype files remain exact.
+
+The earlier Python CI cancellation was infrastructure: GitHub never assigned a hosted
+macOS runner and reported capacity constraints. Rerunning it passed Python and Swift;
+no workflow edits were justified. Current branch checks cover later published descendants.
+
+Production remains V11 and M10 **unbuilt**; PR #16 remains **not ready to merge**.
+This one familiar failure establishes no general model quality, reliability, model switch,
+saved effort, full40/summary/decision quality or current Obsidian usefulness. Historical
+grades remain unchanged. Future model work needs fresh explicit scope/criteria/budget;
+production persistence/edit safeguards, full-draft regression and usefulness are separate.
+The completed run must not be resumed and no old unused allowance carries forward.
+
+## Completed offline passage prototype — authored presentation remains accepted
+
+The owner accepted the focused-passage/manual-task workflow with **“This works!”**, then
+said **“Right, lets do it.”** to the isolated offline prototype. Do not ask for that format
+choice again. Source `175cde2d10c08e430ad3da464a2dc7f7c7105ae2` remains integrated unchanged.
+Read [WORK_REVIEW.md](prototypes/reviewable_draft/WORK_REVIEW.md) and the
+[authored preview index](prototypes/reviewable_draft/work-review-previews/index.md).
+
+The immutable Prepared/Group/Result records bind complete input and host generation;
+strict groups-only decoding validates every reference before benign duplicate cleanup,
+retains original source order/distinct overlaps, and renders saved whole turns and
+separate original writing. Host incomplete/unavailable routes preserve only valid groups
+or none; malformed replies are never salvaged. Empty selection does not prove no work.
+Source fidelity cannot establish relevant selection, complete context, coverage or effort.
+
+Seven normal/empty authored examples plus two labeled host-failure demonstrations produce
+13byte-reproducible artifacts, including full synthetic source annex, result JSON and a
+manifest with12output hashes. Manifest SHA256
+`7b9f332910e37d832262ca17079957594bdfb50780b7bb6eec753d5a5091b46d`.
+Export creates only a new directory and refuses existing edits/symlinks. The separate
+CLI below **prints an authored preview and makes no model call**:
+
+```sh
+uv run python -B -m prototypes.reviewable_draft.work_review_examples --case authored_longer_context
+```
+
+Six inputs are familiar and the longer input is Chief-authored, not held out. These manual
+selections demonstrate presentation and provenance; the actual model failure above does
+not convert them to quality evidence or relabel old action outputs. No production CLI,
+pipeline, settings, dependencies or vault integration changed during these isolated tasks.
+
+## Completed work-retention experiment — failed/incomplete
+
+The owner-approved four-case work-retention experiment is **INCOMPLETE and fails
+quality acceptance**. It stopped after **three generation requests in 15.868 seconds**:
+two rendered drafts, one literal-selection rejection and one unsent case. No retries,
+timeouts, overruns or artifact errors. The independent capture audit passes; source
+meaning assessment finds one critical defect, one criterion met with noncritical burden,
+and two incomplete cases. See the [report](evaluation/m10/reviewable-draft/retention-probe-1-analysis/report.md)
+and [assessment](evaluation/m10/reviewable-draft/retention-probe-1-analysis/assessment.json).
+
+| Case | Outcome |
+| --- | --- |
+| Partial withdrawal | **Critical:** invoice sending survives, but the suggested action also includes cancelled draft review. Both full turns are visible; this is not an omission. |
+| Replacement task | Meets criterion: inline retraction preserves independent sending and attribution, no invented due. Broad selection/repeated review adds noncritical burden. |
+| Qualified timing | Incomplete: combined T1/T2 quote attributed to T1 is rejected as quote_absent; no draft. Full timing qualifier is present in attempted content, not proven omitted. |
+| Additional undertakings | Unsent after case three; no model quality evidence. |
+
+No semantic assessment completed during capture. The first detected in-run failure
+was the third case's literal rejection, which stopped before the fourth request.
+The later critical finding does not imply earlier detection or authorize more calls.
+**The once-only allowance is closed: no retry, resumption, unused-slot transfer or
+further inference is authorized.** Keep the existing baseline and production behavior.
+
+The owner said “Great, run the experiment” to one repetition in fixed order of
+`partial_coordination_retracted`, `cancellation_with_new_task`,
+`qualified_external_timing`, `additional`; Qwen3.5 thinking false/streaming true,
+unchanged prompt/schema/decoder/renderer, temperature0, context32768. Limits were
+four requests / 900 seconds overall / 180 seconds per generation / no retries.
+Preparation/review/freeze/publication preceded execution; in-run validation, metadata,
+loading, capture, saving and cleanup count toward the shared deadline.
+
+Exact collector source `af210c01b803bc885d24c2ed78f7c7fb725108b4` is integrated
+unchanged as an ancestor. Independent source review passed with no findings or repair
+rounds; format/lint/strict types and **1555 offline tests pass**, six integration tests
+excluded, 66 new tests. Worker and Chief full suites used the same pinned source;
+post-freeze static checks also pass. Production and historical code are unchanged.
+
+The [48-artifact freeze](evaluation/m10/reviewable-draft/retention-probe-1/manifest.json)
+was committed/pushed at `9dba7187037592d2898f773932d48f7a70c9fd76` before inference;
+SHA256 `24676d89c8a68db18a9d78d732a3089caffd85c74dc6526f07a560c511f1fdbd`,
+generation `retention-probe-8c62fdd2301f4b8695e81a55c5424188`. The
+[prospective criteria](evaluation/m10/reviewable-draft/retention-probe-1-analysis/criteria.json)
+were committed at `e96d48b` before outputs; SHA256
+`4c9f4f238b0a57470d0cd9ba1134db4c002a4acf0565ab8a41c4210f40a7fecb`.
+
+All six before/after gates match Ollama0.40.13/model digest/thinking/defaults. Exactly
+21 HTTP200 exchanges account for three generation calls and eighteen metadata calls;
+zero thinking characters, no child kill/error/timeout, all children reaped. The
+[capture manifest](evaluation/m10/reviewable-draft/retention-probe-1/results/manifest.json)
+contains 171 artifacts plus itself; SHA256
+`64b673d748447c087d4d58254f113f25d435ec370a1d2c6f39366892458d6943`.
+All 1347 prior tracked evaluation/prototype files remain byte-exact.
+
+Use the [collector contract](prototypes/reviewable_draft/RETENTION_PROBE.md).
+Capture manifest accounting equals the returned accounting exactly: incomplete,
+literal-failure stop, zero overrun. Its elapsed boundary is15.867515917s; post-seal
+observation15.867707959s; independent full-call wall15.867782917s. `final.json` is a
+non-authoritative pre-save snapshot. All later meaning/report/launch/final-seal
+artifacts live in the sibling analysis directory; never alter or add to either
+strict freeze/capture inventory. No historical result or grade changed.
+
+## Completed streaming runtime probe — earlier allowance consumed
+
+The owner-approved runtime probe is **complete**, using exactly **two generation
+requests in 104.676 seconds**, no retries, failures, unsent slots or overruns. The
+[result report](evaluation/m10/reviewable-draft/runtime-probe-1-analysis/report.md)
+records the independent capture audit and meaning assessment. Both outputs meet the
+narrow availability/no-action criterion. The false arm adds two unnecessary review
+passages; the true arm adds none. **No further inference is authorized.** The unused
+wall-time allowance authorizes no new case, retry or repetition.
+
+| Thinking | HTTP seconds | Model load seconds | Thinking characters | Actions |
+| --- | ---: | ---: | ---: | ---: |
+| false, first | 11.539 | 9.384 | 0 | 0 |
+| true, second | 91.687 | 0.003 | 13,509 | 0 |
+
+The true arm spends 91.566 seconds in returned evaluation time versus 0.864 seconds
+for false, with 3110 versus 33 returned output tokens. These are observed costs for
+one ordered negative-control pair. False loads cold; true is warm with 416 cached
+prompt tokens versus zero. Returned prompt counts differ (418 versus 420). This is
+not a reliability estimate or proof that useful work/timing would be retained.
+
+Preparation metadata found installed Ollama **0.40.13**, versus historical 0.40.9.
+The same model digest and boolean thinking support remain. This was disclosed to the
+owner and pinned with relevant model defaults for the fresh pair; no service or model
+change was made. All four captured identity/default gate sets match. The historical
+timeout did not recur with this new version and streaming setup; its cause remains
+unproven. No historical grades changed and no model switch follows.
+
+The isolated collector is implemented and independently reviewed at
+`58bf14f216aa642bc3ab4d14022b17469724f787`: no remaining findings after two repair
+rounds. Format/lint/strict types and 1489 offline tests pass, six integration tests
+excluded; 103 tests cover the new profile. Existing production and historical files
+remain unchanged. All 1182 prior tracked evaluation/prototype hashes verify exact.
+
+The [36-file freeze](evaluation/m10/reviewable-draft/runtime-probe-1/manifest.json)
+has SHA256 `d459841b61df3ed2ecdab8e9866b7da280b2744707c56b4d2b574e7d1e4b22f2`
+and generation `runtime-probe-956c51abc1a849aa9eeccee33793ceb7`. Its source, wire
+hashes, selected complete snapshot and new identity/defaults independently verify.
+The exact freeze was committed/pushed at `a5f0e64e00adb8e09be61834b8bfa8d0351d57d6`
+before inference. Its 36 artifacts plus manifest remain exact. The single-use results
+now contain 114 artifacts plus manifest, all independently verified and replayed.
+Fourteen HTTP200 exchanges account for two generation calls and twelve metadata calls.
+
+Use the [collector contract](prototypes/reviewable_draft/RUNTIME_PROBE.md). Results are
+single-use. `results/manifest.json.accounting` is authoritative at its explicit boundary;
+`final.json` is only a labeled pre-save snapshot. Preserve the returned envelope's
+separate post-seal observation and independently measured full call wall time outside
+capture. Sealed, post-seal and independent full-wall observations all pass. Keep later
+analysis/review/launch artifacts outside both strict inventories, as in the sibling
+`runtime-probe-1-analysis/`. Do not rerun the collector or alter captured bytes. Its
+sealed stop reason correctly refers to the then-pending separate semantic assessment;
+the later passing assessment lives in the sibling report and assessment.json.
+
+## Completed offline investigation
+
+The owner asked to start the recommended timeout investigation. The offline audit
+rechecked eleven saved replies/attempts and 505 overlapping manifest entries, with no
+new Ollama requests, live service inspection or configuration changes. Neither timeout
+has headers/body bytes or server timings, so the cause remains unproven. The completed
+Qwen3.5 request generated 17,084 thinking characters for 37 answer characters; older
+successful baseline replies also have long traces. Prompt caching and runtime residency
+metadata limit comparisons. The 4096 reply reserve is not a sent output-token cap.
+
+The [proposal](evaluation/m10/reviewable-draft/runtime-investigation-1/proposal.json)
+is one fresh Qwen3.5 availability pair, false then true, with streaming fixed for both:
+two generation requests, 180 seconds each, seven minutes overall, no retries. Exact
+proposed request bodies are saved. That proposal was subsequently approved, independently
+reviewed, frozen and executed as recorded above. Its historical report remains unchanged.
+The new run tests a prospective setting; it does not prove the historical cause.
+
+## Earlier local-model screen — unchanged
+
+The owner said “Do it!” to the fixed-task local-model screen: two installed alternatives,
+six cases each, at most twelve new requests / thirty minutes, no retries; reuse the Qwen3
+baseline and hide model names during meaning assessment. Preparation/review/freeze preceded
+execution. The approved once-only run is complete with an **INCOMPLETE comparison**:
+
+| Configuration | Complete replies | Criteria met | Other outcomes |
+| --- | ---: | ---: | --- |
+| Cached Qwen3 30B | 6/6 | 5 | One critical surviving-invoice omission, unchanged. |
+| Qwen3.5 9B Q4_K_M | 1/6 | 1 | Availability case timed out; four cases unsent. |
+| Gemma4 12B IT Q4_K_M | 2/6 | 2 | Partial-withdrawal case timed out; three cases unsent. |
+
+Actual run: **five requests, three complete replies, two 600-second client timeouts and
+seven unsent cases in 1381.014 seconds (23m01s)**, no retries or arm/global overrun.
+Qwen3.5 arm elapsed719.438s; Gemma4 arm661.250s. All three returned challenger outputs
+are negative controls. There is no challenger evidence of surviving-work/timing coverage
+and no basis for a model switch. Timeout is not proof of incorrect missing answers.
+**The seven unused slots authorize no resumption, retry, configuration change or new run.**
+No further inference is authorized. Old unused allowances also authorize nothing.
+
+## Fixed controls and evidence
+
+Only request model varied: same prompt, complete speech input, response schema,
+temperature0, thinktrue, context32768 and unchanged actions decoder/renderer. Both models'
+boolean thinking support was checked in local metadata before freezing. Original writing
+stayed outside model input, retained separately in complete snapshots and drafts.
+
+- Source candidate `3275c1d380fbda9d2fd76f429c4c6014dfd03843`.
+- Freeze committed/pushed before inference `91157d4645452ddf92ebfc3fbf076acafc8c9f6b`.
+- [Thirty-entry freeze](evaluation/m10/reviewable-draft/model-comparison-1/manifest.json), SHA256
+  `0c08baba4e1a1524f7ba8fa8b8c74e1a2b4b38fb8cc6798dd3c28c356d450c7d`.
+- Ollama0.40.9; Qwen3.5 digest
+  `56671c2ab9385f9cfcb404638e32cd62d88e3501d44822208363c010179a3c90`, Gemma4 digest
+  `6114515d63c17436a7c0417d82820ac65ad643e2806c5a3c89cb62846436ed0b`.
+- All five attempted slots' before/after version/model/digest gates match. Five chat POSTs
+  and twenty captured metadata GETs; twenty GETs and three returned POSTs are HTTP200.
+  Three replies are done/stop and replay exactly. Two timeouts retain empty raw bodies
+  without response headers; failed replies are not fabricated. No source/config drift.
+- compare.py reuses existing hardened HTTP/time helpers; no real-execution global patching,
+  baseline inference, warm-up, semantic validator or correction/retry was added.
+- results/manifest.json is an **exact capture inventory**. Never add launch/analysis/review
+  files inside results/. They live in sibling analysis/ and review/. Preserve capture bytes.
+- All913prior entries and40original inputs remain exact, plus30current frozen artifacts;
+  all179baseline artifacts verify/replay. A final seal covers new capture/review/analysis.
+
+## Model-name-hidden assessment
+
+Exactly eighteen randomized opaque records covered six cached baseline outputs and all
+twelve challenger slots, including failed/unsent cases. A fresh read-only assessor received
+only packet+criteria+SHA, not names/keys/raw thinking/timings/paths/old reports. All eighteen
+grades locked before joining identities; original packet/key pins and final model/source
+attribution were checked. Baseline grades remain5pass/1critical; challengers1pass/5incomplete
+and2pass/4incomplete. No grade changed after reveal. Original terminal evidence is retained.
+
+PacketSHA `3cd56589ca6c865912aa6ea0e46eedfd83142edd0dc77c5c8389cc396f0fe195`;
+scoreSHA `07ff222b51a21b77587df25dc1246076dc5deaa0ca3e8ee59a81cce4b3c3082f`;
+lockSHA `6208522433d95b66a998f504753679b70a8640911b07f7465f80f45009e5a3f3`.
+See review/packet.json, grades/lock.json, analysis/joined.json and assessment.json.
+Names hidden does not guarantee perfect blinding. Familiar inputs/one repetition/incomplete
+coverage establish no reliability, full regression, summary/decision quality, editing-time
+benefit or current Obsidian usefulness.
+
+## Checks and next decision
+
+The latest collector passed source review and all required engineering checks, but
+its work-retention run did not qualify the model configuration. Reassess source
+selection before another call: cancelled work must be excluded from current action
+spans, and supporting turns must remain separate from a primary-source quotation.
+Do not add more literal validators for the currentness failure: that quote already
+passes literal checks. No decoder relaxation, quote repair or selective rerun follows.
+Any new experiment needs separately agreed scope and budget.
+
+Earlier model-screen CI fixture fix `0e349218915d722c14e9d5e9385f826899dd7ab3`
+reads committed frozen baseline files instead of missing historical Git objects.
+Its depth-one collection passed; latest collector also has depth-one fixture coverage.
+No old frozen source or model request changed. Final-head CI status is in PR/local ledger.
+
+The owner still values useful drafts requiring review and approved the authored normal/
+incomplete presentation. That product direction remains unchanged. Current app behavior
+is V11; M10 unbuilt. Fresh examples/repeated tests, full40regression, production snapshot/
+persistence/edit safeguards and current synthetic Obsidian usefulness remain required.
+Numerical latency/review-effort targets are unagreed. Only owner `shipit` authorizes
+`git shipit`; never merge on GitHub. No real-meeting pilot is authorized.
+
+## Immutable earlier checkpoints
+
+Never rewrite prior captures, frozen declarations, scores or verdicts. Do not run old
+mutating verify/analyze tools. All historical details remain in their reports:
+
+- [Action-only diagnostic](evaluation/m10/reviewable-draft/diagnostic-3/results/report.md):
+  six requests/247.310s;5criteria met,1criticalretentionfailure. Twenty freeze+157result
+  entries. Source287d85b; freeze7381d8e; manifest
+  `472027ef8be047233a3a8cf75630c922afe28c96b73911b844619c16b33e8bd3`.
+- [Quoted diagnostic](evaluation/m10/reviewable-draft/diagnostic-2/results/report.md):2requests,
+  one compiled, one reference-validation rejection,4unsent; nineteen freeze+56result
+  entries remain exact. Old4unused slots authorize nothing. Source9e369ad/freeze77fd9d3.
+- [First draft diagnostic](evaluation/m10/reviewable-draft/diagnostic-1/results/report.md):
+  six requests/5m13s;4meet,1inventedwork,1noncriticalsurviving-work failure with facts still
+  visible in Summary. Eighteen freeze+157result entries. Source2934d10/freeze1a3aceb.
+- [V11](evaluation/m10/v11/results/report.md): proposed34/40,6blocked,1falseunitconflict;
+  baseline40/40with8criticalcases.109requests/98m46s;167unusedauthorize nothing. Sourcefb3b130/
+  freezee866b10.34wrapper10+17wrapper9generations replay;486historical entries preserved.
+
+## Separate follow-up
+
+Leave /private/tmp/meeting-notes-safeguards and the unrelated recovery issue alone.
+Processing-spawn failure after confirmed orphan shutdown can clear a pending session;
+repair separately with synthetic regression. This task changes no capture/recovery behavior.
+Never read/publish real meeting content in prompts/logs/reports.
