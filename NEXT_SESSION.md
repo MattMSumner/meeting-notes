@@ -1,3 +1,27 @@
+# M10 handoff — 2026-11-26, schema-grounded prompt diagnostic authorized
+
+Continue `m10/notes-guided-enhancement`, PR 16. Read AGENTS.md, the Chief workflow and
+the latest plan section. The owner said “Great do it” to the schema-grounded prompt
+diagnostic. Append the unchanged per-case groups JSON schema to the system prompt;
+keep all other model/prompt-format/input/decoder/render behavior fixed.
+
+Fixed order: `front_loaded_timing`, `partial_coordination_retracted`,
+`accepted_status_answer`; one repetition, at most three generation requests, 540 s
+overall, 180 s each, 10 s metadata, no retries. Qwen3.5 unchanged, think/stream true,
+temperature 1, context 32768, num_predict 4096. Each valid render needs Chief source-
+meaning review before continuation. Critical/technical/deadline or length-censored
+output stops later requests. Freeze exact reviewed source/wires/snapshots/criteria
+and publish before the once-only Chief run. Workers/reviewers have zero inference.
+
+[Prospective criteria](evaluation/m10/reviewable-draft/work-review-schema-1-analysis/criteria.json)
+and [authorization](evaluation/m10/reviewable-draft/work-review-schema-1-analysis/authorization.json)
+define this allowance. All older allowances stay closed. No forced nonempty selection,
+schema relaxation, historical regrading, production/model change, M10 Built or merge.
+One familiar observation per case tests feasibility only. Local coordination and
+source/check evidence stay in ignored `.chief/STATE.md` and `.chief/runs/`.
+
+---
+
 # M10 handoff — 2026-11-26, temperature comparison failed/incomplete
 
 Continue `m10/notes-guided-enhancement`, [PR #16](https://github.com/MattMSumner/meeting-notes/pull/16).
