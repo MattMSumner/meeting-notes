@@ -1,0 +1,208 @@
+{
+  "manifest_sha256": "f7947eac68cdab7c0ecaa9d2b2c80c03facb14cb80daf8979a950b079b33360a",
+  "approval": "Great, do the temperature comparison",
+  "published_head": "f9f7ea4e60b4d84adf01319f12686f8a288830cf",
+  "launch_source_sha256": "865a555c3bd366138fd1bb4763b928ed9845b6c0f0f4302e30055f1ce4e339ef",
+  "analysis_source_sha256": {
+    "criteria.json": "f47c1d05f38586cd05ff12b514ef954a00332c3923793eb09886006ace238f3a",
+    "authorization.json": "55238bd93ab90e9fbf52d5350124ba1323cfe90c8927a313aa1aa94183e7cd13",
+    "launch-script.txt": "865a555c3bd366138fd1bb4763b928ed9845b6c0f0f4302e30055f1ce4e339ef",
+    "telemetry-script.txt": "8dbb50d963ef77a5429efb6feb7193cb6e9de8d6ff22ddbc8beafa90fa67f4bd",
+    "thermal-helper.swift.txt": "b6fcc756f8065a4926d2c6b429104df1862f305eb1ae3aad37068b1ba1a2e2de",
+    "telemetry-config.json": "96c3bec8326c1037f862852bcb3f17480a3943dd6e7be24ecea54c83e7ecae87"
+  },
+  "telemetry": {
+    "owned_process_group": 92325,
+    "ready": {
+      "first_monotonic": 373249.981313208,
+      "first_errors": {}
+    },
+    "returncode": 0,
+    "reaped": true,
+    "file_sha256": "58358f871543659250ba26986caabc498808ea3a3830cb24612dce001e6336c4",
+    "final": {
+      "rows": 120,
+      "elapsed_seconds": 238.4122162089916,
+      "stopped_by_launcher": true
+    },
+    "complete": true
+  },
+  "run_started_monotonic": 373250.021782333,
+  "return": {
+    "accounting": {
+      "authoritative": true,
+      "accounting_boundary": "after final.json save and inventory hashing; before manifest.json write",
+      "capture_complete": false,
+      "answer_complete": false,
+      "semantic_complete": false,
+      "automated_quality_pass": false,
+      "possibly_sent": 2,
+      "slots": [
+        {
+          "slot": "01-temperature-0",
+          "case": "front_loaded_timing",
+          "temperature": 0,
+          "think": true,
+          "state": "censored_length",
+          "transport_complete": true,
+          "terminal_outcome": "censored_length",
+          "render_saved": false,
+          "possibly_sent": true,
+          "request_sha256": "4805e49d440b0559caf385d466abe27b88aa02788a89f5b00c10cc3aea398b0a",
+          "generation_id": "work-review-temperature-db0372417d2c40439a297f3833a61372/01-temperature-0",
+          "snapshot_id": "3d54314b779aa5a291dce8c64ccb415dbcef546c144d7254c31a5211361dfe15",
+          "snapshot_sha256": "b244f4c7f1d971f554aeeef5337639ac46e1d5d55e2945b8222f8468f9fabe19",
+          "model_neutral_payload_sha256": "eb80a5cdf302759432ed92b562665ea5057d6576447ff8502e33c41b5f8e4c13",
+          "prepared_binding": "44780717ff9efd2aed09f2c991763e89efa6b51a23ff6869a4d9c308b5a5ffa3",
+          "manifest_sha256": "f7947eac68cdab7c0ecaa9d2b2c80c03facb14cb80daf8979a950b079b33360a",
+          "generation_deadline_monotonic": 373430.40281875,
+          "length_counter_status": "matches",
+          "length_cap_match": true,
+          "elapsed": 117.59440470801201,
+          "exchange": {
+            "deadline_monotonic": 373430.40281875,
+            "elapsed": 116.8675660410081,
+            "error": null,
+            "killed": false,
+            "overrun_seconds": 0.0,
+            "reaped": true,
+            "returncode": 0,
+            "server_compute_cancellation_guaranteed": false,
+            "started_monotonic": 373250.402869,
+            "timed_out": false
+          },
+          "progress": {
+            "answer_complete": false,
+            "complete_events": 3710,
+            "content_characters": 0,
+            "error": null,
+            "first_byte_seconds": 7.1216567090014,
+            "first_content_seconds": null,
+            "first_thinking_seconds": 7.1216567090014,
+            "length_cap_match": true,
+            "length_counter_status": "matches",
+            "returned": {
+              "eval_count": 4096,
+              "eval_duration": 109707165000,
+              "load_duration": 6379510666,
+              "prompt_eval_cached_count": 0,
+              "prompt_eval_count": 281,
+              "prompt_eval_duration": 730275000,
+              "total_duration": 116823559833
+            },
+            "sizes_are_tokens": false,
+            "terminal_outcome": "censored_length",
+            "terminal_seen": true,
+            "thinking_characters": 17131,
+            "timing_basis": "received complete event relative to child monotonic origin; not GPU time",
+            "trailing_bytes": 0,
+            "valid": true
+          }
+        },
+        {
+          "slot": "02-temperature-1",
+          "case": "front_loaded_timing",
+          "temperature": 1,
+          "think": true,
+          "state": "failed",
+          "transport_complete": true,
+          "terminal_outcome": "stop",
+          "render_saved": true,
+          "possibly_sent": true,
+          "request_sha256": "8c2e87d32451bf753ba4c82e7760e1a5b0fb824d150e63d5eb71fa4669d34593",
+          "generation_id": "work-review-temperature-db0372417d2c40439a297f3833a61372/02-temperature-1",
+          "snapshot_id": "3d54314b779aa5a291dce8c64ccb415dbcef546c144d7254c31a5211361dfe15",
+          "snapshot_sha256": "b244f4c7f1d971f554aeeef5337639ac46e1d5d55e2945b8222f8468f9fabe19",
+          "model_neutral_payload_sha256": "eb80a5cdf302759432ed92b562665ea5057d6576447ff8502e33c41b5f8e4c13",
+          "prepared_binding": "212e7488e5510ce961e95b8fc7f910335cfde9204617b5ad31a6becfdc1193cd",
+          "manifest_sha256": "f7947eac68cdab7c0ecaa9d2b2c80c03facb14cb80daf8979a950b079b33360a",
+          "generation_deadline_monotonic": 373548.031202125,
+          "result_binding": "3e862e0c0d55009bed7abf94ee175da48a1fd4ff661c8a9d0736a1e7f82af6dd",
+          "meaning_review": {
+            "critical": true,
+            "assessment": "CRITICAL: The completed empty selection omits the clear undertaking in whole T1, including its Next Tuesday timing. The original input explicitly says Sam will send the draft, and there is no withdrawal or competing context. The generic empty-selection warning does not satisfy required work coverage. No accepted work passage retains T1. Stop under the prospective criterion; temperature 0 remains length-censored and ungraded."
+          },
+          "error": "ValueError: Critical host meaning assessment; later slots remain unsent",
+          "elapsed": 120.56714704202022,
+          "exchange": {
+            "deadline_monotonic": 373548.031202125,
+            "elapsed": 86.36851050000405,
+            "error": null,
+            "killed": false,
+            "overrun_seconds": 0.0,
+            "reaped": true,
+            "returncode": 0,
+            "server_compute_cancellation_guaranteed": false,
+            "started_monotonic": 373368.031257875,
+            "timed_out": false
+          },
+          "progress": {
+            "answer_complete": true,
+            "complete_events": 2816,
+            "content_characters": 14,
+            "error": null,
+            "first_byte_seconds": 0.10297683300450444,
+            "first_content_seconds": 86.13148637500126,
+            "first_thinking_seconds": 0.10297683300450444,
+            "length_cap_match": null,
+            "length_counter_status": "not_applicable",
+            "returned": {
+              "eval_count": 3130,
+              "eval_duration": 86187855000,
+              "load_duration": 1940500,
+              "prompt_eval_cached_count": 277,
+              "prompt_eval_count": 281,
+              "prompt_eval_duration": 63522000,
+              "total_duration": 86288843791
+            },
+            "sizes_are_tokens": false,
+            "terminal_outcome": "stop",
+            "terminal_seen": true,
+            "thinking_characters": 13068,
+            "timing_basis": "received complete event relative to child monotonic origin; not GPU time",
+            "trailing_bytes": 0,
+            "valid": true
+          }
+        }
+      ],
+      "stop_completed": [
+        "02-temperature-1"
+      ],
+      "length_censored": [
+        "01-temperature-0"
+      ],
+      "counts": {
+        "stop_completed": 1,
+        "length_censored": 1,
+        "failed": 1,
+        "unsent": 0,
+        "transport_complete": 2,
+        "answers": 1,
+        "meaning_reviews": 1
+      },
+      "failed": [
+        "02-temperature-1"
+      ],
+      "unsent": [],
+      "stop_reason": "ValueError: Critical host meaning assessment; later slots remain unsent",
+      "artifact_errors": [],
+      "elapsed": 238.3198043750017,
+      "overrun_seconds": 0.0,
+      "server_compute_cancellation_guaranteed": false
+    },
+    "post_seal_observation": {
+      "boundary": "after manifest write attempt; separate from sealed accounting",
+      "sealed": true,
+      "seal_attempt_seconds": 0.0005159159773029387,
+      "manifest_write_seconds": 0.00038225000025704503,
+      "completion_eligible": false,
+      "elapsed": 238.32019587501418,
+      "overrun_seconds": 0.0,
+      "deadline_reached": false
+    }
+  },
+  "run_ended_monotonic": 373488.342031666,
+  "full_run_wall_seconds": 238.32024933304638,
+  "full_run_overrun_seconds": 0.0,
+  "launch_wall_including_telemetry_seconds": 238.46062362502562
+}

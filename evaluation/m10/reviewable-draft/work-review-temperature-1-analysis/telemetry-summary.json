@@ -1,0 +1,53 @@
+{
+  "raw_file_sha256": "58358f871543659250ba26986caabc498808ea3a3830cb24612dce001e6336c4",
+  "samples": 120,
+  "thermal_counts": {
+    "nominal": 120
+  },
+  "memory_pressure_raw_counts": {
+    "1": 22,
+    "2": 98
+  },
+  "per_generation": {
+    "01-temperature-0": {
+      "samples_during_generation": 58,
+      "thermal_states": {
+        "nominal": 58
+      },
+      "memory_pressure_raw_counts": {
+        "1": 21,
+        "2": 37
+      },
+      "Swapins_delta": 73,
+      "Swapouts_delta": 0,
+      "returned_output_tokens_per_second": 37.33575651143661
+    },
+    "02-temperature-1": {
+      "samples_during_generation": 44,
+      "thermal_states": {
+        "nominal": 44
+      },
+      "memory_pressure_raw_counts": {
+        "2": 44
+      },
+      "Swapins_delta": 28,
+      "Swapouts_delta": 0,
+      "returned_output_tokens_per_second": 36.31602155547321
+    }
+  },
+  "memory_pressure_interpretation": "Observed raw dispatch codes1(normal) and2(warning) using Apple published interface; not exact-kernel-source attestation, and no performance or quality cause follows.",
+  "memory_pressure_sources": [
+    "https://github.com/apple-oss-distributions/xnu/blob/main/bsd/kern/kern_memorystatus_notify.c#L1753",
+    "https://github.com/apple-oss-distributions/xnu/blob/main/bsd/sys/event_private.h#L276"
+  ],
+  "temperature_gpu_frequency_unavailable": true,
+  "sample_errors": 0,
+  "swap_used_bytes_range": [
+    12449617019,
+    12449617019
+  ],
+  "whole_trace_swapins_delta": 101,
+  "whole_trace_swapouts_delta": 0,
+  "sampler_duration_max_seconds": 0.07854449999285862,
+  "attribution_limit": "OS severity and aggregate host memory/load, not calibrated temperatures/clocks or controlled host-state evidence. Zero swapout delta does not rule out memory contention."
+}

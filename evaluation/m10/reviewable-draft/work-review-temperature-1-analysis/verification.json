@@ -1,0 +1,580 @@
+{
+  "accounting": {
+    "accounting_boundary": "after final.json save and inventory hashing; before manifest.json write",
+    "answer_complete": false,
+    "artifact_errors": [],
+    "authoritative": true,
+    "automated_quality_pass": false,
+    "capture_complete": false,
+    "counts": {
+      "answers": 1,
+      "failed": 1,
+      "length_censored": 1,
+      "meaning_reviews": 1,
+      "stop_completed": 1,
+      "transport_complete": 2,
+      "unsent": 0
+    },
+    "elapsed": 238.3198043750017,
+    "failed": [
+      "02-temperature-1"
+    ],
+    "length_censored": [
+      "01-temperature-0"
+    ],
+    "overrun_seconds": 0.0,
+    "possibly_sent": 2,
+    "semantic_complete": false,
+    "server_compute_cancellation_guaranteed": false,
+    "slots": [
+      {
+        "case": "front_loaded_timing",
+        "elapsed": 117.59440470801201,
+        "exchange": {
+          "deadline_monotonic": 373430.40281875,
+          "elapsed": 116.8675660410081,
+          "error": null,
+          "killed": false,
+          "overrun_seconds": 0.0,
+          "reaped": true,
+          "returncode": 0,
+          "server_compute_cancellation_guaranteed": false,
+          "started_monotonic": 373250.402869,
+          "timed_out": false
+        },
+        "generation_deadline_monotonic": 373430.40281875,
+        "generation_id": "work-review-temperature-db0372417d2c40439a297f3833a61372/01-temperature-0",
+        "length_cap_match": true,
+        "length_counter_status": "matches",
+        "manifest_sha256": "f7947eac68cdab7c0ecaa9d2b2c80c03facb14cb80daf8979a950b079b33360a",
+        "model_neutral_payload_sha256": "eb80a5cdf302759432ed92b562665ea5057d6576447ff8502e33c41b5f8e4c13",
+        "possibly_sent": true,
+        "prepared_binding": "44780717ff9efd2aed09f2c991763e89efa6b51a23ff6869a4d9c308b5a5ffa3",
+        "progress": {
+          "answer_complete": false,
+          "complete_events": 3710,
+          "content_characters": 0,
+          "error": null,
+          "first_byte_seconds": 7.1216567090014,
+          "first_content_seconds": null,
+          "first_thinking_seconds": 7.1216567090014,
+          "length_cap_match": true,
+          "length_counter_status": "matches",
+          "returned": {
+            "eval_count": 4096,
+            "eval_duration": 109707165000,
+            "load_duration": 6379510666,
+            "prompt_eval_cached_count": 0,
+            "prompt_eval_count": 281,
+            "prompt_eval_duration": 730275000,
+            "total_duration": 116823559833
+          },
+          "sizes_are_tokens": false,
+          "terminal_outcome": "censored_length",
+          "terminal_seen": true,
+          "thinking_characters": 17131,
+          "timing_basis": "received complete event relative to child monotonic origin; not GPU time",
+          "trailing_bytes": 0,
+          "valid": true
+        },
+        "render_saved": false,
+        "request_sha256": "4805e49d440b0559caf385d466abe27b88aa02788a89f5b00c10cc3aea398b0a",
+        "slot": "01-temperature-0",
+        "snapshot_id": "3d54314b779aa5a291dce8c64ccb415dbcef546c144d7254c31a5211361dfe15",
+        "snapshot_sha256": "b244f4c7f1d971f554aeeef5337639ac46e1d5d55e2945b8222f8468f9fabe19",
+        "state": "censored_length",
+        "temperature": 0,
+        "terminal_outcome": "censored_length",
+        "think": true,
+        "transport_complete": true
+      },
+      {
+        "case": "front_loaded_timing",
+        "elapsed": 120.56714704202022,
+        "error": "ValueError: Critical host meaning assessment; later slots remain unsent",
+        "exchange": {
+          "deadline_monotonic": 373548.031202125,
+          "elapsed": 86.36851050000405,
+          "error": null,
+          "killed": false,
+          "overrun_seconds": 0.0,
+          "reaped": true,
+          "returncode": 0,
+          "server_compute_cancellation_guaranteed": false,
+          "started_monotonic": 373368.031257875,
+          "timed_out": false
+        },
+        "generation_deadline_monotonic": 373548.031202125,
+        "generation_id": "work-review-temperature-db0372417d2c40439a297f3833a61372/02-temperature-1",
+        "manifest_sha256": "f7947eac68cdab7c0ecaa9d2b2c80c03facb14cb80daf8979a950b079b33360a",
+        "meaning_review": {
+          "assessment": "CRITICAL: The completed empty selection omits the clear undertaking in whole T1, including its Next Tuesday timing. The original input explicitly says Sam will send the draft, and there is no withdrawal or competing context. The generic empty-selection warning does not satisfy required work coverage. No accepted work passage retains T1. Stop under the prospective criterion; temperature 0 remains length-censored and ungraded.",
+          "critical": true
+        },
+        "model_neutral_payload_sha256": "eb80a5cdf302759432ed92b562665ea5057d6576447ff8502e33c41b5f8e4c13",
+        "possibly_sent": true,
+        "prepared_binding": "212e7488e5510ce961e95b8fc7f910335cfde9204617b5ad31a6becfdc1193cd",
+        "progress": {
+          "answer_complete": true,
+          "complete_events": 2816,
+          "content_characters": 14,
+          "error": null,
+          "first_byte_seconds": 0.10297683300450444,
+          "first_content_seconds": 86.13148637500126,
+          "first_thinking_seconds": 0.10297683300450444,
+          "length_cap_match": null,
+          "length_counter_status": "not_applicable",
+          "returned": {
+            "eval_count": 3130,
+            "eval_duration": 86187855000,
+            "load_duration": 1940500,
+            "prompt_eval_cached_count": 277,
+            "prompt_eval_count": 281,
+            "prompt_eval_duration": 63522000,
+            "total_duration": 86288843791
+          },
+          "sizes_are_tokens": false,
+          "terminal_outcome": "stop",
+          "terminal_seen": true,
+          "thinking_characters": 13068,
+          "timing_basis": "received complete event relative to child monotonic origin; not GPU time",
+          "trailing_bytes": 0,
+          "valid": true
+        },
+        "render_saved": true,
+        "request_sha256": "8c2e87d32451bf753ba4c82e7760e1a5b0fb824d150e63d5eb71fa4669d34593",
+        "result_binding": "3e862e0c0d55009bed7abf94ee175da48a1fd4ff661c8a9d0736a1e7f82af6dd",
+        "slot": "02-temperature-1",
+        "snapshot_id": "3d54314b779aa5a291dce8c64ccb415dbcef546c144d7254c31a5211361dfe15",
+        "snapshot_sha256": "b244f4c7f1d971f554aeeef5337639ac46e1d5d55e2945b8222f8468f9fabe19",
+        "state": "failed",
+        "temperature": 1,
+        "terminal_outcome": "stop",
+        "think": true,
+        "transport_complete": true
+      }
+    ],
+    "stop_completed": [
+      "02-temperature-1"
+    ],
+    "stop_reason": "ValueError: Critical host meaning assessment; later slots remain unsent",
+    "unsent": []
+  },
+  "answer_complete": false,
+  "assessment_file": "assessment.json",
+  "capture_complete_including_seal_and_wall": false,
+  "capture_complete_with_telemetry": false,
+  "capture_inventory_entries": 114,
+  "capture_manifest_sha256": "31460c0754f4d4835e6eb5c1dc4053031d89ccdf7b86cc79729b6d1386a2b365",
+  "comparison_limit": "One familiar control; one observation pertemperature; fixed0then1order and load/cache/stochastic/host-state differences preclude causal proof or reliability claim.",
+  "conservative_generation_attempts": 2,
+  "date": "2026-11-26",
+  "exchanges": [
+    {
+      "kind": "metadata",
+      "path": "results/01-temperature-0/after/show/exchange.json",
+      "state": {
+        "deadline_monotonic": 373377.540937375,
+        "elapsed": 0.0740965410368517,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 373367.54099275,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/01-temperature-0/after/tags/exchange.json",
+      "state": {
+        "deadline_monotonic": 373377.467893041,
+        "elapsed": 0.07241925003472716,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 373367.467938791,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/01-temperature-0/after/version/exchange.json",
+      "state": {
+        "deadline_monotonic": 373377.390071625,
+        "elapsed": 0.07711258297786117,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 373367.390171625,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/01-temperature-0/before/show/exchange.json",
+      "state": {
+        "deadline_monotonic": 373260.252559,
+        "elapsed": 0.03854687500279397,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 373250.252621291,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/01-temperature-0/before/tags/exchange.json",
+      "state": {
+        "deadline_monotonic": 373260.174606166,
+        "elapsed": 0.07730879099108279,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 373250.17464725,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/01-temperature-0/before/version/exchange.json",
+      "state": {
+        "deadline_monotonic": 373260.133571875,
+        "elapsed": 0.04045858298195526,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 373250.133664,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "generation",
+      "path": "results/01-temperature-0/response/exchange.json",
+      "state": {
+        "deadline_monotonic": 373430.40281875,
+        "elapsed": 116.8675660410081,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 373250.402869,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/02-temperature-1/after/show/exchange.json",
+      "state": {
+        "deadline_monotonic": 373464.642714875,
+        "elapsed": 0.04012816702015698,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 373454.642776041,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/02-temperature-1/after/tags/exchange.json",
+      "state": {
+        "deadline_monotonic": 373464.564951583,
+        "elapsed": 0.07711237494368106,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 373454.564999625,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/02-temperature-1/after/version/exchange.json",
+      "state": {
+        "deadline_monotonic": 373464.523917375,
+        "elapsed": 0.04040449997410178,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 373454.524024375,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/02-temperature-1/before/show/exchange.json",
+      "state": {
+        "deadline_monotonic": 373377.873599333,
+        "elapsed": 0.040224666998256,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 373367.873659666,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/02-temperature-1/before/tags/exchange.json",
+      "state": {
+        "deadline_monotonic": 373377.832647375,
+        "elapsed": 0.04032962501514703,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 373367.832691791,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/02-temperature-1/before/version/exchange.json",
+      "state": {
+        "deadline_monotonic": 373377.791731,
+        "elapsed": 0.04030529101146385,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 373367.791833375,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "generation",
+      "path": "results/02-temperature-1/response/exchange.json",
+      "state": {
+        "deadline_monotonic": 373548.031202125,
+        "elapsed": 86.36851050000405,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 373368.031257875,
+        "timed_out": false
+      },
+      "status": 200
+    }
+  ],
+  "freeze_entries": 70,
+  "freeze_manifest_sha256": "f7947eac68cdab7c0ecaa9d2b2c80c03facb14cb80daf8979a950b079b33360a",
+  "full_run_wall_seconds": 238.32024933304638,
+  "gates": [
+    {
+      "matched": true,
+      "phase": "before",
+      "slot": "01-temperature-0"
+    },
+    {
+      "matched": true,
+      "phase": "after",
+      "slot": "01-temperature-0"
+    },
+    {
+      "matched": true,
+      "phase": "before",
+      "slot": "02-temperature-1"
+    },
+    {
+      "matched": true,
+      "phase": "after",
+      "slot": "02-temperature-1"
+    }
+  ],
+  "historical_uncapped_timeout_is_matched_control": false,
+  "identity_gates_verified": 4,
+  "kind": "once-only-two-temperature-selection-comparison-1",
+  "model": "qwen3.5:9b-q4_K_M",
+  "model_digest": "56671c2ab9385f9cfcb404638e32cd62d88e3501d44822208363c010179a3c90",
+  "post_seal_observation": {
+    "boundary": "after manifest write attempt; separate from sealed accounting",
+    "completion_eligible": false,
+    "deadline_reached": false,
+    "elapsed": 238.32019587501418,
+    "manifest_write_seconds": 0.00038225000025704503,
+    "overrun_seconds": 0.0,
+    "seal_attempt_seconds": 0.0005159159773029387,
+    "sealed": true
+  },
+  "prior_tracked_files_verified": 1895,
+  "prospective_criteria_sha256": "f47c1d05f38586cd05ff12b514ef954a00332c3923793eb09886006ace238f3a",
+  "published_freeze_commit": "f9f7ea4e60b4d84adf01319f12686f8a288830cf",
+  "retries": 0,
+  "rows": [
+    {
+      "case": "front_loaded_timing",
+      "http_elapsed_seconds": 116.8675660410081,
+      "possibly_sent": true,
+      "progress": {
+        "answer_complete": false,
+        "complete_events": 3710,
+        "content_characters": 0,
+        "error": null,
+        "first_byte_seconds": 7.1216567090014,
+        "first_content_seconds": null,
+        "first_thinking_seconds": 7.1216567090014,
+        "length_cap_match": true,
+        "length_counter_status": "matches",
+        "returned": {
+          "eval_count": 4096,
+          "eval_duration": 109707165000,
+          "load_duration": 6379510666,
+          "prompt_eval_cached_count": 0,
+          "prompt_eval_count": 281,
+          "prompt_eval_duration": 730275000,
+          "total_duration": 116823559833
+        },
+        "sizes_are_tokens": false,
+        "terminal_outcome": "censored_length",
+        "terminal_seen": true,
+        "thinking_characters": 17131,
+        "timing_basis": "received complete event relative to child monotonic origin; not GPU time",
+        "trailing_bytes": 0,
+        "valid": true
+      },
+      "raw_body_bytes": 551672,
+      "slot": "01-temperature-0",
+      "slot_elapsed_seconds": 117.59440470801201,
+      "state": "censored_length",
+      "temperature": 0,
+      "think": true
+    },
+    {
+      "case": "front_loaded_timing",
+      "groups": [],
+      "groups_count": 0,
+      "http_elapsed_seconds": 86.36851050000405,
+      "meaning_review": {
+        "assessment": "CRITICAL: The completed empty selection omits the clear undertaking in whole T1, including its Next Tuesday timing. The original input explicitly says Sam will send the draft, and there is no withdrawal or competing context. The generic empty-selection warning does not satisfy required work coverage. No accepted work passage retains T1. Stop under the prospective criterion; temperature 0 remains length-censored and ungraded.",
+        "critical": true
+      },
+      "possibly_sent": true,
+      "progress": {
+        "answer_complete": true,
+        "complete_events": 2816,
+        "content_characters": 14,
+        "error": null,
+        "first_byte_seconds": 0.10297683300450444,
+        "first_content_seconds": 86.13148637500126,
+        "first_thinking_seconds": 0.10297683300450444,
+        "length_cap_match": null,
+        "length_counter_status": "not_applicable",
+        "returned": {
+          "eval_count": 3130,
+          "eval_duration": 86187855000,
+          "load_duration": 1940500,
+          "prompt_eval_cached_count": 277,
+          "prompt_eval_count": 281,
+          "prompt_eval_duration": 63522000,
+          "total_duration": 86288843791
+        },
+        "sizes_are_tokens": false,
+        "terminal_outcome": "stop",
+        "terminal_seen": true,
+        "thinking_characters": 13068,
+        "timing_basis": "received complete event relative to child monotonic origin; not GPU time",
+        "trailing_bytes": 0,
+        "valid": true
+      },
+      "raw_body_bytes": 418826,
+      "render_saved": true,
+      "selected_turns_count": 0,
+      "slot": "02-temperature-1",
+      "slot_elapsed_seconds": 120.56714704202022,
+      "state": "failed",
+      "temperature": 1,
+      "think": true
+    }
+  ],
+  "semantic_assessment": "Independent read-only primary-file capture/telemetry integrity audit passes. Source-meaning review agrees: temperature1 completed empty selection critically omits the clear undertaking/timing; temperature0 is length-censored and ungraded. No automatic semantic PASS.",
+  "semantic_complete": false,
+  "service_version": "0.40.13",
+  "source_candidate": "8a1c6827ce8e193a970b87c994a22f119c922bd1",
+  "telemetry": {
+    "attribution_limit": "Host-wide OS severity, page/swap/load observations, not calibrated temperatures or direct proof of throttling/cause.",
+    "file_sha256": "58358f871543659250ba26986caabc498808ea3a3830cb24612dce001e6336c4",
+    "launcher": {
+      "complete": true,
+      "file_sha256": "58358f871543659250ba26986caabc498808ea3a3830cb24612dce001e6336c4",
+      "final": {
+        "elapsed_seconds": 238.4122162089916,
+        "rows": 120,
+        "stopped_by_launcher": true
+      },
+      "owned_process_group": 92325,
+      "ready": {
+        "first_errors": {},
+        "first_monotonic": 373249.981313208
+      },
+      "reaped": true,
+      "returncode": 0
+    },
+    "memory_pressure_raw_values": [
+      1,
+      2
+    ],
+    "rows": 120,
+    "sample_duration_max_seconds": 0.07854449999285862,
+    "sample_duration_min_seconds": 0.018986665992997587,
+    "sample_error_rows": 0,
+    "swap_used_max_bytes": 12449617019,
+    "swap_used_min_bytes": 12449617019,
+    "temperature_and_gpu_clock_unavailable": true,
+    "thermal_state_counts": {
+      "nominal": 120
+    }
+  }
+}

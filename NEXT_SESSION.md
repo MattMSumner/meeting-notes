@@ -1,4 +1,4 @@
-# M10 handoff — 2026-11-26, temperature comparison authorized
+# M10 handoff — 2026-11-26, temperature comparison failed/incomplete
 
 Continue `m10/notes-guided-enhancement`, [PR #16](https://github.com/MattMSumner/meeting-notes/pull/16).
 Read AGENTS.md, `.chief/CHIEF.md` and the reviewable-draft section of plan.md. Use the
@@ -6,33 +6,66 @@ Read AGENTS.md, `.chief/CHIEF.md` and the reviewable-draft section of plan.md. U
 parent and `codex --no-daemon` in the existing tab/space. Keep coordination in ignored
 `.chief/STATE.md`; archive useful evidence and retire only completed own workers.
 
-## Current authorization — two-temperature comparison
+## Latest temperature comparison — one censor, one critical completed answer
 
-The owner said **“Great, do the temperature comparison.”** A new isolated diagnostic
-will use the unchanged original `front_loaded_timing` control in order temperature0
-then1, one observation each. Keep accepted prompt/schema/renderer/model/digest/runtime,
-`think:true`, `stream:true`, context32768; both new arms add the same `num_predict=4096`.
-Caps are **2requests/600seconds overall/180seconds generation/10seconds metadata/0retries**.
-The previous uncapped timeout is context only, not a matched control. No live request
-has yet run under this authorization. Chief owns the reviewed freeze/publication,
-once-only execution, bounded meaning reviews and read-only concurrent host telemetry.
+The owner-approved two-temperature comparison is **FAILED / INCOMPLETE**. Both requests
+ran on the unchanged original familiar `front_loaded_timing` control, in order0then1,
+with think/stream true, context32768 and a common new num_predict4096. Caps were
+2requests/600seconds overall/180seconds generation/10seconds metadata/0retries. Read the
+[report](evaluation/m10/reviewable-draft/work-review-temperature-1-analysis/report.md),
+[assessment](evaluation/m10/reviewable-draft/work-review-temperature-1-analysis/assessment.json),
+[verification](evaluation/m10/reviewable-draft/work-review-temperature-1-analysis/verification.json)
+and [thermal/memory summary](evaluation/m10/reviewable-draft/work-review-temperature-1-analysis/telemetry-summary.json).
 
-A strict terminal length with returned eval_count4096 is expected censored evidence:
-no accepted result/render/meaning callback, and continuation only after post-call
-identity/default/artifact gates. Missing/mismatching counters, other invalid output,
-transport/deadline/storage/identity failure or a critical completed-answer defect stop.
-Every valid stop-render needs explicit Chief source-meaning review, including empty
-selection. Complete capture may coexist with incomplete answers/semantics. Preserve
-all historical evidence, verdicts and production behavior. All older allowances remain
-closed; no retry/resumption/unused-slot transfer or extra format-control generation.
+- Temperature0: strict length at4096output tokens,17131thinking characters,0answer
+  characters; HTTP116.868seconds. Censored/incomplete/ungraded, no result/render/callback.
+- Temperature1: strict stop at3130output tokens,13068thinking characters,14answer
+  characters; HTTP86.369seconds. Actual groups=[] and empty render omit the clear
+  wholeT1 undertaking and NextTuesday timing. Complete source reached the model. Chief
+  critical verdict and independent source-meaning assessment agree; a generic empty
+  notice cannot satisfy selected-work coverage. This is a completed-answer omission.
 
-The goal is a bounded diagnostic lead, not reliability or a production fix. Fixed order,
-one familiar control, one observation each, stochastic sequence, cold-load/cache and
-host-state changes limit attribution. Thermal severity and memory/load are observations;
-temperature/GPU-clock channels are unavailable unless separately obtained. M10 remains
-unbuilt and PR16 not ready to merge. Local coordination stays in ignored .chief/STATE.md.
+Two attempts,0unsent,0retries or generation timeouts. All14HTTP200 exchanges (2generation/
+12metadata) and4before/after identity/default gate sets verify. Every child reaped; no
+artifact error or deadline overrun. Independent capture/telemetry integrity passes.
+Sealed capture_complete/answer_complete/semantic_complete are false because the final
+meaning gate failed, despite both transport_complete flags being true. Temperature1
+appears in both stop_completed and failed: terminal and failed-gate evidence dimensions.
+Full-call wall238.320249333seconds includes Chief review; launch including telemetry
+is238.460623625seconds. Seal equals returned accounting; final.json is non-authoritative.
 
-## Latest diagnostic — thinking stream timeout; all three ungraded
+The sampler captured120rows, all OS thermal severity nominal, zero errors, bracketing
+the run and closing/reaping normally. Memory pressure codes1/2 vary; Apple published
+dispatch mapping calls these normal/warning, not exact-kernel-source attestation. Swap
+used stayed12449617019bytes with zero extra swapouts. Do not claim all resources were
+normal or prove a thermal/memory cause: no temperature/GPU-frequency channel exists.
+Token throughput37.336/36.316tokens per evaluation second and different output volume
+do not prove a causal temperature effect. One familiar case, one observation each,
+fixed order, cold-load/cache and stochastic/host memory differences limit attribution.
+The earlier uncapped timeout is not matched control.
+
+Exact source8a1c6827ce8e193a970b87c994a22f119c922bd1 is integrated unchanged after one
+consolidated repair round and formal engineering PASS. Targeted189pass74.60s; required
+format/lint/strict types and source-identical full2043pass/6integration excluded552.35s.
+The superseded worker S1 suite was interrupted after1702passes and is not a final PASS.
+Read [WORK_REVIEW_TEMPERATURE.md](prototypes/reviewable_draft/WORK_REVIEW_TEMPERATURE.md).
+
+Freeze70artifacts+manifest71, published f9f7ea4e60b4d84adf01319f12686f8a288830cf before
+inference. Manifest f7947eac68cdab7c0ecaa9d2b2c80c03facb14cb80daf8979a950b079b33360a,
+generation work-review-temperature-db0372417d2c40439a297f3833a61372. Capture114artifacts
+plus manifest31460c0754f4d4835e6eb5c1dc4053031d89ccdf7b86cc79729b6d1386a2b365.
+Both strict inventories are immutable; sibling analysis owns telemetry/launch/report/seal.
+All1895prior tracked evaluation/prototype files remain byte-exact.
+
+**Allowance closed: no retry, resumption, replacement, unused-slot transfer or further
+model request is authorized.** Older allowances stay closed too. No source repair or
+prompt/production/runtime/configuration change follows automatically from this result.
+Temperature1 terminated but did not fix this control's quality. M10 remains unbuilt,
+productionV11 and historical verdicts unchanged, PR16 not ready to merge. Full40,
+full-draft, persistence/edit protection and current Obsidian usefulness remain separate.
+Local task coordination stays in ignored .chief/STATE.md.
+
+## Earlier thinking diagnostic — stream timeout; all three ungraded
 
 The owner said **“Great, do it!”** to thinking enabled on three unchanged original
 synthetic cases, in order: `front_loaded_timing`, `partial_coordination_retracted`,
