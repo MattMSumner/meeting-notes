@@ -1,4 +1,4 @@
-# M10 handoff — 2026-11-25, work-retention experiment incomplete
+# M10 handoff — 2026-11-25, offline contract reassessment
 
 Continue `m10/notes-guided-enhancement`, [PR #16](https://github.com/MattMSumner/meeting-notes/pull/16).
 Read AGENTS.md, `.chief/CHIEF.md`, the reviewable-draft section of plan.md and the
@@ -9,7 +9,44 @@ desktop tab/space. Legacy `herdr` pane IDs in old evidence are not core addresse
 Keep local coordination in ignored `.chief/STATE.md`; close out accepted worker
 checkouts after preserving their work and handoffs.
 
-## Latest outcome and authorization
+## Current reassessment — proposal for owner review
+
+The owner said “Ok, lets reassess.” Offline investigation is complete; see the
+[work-review proposal](prototypes/reviewable_draft/work-review-proposal/README.md)
+and its seven explicitly authored examples. No model requests, live metadata calls,
+runtime implementation, production changes or historical regrading ran. Independent
+critique found no necessary corrections; all 1581 prior tracked evaluation/prototype
+files remain exact. Formatting, lint, strict types and all 1555 offline tests pass,
+six integration tests excluded; the existing source is unchanged.
+
+The recommendation is to inspect a smaller prospective task: select groups of complete
+speech passages about possible work, with related withdrawal/timing context; code
+copies the original text, and the user resolves current work and writes/promotes tasks.
+No model-written quotation, task title, owner, deadline or currentness field. This
+would remove model-written span reproduction and avoid a suggested-current-action
+assertion. It does not establish relevance, context completeness, coverage or usefulness.
+Missing selected work and excessive/misleading groups remain defects; a full transcript
+annex or generic warning cannot rescue them. Existing failed action outputs/grades
+cannot be relabeled or converted into new successes.
+
+Start with [partial withdrawal](prototypes/reviewable_draft/work-review-proposal/partial-withdrawal.md)
+and [longer context](prototypes/reviewable_draft/work-review-proposal/longer-context.md).
+The latter manually selects four of sixteen turns in two groups, with a withdrawal,
+full later timing and an independent conditional undertaking. Six examples reuse familiar
+inputs; the longer input is separately Chief-authored, not held out. All selections
+are manual; these show presentation feasibility, not model performance or time saving.
+
+**Owner preference remains pending:** are focused passages useful enough for the first
+work-review section, or are concise suggested-action bullets required? The optional
+question includes concrete examples; no answer is not acceptance. This changes the
+work-section promise and needs the owner's judgment, rather than a lower quality bar.
+Do not implement the new contract, run inference or infer a model switch from this
+proposal. A chosen direction would first need a bounded offline prototype and then
+separately agreed model criteria/budget/freeze if warranted. Full-draft summary/decisions,
+full40 regression, production persistence/edit protection and Obsidian usefulness
+remain separate gates. M10 stays unbuilt and PR #16 is not ready to merge.
+
+## Completed work-retention experiment — failed/incomplete
 
 The owner-approved four-case work-retention experiment is **INCOMPLETE and fails
 quality acceptance**. It stopped after **three generation requests in 15.868 seconds**:
