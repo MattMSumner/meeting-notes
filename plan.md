@@ -25,7 +25,9 @@ text copied by code and current-task resolution left to the user. Seven authored
 make the tradeoff concrete; none is model-generated or evidence of improved quality.
 The owner replied “This works!” and accepts focused passages with manual current-task
 resolution for the first work-review section. This is format/workflow acceptance, not
-model-quality evidence; the technical contract remains unimplemented. The earlier
+model-quality evidence. The owner subsequently said “Right, lets do it,” authorizing
+the isolated offline reference-group/result/renderer prototype and authored examples/
+tests. This grants no model calls, production integration or merge. The earlier
 [work-retention run](evaluation/m10/reviewable-draft/retention-probe-1-analysis/report.md)
 remains incomplete with one critical cancelled-work suggestion, one criterion met, one
 literal rejection and one unsent case. All 1555 offline tests pass and all 1581 prior
@@ -1608,6 +1610,17 @@ prototype before any separately scoped model evaluation. This feedback introduce
 no runtime/production change, model switch, inference budget, quality pass, Built or
 merge. Full-draft summary/decisions, full40 regression, persistence/edit protection
 and current synthetic Obsidian usefulness remain separate gates.
+
+**Offline passage prototype authorized (2026-11-26).** The owner said “Right, lets
+do it” after accepting the passage-review direction. Implement a separate, isolated
+reference-group/result/renderer prototype with complete snapshot/host generation
+binding, strict groups-only references, faithful source-order copying, separate
+writing, and honest empty/incomplete/unavailable host states. Include reproducible
+authored previews and meaningful integrity/failure tests. Preparation remains
+model-neutral and transport-free; do not alter old action semantics or relabel
+failed model outputs. No live metadata, model requests, production integration,
+model switch, quality pass, Built or merge is authorized. Evaluation scope/budget/
+freeze and the existing full-draft/persistence/usefulness gates remain separate.
 
 **M11 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
