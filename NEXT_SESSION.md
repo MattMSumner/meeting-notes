@@ -1,4 +1,57 @@
-# M10 handoff — 2026-11-26, schema-grounded prompt diagnostic authorized
+# M10 handoff — 2026-11-26, three schema-grounded controls met
+
+Continue `m10/notes-guided-enhancement`, [PR 16](https://github.com/MattMSumner/meeting-notes/pull/16).
+Read AGENTS.md, the Chief workflow and latest plan section. The schema-grounded
+prompt diagnostic is complete: **3/3 familiar controls met their prospective criteria**
+in one observation each, with independent primary capture and source-meaning PASS,
+zero critical/noncritical findings. This is initial feasibility, not M10 acceptance.
+
+Read the [report](evaluation/m10/reviewable-draft/work-review-schema-1-analysis/report.md),
+[assessment](evaluation/m10/reviewable-draft/work-review-schema-1-analysis/assessment.json),
+[verification](evaluation/m10/reviewable-draft/work-review-schema-1-analysis/verification.json)
+and [seal](evaluation/m10/reviewable-draft/work-review-schema-1-analysis/seal.json).
+
+- `front_loaded_timing`: [[T1]], preserving the undertaking and Next Tuesday timing.
+- `partial_coordination_retracted`: [[T1, T2]], preserving surviving invoice work
+  plus complete original/withdrawal context as review passages, not current actions.
+- `accepted_status_answer`: [], correctly excluding availability-only facts.
+
+Three attempts, all strict stop below4096, 0failed/unsent/retries/censors/timeouts/overruns.
+Generation HTTP walls14.476/103.217/59.477s; output tokens312/3765/2210. Full probe-call
+wall298.343869209s includes Chief review waits; post-audit wall298.344126625s. All21
+HTTP200 exchanges and6before/after identity/default sets match Ollama0.40.13/digest/
+capabilities/thinking/defaults; all21children reaped. Saved seal equals return, with
+separate postseal and post-audit boundaries. Raw thinking remains machine-only evidence.
+
+The system prompt appends the exact unchanged per-case JSON schema; no answer examples
+or forced nonempty selection. API schema/decoder/renderer/original inputs unchanged,
+Qwen3.5 temp1/thinktrue/streamtrue/context32768/num_predict4096. Source candidate
+2d48ec947d1676d6901d2fa2ea1d08d924536ed7 is integrated unchanged, zero source repairs.
+Targeted218passed109.38s; one exact-source required full2261passed/6excluded635.69s
+and static checks pass. Freeze85artifacts+manifest86 was published at
+cf02e18b682050691abb2005cb3873d68c2c12ae before inference, pin
+180b797197a8178db7aefeb467bdcfac8bdc7e007a615336355bde483a2f4876, generation
+work-review-schema-848970109b774c66ba76b63352f5e686. Capture174artifacts+manifest175,
+pin4674e69b107bceb14d9727818234e07b3addd542738dbe71cb4aa8a8de678cb9.
+Strict inventories stay immutable; sibling analysis holds later meaning/report/launch/seal.
+All2099prior tracked evaluation/prototype files remain exact.
+
+**Allowance CLOSED.** No retry/resumption/replacement/unused-time transfer or further
+model request is authorized. All older allowances remain closed. These familiar
+controls/fixed order/single observations cannot prove causal prompt benefit, reliability
+or saved effort; the cached old clear-control failure is not a fresh matched control.
+No new thermal telemetry was collected. Historical failed/incomplete grades, production
+V11 and M10 unbuilt status remain unchanged; PR16 is not ready to merge. Broader/fresh
+examples and repetitions, full40/full-draft, persistence/edit protection and current
+synthetic Obsidian usefulness require separate work and scope before Built/shipit.
+Do not choose or run another model experiment without new owner steering.
+
+Local cleanup/publication/CI state and full evidence are in ignored .chief/STATE.md and
+.chief/runs/work-review-schema-20261126. Do not turn local state into another roadmap.
+
+---
+
+## Historical authorization — schema-grounded prompt diagnostic
 
 Continue `m10/notes-guided-enhancement`, PR 16. Read AGENTS.md, the Chief workflow and
 the latest plan section. The owner said “Great do it” to the schema-grounded prompt

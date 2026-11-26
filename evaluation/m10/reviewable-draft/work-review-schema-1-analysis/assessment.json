@@ -1,0 +1,62 @@
+{
+  "format": "schema-grounded-selection-assessment-1",
+  "prospective_criteria_sha256": "b70b169239a9673526795a3b480913d2dbe53b4e63aed07536d457b9eebeca5e",
+  "method": "Chief reviewed every actual saved render against the complete original source before continuation. Independent read-only primary-evidence/source-meaning review separately confirms 3/3 criteria met, zero critical or noncritical findings, without relying on Chief verification assertions.",
+  "counts": {
+    "criteria_met": 3,
+    "criteria_not_met": 0,
+    "critical": 0,
+    "noncritical": 0,
+    "incomplete": 0
+  },
+  "rows": [
+    {
+      "slot": "01-front_loaded_timing",
+      "criterion_met": true,
+      "critical": false,
+      "noncritical_findings": [],
+      "assessment": "The complete T1 passage retains the explicit sending undertaking and full Next Tuesday timing; no withdrawal or competing context exists.",
+      "selected_source_ids": [
+        "T1"
+      ],
+      "evidence": [
+        "../work-review-schema-1/snapshots/01-front_loaded_timing.json",
+        "../work-review-schema-1/results/01-front_loaded_timing/result.json",
+        "../work-review-schema-1/results/01-front_loaded_timing/work-review.md",
+        "../work-review-schema-1/results/01-front_loaded_timing/meaning-review.json"
+      ]
+    },
+    {
+      "slot": "02-partial_coordination_retracted",
+      "criterion_met": true,
+      "critical": false,
+      "noncritical_findings": [],
+      "assessment": "One focused group retains complete T1 and T2 in original order, including surviving invoice sending and the explicit withdrawal of review. The view presents source passages for human resolution and does not claim cancelled work is current.",
+      "selected_source_ids": [
+        "T1",
+        "T2"
+      ],
+      "evidence": [
+        "../work-review-schema-1/snapshots/02-partial_coordination_retracted.json",
+        "../work-review-schema-1/results/02-partial_coordination_retracted/result.json",
+        "../work-review-schema-1/results/02-partial_coordination_retracted/work-review.md",
+        "../work-review-schema-1/results/02-partial_coordination_retracted/meaning-review.json"
+      ]
+    },
+    {
+      "slot": "03-accepted_status_answer",
+      "criterion_met": true,
+      "critical": false,
+      "noncritical_findings": [],
+      "assessment": "The source is only an availability question and affirmative answer. Empty groups correctly excludes both fact-only turns and meets the negative-control relevance criterion.",
+      "selected_source_ids": [],
+      "evidence": [
+        "../work-review-schema-1/snapshots/03-accepted_status_answer.json",
+        "../work-review-schema-1/results/03-accepted_status_answer/result.json",
+        "../work-review-schema-1/results/03-accepted_status_answer/work-review.md",
+        "../work-review-schema-1/results/03-accepted_status_answer/meaning-review.json"
+      ]
+    }
+  ],
+  "scope": "One observation on each of three familiar development controls; no reliability, causal prompt benefit, saved effort, model/production change or M10 acceptance. Historical grades unchanged."
+}
