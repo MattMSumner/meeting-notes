@@ -18,13 +18,14 @@ The next first-release target is the reviewable draft contract below; the curren
 still implements V11. Automatic reconciliation is deferred for that successor.
 Phase 0 (Handy) set up.
 
-**Fresh-session handoff (2026-11-25):** [NEXT_SESSION.md](NEXT_SESSION.md) and the
+**Fresh-session handoff (2026-11-26):** [NEXT_SESSION.md](NEXT_SESSION.md) and the
 [offline reassessment](prototypes/reviewable_draft/work-review-proposal/README.md)
 propose inspecting complete work-review passages selected by reference, with original
 text copied by code and current-task resolution left to the user. Seven authored examples
 make the tradeoff concrete; none is model-generated or evidence of improved quality.
-The owner choice between focused passages and concise suggested-action bullets remains
-pending. No implementation or new inference is authorized by the proposal. The earlier
+The owner replied “This works!” and accepts focused passages with manual current-task
+resolution for the first work-review section. This is format/workflow acceptance, not
+model-quality evidence; the technical contract remains unimplemented. The earlier
 [work-retention run](evaluation/m10/reviewable-draft/retention-probe-1-analysis/report.md)
 remains incomplete with one critical cancelled-work suggestion, one criterion met, one
 literal rejection and one unsent case. All 1555 offline tests pass and all 1581 prior
@@ -1593,6 +1594,20 @@ isolated offline prototype before separately scoped model evaluation. This propo
 authorizes no implementation, inference, model switch, full-draft quality acceptance,
 Built or merge. Summary/decisions, full40 regression, persistence/edit protection and
 current synthetic Obsidian usefulness remain separate gates; old failed grades stand.
+
+**Passage-review direction accepted (2026-11-26).** The owner replied “This works!”
+to the authored examples and the choice between focused source passages and concise
+suggested-action bullets. Focused passages with manual current-work resolution and
+task promotion are useful enough for the first work-review section; do not request
+that format decision again. The seven examples remain authored, not model outputs
+or proof of saved effort. Relevance, complete context, independent-work coverage and
+review burden still need evaluation. Existing failed action-only grades stand.
+
+The next bounded task would be an isolated offline reference-group/result/renderer
+prototype before any separately scoped model evaluation. This feedback introduces
+no runtime/production change, model switch, inference budget, quality pass, Built or
+merge. Full-draft summary/decisions, full40 regression, persistence/edit protection
+and current synthetic Obsidian usefulness remain separate gates.
 
 **M11 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
