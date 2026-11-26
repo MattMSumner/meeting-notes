@@ -1,0 +1,79 @@
+{
+  "assessors": "Independent read-only reviewer and separate Chief source-based assessment agree",
+  "capture_audit": "PASS; correctly stopped incomplete run",
+  "capture_manifest_sha256": "64b673d748447c087d4d58254f113f25d435ec370a1d2c6f39366892458d6943",
+  "counts": {
+    "criteria_met": 1,
+    "critical_defect_cases": 1,
+    "literal_failure_incomplete_cases": 1,
+    "rendered_drafts_assessed": 2,
+    "unsent_incomplete_cases": 1
+  },
+  "date": "2026-11-25",
+  "freeze_manifest_sha256": "24676d89c8a68db18a9d78d732a3089caffd85c74dc6526f07a560c511f1fdbd",
+  "further_generation_allowance": 0,
+  "independent_handoff_location": "Chief private archive: .chief/results/retention-capture-meaning-review-20261125.txt",
+  "independent_handoff_sha256": "f6d4d81c6fda7872c79b02e51a62fe800c323213c0b9d030784b4f84775344b4",
+  "kind": "source-based-work-retention-assessment-1",
+  "limits": [
+    "Four familiar development cases; only three responses/two drafts",
+    "One repetition",
+    "Action-only; no summary or decisions",
+    "No reliability, historical-cause, model-switch, full40 regression, persistence, usefulness or M10 acceptance"
+  ],
+  "prospective_criteria_sha256": "4c9f4f238b0a57470d0cd9ba1134db4c002a4acf0565ab8a41c4210f40a7fecb",
+  "published_freeze_commit": "9dba7187037592d2898f773932d48f7a70c9fd76",
+  "quality_accepted": false,
+  "review_mode": "Saved evidence only; no writes/HTTP/inference by reviewer; not blinded or held out",
+  "rows": [
+    {
+      "additional_review_burden": "Reader must reconcile still-positive action selection with later withdrawal context.",
+      "case": "partial_coordination_retracted",
+      "criterion_met": false,
+      "evidence": [
+        "../retention-probe-1/results/01-partial_coordination_retracted/actions.md:13",
+        "../retention-probe-1/results/01-partial_coordination_retracted/result.json",
+        "../retention-probe-1/snapshots/01-partial_coordination_retracted.json"
+      ],
+      "finding": "Suggested action includes cancelled draft review alongside surviving invoice sending. Sending and full withdrawal context ARE retained; this is not an omission.",
+      "severity": "critical",
+      "state": "published"
+    },
+    {
+      "additional_review_burden": "Overbroad quotation and unnecessary repeated focused-review passage.",
+      "case": "cancellation_with_new_task",
+      "criterion_met": true,
+      "evidence": [
+        "../retention-probe-1/results/02-cancellation_with_new_task/actions.md:13",
+        "../retention-probe-1/results/02-cancellation_with_new_task/result.json"
+      ],
+      "finding": "Complete selected utterance explicitly revokes draft review inline and retains independent invoice sending, supported attribution and no invented due.",
+      "severity": "noncritical",
+      "state": "published"
+    },
+    {
+      "case": "qualified_external_timing",
+      "criterion_met": null,
+      "evidence": [
+        "../retention-probe-1/results/03-qualified_external_timing/observed.json",
+        "../retention-probe-1/results/03-qualified_external_timing/result.json"
+      ],
+      "finding": "Complete response joins T1 sending and T2 timing in a quote attributed to T1; quote_absent rejects it. Full timing qualifier IS present in attempted content. No actions.md was published; backend references do not constitute a passing draft.",
+      "severity": "incomplete",
+      "state": "literal_failure_incomplete"
+    },
+    {
+      "case": "additional",
+      "criterion_met": null,
+      "evidence": [
+        "../retention-probe-1/results/04-additional/outcome.json"
+      ],
+      "finding": "No generation, response, result or draft; no model evidence about the two undertakings/attribution/timing/writing.",
+      "severity": "incomplete",
+      "state": "unsent_incomplete"
+    }
+  ],
+  "source_candidate": "af210c01b803bc885d24c2ed78f7c7fb725108b4",
+  "stopping_rule_account": "No meaning assessment completed during capture. First detected in-run failure was third-case literal rejection; collector stopped before fourth. Critical first-case defect identified in later assessment; already-captured outputs preserved.",
+  "unused_slot_authorizes_resumption": false
+}

@@ -1,4 +1,4 @@
-# M10 handoff — 2026-11-25, work-retention experiment approved
+# M10 handoff — 2026-11-25, work-retention experiment incomplete
 
 Continue `m10/notes-guided-enhancement`, [PR #16](https://github.com/MattMSumner/meeting-notes/pull/16).
 Read AGENTS.md, `.chief/CHIEF.md`, the reviewable-draft section of plan.md and the
@@ -11,55 +11,64 @@ checkouts after preserving their work and handoffs.
 
 ## Latest outcome and authorization
 
-The owner said **“Great, run the experiment”** to the next focused work-retention
-test: Qwen3.5 thinking disabled, streaming enabled, unchanged actions prompt/schema/
-decoder/renderer, one repetition of four existing synthetic cases in fixed order:
+The owner-approved four-case work-retention experiment is **INCOMPLETE and fails
+quality acceptance**. It stopped after **three generation requests in 15.868 seconds**:
+two rendered drafts, one literal-selection rejection and one unsent case. No retries,
+timeouts, overruns or artifact errors. The independent capture audit passes; source
+meaning assessment finds one critical defect, one criterion met with noncritical burden,
+and two incomplete cases. See the [report](evaluation/m10/reviewable-draft/retention-probe-1-analysis/report.md)
+and [assessment](evaluation/m10/reviewable-draft/retention-probe-1-analysis/assessment.json).
+
+| Case | Outcome |
+| --- | --- |
+| Partial withdrawal | **Critical:** invoice sending survives, but the suggested action also includes cancelled draft review. Both full turns are visible; this is not an omission. |
+| Replacement task | Meets criterion: inline retraction preserves independent sending and attribution, no invented due. Broad selection/repeated review adds noncritical burden. |
+| Qualified timing | Incomplete: combined T1/T2 quote attributed to T1 is rejected as quote_absent; no draft. Full timing qualifier is present in attempted content, not proven omitted. |
+| Additional undertakings | Unsent after case three; no model quality evidence. |
+
+No semantic assessment completed during capture. The first detected in-run failure
+was the third case's literal rejection, which stopped before the fourth request.
+The later critical finding does not imply earlier detection or authorize more calls.
+**The once-only allowance is closed: no retry, resumption, unused-slot transfer or
+further inference is authorized.** Keep the existing baseline and production behavior.
+
+The owner said “Great, run the experiment” to one repetition in fixed order of
 `partial_coordination_retracted`, `cancellation_with_new_task`,
-`qualified_external_timing`, `additional`. The allowance is **at most four generation
-requests / 900 seconds overall / 180 seconds per generation, no retries**. Prepare,
-test, independently review and commit/push the exact new freeze before executing once.
-Do not ask for this approval again. Preparation precedes the run clock; validation,
-metadata, loading, capture, saving and cleanup during execution all count toward 900s.
-Stop on the first technical failure/deadline/drift or critical semantic defect once
-identified. Independent meaning assessment may follow capture; retain all replies
-already captured. No unused allowance transfers or automatic rerun is authorized.
+`qualified_external_timing`, `additional`; Qwen3.5 thinking false/streaming true,
+unchanged prompt/schema/decoder/renderer, temperature0, context32768. Limits were
+four requests / 900 seconds overall / 180 seconds per generation / no retries.
+Preparation/review/freeze/publication preceded execution; in-run validation, metadata,
+loading, capture, saving and cleanup count toward the shared deadline.
 
-Require surviving work as a supported suggestion or focused review with relevant
-context; cancelled work cannot become current. Partial withdrawal must retain invoice
-sending alongside its original/withdrawal context. Replacement must retain independent
-sending without invented due dates. Qualified timing must preserve complete not-before/
-next/finance context without a misleading deadline. Additional context must retain both
-genuine undertakings, their attribution/timing, and separate unchanged writing.
-Generic warnings or whole-transcript dumps alone do not satisfy useful retention.
-
-Read-only preparation metadata matches the last freeze's Ollama0.40.13, model digest,
-boolean thinking support and relevant defaults; no service/model changes were made.
-Chief owns the once-only execution. Workers prepare/review offline and have no model
-allowance. All previous 1347 tracked evaluation/prototype files remain immutable.
-This is action-only familiar-case evidence, not full-draft quality, reliability, a
-model switch, production integration, M10 Built or merge authorization.
-
-The isolated collector is implemented and independently reviewed at
-`af210c01b803bc885d24c2ed78f7c7fb725108b4`, integrated unchanged as an ancestor of
-the milestone branch. Five assigned files only; no findings or repair rounds.
-Formatting, lint, strict types and **1555 offline tests pass**, six integration tests
-excluded; 66 new tests cover the profile. Chief verified the same pinned source in
-its own full run. No generation has run at this preparation checkpoint.
+Exact collector source `af210c01b803bc885d24c2ed78f7c7fb725108b4` is integrated
+unchanged as an ancestor. Independent source review passed with no findings or repair
+rounds; format/lint/strict types and **1555 offline tests pass**, six integration tests
+excluded, 66 new tests. Worker and Chief full suites used the same pinned source;
+post-freeze static checks also pass. Production and historical code are unchanged.
 
 The [48-artifact freeze](evaluation/m10/reviewable-draft/retention-probe-1/manifest.json)
-has SHA256 `24676d89c8a68db18a9d78d732a3089caffd85c74dc6526f07a560c511f1fdbd`
-and generation `retention-probe-8c62fdd2301f4b8695e81a55c5424188`. It binds all four
-actual wire bodies, complete snapshots, identity/defaults, imports and reviewed source.
-The [prospective criteria](evaluation/m10/reviewable-draft/retention-probe-1-analysis/criteria.json)
+was committed/pushed at `9dba7187037592d2898f773932d48f7a70c9fd76` before inference;
+SHA256 `24676d89c8a68db18a9d78d732a3089caffd85c74dc6526f07a560c511f1fdbd`,
+generation `retention-probe-8c62fdd2301f4b8695e81a55c5424188`. The
+[prospective criteria](evaluation/m10/reviewable-draft/retention-probe-1-analysis/criteria.json)
 were committed at `e96d48b` before outputs; SHA256
 `4c9f4f238b0a57470d0cd9ba1134db4c002a4acf0565ab8a41c4210f40a7fecb`.
+
+All six before/after gates match Ollama0.40.13/model digest/thinking/defaults. Exactly
+21 HTTP200 exchanges account for three generation calls and eighteen metadata calls;
+zero thinking characters, no child kill/error/timeout, all children reaped. The
+[capture manifest](evaluation/m10/reviewable-draft/retention-probe-1/results/manifest.json)
+contains 171 artifacts plus itself; SHA256
+`64b673d748447c087d4d58254f113f25d435ec370a1d2c6f39366892458d6943`.
+All 1347 prior tracked evaluation/prototype files remain byte-exact.
+
 Use the [collector contract](prototypes/reviewable_draft/RETENTION_PROBE.md).
-Publish the exact freeze before Chief's already approved once-only execution.
-Keep all later analysis/launch/review artifacts in the sibling analysis directory;
-never add them inside the strict freeze or results inventories. Preserve returned
-accounting and post-seal observations plus independent full-call wall time outside
-capture. Either a sealed failure, post-seal deadline or full wall at/over900s makes
-the run incomplete. Results remain exclusive/single-use; never resume or retry.
+Capture manifest accounting equals the returned accounting exactly: incomplete,
+literal-failure stop, zero overrun. Its elapsed boundary is15.867515917s; post-seal
+observation15.867707959s; independent full-call wall15.867782917s. `final.json` is a
+non-authoritative pre-save snapshot. All later meaning/report/launch/final-seal
+artifacts live in the sibling analysis directory; never alter or add to either
+strict freeze/capture inventory. No historical result or grade changed.
 
 ## Completed streaming runtime probe — earlier allowance consumed
 
@@ -196,20 +205,18 @@ benefit or current Obsidian usefulness.
 
 ## Checks and next decision
 
-The streaming collector passed independent engineering review after two repair rounds.
-Format/lint/strict types and **1489 offline tests pass**, six integration tests excluded,
-capture unchanged. Independent post-run capture/availability review also passed. The
-earlier model-screen CI exposed
-a test collector using historical Git objects missing in shallow checkouts; fixture-only
-commit `0e349218915d722c14e9d5e9385f826899dd7ab3` reads committed frozen baseline files.
-A real depth-one checkout collects all51newtests; full checks pass. Runtime, model packets
-and frozen source were unchanged by this repair. Final-head CI status is in PR/local ledger.
+The latest collector passed source review and all required engineering checks, but
+its work-retention run did not qualify the model configuration. Reassess source
+selection before another call: cancelled work must be excluded from current action
+spans, and supporting turns must remain separate from a primary-source quotation.
+Do not add more literal validators for the currentness failure: that quote already
+passes literal checks. No decoder relaxation, quote repair or selective rerun follows.
+Any new experiment needs separately agreed scope and budget.
 
-Keep the existing baseline. The runtime pair is complete. The owner has now approved
-the separate four-case work-retention check described at the top; its new allowance
-does not reopen any earlier experiment. Do not add quote validators or run other
-inference automatically. Broader cases/repetitions/full-draft evaluation remain later
-decisions requiring their own scope and budget.
+Earlier model-screen CI fixture fix `0e349218915d722c14e9d5e9385f826899dd7ab3`
+reads committed frozen baseline files instead of missing historical Git objects.
+Its depth-one collection passed; latest collector also has depth-one fixture coverage.
+No old frozen source or model request changed. Final-head CI status is in PR/local ledger.
 
 The owner still values useful drafts requiring review and approved the authored normal/
 incomplete presentation. That product direction remains unchanged. Current app behavior
