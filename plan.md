@@ -1729,6 +1729,29 @@ evaluation/prototype hashes remain exact. Source fidelity and correct stopping e
 no completed selection quality, causal benefit or reliability. Historical grades,
 production V11, remaining quality/persistence/usefulness and merge gates are unchanged.
 
+**Temperature comparison authorized (2026-11-26).** After read-only stream and
+upstream research, the owner said “Great, do the temperature comparison.” Use the same
+original `front_loaded_timing` control twice, in fixed order temperature0 then1, with
+the accepted work-review prompt/schema/renderer, same Qwen3.5 digest/runtime, thinking
+and streaming enabled, context32768, and a common **new** `num_predict=4096` cap.
+Limits: two generation requests,600seconds overall,180seconds per generation,10seconds
+per metadata exchange, no retries, one observation per temperature. The arms differ
+only in temperature; the older uncapped timeout is context, not a matched control.
+
+A strict EOF terminal `done_reason=length` with returned `eval_count=4096` is anticipated
+censored evidence: retain stream/counters, publish no accepted answer or render, and
+continue only after exact post-call identity/default and artifact checks. A stop answer
+requires unchanged strict decoding/rendering and bounded Chief source-meaning review;
+a critical defect or technical/identity/storage/deadline failure stops all later slots.
+Capture completeness is separate from answer and semantic completeness. Freeze the
+reviewed source, exact wires and prospective criteria before the once-only run. Record
+read-only thermal severity and aggregate memory/load alongside generation; unavailable
+temperature/GPU-clock channels remain explicit. One familiar case, fixed order, cold-load/
+cache effects and one observation per arm establish no causal proof or reliability.
+All older allowances remain closed; no new format-control requests, settings/service
+changes, historical regrading, production integration, model switch, full40/full-draft
+acceptance, M10 Built or merge is authorized.
+
 **M11 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
 compared on tests rather than by eye on real meetings: stance (a "maybe" turned into a
