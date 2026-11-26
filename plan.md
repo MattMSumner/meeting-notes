@@ -19,20 +19,18 @@ still implements V11. Automatic reconciliation is deferred for that successor.
 Phase 0 (Handy) set up.
 
 **Fresh-session handoff (2026-11-26):** [NEXT_SESSION.md](NEXT_SESSION.md) and the
-[offline reassessment](prototypes/reviewable_draft/work-review-proposal/README.md)
-propose inspecting complete work-review passages selected by reference, with original
-text copied by code and current-task resolution left to the user. Seven authored examples
-make the tradeoff concrete; none is model-generated or evidence of improved quality.
-The owner replied “This works!” and accepts focused passages with manual current-task
-resolution for the first work-review section. This is format/workflow acceptance, not
-model-quality evidence. The owner subsequently said “Right, lets do it,” authorizing
-the isolated offline reference-group/result/renderer prototype and authored examples/
-tests. This grants no model calls, production integration or merge. The earlier
-[work-retention run](evaluation/m10/reviewable-draft/retention-probe-1-analysis/report.md)
-remains incomplete with one critical cancelled-work suggestion, one criterion met, one
-literal rejection and one unsent case. All 1555 offline tests pass and all 1581 prior
-tracked evaluation/prototype files remain exact. Keep the baseline; earlier grades and
-historical timeout uncertainty remain unchanged. The app remains V11 and M10 unbuilt.
+[offline passage prototype](prototypes/reviewable_draft/WORK_REVIEW.md) record the
+implemented reference-group/result/renderer contract and separate authored exporter.
+The owner accepted focused passages with manual task resolution, then authorized this
+isolated offline implementation. Source `175cde2` passes independent review without
+findings/repair rounds; all 1621 offline tests pass, six integration tests excluded.
+Seven normal/empty examples and two explicitly incomplete/unavailable demonstrations
+reproduce as thirteen artifacts. No model requests, live metadata or production changes
+ran. Source fidelity does not establish selection quality, context coverage or saved effort.
+The earlier [work-retention run](evaluation/m10/reviewable-draft/retention-probe-1-analysis/report.md)
+keeps its failed/incomplete grades; the app remains V11 and M10 unbuilt. Actual model
+evaluation needs separate scope/criteria/budget/freeze; full-draft/persistence/usefulness
+and owner shipit gates remain.
 
 ---
 
@@ -1621,6 +1619,38 @@ model-neutral and transport-free; do not alter old action semantics or relabel
 failed model outputs. No live metadata, model requests, production integration,
 model switch, quality pass, Built or merge is authorized. Evaluation scope/budget/
 freeze and the existing full-draft/persistence/usefulness gates remain separate.
+
+**Offline passage prototype implemented (2026-11-26; M10 remains unbuilt).** Source
+`175cde2d10c08e430ad3da464a2dc7f7c7105ae2` adds the separate immutable prepared input,
+reference groups/result and literal renderer; it is integrated unchanged as an ancestor.
+The model-neutral payload has messages/schema only, with strict groups-only content.
+All supplied speech references validate before duplicate cleanup; original source order
+and distinct overlapping groups are preserved. Complete input and host generation binding
+rejects migrated/tampered records. Rendering uses saved complete turns and original writing,
+with no current-task, generated quote/title/owner/deadline or semantic-quality claim.
+Explicit host incomplete/unavailable routes preserve valid independent groups or no groups
+respectively, without salvaging malformed replies or claiming an empty selection proves
+absence of work. Existing actions and production semantics are unchanged.
+
+The [new authored preview bundle](prototypes/reviewable_draft/work-review-previews/index.md)
+contains seven normal/empty examples and two labeled host-failure demonstrations. All 13
+artifacts reproduce byte-for-byte, with twelve manifest output hashes and complete snapshot/
+generation/group provenance in JSON. The exporter validates inputs first and creates only
+new directories; existing edits, output symlinks and symlink parents are refused. Its
+manifest is authored-example provenance, not production persistence or a runtime freeze.
+Six inputs remain familiar; the longer input is Chief-authored/not held out. No model
+selection, saved-effort or quality improvement follows from these authored outputs.
+
+Independent exact-commit review passes with no findings/repair rounds. Formatting, lint,
+strict types and 1621 offline tests pass; six integration tests excluded, 66 new targeted
+tests pass.
+Both worker and Chief full suites use source-identical bytes; Chief also independently
+regenerated all 13 artifacts. All prior input/model evidence/grades and original authored
+example bytes remain exact; the current proposal README only gains implementation status.
+No inference/live metadata, model switch, production integration, Built or merge ran.
+A future model check needs separately agreed criteria/budget and reviewed execution freeze;
+full40 regression, summaries/decisions, persistence/edit protection and current Obsidian
+usefulness remain separate gates.
 
 **M11 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
