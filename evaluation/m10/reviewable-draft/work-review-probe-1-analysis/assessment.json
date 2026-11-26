@@ -1,0 +1,136 @@
+{
+  "kind": "source-based-passage-selection-assessment-1",
+  "date": "2026-11-26",
+  "criteria_sha256": "624e4dd123e37936b3087c115c6b7f1a505cca45e2d69898b18a6af583d8103b",
+  "review_status": "Chief in-run assessment and independent saved-evidence source-meaning review agree",
+  "capture_complete": false,
+  "quality_acceptance": "failed_and_incomplete",
+  "counts": {
+    "critical": 1,
+    "met": 0,
+    "incomplete_unsent": 6,
+    "noncritical": 0
+  },
+  "cases": [
+    {
+      "case": "partial_coordination_retracted",
+      "slot": "01-partial_coordination_retracted",
+      "status": "critical",
+      "criterion_met": false,
+      "actual_groups": [],
+      "necessary_speech_references": [
+        "T1",
+        "T2"
+      ],
+      "finding": "Empty model selection omits surviving invoice sending and associated original/withdrawal context. No selected passage makes the genuine undertaking discoverable.",
+      "evidence": [
+        "../work-review-probe-1/results/01-partial_coordination_retracted/observed.json",
+        "../work-review-probe-1/results/01-partial_coordination_retracted/result.json",
+        "../work-review-probe-1/results/01-partial_coordination_retracted/work-review.md",
+        "../work-review-probe-1/results/01-partial_coordination_retracted/meaning-review.json",
+        "../work-review-probe-1/results/01-partial_coordination_retracted/outcome.json"
+      ]
+    },
+    {
+      "case": "cancellation_with_new_task",
+      "slot": "02-cancellation_with_new_task",
+      "status": "incomplete_unsent",
+      "criterion_met": null,
+      "actual_groups": null,
+      "necessary_speech_references": [
+        "T1"
+      ],
+      "finding": "Declared stopping rule prevented generation; no model answer or quality grade.",
+      "evidence": [
+        "../work-review-probe-1/results/02-cancellation_with_new_task/outcome.json"
+      ]
+    },
+    {
+      "case": "qualified_external_timing",
+      "slot": "03-qualified_external_timing",
+      "status": "incomplete_unsent",
+      "criterion_met": null,
+      "actual_groups": null,
+      "necessary_speech_references": [
+        "T1",
+        "T2"
+      ],
+      "finding": "Declared stopping rule prevented generation; no model answer or quality grade.",
+      "evidence": [
+        "../work-review-probe-1/results/03-qualified_external_timing/outcome.json"
+      ]
+    },
+    {
+      "case": "additional",
+      "slot": "04-additional",
+      "status": "incomplete_unsent",
+      "criterion_met": null,
+      "actual_groups": null,
+      "necessary_speech_references": [
+        "T1",
+        "T2"
+      ],
+      "finding": "Declared stopping rule prevented generation; no model answer or quality grade.",
+      "evidence": [
+        "../work-review-probe-1/results/04-additional/outcome.json"
+      ]
+    },
+    {
+      "case": "accepted_status_answer",
+      "slot": "05-accepted_status_answer",
+      "status": "incomplete_unsent",
+      "criterion_met": null,
+      "actual_groups": null,
+      "necessary_speech_references": [],
+      "finding": "Declared stopping rule prevented generation; no model answer or quality grade.",
+      "evidence": [
+        "../work-review-probe-1/results/05-accepted_status_answer/outcome.json"
+      ]
+    },
+    {
+      "case": "unit_equivalence",
+      "slot": "06-unit_equivalence",
+      "status": "incomplete_unsent",
+      "criterion_met": null,
+      "actual_groups": null,
+      "necessary_speech_references": [],
+      "finding": "Declared stopping rule prevented generation; no model answer or quality grade.",
+      "evidence": [
+        "../work-review-probe-1/results/06-unit_equivalence/outcome.json"
+      ]
+    },
+    {
+      "case": "authored_longer_context",
+      "slot": "07-authored_longer_context",
+      "status": "incomplete_unsent",
+      "criterion_met": null,
+      "actual_groups": null,
+      "necessary_speech_references": [
+        "T4",
+        "T6",
+        "T10",
+        "T11"
+      ],
+      "finding": "Declared stopping rule prevented generation; no model answer or quality grade.",
+      "evidence": [
+        "../work-review-probe-1/results/07-authored_longer_context/outcome.json"
+      ]
+    }
+  ],
+  "interpretation": [
+    "Strict JSON, valid references and faithful rendering do not establish useful selection or work coverage.",
+    "The first reply is valid groups-only JSON with zero groups. The complete T1/T2 input reached the model; full snapshot remains preserved.",
+    "The critical defect was identified at the first in-run Chief gate and prevented every later request.",
+    "The six unsent cases have no model quality evidence; absence is not a wrong-answer grade.",
+    "No failure cause, reliability, model switch, saved effort, historical regrading, full-draft/full40/M10 acceptance follows."
+  ],
+  "allowance": "Closed after the declared critical stop. No retry, resume, replacement or unused-slot transfer.",
+  "independent_review": {
+    "capture_integrity": "PASS",
+    "quality": "FAILED_INCOMPLETE",
+    "critical": 1,
+    "incomplete_unsent": 6,
+    "noncritical": 0,
+    "handoff_sha256": "61eb424438cd8fecdb9fcffb6e70d05537b2f3c4142c30bd5d9ed3d27b7016f8"
+  }
+}
