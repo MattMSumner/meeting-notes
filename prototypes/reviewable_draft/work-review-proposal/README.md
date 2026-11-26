@@ -1,6 +1,10 @@
 # Reassessing work extraction — 2026-11-25
 
-**Proposal for owner review, not an accepted contract or implemented candidate.**
+**Owner accepted the passage-review direction on 2026-11-26.** The owner replied
+“This works!” to the examples and the choice between focused passages and suggested
+action bullets. Focused passages with manual task resolution are useful enough for
+the first work-review section. The technical contract below remains unimplemented;
+this is format/workflow feedback, not model-quality acceptance or an inference budget.
 No model requests, live metadata calls or production changes are part of this
 reassessment. Six examples use existing synthetic sources; a seventh uses a new
 Chief-authored synthetic transcript. None is model-generated or held out. Earlier
@@ -118,13 +122,12 @@ acceptance remain ahead of M10 Built and owner `shipit`.
 | Select complete work-review groups, as illustrated here. | Removes model-written span reproduction and avoids an unchecked current-action assertion. | Transfers resolution and task writing to the user. Missing/misleading groups remain possible; usefulness needs owner judgment. |
 | Add semantic judges, more validation rules or another model comparison now. | Might eventually improve a particular capability. | Adds unproven complexity before deciding the output contract. No current evidence establishes this as the next useful step. |
 
-**The owner decision is whether focused source passages are useful enough for the
-first work-review section, or whether concise suggested-action bullets are required.**
-The recommendation is to inspect the passage examples first. If the manual resolution
-cost is too high, keep the action-list requirement and reject this scope change rather
-than lower the old quality bar.
+**The owner chose focused source passages for the first work-review section.** The
+user resolves currentness and writes/promotes tasks. Concise generated action bullets
+are not required for this section's first version. Missing work, misleading context and
+excessive review burden remain defects; the old action-only failures are unchanged.
 
-After that decision, the next bounded work would be an isolated offline prototype of
+The next bounded work would be an isolated offline prototype of
 the chosen contract with honest normal/empty/incomplete examples and source-binding
 checks. A subsequent model experiment must fix prospective criteria for cancellations,
 qualified timing, multiple independent work items, full withdrawal and negative controls;

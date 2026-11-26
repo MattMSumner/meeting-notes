@@ -1,4 +1,4 @@
-# M10 handoff — 2026-11-25, offline contract reassessment
+# M10 handoff — 2026-11-26, passage-review direction accepted
 
 Continue `m10/notes-guided-enhancement`, [PR #16](https://github.com/MattMSumner/meeting-notes/pull/16).
 Read AGENTS.md, `.chief/CHIEF.md`, the reviewable-draft section of plan.md and the
@@ -9,7 +9,14 @@ desktop tab/space. Legacy `herdr` pane IDs in old evidence are not core addresse
 Keep local coordination in ignored `.chief/STATE.md`; close out accepted worker
 checkouts after preserving their work and handoffs.
 
-## Current reassessment — proposal for owner review
+## Current direction — passage review accepted
+
+On 2026-11-26 the owner replied **“This works!”** to the authored examples and the
+choice between focused passages and concise suggested-action bullets. This resolves
+the preference: focused source passages, with the user resolving current work and
+writing/promoting tasks, are useful enough for the first work-review section. Do not
+ask for the same format decision again. This is presentation/workflow acceptance;
+the examples remain authored and establish no model quality or editing-time benefit.
 
 The owner said “Ok, lets reassess.” Offline investigation is complete; see the
 [work-review proposal](prototypes/reviewable_draft/work-review-proposal/README.md)
@@ -36,13 +43,12 @@ full later timing and an independent conditional undertaking. Six examples reuse
 inputs; the longer input is separately Chief-authored, not held out. All selections
 are manual; these show presentation feasibility, not model performance or time saving.
 
-**Owner preference remains pending:** are focused passages useful enough for the first
-work-review section, or are concise suggested-action bullets required? The optional
-question includes concrete examples; no answer is not acceptance. This changes the
-work-section promise and needs the owner's judgment, rather than a lower quality bar.
-Do not implement the new contract, run inference or infer a model switch from this
-proposal. A chosen direction would first need a bounded offline prototype and then
-separately agreed model criteria/budget/freeze if warranted. Full-draft summary/decisions,
+The next bounded task would be an isolated offline prototype of the reference-only
+group/result/renderer contract, with snapshot/generation binding, complete passage
+copying, separate writing and honest empty/incomplete states. No implementation or
+model calls ran as part of recording this feedback; any model evaluation still needs
+separately agreed criteria/budget/freeze. A model switch does not follow. Full-draft
+summary/decisions,
 full40 regression, production persistence/edit protection and Obsidian usefulness
 remain separate gates. M10 stays unbuilt and PR #16 is not ready to merge.
 
