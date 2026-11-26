@@ -1705,6 +1705,30 @@ and unchanged; a single familiar contrast cannot prove causality or reliability.
 Earlier allowances remain closed. No production integration, historical regrading,
 model switch, full-draft/full40 acceptance, M10 Built or merge is authorized.
 
+**Thinking-enabled diagnostic incomplete (2026-11-26; M10 remains unbuilt).** The
+[report](evaluation/m10/reviewable-draft/work-review-thinking-1-analysis/report.md)
+records one attempted generation and a 180.454-second full-call wall. The clear
+commitment control hit its 180-second generation deadline while streaming thinking,
+with zero answer content and no terminal done/stop. Its 5700 complete NDJSON records
+contain 26184 thinking characters; no result, render, callback or meaning review was
+reached. The partial-withdrawal case and availability control remain unsent. All three
+semantic outcomes are incomplete and ungraded; no completed-answer omission or pass
+is inferred. The cached false failure and new prepared partial request differ only
+by thinking, but no new partial response exists for a matched comparison. No retry,
+resumption, replacement, unused-slot transfer or further inference is authorized.
+
+Source 78bcaf8 is integrated unchanged after independent engineering acceptance with
+no findings or repairs. Targeted 129 and both source-identical full suites pass 1854
+tests, six integration tests excluded, plus formatting/lint/strict types. The 76-artifact
+freeze was committed/pushed at 10e099b before inference. Independent capture audit passes:
+38 artifacts plus manifest, three completed metadata calls and one HTTP200 thinking
+stream that timed out; one before identity set matches, all four children reaped, only
+the generation child killed. Its reported local cleanup overrun is 0.006734 seconds;
+global 600-second overrun is zero. Seal and returned accounting agree; original 1766
+evaluation/prototype hashes remain exact. Source fidelity and correct stopping establish
+no completed selection quality, causal benefit or reliability. Historical grades,
+production V11, remaining quality/persistence/usefulness and merge gates are unchanged.
+
 **M11 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
 compared on tests rather than by eye on real meetings: stance (a "maybe" turned into a
