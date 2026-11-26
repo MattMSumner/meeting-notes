@@ -1692,6 +1692,19 @@ productionV11, full-draft/full40/persistence/usefulness and merge gates remain u
 The cancelled Python CI job had no hosted runner assignment or executed steps; GitHub
 reported capacity constraints. Its rerun passes Python and Swift without workflow edits.
 
+**Thinking-enabled selection diagnostic authorized (2026-11-26).** The owner said
+“Great, do it!” to three unchanged synthetic cases in order: `front_loaded_timing`
+(clear commitment), the failed `partial_coordination_retracted`, and
+`accepted_status_answer` (availability-only negative). Keep the accepted prompt,
+schema and renderer; same Qwen3.5 model/options/streaming, with `think:true`. Caps:
+three generation requests, 600 seconds overall, 180 seconds each, no retries. Chief
+agent source-meaning review follows every valid render before continuation; stop on
+an identified critical defect or technical/deadline failure. Freeze criteria/source/
+wire/snapshot bindings before one execution. The previous false result stays cached
+and unchanged; a single familiar contrast cannot prove causality or reliability.
+Earlier allowances remain closed. No production integration, historical regrading,
+model switch, full-draft/full40 acceptance, M10 Built or merge is authorized.
+
 **M11 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
 compared on tests rather than by eye on real meetings: stance (a "maybe" turned into a
