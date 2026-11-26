@@ -1,0 +1,134 @@
+"""One frozen three-case schema-grounded run with a bounded Chief review between generation requests."""
+
+import hashlib
+import json
+import os
+from pathlib import Path
+import select
+import subprocess
+import sys
+import time
+
+ROOT = Path('/Users/matthewsumner/development/meeting-notes')
+AUDIT = ROOT / '.chief/runs/work-review-schema-20261126'
+OUTPUT = ROOT / 'evaluation/m10/reviewable-draft/work-review-schema-1'
+ANALYSIS = ROOT / 'evaluation/m10/reviewable-draft/work-review-schema-1-analysis'
+sys.path.insert(0, str(ROOT))
+
+from prototypes.reviewable_draft import work_review as review
+from prototypes.reviewable_draft import work_review_schema as probe
+
+approval = json.loads((AUDIT / 'approval.json').read_text())
+freeze = json.loads((AUDIT / 'freeze.json').read_text())
+assert approval['owner_message'] == 'Great do it'
+assert (approval['generation_requests'], approval['overall_seconds'], approval['per_generation_seconds'], approval['retries']) == (3, 540, 180, 0)
+assert approval['cases'] == list(probe.CASES)
+assert approval['think'] is True and approval['stream'] is True
+assert (approval['temperature'], approval['num_ctx'], approval['num_predict'], approval['repetitions']) == (1, 32768, 4096, 1)
+assert approval['length_terminal_stops_as_incomplete'] is True
+assert approval['chief_review_between_requests'] is True
+assert freeze['directory'] == str(OUTPUT)
+pin = freeze['manifest_sha256']
+assert hashlib.sha256((OUTPUT / 'manifest.json').read_bytes()).hexdigest() == pin
+assert hashlib.sha256((ANALYSIS / 'criteria.json').read_bytes()).hexdigest() == freeze['criteria_sha256']
+assert hashlib.sha256(Path(__file__).read_bytes()).hexdigest() == freeze['launch_source_sha256']
+assert (ANALYSIS / 'launch-script.txt').read_bytes() == Path(__file__).read_bytes()
+head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
+assert head == freeze['published_freeze_commit'], 'Run only the published freeze head'
+assert not (OUTPUT / 'results').exists(), 'Already consumed; never retry or resume'
+with (AUDIT / 'execution-claim.json').open('x') as stream:
+    json.dump({'manifest_sha256': pin, 'approval': approval['owner_message'], 'published_head': head}, stream)
+
+
+def unique_object(pairs):
+    value = {}
+    for key, item in pairs:
+        if key in value:
+            raise ValueError('Duplicate Chief verdict key; stop without advancing')
+        value[key] = item
+    return value
+
+
+def assess(slot, result, deadline):
+    """Accept one explicit host verdict before advancing, within the shared deadline."""
+    result.validate()
+    print('\nCHIEF_REVIEW_REQUIRED ' + slot, flush=True)
+    print(review.render_result(result), flush=True)
+    print('Submit JSON with exactly critical:boolean and assessment:nonblank string.', flush=True)
+    line = bytearray()
+    while True:
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            raise TimeoutError('Shared deadline while awaiting Chief meaning review')
+        ready, _, _ = select.select([sys.stdin.fileno()], [], [], remaining)
+        if not ready:
+            raise TimeoutError('Shared deadline while awaiting Chief meaning review')
+        chunk = os.read(sys.stdin.fileno(), 1)
+        if not chunk:
+            raise EOFError('Chief meaning review unavailable; stop without advancing')
+        if chunk == b'\n':
+            break
+        line.extend(chunk)
+        if len(line) > 16384:
+            raise ValueError('Chief meaning review exceeds bounded input size')
+    verdict = json.loads(line.decode('utf-8'), object_pairs_hook=unique_object)
+    if type(verdict) is not dict or set(verdict) != {'critical', 'assessment'}:
+        raise ValueError('Expected one explicit Chief meaning verdict')
+    if type(verdict['critical']) is not bool or type(verdict['assessment']) is not str or not verdict['assessment'].strip():
+        raise ValueError('Invalid Chief meaning verdict; stop without advancing')
+    return verdict
+
+
+started = time.monotonic()
+audit_saved = False
+record = {
+    'manifest_sha256': pin, 'approval': approval['owner_message'], 'published_head': head,
+    'launch_source_sha256': freeze['launch_source_sha256'],
+    'criteria_sha256': freeze['criteria_sha256'],
+}
+try:
+    record['return'] = probe.run(
+        OUTPUT,
+        'Owner: Great do it. Once-only3requests/540seconds/180seconds each/4096tokens/no retries; clear commitment, partial withdrawal, availability control; exact schema appended to system prompt only; temp1/thinktrue/streamtrue; explicit Chief meaning review between requests; length stops incomplete.',
+        pin,
+        assess,
+    )
+except BaseException as error:
+    record['error'] = f'{type(error).__name__}: {error}'
+    raise
+finally:
+    record['full_run_wall_seconds'] = time.monotonic() - started
+    record['execution_audit_boundary'] = 'Pre-save snapshot after probe.run; post-save wall is separately observed in terminal final JSON'
+    record['full_run_overrun_seconds'] = max(0.0, record['full_run_wall_seconds'] - 540)
+    try:
+        with (AUDIT / 'execution.json').open('x') as stream:
+            json.dump(record, stream, indent=2)
+            stream.write('\n')
+        audit_saved = True
+    except Exception as audit_error:
+        record['launch_audit_save_error'] = f'{type(audit_error).__name__}: {audit_error}'
+        print(json.dumps(record), flush=True)
+
+post_audit_wall_seconds = time.monotonic() - started
+post_audit_observation = {
+    'execution_audit_saved': audit_saved,
+    'wall_including_execution_audit_seconds': post_audit_wall_seconds,
+    'deadline_reached': post_audit_wall_seconds >= 540,
+    'boundary': 'After execution.json save/close; this terminal observation is outside capture and the pre-save execution audit',
+}
+envelope = record['return']
+accounting = envelope['accounting']
+post = envelope['post_seal_observation']
+complete = (
+    accounting['capture_complete'] and post['sealed'] and not post['deadline_reached']
+    and record['full_run_wall_seconds'] < 540 and audit_saved
+    and not post_audit_observation['deadline_reached']
+)
+print(json.dumps({
+    'capture_complete_including_seal_and_wall_observation': complete,
+    'full_run_wall_seconds': record['full_run_wall_seconds'],
+    'post_audit_observation': post_audit_observation,
+    'possibly_sent': accounting['possibly_sent'],
+    'completed': accounting['completed'], 'failed': accounting['failed'],
+    'unsent': accounting['unsent'], 'stop_reason': accounting['stop_reason'],
+}), flush=True)
