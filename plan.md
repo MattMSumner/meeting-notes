@@ -1752,6 +1752,38 @@ All older allowances remain closed; no new format-control requests, settings/ser
 changes, historical regrading, production integration, model switch, full40/full-draft
 acceptance, M10 Built or merge is authorized.
 
+**Temperature comparison stopped (2026-11-26; M10 remains unbuilt).** The
+[report](evaluation/m10/reviewable-draft/work-review-temperature-1-analysis/report.md)
+records both authorized observations and a238.320second full-call wall. Temperature0
+returned a strict length terminal at4096output tokens,17131thinking characters and
+zero answer content; no result/render/meaning review exists and its semantic grade
+is incomplete. Temperature1 returned a strict stop below the cap at3130output tokens
+in86.369seconds of HTTP wall, but selected groups=[] for the clear undertaking and
+its NextTuesday timing. The Chief identified that completed-answer omission as critical,
+and independent source-meaning review agrees. The generic empty-selection notice cannot
+satisfy coverage. No retry, resumption, replacement, additional format-control request
+or unused-slot transfer is authorized; this new allowance is closed.
+
+Both generation transports completed, with14HTTP200 exchanges,4matching before/after
+identity/default gates, all14children reaped and no errors/timeouts/overruns. Independent
+capture/telemetry integrity audit passes. The declared capture/answer/semantic complete
+flags are false because the final meaning gate failed; they do not imply missing raw
+capture evidence. All120recorded OS thermal severity samples are nominal. Memory
+pressure varied through normal/warning dispatch codes; temperature/GPU frequency were
+unavailable, and no thermal, memory, sampling or reliability cause is established.
+The fixed order has cold-load/cache and stochastic/host-state differences; the old
+uncapped timeout is not a matched control. Temperature1 terminated in this observation
+but did not fix selection quality.
+
+Exact source8a1c682 is integrated unchanged after one consolidated engineering repair
+round; independent formal review has no remaining findings. Targeted189 and the exact-
+source full offline suite pass2043tests with6integration tests excluded, plus format/
+lint/strict types. The70artifact freeze plus manifest was published atf9f7ea4 before
+inference; capture is114artifacts plus manifest, with authoritative seal/returned
+accounting equality and separate post-seal/full-call timing. All1895prior evaluation/
+prototype files remain exact. Historical grades, productionV11, remaining full-draft/
+full40/persistence/edit protection/usefulness and the owner's merge gate are unchanged.
+
 **M11 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
 compared on tests rather than by eye on real meetings: stance (a "maybe" turned into a
