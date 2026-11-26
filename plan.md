@@ -19,24 +19,17 @@ still implements V11. Automatic reconciliation is deferred for that successor.
 Phase 0 (Handy) set up.
 
 **Fresh-session handoff (2026-11-25):** [NEXT_SESSION.md](NEXT_SESSION.md) and the
-[offline runtime investigation](evaluation/m10/reviewable-draft/runtime-investigation-1/report.md)
-record eleven saved attempts/replies and 505 overlapping manifest entries checked without
-new inference or runtime changes. The subsequently approved
-[streaming probe](evaluation/m10/reviewable-draft/runtime-probe-1-analysis/report.md)
-completed both requests in 104.676 seconds without retries or overruns: false took
-11.539 seconds, true 91.687 seconds with 13,509 thinking characters. Both meet the
-narrow availability/no-action criterion. The fresh pair pins disclosed Ollama 0.40.13
-and the unchanged model digest; historical timeout causes remain unproven. The earlier
-[local-model screen](evaluation/m10/reviewable-draft/model-comparison-1/analysis/report.md)
-records an incomplete comparison: five requests in 23m01s, three returned outputs, two
-timeouts and seven unsent cases. Neither challenger completes the screen. All eighteen
-baseline/challenger grades locked with model names hidden before identity joining; cached
-Qwen3 remains five passes and one critical omission. All 1489 offline tests pass and old
-evidence remains exact. The two-request allowance is consumed. The owner subsequently
-approved one four-case Qwen3.5 thinking-disabled work-retention experiment: four requests
-/ fifteen minutes overall / three minutes each, no retries, after preparation/review/
-freeze/publication. No other inference, model switch or merge is authorized. The app
-remains V11 and M10 unbuilt.
+[work-retention report](evaluation/m10/reviewable-draft/retention-probe-1-analysis/report.md)
+record an incomplete, failed quality check: three Qwen3.5 thinking-disabled requests in
+15.868 seconds, two rendered drafts, one literal rejection and one unsent case. Invoice
+sending survives partial withdrawal, but cancelled review is still suggested: one critical
+currentness defect. Replacement meets its criterion with noncritical repetition. The timing
+reply joins two passages into an invalid primary-source quote; its complete qualifier is
+present, but no draft is published. The fourth case is untested. No retry or resumption is
+authorized. All 1555 offline tests pass and prior evidence remains exact; engineering
+success does not establish model quality. Keep the baseline and reassess source selection
+before agreeing another run. Earlier model-screen/runtime reports and grades remain
+unchanged; historical timeout causes are unproven. The app remains V11 and M10 unbuilt.
 
 ---
 
@@ -1536,6 +1529,38 @@ Generic disclaimers/transcript dumps alone do not pass. Familiar cases/one repet
 action-only scope establish no broader draft quality or reliability. Further cases,
 repetitions and full40 regression remain later separately scoped decisions. No production
 integration, model switch, Built, manual acceptance or merge is authorized by this run.
+
+**Work-retention outcome (2026-11-25; M10 remains unbuilt).** The approved once-only
+experiment stopped in 15.867782917 seconds after three generation requests: two complete
+rendered drafts, one literal-selection failure and one unsent case. No retries, timeouts,
+overgeneration, overruns or artifact errors. Source `af210c0` passed independent review
+without findings or repair rounds, and both required full suites pass1555/6excluded on
+identical bytes; 66 new offline tests. The 48-artifact freeze was committed/pushed at
+`9dba718` before inference, binding unchanged prompt/decoder, complete snapshots,
+actual four requests and Ollama0.40.13 identity/defaults. Capture has171artifacts plus
+manifest; all1347prior tracked evaluation/prototype files remain exact. Independent
+capture audit verifies21HTTP200 exchanges, six identity/default gates, all sent/unsent
+bindings, raw/decoder/render replay, child cleanup and exact sealed/returned accounting.
+
+The [source-based assessment](evaluation/m10/reviewable-draft/retention-probe-1-analysis/report.md)
+finds one critical defect: partial withdrawal keeps sending discoverable but includes
+cancelled review under Suggested actions; visible withdrawal context does not remove
+that cancelled component. Replacement meets its criterion because the retraction is
+inline, with noncritical broad quotation/repeated review. Qualified timing concatenates
+two passages into one primary-source quotation, triggering quote_absent and no draft;
+full timing qualifiers are present in the attempted reply, not proven omitted. Additional
+undertakings are unsent, with no quality evidence. No semantic assessment completed during
+capture; the first detected in-run failure was the literal rejection before case four.
+Later assessment preserves every already-captured artifact. Familiar cases/one repetition/
+action-only evidence is neither reliability nor broader quality. Old scores are unchanged.
+
+Keep the baseline and production behavior. Reassess current-action span selection and
+separate supporting passages from primary quotations before another run; additional
+literal validators cannot detect the observed currentness error. Do not relax the decoder,
+repair saved quotes or selectively rerun failures. This once-only allowance is closed;
+unused slot/time authorizes nothing. Further experiments need new scope/budget. Broader
+cases/repetitions, full40 regression, full-draft quality, persistence/edit protection,
+current synthetic Obsidian usefulness, Built and owner shipit gates remain pending.
 
 **M11 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
