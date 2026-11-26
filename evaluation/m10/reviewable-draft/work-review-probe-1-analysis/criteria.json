@@ -155,7 +155,7 @@
       "identified critical selection defect",
       "transport/identity/storage/deadline failure"
     ],
-    "human_gate_between_requests": true,
-    "previous_allowances_closed": true
+    "previous_allowances_closed": true,
+    "chief_review_between_requests": true
   }
 }

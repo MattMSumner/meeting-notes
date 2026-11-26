@@ -24,7 +24,7 @@ assert approval['owner_message'] == 'Ok, run those examples and fix CI!'
 assert (approval['generation_requests'], approval['overall_seconds'], approval['per_generation_seconds'], approval['retries']) == (7, 1500, 180, 0)
 assert approval['cases'] == list(probe.CASES)
 assert approval['think'] is False and approval['stream'] is True
-assert approval['human_gate_between_requests'] is True
+assert approval['chief_review_between_requests'] is True
 assert freeze['directory'] == str(OUTPUT)
 pin = freeze['manifest_sha256']
 assert hashlib.sha256((OUTPUT / 'manifest.json').read_bytes()).hexdigest() == pin
