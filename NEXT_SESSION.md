@@ -1,4 +1,4 @@
-# M10 handoff — 2026-11-26, passage-selection experiment stopped
+# M10 handoff — 2026-11-26, thinking diagnostic incomplete
 
 Continue `m10/notes-guided-enhancement`, [PR #16](https://github.com/MattMSumner/meeting-notes/pull/16).
 Read AGENTS.md, `.chief/CHIEF.md` and the reviewable-draft section of plan.md. Use the
@@ -6,7 +6,67 @@ Read AGENTS.md, `.chief/CHIEF.md` and the reviewable-draft section of plan.md. U
 parent and `codex --no-daemon` in the existing tab/space. Keep coordination in ignored
 `.chief/STATE.md`; archive useful evidence and retire only completed own workers.
 
-## Latest experiment — critical omission; six cases unsent
+## Latest diagnostic — thinking stream timeout; all three ungraded
+
+The owner said **“Great, do it!”** to thinking enabled on three unchanged original
+synthetic cases, in order: `front_loaded_timing`, `partial_coordination_retracted`,
+`accepted_status_answer`. Fixed work-review prompt/schema/renderer and model/options/
+streaming; only `think:true`. Caps were three requests, 600 seconds overall,
+180 seconds each, no retries, stopping at a critical defect or technical failure.
+
+The once-only diagnostic is **INCOMPLETE** after **one attempted generation in
+180.454 seconds**. Read the [report](evaluation/m10/reviewable-draft/work-review-thinking-1-analysis/report.md),
+[assessment](evaluation/m10/reviewable-draft/work-review-thinking-1-analysis/assessment.json)
+and [verification](evaluation/m10/reviewable-draft/work-review-thinking-1-analysis/verification.json).
+The straightforward commitment control reached its generation deadline while emitting
+thinking, with **zero answer content, no terminal done/stop and no result/render**.
+No Chief callback or meaning review was reached. The other two cases remain unsent.
+**All three semantic grades are incomplete/ungraded**, with no new omission or pass
+finding. Whether thinking helps the prior partial-withdrawal failure remains unresolved
+because that case was not reached. The prepared new partial request differs from its
+cached false request only by think; no new response exists for a matched comparison.
+**This allowance is closed: no retry, resumption, replacement, unused-slot transfer or
+further model request is authorized.** Every older allowance remains closed too.
+
+Independent saved-evidence audit passes. Exact source `78bcaf85e2ed699dbe2c02f35e2b4759c01aafa9`
+is integrated unchanged as an ancestor; engineering review has no findings or repairs.
+Targeted 129 and both source-identical full suites pass **1854 offline tests**, six
+integration tests excluded (Chief 513.20 seconds, worker 518.49 seconds); formatting,
+lint and strict types pass. The new isolated profile/helper leaves all old source and
+policies unchanged. Read [WORK_REVIEW_THINKING.md](prototypes/reviewable_draft/WORK_REVIEW_THINKING.md).
+
+The 76-artifact freeze plus manifest was committed/pushed at
+`10e099b5b8a1a4d34e3ce7700a4eb8497dc3d1b7` before inference. Freeze SHA256
+`d4a4f25240850bd46a3066d755d34989b09528703b35727faa1f376b3485a858`, generation
+`work-review-thinking-bed213a915044b4baa8c6caf6c12fa26`. All 77 files match that head.
+The capture is 38 artifacts plus manifest SHA256
+`3a1b47464faab14dda2aa3967ac8991f609ef908082b957a82e6d5b39ba1ef46`.
+Both strict inventories are immutable; analysis/launch/final seal stay in the sibling
+analysis directory. All 1766 prior evaluation/prototype files remain byte-exact.
+
+The three metadata exchanges completed normally and their single **before** gate set
+matches saved Ollama0.40.13/digest/capabilities/thinking/defaults. Generation received
+HTTP200 headers and streamed 5700 indexed records / 26184 thinking characters / zero
+answer characters; no final server durations or token counts arrived. The parent
+killed and reaped only its HTTP child at the local deadline. All four children reaped;
+after metadata and all later generations were correctly skipped. Server-side compute
+cancellation is not guaranteed; the model service was not stopped or reconfigured.
+Raw thinking remains machine-only evidence; reports contain counts/times.
+
+Generation wall is 180.006684 seconds, reported local cleanup overrun 0.006733958 seconds;
+global overrun is zero. The authoritative pre-manifest boundary is 180.453987792 seconds,
+separate post-seal 180.454150625, full-call wall 180.454194125. Saved seal equals returned
+accounting; final.json is explicitly non-authoritative. The initially reused analysis
+label claiming meaning reviews was corrected without changing metrics or evidence.
+Do not infer a completed-answer error from this technical timeout or fabricate absent
+answers/counters. Existing false-arm critical omission and every old grade stand.
+
+Production remains V11; M10 **unbuilt**, PR #16 **not ready to merge**. This one familiar
+attempt establishes no cause, thinking benefit, reliability, model switch, saved effort,
+full40/full-draft or current Obsidian usefulness. New model work needs fresh explicit
+scope/criteria/budget; persistence/edit protection and production integration are separate.
+
+## Earlier thinking-disabled experiment — critical omission; six cases unsent
 
 The owner said **“Ok, run those examples and fix CI!”** to one pass over the seven
 existing synthetic examples, with seven generation requests maximum,1500seconds overall,

@@ -1,0 +1,76 @@
+{
+  "kind": "thinking-enabled-selection-assessment-1",
+  "date": "2026-11-26",
+  "criteria_sha256": "fda568e380a60fa36ecd4c4942075db42ceee19268999cb43d9ae24b4c16e084",
+  "review_status": "Independent saved-evidence audit agrees: technical timeout, zero completed answers/reviews, semantic quality incomplete/ungraded.",
+  "capture_integrity": "PASS",
+  "capture_complete": false,
+  "operational_outcome": "stopped_on_generation_deadline",
+  "quality_acceptance": "INCOMPLETE_UNGRADED",
+  "counts": {
+    "attempted": 1,
+    "completed_answers": 0,
+    "chief_meaning_reviews": 0,
+    "meaning_graded": 0,
+    "met": 0,
+    "critical": 0,
+    "noncritical": 0,
+    "incomplete": 3,
+    "incomplete_timeout": 1,
+    "incomplete_unsent": 2
+  },
+  "cases": [
+    {
+      "case": "front_loaded_timing",
+      "slot": "01-front_loaded_timing",
+      "status": "incomplete_timeout",
+      "criterion_met": null,
+      "actual_groups": null,
+      "necessary_speech_references": [
+        "T1"
+      ],
+      "finding": "Generation reached its 180-second deadline while streaming thinking, with no answer content or terminal done/stop. No result, render, callback or meaning verdict was reached.",
+      "evidence": [
+        "../work-review-thinking-1/results/01-front_loaded_timing/progress.json",
+        "../work-review-thinking-1/results/01-front_loaded_timing/response/exchange.json",
+        "../work-review-thinking-1/results/01-front_loaded_timing/outcome.json"
+      ]
+    },
+    {
+      "case": "partial_coordination_retracted",
+      "slot": "02-partial_coordination_retracted",
+      "status": "incomplete_unsent",
+      "criterion_met": null,
+      "actual_groups": null,
+      "necessary_speech_references": [
+        "T1",
+        "T2"
+      ],
+      "finding": "Declared technical stop prevented this generation; no model answer or semantic grade.",
+      "evidence": [
+        "../work-review-thinking-1/results/02-partial_coordination_retracted/outcome.json"
+      ]
+    },
+    {
+      "case": "accepted_status_answer",
+      "slot": "03-accepted_status_answer",
+      "status": "incomplete_unsent",
+      "criterion_met": null,
+      "actual_groups": null,
+      "necessary_speech_references": [],
+      "finding": "Declared technical stop prevented this generation; no model answer or semantic grade.",
+      "evidence": [
+        "../work-review-thinking-1/results/03-accepted_status_answer/outcome.json"
+      ]
+    }
+  ],
+  "interpretation": [
+    "No completed answer exists to grade as correct, omitted work or invented work. Zero semantic findings is not evidence of zero model errors.",
+    "The exact prior partial-withdrawal failure and negative control were not attempted in this diagnostic.",
+    "The cached false partial request/reply remain unchanged. The frozen new partial request differs only by think, but no new response exists for comparison.",
+    "Thinking streamed until near the local deadline; server terminal timings/token totals were never returned. No token count is invented from characters/events.",
+    "One familiar timeout cannot establish a cause, reliability, thinking benefit, model switch, production/full40/full-draft/M10 acceptance or historical regrade."
+  ],
+  "allowance": "Closed after the first declared technical stop; no retry, resumption, replacement or unused-slot transfer.",
+  "independent_capture_audit_handoff_sha256": "215c50e2cf7c96598bd96052795f6a20d433a6c52a618c3ff532a3601bef6962"
+}

@@ -1,0 +1,242 @@
+{
+  "accounting": {
+    "accounting_boundary": "after final.json save and inventory hashing; before manifest.json write",
+    "artifact_errors": [],
+    "authoritative": true,
+    "capture_complete": false,
+    "completed": [],
+    "elapsed": 180.45398779201787,
+    "failed": [
+      "01-front_loaded_timing"
+    ],
+    "overrun_seconds": 0.0,
+    "possibly_sent": 1,
+    "server_compute_cancellation_guaranteed": false,
+    "slots": [
+      {
+        "case": "front_loaded_timing",
+        "elapsed": 180.38889804203063,
+        "error": "OSError: Exchange failed: {'started_monotonic': 365671.990339291, 'deadline_monotonic': 365851.99028925, 'killed': True, 'reaped': True, 'timed_out': True, 'returncode': -9, 'error': \"TimeoutExpired: Command '['/Users/matthewsumner/development/meeting-notes/.venv/bin/python', '-I', '-u', '/Users/matthewsumner/development/meeting-notes/prototypes/reviewable_draft/_work_review_thinking_http.py', 'POST', '/api/chat', '/Users/matthewsumner/development/meeting-notes/evaluation/m10/reviewable-draft/work-review-thinking-1/results/01-front_loaded_timing/request.json', '/Users/matthewsumner/development/meeting-notes/evaluation/m10/reviewable-draft/work-review-thinking-1/results/01-front_loaded_timing/response', '179.99994945898652', '7077e49f9defd360609878c371fbf47a62aefbba81955faec7ae4ea147c6b2d5']' timed out after 179.99847341695568 seconds\", 'server_compute_cancellation_guaranteed': False, 'elapsed': 180.00668391701765, 'overrun_seconds': 0.006733958027325571}",
+        "exchange": {
+          "deadline_monotonic": 365851.99028925,
+          "elapsed": 180.00668391701765,
+          "error": "TimeoutExpired: Command '['/Users/matthewsumner/development/meeting-notes/.venv/bin/python', '-I', '-u', '/Users/matthewsumner/development/meeting-notes/prototypes/reviewable_draft/_work_review_thinking_http.py', 'POST', '/api/chat', '/Users/matthewsumner/development/meeting-notes/evaluation/m10/reviewable-draft/work-review-thinking-1/results/01-front_loaded_timing/request.json', '/Users/matthewsumner/development/meeting-notes/evaluation/m10/reviewable-draft/work-review-thinking-1/results/01-front_loaded_timing/response', '179.99994945898652', '7077e49f9defd360609878c371fbf47a62aefbba81955faec7ae4ea147c6b2d5']' timed out after 179.99847341695568 seconds",
+          "killed": true,
+          "overrun_seconds": 0.006733958027325571,
+          "reaped": true,
+          "returncode": -9,
+          "server_compute_cancellation_guaranteed": false,
+          "started_monotonic": 365671.990339291,
+          "timed_out": true
+        },
+        "generation_deadline_monotonic": 365851.99028925,
+        "generation_id": "work-review-thinking-bed213a915044b4baa8c6caf6c12fa26/front_loaded_timing",
+        "manifest_sha256": "d4a4f25240850bd46a3066d755d34989b09528703b35727faa1f376b3485a858",
+        "model_neutral_payload_sha256": "eb80a5cdf302759432ed92b562665ea5057d6576447ff8502e33c41b5f8e4c13",
+        "possibly_sent": true,
+        "prepared_binding": "0879b54e68d31efe601571b45ddb28a9b77e299a0306c5925353cd0d812ce968",
+        "progress": {
+          "complete_events": 5700,
+          "content_characters": 0,
+          "error": "Incomplete NDJSON stream",
+          "first_byte_seconds": 7.942607874982059,
+          "first_content_seconds": null,
+          "first_thinking_seconds": 7.942607874982059,
+          "returned": {},
+          "sizes_are_tokens": false,
+          "terminal_seen": false,
+          "thinking_characters": 26184,
+          "timing_basis": "received complete event relative to child monotonic origin; not GPU time",
+          "trailing_bytes": 0,
+          "valid": false
+        },
+        "request_sha256": "7077e49f9defd360609878c371fbf47a62aefbba81955faec7ae4ea147c6b2d5",
+        "slot": "01-front_loaded_timing",
+        "snapshot_id": "3d54314b779aa5a291dce8c64ccb415dbcef546c144d7254c31a5211361dfe15",
+        "snapshot_sha256": "b244f4c7f1d971f554aeeef5337639ac46e1d5d55e2945b8222f8468f9fabe19",
+        "state": "failed",
+        "think": true
+      },
+      {
+        "case": "partial_coordination_retracted",
+        "generation_id": "work-review-thinking-bed213a915044b4baa8c6caf6c12fa26/partial_coordination_retracted",
+        "manifest_sha256": "d4a4f25240850bd46a3066d755d34989b09528703b35727faa1f376b3485a858",
+        "model_neutral_payload_sha256": "b7a7e8e5a12a2de03cf0944565237840456cee767671bcd4f74c64aecb2a23f8",
+        "possibly_sent": false,
+        "prepared_binding": "0924dafa2f9f79013b7f1eb169dd6f1f04fc8be0529326ccfc2f8356f01be92a",
+        "request_sha256": "3596c4769826ff0ebc621ff165045886504cec229d87a8ad0a02fbd60b371a01",
+        "slot": "02-partial_coordination_retracted",
+        "snapshot_id": "28bb22aec3289f904af59b746b6b9e99f9a0f6baa3809e56da172320c0d21a4c",
+        "snapshot_sha256": "6ed4698adf5b0c4b87dd8f43a54c541222d7d34fd8b507f2c5638bd7f42f226f",
+        "state": "unsent",
+        "think": true
+      },
+      {
+        "case": "accepted_status_answer",
+        "generation_id": "work-review-thinking-bed213a915044b4baa8c6caf6c12fa26/accepted_status_answer",
+        "manifest_sha256": "d4a4f25240850bd46a3066d755d34989b09528703b35727faa1f376b3485a858",
+        "model_neutral_payload_sha256": "0bd76ba7e5df20680044e7ed588a5b3b0d5fafbeac529c535f9fcfd02d2d4229",
+        "possibly_sent": false,
+        "prepared_binding": "361be102f09a8d6f432bad7117ad7a3803fb45474264191fd5459c0c0e4d0c08",
+        "request_sha256": "c79cb46a274500e1ed80062166c6feda77661f7aff83019e0a1107e8b507d73f",
+        "slot": "03-accepted_status_answer",
+        "snapshot_id": "30273d16397f3d130489c6cf18b5da6aaad56ad876521c3bf9028f1e8fa42f50",
+        "snapshot_sha256": "af155f5524a510a041b8f0b7501913225b20ca5ac4d11beeed0d0b9478e0b42b",
+        "state": "unsent",
+        "think": true
+      }
+    ],
+    "stop_reason": "OSError: Exchange failed: {'started_monotonic': 365671.990339291, 'deadline_monotonic': 365851.99028925, 'killed': True, 'reaped': True, 'timed_out': True, 'returncode': -9, 'error': \"TimeoutExpired: Command '['/Users/matthewsumner/development/meeting-notes/.venv/bin/python', '-I', '-u', '/Users/matthewsumner/development/meeting-notes/prototypes/reviewable_draft/_work_review_thinking_http.py', 'POST', '/api/chat', '/Users/matthewsumner/development/meeting-notes/evaluation/m10/reviewable-draft/work-review-thinking-1/results/01-front_loaded_timing/request.json', '/Users/matthewsumner/development/meeting-notes/evaluation/m10/reviewable-draft/work-review-thinking-1/results/01-front_loaded_timing/response', '179.99994945898652', '7077e49f9defd360609878c371fbf47a62aefbba81955faec7ae4ea147c6b2d5']' timed out after 179.99847341695568 seconds\", 'server_compute_cancellation_guaranteed': False, 'elapsed': 180.00668391701765, 'overrun_seconds': 0.006733958027325571}",
+    "unsent": [
+      "02-partial_coordination_retracted",
+      "03-accepted_status_answer"
+    ]
+  },
+  "assessment_file": "assessment.json",
+  "capture_complete_including_seal_and_wall": false,
+  "capture_inventory_entries": 38,
+  "capture_manifest_sha256": "3a1b47464faab14dda2aa3967ac8991f609ef908082b957a82e6d5b39ba1ef46",
+  "conservative_generation_attempts": 1,
+  "date": "2026-11-26",
+  "exchanges": [
+    {
+      "kind": "metadata",
+      "path": "results/01-front_loaded_timing/before/show/exchange.json",
+      "state": {
+        "deadline_monotonic": 365681.829536083,
+        "elapsed": 0.04654641600791365,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 365671.829594,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/01-front_loaded_timing/before/tags/exchange.json",
+      "state": {
+        "deadline_monotonic": 365681.780489541,
+        "elapsed": 0.048404957982711494,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 365671.780539833,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "metadata",
+      "path": "results/01-front_loaded_timing/before/version/exchange.json",
+      "state": {
+        "deadline_monotonic": 365681.731579666,
+        "elapsed": 0.04824266699142754,
+        "error": null,
+        "killed": false,
+        "overrun_seconds": 0.0,
+        "reaped": true,
+        "returncode": 0,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 365671.731690666,
+        "timed_out": false
+      },
+      "status": 200
+    },
+    {
+      "kind": "generation",
+      "path": "results/01-front_loaded_timing/response/exchange.json",
+      "state": {
+        "deadline_monotonic": 365851.99028925,
+        "elapsed": 180.00668391701765,
+        "error": "TimeoutExpired: Command '['/Users/matthewsumner/development/meeting-notes/.venv/bin/python', '-I', '-u', '/Users/matthewsumner/development/meeting-notes/prototypes/reviewable_draft/_work_review_thinking_http.py', 'POST', '/api/chat', '/Users/matthewsumner/development/meeting-notes/evaluation/m10/reviewable-draft/work-review-thinking-1/results/01-front_loaded_timing/request.json', '/Users/matthewsumner/development/meeting-notes/evaluation/m10/reviewable-draft/work-review-thinking-1/results/01-front_loaded_timing/response', '179.99994945898652', '7077e49f9defd360609878c371fbf47a62aefbba81955faec7ae4ea147c6b2d5']' timed out after 179.99847341695568 seconds",
+        "killed": true,
+        "overrun_seconds": 0.006733958027325571,
+        "reaped": true,
+        "returncode": -9,
+        "server_compute_cancellation_guaranteed": false,
+        "started_monotonic": 365671.990339291,
+        "timed_out": true
+      },
+      "status": 200
+    }
+  ],
+  "freeze_entries": 76,
+  "freeze_manifest_sha256": "d4a4f25240850bd46a3066d755d34989b09528703b35727faa1f376b3485a858",
+  "full_run_wall_seconds": 180.45419412496267,
+  "gates": [
+    {
+      "matched": true,
+      "phase": "before",
+      "slot": "01-front_loaded_timing"
+    }
+  ],
+  "identity_gates_verified": 1,
+  "kind": "once-only-thinking-enabled-selection-1",
+  "model": "qwen3.5:9b-q4_K_M",
+  "model_digest": "56671c2ab9385f9cfcb404638e32cd62d88e3501d44822208363c010179a3c90",
+  "post_seal_observation": {
+    "boundary": "after manifest write attempt; separate from sealed accounting",
+    "deadline_reached": false,
+    "elapsed": 180.45415062498068,
+    "overrun_seconds": 0.0,
+    "sealed": true
+  },
+  "prior_tracked_files_verified": 1766,
+  "prospective_criteria_sha256": "fda568e380a60fa36ecd4c4942075db42ceee19268999cb43d9ae24b4c16e084",
+  "published_freeze_commit": "10e099b5b8a1a4d34e3ce7700a4eb8497dc3d1b7",
+  "retries": 0,
+  "rows": [
+    {
+      "case": "front_loaded_timing",
+      "http_elapsed_seconds": 180.00668391701765,
+      "possibly_sent": true,
+      "progress": {
+        "complete_events": 5700,
+        "content_characters": 0,
+        "error": "Incomplete NDJSON stream",
+        "first_byte_seconds": 7.942607874982059,
+        "first_content_seconds": null,
+        "first_thinking_seconds": 7.942607874982059,
+        "returned": {},
+        "sizes_are_tokens": false,
+        "terminal_seen": false,
+        "thinking_characters": 26184,
+        "timing_basis": "received complete event relative to child monotonic origin; not GPU time",
+        "trailing_bytes": 0,
+        "valid": false
+      },
+      "raw_body_bytes": 847175,
+      "slot": "01-front_loaded_timing",
+      "slot_elapsed_seconds": 180.38889804203063,
+      "state": "failed",
+      "think": true
+    },
+    {
+      "case": "partial_coordination_retracted",
+      "possibly_sent": false,
+      "slot": "02-partial_coordination_retracted",
+      "slot_elapsed_seconds": null,
+      "state": "unsent",
+      "think": true
+    },
+    {
+      "case": "accepted_status_answer",
+      "possibly_sent": false,
+      "slot": "03-accepted_status_answer",
+      "slot_elapsed_seconds": null,
+      "state": "unsent",
+      "think": true
+    }
+  ],
+  "semantic_assessment": "Independent saved-evidence audit agrees: zero completed answers/Chief callbacks/meaning reviews. All three semantic assessments are INCOMPLETE and ungraded; no completed-answer omission finding.",
+  "service_version": "0.40.13",
+  "source_candidate": "78bcaf85e2ed699dbe2c02f35e2b4759c01aafa9"
+}
