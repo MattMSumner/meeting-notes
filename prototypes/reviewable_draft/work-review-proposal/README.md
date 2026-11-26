@@ -3,8 +3,11 @@
 **Owner accepted the passage-review direction on 2026-11-26.** The owner replied
 “This works!” to the examples and the choice between focused passages and suggested
 action bullets. Focused passages with manual task resolution are useful enough for
-the first work-review section. The technical contract below remains unimplemented;
-this is format/workflow feedback, not model-quality acceptance or an inference budget.
+the first work-review section. The separate [offline prototype](../WORK_REVIEW.md)
+now implements the reference-group/result/renderer contract, with
+[reproducible authored previews](../work-review-previews/index.md). This is
+format/workflow acceptance and an engineering prototype, not model-quality evidence
+or an inference budget.
 No model requests, live metadata calls or production changes are part of this
 reassessment. Six examples use existing synthetic sources; a seventh uses a new
 Chief-authored synthetic transcript. None is model-generated or held out. Earlier
@@ -26,7 +29,7 @@ context, exact quotations and exclusion of cancelled work. A more emphatic promp
 a hypothesis to test, not an established fix. Another literal validator cannot detect
 the observed cancelled-work selection: its wording already passes the literal check.
 
-## Recommended direction to inspect
+## Accepted work-review direction
 
 Ask the model to select **small groups of complete speech passages about possible
 work**, including relevant withdrawal and timing context. Code copies those passages
@@ -39,7 +42,7 @@ An illustrative reply for the partial-withdrawal source would be:
 {"groups": [["T1", "T2"]]}
 ```
 
-The proposed model output has no quotation, task title, owner, deadline, currentness
+The prototype's model-neutral content has no quotation, task title, owner, deadline, currentness
 label, confidence or generated explanation. Each identifier refers to one complete
 speech turn in the same frozen snapshot. Writing stays outside this model task and
 is copied separately from the complete saved input.
@@ -51,7 +54,7 @@ no passages selected, not verified absence of work. Source order is preserved; a
 group does not rewrite or resolve its source statements. The user-facing examples
 hide the wire identifiers and carry no generated semantic title.
 
-This requires a new result type and renderer contract. Do not feed groups into the
+The prototype uses a new result type and renderer contract. Do not feed groups into the
 existing `actions.Result`, rename its headings, transform failed saved replies into
 accepted examples, or reuse its old quality verdicts. These authored groups were
 chosen by hand; they are not repaired model results.
@@ -60,8 +63,8 @@ chosen by hand; they are not repaired model results.
 
 | Responsibility | Proposed allocation | Remaining limitation |
 | --- | --- | --- |
-| Literal source wording | Code copies each selected complete passage. | This would remove model-written joined quotations; the proposed implementation does not exist yet. |
-| Which work is current | User reads the passages and promotes tasks. | This deliberately gives up the promise of ready suggested-action bullets. It is a prospective product scope change, not a repair of action extraction. |
+| Literal source wording | Code copies each selected complete passage. | The prototype has no model-written quotation field; selection quality remains unproven. |
+| Which work is current | User reads the passages and promotes tasks. | This gives up ready suggested-action bullets, as accepted for the first work-review section. It does not repair the old action extractor. |
 | Relevant passage selection and grouping | Model selects references and associated context. | It can still omit work, miss a withdrawal/condition, associate unrelated turns or select excessive material. Reference validity cannot detect those mistakes. |
 | Attribution and timing | Code retains recorded speaker/time and original wording. | Source speaker labels can be imperfect; the user still interprets self-identification, timing and conditions. No owner inference or deadline normalization is promised. |
 | Original writing | Code copies it separately, unchanged. | This work-review experiment does not reconcile written and spoken accounts. |
@@ -127,9 +130,8 @@ user resolves currentness and writes/promotes tasks. Concise generated action bu
 are not required for this section's first version. Missing work, misleading context and
 excessive review burden remain defects; the old action-only failures are unchanged.
 
-The next bounded work would be an isolated offline prototype of
-the chosen contract with honest normal/empty/incomplete examples and source-binding
-checks. A subsequent model experiment must fix prospective criteria for cancellations,
+The isolated offline prototype supplies normal/empty/incomplete/unavailable examples
+and source-binding checks. A subsequent model experiment must fix prospective criteria for cancellations,
 qualified timing, multiple independent work items, full withdrawal and negative controls;
 reserve independently authored fresh cases/repetitions where practical. Correct syntax
 alone cannot pass it. Any request/time budget, stopping rule, exact implementation and

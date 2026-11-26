@@ -1,4 +1,4 @@
-# M10 handoff — 2026-11-26, passage-review direction accepted
+# M10 handoff — 2026-11-26, offline passage prototype implemented
 
 Continue `m10/notes-guided-enhancement`, [PR #16](https://github.com/MattMSumner/meeting-notes/pull/16).
 Read AGENTS.md, `.chief/CHIEF.md`, the reviewable-draft section of plan.md and the
@@ -9,7 +9,47 @@ desktop tab/space. Legacy `herdr` pane IDs in old evidence are not core addresse
 Keep local coordination in ignored `.chief/STATE.md`; close out accepted worker
 checkouts after preserving their work and handoffs.
 
-## Current direction — passage review accepted
+## Current prototype — implemented offline
+
+The owner said **“Right, lets do it.”** and the isolated offline prototype is
+implemented at `175cde2d10c08e430ad3da464a2dc7f7c7105ae2`, integrated unchanged as an
+ancestor of this milestone branch. Read the [API/contract](prototypes/reviewable_draft/WORK_REVIEW.md)
+and [reproducible previews](prototypes/reviewable_draft/work-review-previews/index.md).
+Independent exact-commit engineering review passes with no findings or repair rounds.
+Formatting/lint/strict types and **1621 offline tests pass**, six integration tests
+excluded; 66 new targeted tests. Worker and Chief full runs use identical source.
+
+The new `work_review.py` has separate immutable Prepared/Group/Result records and a
+model-neutral payload with messages/schema only. Wire content is groups of speech
+references only; strict decoding validates all references before benign normalization.
+Groups bind to the complete saved snapshot and host generation, retain original source
+order and remain distinct when overlapping. Rendering copies saved complete turns and
+writing, with neutral passage-review labels. Model-controlled states/notices, generated
+quotes/task titles/owners/deadlines and old actions.Result semantics are absent.
+
+`host_incomplete` retains only structurally valid independent groups with a clear notice;
+`host_unavailable` accepts no groups. Neither salvages malformed replies or alters the
+complete input. Empty selection does not prove absence of work. These checks establish
+provenance/mechanics, not relevance, full context, missing-work coverage or saved effort.
+
+The explicit authored loader/exporter and separate CLI in `work_review_examples.py`
+produce seven normal/empty examples and two labeled host-failure demonstrations, with
+complete synthetic source annex, result JSON and provenance manifest. All **13 artifacts**
+reproduce byte-for-byte. The manifest has twelve output hashes; its SHA256 is
+`7b9f332910e37d832262ca17079957594bdfb50780b7bb6eec753d5a5091b46d`.
+Existing/edited/symlink output paths are refused; only a new directory can be created.
+
+Try an authored example from the repository root (no model call):
+
+```sh
+uv run python -B -m prototypes.reviewable_draft.work_review_examples --case authored_longer_context
+```
+
+No model requests, live metadata, production integration, model switch or merge ran.
+Production remains V11 and M10 unbuilt. All old code, inputs, model captures/grades
+and original authored examples remain unchanged; the current proposal README only
+records implementation status. Any actual model evaluation still needs separately
+agreed scope/criteria/budget and an exact reviewed execution freeze.
 
 On 2026-11-26 the owner replied **“This works!”** to the authored examples and the
 choice between focused passages and concise suggested-action bullets. This resolves
@@ -18,13 +58,13 @@ writing/promoting tasks, are useful enough for the first work-review section. Do
 ask for the same format decision again. This is presentation/workflow acceptance;
 the examples remain authored and establish no model quality or editing-time benefit.
 
-The owner said “Ok, lets reassess.” Offline investigation is complete; see the
+At the earlier “Ok, lets reassess” checkpoint, offline investigation completed; see the
 [work-review proposal](prototypes/reviewable_draft/work-review-proposal/README.md)
 and its seven explicitly authored examples. No model requests, live metadata calls,
 runtime implementation, production changes or historical regrading ran. Independent
 critique found no necessary corrections; all 1581 prior tracked evaluation/prototype
-files remain exact. Formatting, lint, strict types and all 1555 offline tests pass,
-six integration tests excluded; the existing source is unchanged.
+files remained exact. Formatting, lint, strict types and all 1555 offline tests passed,
+six integration tests excluded; that reassessment changed no implementation.
 
 The recommendation is to inspect a smaller prospective task: select groups of complete
 speech passages about possible work, with related withdrawal/timing context; code
@@ -43,12 +83,9 @@ full later timing and an independent conditional undertaking. Six examples reuse
 inputs; the longer input is separately Chief-authored, not held out. All selections
 are manual; these show presentation feasibility, not model performance or time saving.
 
-The next bounded task would be an isolated offline prototype of the reference-only
-group/result/renderer contract, with snapshot/generation binding, complete passage
-copying, separate writing and honest empty/incomplete states. No implementation or
-model calls ran as part of recording this feedback; any model evaluation still needs
-separately agreed criteria/budget/freeze. A model switch does not follow. Full-draft
-summary/decisions,
+The offline implementation task is complete. Earlier format feedback itself
+introduced no model calls; actual model evaluation still needs separately agreed
+criteria/budget/freeze. Full-draft summary/decisions,
 full40 regression, production persistence/edit protection and Obsidian usefulness
 remain separate gates. M10 stays unbuilt and PR #16 is not ready to merge.
 
