@@ -32,8 +32,11 @@ records an incomplete comparison: five requests in 23m01s, three returned output
 timeouts and seven unsent cases. Neither challenger completes the screen. All eighteen
 baseline/challenger grades locked with model names hidden before identity joining; cached
 Qwen3 remains five passes and one critical omission. All 1489 offline tests pass and old
-evidence remains exact. The two-request allowance is consumed; no further inference,
-model switch or merge is authorized. The app remains V11 and M10 unbuilt.
+evidence remains exact. The two-request allowance is consumed. The owner subsequently
+approved one four-case Qwen3.5 thinking-disabled work-retention experiment: four requests
+/ fifteen minutes overall / three minutes each, no retries, after preparation/review/
+freeze/publication. No other inference, model switch or merge is authorized. The app
+remains V11 and M10 unbuilt.
 
 ---
 
@@ -1510,6 +1513,29 @@ disabled is a possible next step requiring separately agreed scope and execution
 No further inference is authorized; unused wall time grants nothing. Broader quality,
 regression, production persistence/edit protection, current Obsidian usefulness, Built
 and owner `shipit` gates remain pending. PR #16 is not ready to merge.
+
+**Work-retention experiment approved (2026-11-25).** The owner said “Great, run the
+experiment” to the proposed focused check: one repetition each of partial withdrawal,
+cancellation with replacement, qualified timing and additional undertakings, in that
+order. Use `qwen3.5:9b-q4_K_M`, thinking disabled, streaming enabled and unchanged
+actions prompt/schema/decoder/renderer, temperature0 and context32768. At most four
+generation requests / 900 seconds overall / 180 seconds per generation, no retries.
+Prepare, test, independently review and publish the exact separate freeze before
+executing once; do not ask for the same approval again. Preparation is outside the
+run clock; in-run validation, metadata, loading, capture, saving and cleanup count.
+Stop on the first technical failure/deadline/drift or critical semantic defect once
+identified; independent meaning assessment may follow capture. Unused calls transfer
+nothing and never authorize resumption.
+
+Surviving work must remain discoverable as a supported suggestion or focused review
+with complete relevant context, attribution and timing qualifiers. Cancelled review
+cannot become current; remaining invoice sending must survive partial withdrawal.
+Replacement cannot invent a due date; qualified timing must retain not-before/next/
+finance context; additional must retain both genuine undertakings and separate writing.
+Generic disclaimers/transcript dumps alone do not pass. Familiar cases/one repetition/
+action-only scope establish no broader draft quality or reliability. Further cases,
+repetitions and full40 regression remain later separately scoped decisions. No production
+integration, model switch, Built, manual acceptance or merge is authorized by this run.
 
 **M11 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
