@@ -1884,3 +1884,34 @@ before one execution. Old allowances remain closed. A single familiar run can te
 feasibility but proves no causal improvement, reliability or saved review effort.
 No service/config/model change, schema relaxation, historical regrading, production
 integration, full40/full-draft/persistence acceptance, M10 Built or merge is authorized.
+
+**Schema-grounded prompt diagnostic complete (2026-11-26; M10 remains unbuilt).**
+The [report](evaluation/m10/reviewable-draft/work-review-schema-1-analysis/report.md)
+records three completed observations, all meeting their prospective development
+criteria: complete T1 undertaking and Next Tuesday timing; focused T1/T2 surviving
+invoice work plus withdrawal context; and no availability-only passages. Chief
+in-run review and independent primary-source assessment agree, with zero critical
+or noncritical findings. This is the accepted source-passage review contract, not
+a repair or regrading of the earlier current-action extractor.
+
+Exactly three generation requests completed in a 298.344-second full probe-call wall
+including Chief review waits. Generation HTTP walls were 14.476, 103.217 and 59.477
+seconds; returned output tokens 312, 3765 and 2210, all strict stop below 4096. The
+allowance is closed: no retries, resumption, replacements or unused-time transfer.
+The schema appendix is the only prompt change; the API schema, original inputs,
+model, temperature 1, thinking/streaming and context/cap remain fixed. Familiar
+inputs, one observation each, order/load/host-state and stochastic differences
+mean this establishes no causal improvement, reliability or saved review effort.
+
+Exact source 2d48ec9 is integrated unchanged after independent engineering acceptance
+with zero source findings/repairs. Targeted 218 passed in 109.38 seconds; the single
+exact-source required full suite passed 2261 tests with 6 integration tests excluded
+in 635.69 seconds, plus format/lint/strict types. The 85-artifact freeze plus manifest
+was published at cf02e18 before inference; capture is 174 artifacts plus manifest.
+Independent replay verifies 21 HTTP 200 exchanges, 6 identity/default gate sets, all
+21 children reaped, exact wires/bindings/decoder/render and saved/returned accounting;
+no error, timeout, censor or overrun. All 2099 prior tracked evaluation/prototype
+files remain byte-exact. Historical grades and production V11 are unchanged. Broader
+regression, fresh examples/repetitions, full-draft quality, persistence/edit protection,
+review effort and current synthetic Obsidian usefulness remain separate gates before
+M10 Built or the owner's merge approval. Further model work needs fresh agreed scope.
