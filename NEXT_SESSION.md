@@ -39,6 +39,28 @@ allowance. All previous 1347 tracked evaluation/prototype files remain immutable
 This is action-only familiar-case evidence, not full-draft quality, reliability, a
 model switch, production integration, M10 Built or merge authorization.
 
+The isolated collector is implemented and independently reviewed at
+`af210c01b803bc885d24c2ed78f7c7fb725108b4`, integrated unchanged as an ancestor of
+the milestone branch. Five assigned files only; no findings or repair rounds.
+Formatting, lint, strict types and **1555 offline tests pass**, six integration tests
+excluded; 66 new tests cover the profile. Chief verified the same pinned source in
+its own full run. No generation has run at this preparation checkpoint.
+
+The [48-artifact freeze](evaluation/m10/reviewable-draft/retention-probe-1/manifest.json)
+has SHA256 `24676d89c8a68db18a9d78d732a3089caffd85c74dc6526f07a560c511f1fdbd`
+and generation `retention-probe-8c62fdd2301f4b8695e81a55c5424188`. It binds all four
+actual wire bodies, complete snapshots, identity/defaults, imports and reviewed source.
+The [prospective criteria](evaluation/m10/reviewable-draft/retention-probe-1-analysis/criteria.json)
+were committed at `e96d48b` before outputs; SHA256
+`4c9f4f238b0a57470d0cd9ba1134db4c002a4acf0565ab8a41c4210f40a7fecb`.
+Use the [collector contract](prototypes/reviewable_draft/RETENTION_PROBE.md).
+Publish the exact freeze before Chief's already approved once-only execution.
+Keep all later analysis/launch/review artifacts in the sibling analysis directory;
+never add them inside the strict freeze or results inventories. Preserve returned
+accounting and post-seal observations plus independent full-call wall time outside
+capture. Either a sealed failure, post-seal deadline or full wall at/over900s makes
+the run incomplete. Results remain exclusive/single-use; never resume or retry.
+
 ## Completed streaming runtime probe — earlier allowance consumed
 
 The owner-approved runtime probe is **complete**, using exactly **two generation
