@@ -19,17 +19,17 @@ still implements V11. Automatic reconciliation is deferred for that successor.
 Phase 0 (Handy) set up.
 
 **Fresh-session handoff (2026-11-25):** [NEXT_SESSION.md](NEXT_SESSION.md) and the
-[work-retention report](evaluation/m10/reviewable-draft/retention-probe-1-analysis/report.md)
-record an incomplete, failed quality check: three Qwen3.5 thinking-disabled requests in
-15.868 seconds, two rendered drafts, one literal rejection and one unsent case. Invoice
-sending survives partial withdrawal, but cancelled review is still suggested: one critical
-currentness defect. Replacement meets its criterion with noncritical repetition. The timing
-reply joins two passages into an invalid primary-source quote; its complete qualifier is
-present, but no draft is published. The fourth case is untested. No retry or resumption is
-authorized. All 1555 offline tests pass and prior evidence remains exact; engineering
-success does not establish model quality. Keep the baseline and reassess source selection
-before agreeing another run. Earlier model-screen/runtime reports and grades remain
-unchanged; historical timeout causes are unproven. The app remains V11 and M10 unbuilt.
+[offline reassessment](prototypes/reviewable_draft/work-review-proposal/README.md)
+propose inspecting complete work-review passages selected by reference, with original
+text copied by code and current-task resolution left to the user. Seven authored examples
+make the tradeoff concrete; none is model-generated or evidence of improved quality.
+The owner choice between focused passages and concise suggested-action bullets remains
+pending. No implementation or new inference is authorized by the proposal. The earlier
+[work-retention run](evaluation/m10/reviewable-draft/retention-probe-1-analysis/report.md)
+remains incomplete with one critical cancelled-work suggestion, one criterion met, one
+literal rejection and one unsent case. All 1555 offline tests pass and all 1581 prior
+tracked evaluation/prototype files remain exact. Keep the baseline; earlier grades and
+historical timeout uncertainty remain unchanged. The app remains V11 and M10 unbuilt.
 
 ---
 
@@ -1561,6 +1561,38 @@ repair saved quotes or selectively rerun failures. This once-only allowance is c
 unused slot/time authorizes nothing. Further experiments need new scope/budget. Broader
 cases/repetitions, full40 regression, full-draft quality, persistence/edit protection,
 current synthetic Obsidian usefulness, Built and owner shipit gates remain pending.
+
+**Offline contract reassessment (2026-11-25; proposal only).** The owner said “Ok,
+lets reassess” after the failed work-retention check. Offline inspection distinguishes
+missing surviving work, cancelled work selected as current, and a cross-turn quotation
+that fails literal provenance despite retaining the timing qualifier. The current prompt
+already states the key rules; another wording change is an untested hypothesis, and more
+literal validation cannot detect a literal-but-cancelled selection. No new model calls,
+live metadata, runtime/production changes or regrading ran.
+
+The [proposal](prototypes/reviewable_draft/work-review-proposal/README.md) recommends
+inspecting complete speech groups selected only by reference. Code would copy exact
+original turns and separate writing; the user would decide current work and write/promote
+tasks. No generated quote/title/owner/deadline/currentness field. This would change the
+work-review promise, rather than repair the old action extractor. Missed work, missing
+conditions/withdrawals, wrong grouping, excessive review material and usefulness remain
+empirical; valid references or a full-transcript annex cannot pass them automatically.
+
+Seven authored work-section examples preserve complete sources and writing: six familiar
+development inputs and one separately Chief-authored longer input, not held out. The
+longer preview manually selects four of sixteen turns in two groups, retaining partial
+withdrawal/full timing and an independent conditional task. Counts illustrate the sketch,
+not model retrieval performance or saved editing time. Independent critique found no
+necessary corrections; all 1581 prior tracked evaluation/prototype files remain exact and
+all 1555 offline tests pass, six integration tests excluded, with unchanged source.
+
+The owner preference between focused passages with manual resolution and concise supported
+action bullets is pending; an unanswered optional question is not acceptance. Keep the
+previous product requirements until that decision. A chosen direction would need an
+isolated offline prototype before separately scoped model evaluation. This proposal
+authorizes no implementation, inference, model switch, full-draft quality acceptance,
+Built or merge. Summary/decisions, full40 regression, persistence/edit protection and
+current synthetic Obsidian usefulness remain separate gates; old failed grades stand.
 
 **M11 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
