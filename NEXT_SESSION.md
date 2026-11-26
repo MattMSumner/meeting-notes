@@ -1,4 +1,4 @@
-# M10 handoff — 2026-11-25, streaming probe complete
+# M10 handoff — 2026-11-25, work-retention experiment approved
 
 Continue `m10/notes-guided-enhancement`, [PR #16](https://github.com/MattMSumner/meeting-notes/pull/16).
 Read AGENTS.md, `.chief/CHIEF.md`, the reviewable-draft section of plan.md and the
@@ -10,6 +10,36 @@ Keep local coordination in ignored `.chief/STATE.md`; close out accepted worker
 checkouts after preserving their work and handoffs.
 
 ## Latest outcome and authorization
+
+The owner said **“Great, run the experiment”** to the next focused work-retention
+test: Qwen3.5 thinking disabled, streaming enabled, unchanged actions prompt/schema/
+decoder/renderer, one repetition of four existing synthetic cases in fixed order:
+`partial_coordination_retracted`, `cancellation_with_new_task`,
+`qualified_external_timing`, `additional`. The allowance is **at most four generation
+requests / 900 seconds overall / 180 seconds per generation, no retries**. Prepare,
+test, independently review and commit/push the exact new freeze before executing once.
+Do not ask for this approval again. Preparation precedes the run clock; validation,
+metadata, loading, capture, saving and cleanup during execution all count toward 900s.
+Stop on the first technical failure/deadline/drift or critical semantic defect once
+identified. Independent meaning assessment may follow capture; retain all replies
+already captured. No unused allowance transfers or automatic rerun is authorized.
+
+Require surviving work as a supported suggestion or focused review with relevant
+context; cancelled work cannot become current. Partial withdrawal must retain invoice
+sending alongside its original/withdrawal context. Replacement must retain independent
+sending without invented due dates. Qualified timing must preserve complete not-before/
+next/finance context without a misleading deadline. Additional context must retain both
+genuine undertakings, their attribution/timing, and separate unchanged writing.
+Generic warnings or whole-transcript dumps alone do not satisfy useful retention.
+
+Read-only preparation metadata matches the last freeze's Ollama0.40.13, model digest,
+boolean thinking support and relevant defaults; no service/model changes were made.
+Chief owns the once-only execution. Workers prepare/review offline and have no model
+allowance. All previous 1347 tracked evaluation/prototype files remain immutable.
+This is action-only familiar-case evidence, not full-draft quality, reliability, a
+model switch, production integration, M10 Built or merge authorization.
+
+## Completed streaming runtime probe — earlier allowance consumed
 
 The owner-approved runtime probe is **complete**, using exactly **two generation
 requests in 104.676 seconds**, no retries, failures, unsent slots or overruns. The
@@ -153,10 +183,11 @@ commit `0e349218915d722c14e9d5e9385f826899dd7ab3` reads committed frozen baselin
 A real depth-one checkout collects all51newtests; full checks pass. Runtime, model packets
 and frozen source were unchanged by this repair. Final-head CI status is in PR/local ledger.
 
-Keep the existing baseline. The runtime pair is complete. A separately scoped positive
-work-retention check with thinking disabled is a possible next step before another
-quality comparison or pipeline work; it requires a fresh agreed execution budget.
-Do not add quote validators or run further inference automatically.
+Keep the existing baseline. The runtime pair is complete. The owner has now approved
+the separate four-case work-retention check described at the top; its new allowance
+does not reopen any earlier experiment. Do not add quote validators or run other
+inference automatically. Broader cases/repetitions/full-draft evaluation remain later
+decisions requiring their own scope and budget.
 
 The owner still values useful drafts requiring review and approved the authored normal/
 incomplete presentation. That product direction remains unchanged. Current app behavior
