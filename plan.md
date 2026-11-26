@@ -1652,6 +1652,21 @@ A future model check needs separately agreed criteria/budget and reviewed execut
 full40 regression, summaries/decisions, persistence/edit protection and current Obsidian
 usefulness remain separate gates.
 
+**Passage-selection experiment authorized (2026-11-26).** The owner said “Ok, run
+those examples and fix CI!” to one pass over the seven existing synthetic examples.
+Use the accepted groups-only prompt/schema/decoder/renderer, with Qwen3.5 thinking
+false, streaming true, temperature0 and context32768. Limits: seven generation
+requests, 1500 seconds overall, 180 seconds per generation, no retries. A Chief-owned
+meaning review follows each rendered selection before another request; stop on invalid
+output, an identified critical selection defect, or transport/identity/storage/deadline
+failure. Missing work, full withdrawal/timing context, grouping, relevance and review
+burden are assessed separately from source/reference integrity. Freeze the reviewed
+execution profile and prospective criteria before the once-only run. These familiar
+examples and one repetition establish initial feasibility at most; no reliability,
+saved effort, production integration, model switch, historical regrading, Built or
+merge follows. Previous unused allowances remain closed. Investigate and rerun the
+cancelled Python CI job separately; change workflow code only if evidence requires it.
+
 **M11 — Synthetic evaluation set.** Two or three more made-up transcripts with
 known-correct notes, beside the golden and numbers ones, so prompts and models are
 compared on tests rather than by eye on real meetings: stance (a "maybe" turned into a
